@@ -1,0 +1,16 @@
+{
+    "name": "cheevauva/setcms",
+    "description": "SetCMS",
+    "type": "project",
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "SetCMS\\": "src/SetCMS"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
