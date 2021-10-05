@@ -1,0 +1,36 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+    <form class="setcms-form row" action="{{ link('save', {'module': 'Posts'}) }}" setcms-redirect="{{ link('read', {'module': 'Posts', 'id': '${entity.id}'}) }}">
+        {% if entity.id %}
+            <input name="id" type="hidden" value="{{ entity.id }}">
+        {% endif %}
+
+        <div>
+            <label for="slug" class="form-label">slug</label>
+            <input name="slug" value="{{ entity.slug }}" class="form-control">
+            <div class="invalid-feedback"></div>
+        </div>
+        <div>
+            <label for="title" class="form-label">title</label>
+            <input name="title" value="{{ entity.title }}" class="form-control">
+            <div class="invalid-feedback"></div>
+        </div>
+        <div>
+            <label for="message" class="form-label">message</label>
+            <textarea name="message" class="form-control">{{ entity.message }}</textarea>
+            <div class="invalid-feedback"></div>
+        </div>
+        <div>
+            <label for="message" class="form-label">Дата создания</label>
+            <input name="dateCreated" class="form-control" value="{{ entity.dateCreated.format('Y-m-d H:i:s') }}" disabled="1"/>
+        </div>
+        <div>
+            <label for="message" class="form-label">Дата изменения</label>
+            <input name="dateModified" class="form-control" value="{{ entity.dateModified.format('Y-m-d H:i:s') }}" disabled="1"/>
+        </div>
+        <div>
+            <button class="setcms-submit-button btn btn-primary mb-3" type="button">Отправить</button>
+        </div>
+    </form>
+{% endblock %}

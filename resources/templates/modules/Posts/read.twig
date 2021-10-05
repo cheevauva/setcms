@@ -1,0 +1,12 @@
+{% extends "layout.twig" %}
+
+{% block title %}Пост - {{ entity.title }}{% endblock %}
+
+{% block content %}
+    {% if entity %}
+        {{ entity.id }}: {{ entity.title }}<br/>
+        {{ entity.dateCreated.format('Y-m-d') }}<br/>
+    {% else %}
+        <div>{{ model.getFirstMessage() }}</div>
+    {% endif %}
+{% endblock %}
