@@ -32,7 +32,7 @@ abstract class OrdinaryService
             return $model;
         }
 
-        $model->entities($this->dao()->list($model->page));
+        $model->entities($this->dao()->list($model->page, 10, 'id', 'DESC'));
 
         return $model;
     }

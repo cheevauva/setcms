@@ -14,13 +14,14 @@ abstract class OrdinaryDAO
 
     abstract function getDatabase(): Connection;
 
-    public function list(int $offset = 0, $limit = 10): array
+    public function list(int $offset = 0, $limit = 10, string $sort = 'id', string $order = ''): array
     {
         $qb = $this->getDatabase()->createQueryBuilder();
         $qb->select('t.*');
         $qb->from($this->getTableName(), 't');
         $qb->setMaxResults($limit);
         $qb->setFirstResult($offset);
+        $qb->addOrderBy($sort, $order);
 
         $posts = [];
 
