@@ -10,6 +10,10 @@ class OrdinaryModelError extends \SetCMS\Model
 
     public function toArray(): array
     {
-        return get_object_vars($this);
+        $array = get_object_vars($this);
+        $array['model'] = $this;
+        
+        return $array;
     }
+
 }

@@ -6,6 +6,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelRead;
 use SetCMS\Module\Posts\PostModel\PostModelSave;
 use SetCMS\Module\Posts\PostService;
+use SetCMS\Module\Posts\PostModel\PostModelCreate;
 
 class PostAdmin
 {
@@ -28,6 +29,19 @@ class PostAdmin
         $params['id'] = $request->getAttribute('id');
 
         return $this->service->read($model->fromArray($params));
+    }
+
+    /**
+     * @setcms-request-method-get
+     * @setcms-response-content-html
+     * @setcms-access-level-admin
+     */
+    public function create(ServerRequestInterface $request, PostModelCreate $model): PostModelCreate
+    {
+        $model->fromArray($request->getQueryParams());
+        $model->entity(new Post);
+
+        return $model;
     }
 
     /**

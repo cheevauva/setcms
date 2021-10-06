@@ -87,7 +87,8 @@ class Action
             if ($parameter->getType()->getName() === ServerRequestInterface::class) {
                 $arguments[$parameter->getPosition()] = $this->request;
             } else {
-                $arguments[$parameter->getPosition()] = new ($parameter->getType()->getName());
+                $className = $parameter->getType()->getName();
+                $arguments[$parameter->getPosition()] = new $className;
             }
         }
 
