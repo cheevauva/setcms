@@ -6,23 +6,28 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\VarDoc;
-use SetCMS\Router as AltoRouter;
+use SetCMS\Router as Router;
 use SetCMS\HttpStatusCode\HttpStatusCode;
 use SetCMS\Model;
+use SetCMS\Action;
 
 class FrontController
 {
 
     protected \Twig\Environment $twig;
     protected ContainerInterface $container;
-    protected AltoRouter $router;
+    protected Router $router;
     protected ServerRequestInterface $request;
+    protected array $config;
 
-    public function __construct(ContainerInterface $container, AltoRouter $router)
+    public function __construct(ContainerInterface $container, Router $router)
     {
         $this->container = $container;
         $this->router = $router;
         $this->router->addRoutes(require 'resources/routes.php');
+        $this->config = [
+            'theme' => 'manlix',
+        ];
     }
 
     public function execute(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
@@ -31,13 +36,23 @@ class FrontController
 
         try {
             return $this->process($request, $response);
-        } catch (HttpStatusCode $ex) {
+        } catch (\Exception $ex) {
+            $code = 500;
+            $reason = 'Внутренняя ошибка';
+            $message = $ex->getMessage();
+            $trace = $ex->getTraceAsString();
+
+            if ($ex instanceof HttpStatusCode) {
+                $code = $ex::CODE;
+                $reason = $ex::REASON;
+            }
+
             $contentType = $request->getServerParams()['HTTP_ACCEPT'] ?? 'text/html';
 
             $model = (new \SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelError);
-            $model->message = $ex::REASON;
-            $model->trace = $ex->getTraceAsString();
-            $model->addMessage($ex->getMessage());
+            $model->message = $reason;
+            $model->trace = $trace;
+            $model->addMessage($message);
 
             if (strpos($contentType, 'json') !== false) {
                 $contentType = 'application/json';
@@ -49,16 +64,13 @@ class FrontController
 
             $response->getBody()->write($content);
             $response = $response->withHeader('Content-type', $contentType);
-
-            if ($ex instanceof HttpStatusCode) {
-                $response = $response->withStatus($ex::CODE, $ex::REASON);
-            }
+            $response = $response->withStatus($code, $reason);
 
             return $response;
         }
     }
 
-    protected function invokeAction(\SetCMS\Action $action): \SetCMS\Model
+    protected function invokeAction(Action $action): Model
     {
         return $action->getAction()->invokeArgs($this->container->get($action->getControllerClassName()), $action->getArguments());
     }
@@ -72,7 +84,7 @@ class FrontController
         return $request;
     }
 
-    protected function getTwig($request = null): ?\Twig\Environment
+    protected function getTwig(): ?\Twig\Environment
     {
         if (!empty($this->twig)) {
             return $this->twig;
@@ -83,9 +95,12 @@ class FrontController
             'cache' => 'cache/twig',
             'auto_reload' => true,
         ]);
+        $twig->addFunction(new \Twig\TwigFunction('theme_path', function ($path) {
+            return new \Twig\Markup(sprintf('themes/%s/%s', $this->config['theme'], $path), 'UTF-8');
+        }));
         $twig->addFunction(new \Twig\TwigFunction('render', function ($template, $params = []) {
             $request = $this->withAttributes($this->request, $params);
-            $model = $this->invokeAction($this->processByParams($request));
+            $model = $this->invokeAction(new Action($request));
             $content = $this->getTwig()->render($template, $model->toArray());
 
             return new \Twig\Markup($content, 'UTF-8');
@@ -108,14 +123,9 @@ class FrontController
             $request = $request->withAttribute($param, $paramVal);
         }
 
-        $action = $this->processByParams($request);
+        $action = new Action($request);
 
         return $action->getAction()->invokeArgs($this->container->get($action->getControllerClassName()), $action->getArguments());
-    }
-
-    protected function processByParams(ServerRequestInterface $request): \SetCMS\Action
-    {
-        return new \SetCMS\Action($request);
     }
 
     protected function process(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
@@ -131,12 +141,12 @@ class FrontController
 
         $this->request = $request;
 
-        $action = $this->processByParams($request);
+        $action = new Action($request);
         $model = $this->invokeAction($action);
 
         if (stripos($action->getComment(), VarDoc::RESPONSE_HTML) !== false) {
             $template = sprintf('modules/%s/%s/%s.twig', $action->getModule(), $request->getAttribute('section', 'Index'), $action->getAction()->getName());
-            $html = $this->getTwig($request)->render($template, $model->toArray());
+            $html = $this->getTwig()->render($template, $model->toArray());
 
             $response = $response->withHeader('Content-type', 'text/html');
             $response->getBody()->write($html);

@@ -1,4 +1,4 @@
-{% extends "layout.twig" %}
+{% extends theme_path('layout.twig') %}
 
 {% block content %}
     <form class="setcms-form row" action="{{ link('admin_save', {'module': 'Posts'}) }}" setcms-redirect="{{ link('read', {'module': 'Posts', 'id': '${entity.id}'}) }}">

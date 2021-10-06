@@ -1,4 +1,4 @@
-{% extends "layout.twig" %}
+{% extends theme_path('layout.twig') %}
 
 {% block title %}Пост - {{ entity.title }}{% endblock %}
 
@@ -6,13 +6,13 @@
     {% if entity %}
         <h1>{{ entity.title }}</h1>
         <p>
-            {{ entity.message }}
+            {{ entity.message|nl2br }}
         </p>
 
         <p>
             Дата создания: {{ entity.dateCreated.format('d.m.Y H:i:s') }} |
-            <a href="{{ link('index', {module: entity.module}) }}">К списку</a> |
-            <a href="{{ link('admin_edit', {'module': entity.module, 'id': entity.id}) }}">Редактировать</a>
+            <a href="{{ link('index', {module: entity.module}) }}">К списку</a> 
+            <!--a href="{{ link('admin_edit', {'module': entity.module, 'id': entity.id}) }}">Редактировать</a-->
         </p>
     {% endif %}
     {% if not model.isValid() %}
