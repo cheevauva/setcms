@@ -6,7 +6,8 @@
     {% if entity %}
         {{ entity.id }}: {{ entity.title }}<br/>
         {{ entity.dateCreated.format('Y-m-d') }}<br/>
-    {% else %}
-        <div>{{ model.getFirstMessage() }}</div>
+    {% endif %}
+    {% if not model.isValid() %}
+        <div>{{ model.getFirstMessage('id') }}</div>
     {% endif %}
 {% endblock %}

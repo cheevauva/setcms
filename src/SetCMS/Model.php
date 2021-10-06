@@ -11,6 +11,13 @@ abstract class Model
 
     protected array $messages = [];
 
+    protected const TYPE_INT = 'int';
+    protected const TYPE_DATETIME = 'datetime';
+    protected const TYPES = [
+        VarDoc::TYPE_INT => self::TYPE_INT,
+        VarDoc::TYPE_DATETIME => self::TYPE_DATETIME,
+    ];
+
     public function isValid(): bool
     {
         $reflect = new ReflectionObject($this);
@@ -41,12 +48,11 @@ abstract class Model
     {
         foreach ($this->messages as $message) {
             if ($message['field'] === $field) {
-
                 return $message['message'] ?? '';
             }
         }
 
-        return '';
+        return reset($this->messages)['message'] ?? '';
     }
 
     public function getMessages(): array
@@ -60,25 +66,57 @@ abstract class Model
         $properties = $reflect->getProperties(ReflectionProperty::IS_PUBLIC);
 
         foreach ($properties as $property) {
-            assert($property instanceof ReflectionProperty);
+            $this->set($property, $array[$property->getName()] ?? $property->getValue($this));
+        }
 
-            $value = $array[$property->getName()] ?? $property->getValue($this);
+        return $this;
+    }
 
-            $comment = $property->getDocComment();
+    public function set($property, $value)
+    {
+        if (!($property instanceof ReflectionProperty)) {
+            $property = (new ReflectionObject($this))->getProperty($property);
+        }
 
-            if (!empty($value) && strpos($comment, VarDoc::TYPE_DATETIME) !== false) {
-                try {
-                    $value = new \DateTime($value);
-                } catch (\Exception $ex) {
-                    $value = null;
-                    $this->messages[] = sprintf('Форма ожидает строку в формате DateTime в поле "%s", возможно указан неверный формат', $property->getName());
-                }
+        assert($property instanceof ReflectionProperty);
+
+        $comment = $property->getDocComment();
+
+        foreach (self::TYPES as $vardoc => $type) {
+            if (strpos($comment, $vardoc) === false) {
+                continue;
             }
 
-            $this->{$property->getName()} = $value;
+            try {
+                $value = $this->convert($type, $value);
+            } catch (ModelException $ex) {
+                throw ModelException::invalidField($property->getName());
+            }
         }
-        
-        return $this;
+
+        $property->setValue($this, $value);
+    }
+
+    private function convert(string $type, $value)
+    {
+        switch ($type) {
+            case self::TYPE_INT:
+                if ($value == intval($value) && $value !== '') {
+                    return intval($value);
+                }
+                break;
+            case self::TYPE_DATETIME:
+                try {
+                    return new \DateTime($value);
+                } catch (\Exception $ex) {
+                    
+                }
+                break;
+            default:
+                return $value;
+        }
+
+        throw ModelException::convertFail($value);
     }
 
     abstract public function toArray(): array;

@@ -8,11 +8,10 @@ class OrdinaryModelRead extends \SetCMS\Model
 {
 
     /**
-     * @setcms-required
      * @setcms-type-int
-     * @var int 
+     * @var int
      */
-    public ?int $id = null;
+    public int $id = 0;
     private ?OrdinaryEntity $entity = null;
 
     public function entity(?OrdinaryEntity $entity = null): ?OrdinaryEntity
@@ -22,17 +21,6 @@ class OrdinaryModelRead extends \SetCMS\Model
         }
 
         return $this->entity;
-    }
-
-    public function isValid(): bool
-    {
-        $this->messages = [];
-
-        if (empty($this->id)) {
-            $this->addMessage('Не указан идентификатор записи', 'id');
-        }
-
-        return parent::isValid();
     }
 
     public function toArray(): array

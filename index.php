@@ -13,8 +13,9 @@ $request = Laminas\Diactoros\ServerRequestFactory::fromGlobals();
 $frontController = $container->get(\SetCMS\FrontController::class);
 
 assert($frontController instanceof \SetCMS\FrontController);
+$response = $frontController->execute($request, new \Laminas\Diactoros\Response);
 
-$response = $frontController->execute($request);
+http_response_code($response->getStatusCode());
 
 foreach ($response->getHeaders() as $name => $values) {
     foreach ($values as $value) {

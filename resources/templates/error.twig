@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+    <head>
+        <title>{% block title %}Title{% endblock %}</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body class="d-flex flex-column h-100">
+        <div class="container">
+            <h1 class="mt-5">Ошибка</h1>
+            <p class="lead">{{ message }}</p>
+            {% if debug %}
+                <pre>{{ trace }}</pre>
+            {% endif %}
+            <p><a href="{{ link('home') }}">Перейти на главную страницу</a></p>
+        </div>
+    </body>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+</html>

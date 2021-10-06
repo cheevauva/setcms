@@ -25,10 +25,10 @@ class PostIndex
      */
     public function read(OrdinaryModelRead $model, ServerRequestInterface $request): OrdinaryModelRead
     {
-        $model->fromArray($request->getQueryParams());
-        $model->id = $request->getAttribute('id');
+        $params = $request->getQueryParams();
+        $params['id'] = $request->getAttribute('id');
 
-        return $this->service->read($model);
+        return $this->service->read($model->fromArray($params));
     }
 
     /**
@@ -48,10 +48,10 @@ class PostIndex
      */
     public function edit(ServerRequestInterface $request, OrdinaryModelRead $model): OrdinaryModelRead
     {
-        $model->fromArray($request->getQueryParams());
-        $model->id = $request->getAttribute('id');
+        $params = $request->getQueryParams();
+        $params['id'] = $request->getAttribute('id');
 
-        return $this->service->read($model);
+        return $this->service->read($model->fromArray($params));
     }
 
     /**

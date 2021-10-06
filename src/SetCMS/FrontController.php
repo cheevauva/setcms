@@ -2,13 +2,13 @@
 
 namespace SetCMS;
 
-use SetCMS\ModuleException;
-use SetCMS\Module;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\VarDoc;
 use SetCMS\Router as AltoRouter;
+use SetCMS\HttpStatusCode\HttpStatusCode;
+use SetCMS\Model;
 
 class FrontController
 {
@@ -25,39 +25,42 @@ class FrontController
         $this->router->addRoutes(require 'resources/routes.php');
     }
 
-    public function execute(ServerRequestInterface $request): ResponseInterface
+    public function execute(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-
-        $accept = stripos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false ? 'json' : 'html';
-
+        $this->request = $request;
+        
         try {
-            return $this->process($request);
-        } catch (\Exception $ex) {
-            if ($accept === 'html') {
-                header('Content-type: text/html');
-                echo $this->getTwig()->render('uncatched.twig', [
-                    'message' => $ex->getMessage(),
-                    'trace' => $ex->getTraceAsString(),
-                ]);
-                die;
+            return $this->process($request, $response);
+        } catch (HttpStatusCode $ex) {
+            $contentType = $request->getServerParams()['HTTP_ACCEPT'] ?? 'text/html';
+
+            $model = (new \SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelError);
+            $model->message = $ex::REASON;
+            $model->trace = $ex->getTraceAsString();
+            $model->addMessage($ex->getMessage());
+
+            if (strpos($contentType, 'html') !== false) {
+                $contentType = 'text/html';
+                $content = $this->getTwig($request)->render('error.twig', $model->toArray());
             }
-            if ($accept === 'json') {
-                header('Content-type: application/json');
-                echo json_encode([
-                    'result' => null,
-                    'messages' => [
-                        [
-                            'message' => $ex->getMessage(),
-                            'field' => null,
-                        ]
-                    ],
-                ], JSON_UNESCAPED_UNICODE);
-                die;
+
+            if (strpos($contentType, 'json') !== false) {
+                $contentType = 'application/json';
+                $content = $this->model2json($model);
             }
+
+            $response->getBody()->write($content);
+            $response = $response->withHeader('Content-type', $contentType);
+
+            if ($ex instanceof HttpStatusCode) {
+                $response = $response->withStatus($ex::CODE, $ex::REASON);
+            }
+
+            return $response;
         }
     }
 
-    protected function invokeAction(\SetCMS\Action $action)
+    protected function invokeAction(\SetCMS\Action $action): \SetCMS\Model
     {
         return $action->getAction()->invokeArgs($this->container->get($action->getControllerClassName()), $action->getArguments());
     }
@@ -76,6 +79,7 @@ class FrontController
         if (!empty($this->twig)) {
             return $this->twig;
         }
+
         $loader = new \Twig\Loader\FilesystemLoader('resources/templates');
         $twig = new \Twig\Environment($loader, [
             'cache' => 'cache/twig',
@@ -111,7 +115,7 @@ class FrontController
         return $action->getAction()->invokeArgs($this->container->get($action->getControllerClassName()), $action->getArguments());
     }
 
-    protected function processByParams(ServerRequestInterface $request)
+    protected function processByParams(ServerRequestInterface $request): \SetCMS\Action
     {
         $section = $request->getAttribute('section', 'Index');
         $module = $request->getAttribute('module', '');
@@ -121,9 +125,13 @@ class FrontController
         return new \SetCMS\Action($module, $action, $request);
     }
 
-    protected function process(ServerRequestInterface $request): ResponseInterface
+    protected function process(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $result = $this->router->match($request->getServerParams()['PATH_INFO'] ?? '/', $request->getServerParams()['REQUEST_METHOD']);
+
+        if (!$result) {
+            throw ModuleException::notFound('На найден указанный ресурс');
+        }
 
         $request = $this->withAttributes($request, $result['params'] ?? []);
         $request = $this->withAttributes($request, $result['target'] ?? []);
@@ -137,24 +145,25 @@ class FrontController
             $template = sprintf('modules/%s/%s.twig', $action->getModule(), $action->getAction()->getName());
             $html = $this->getTwig($request)->render($template, $model->toArray());
 
-            $response = (new \Laminas\Diactoros\Response);
             $response = $response->withHeader('Content-type', 'text/html');
             $response->getBody()->write($html);
         }
 
         if (stripos($action->getComment(), VarDoc::RESPONSE_JSON) !== false) {
-            $content = json_encode([
-                'success' => empty($model->getMessages()),
-                'result' => $model->toArray(),
-                'messages' => $model->getMessages(),
-            ], JSON_UNESCAPED_UNICODE);
-
-            $response = (new \Laminas\Diactoros\Response);
             $response = $response->withHeader('Content-type', 'application/json');
-            $response->getBody()->write($content);
+            $response->getBody()->write($this->model2json($model));
         }
 
         return $response;
+    }
+
+    protected function model2json(\SetCMS\Model $model): string
+    {
+        return json_encode([
+            'success' => empty($model->getMessages()),
+            'result' => $model->toArray(),
+            'messages' => $model->getMessages(),
+        ], JSON_UNESCAPED_UNICODE);
     }
 
 }
