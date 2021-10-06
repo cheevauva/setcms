@@ -10,7 +10,7 @@ class Router extends \AltoRouter
         $result = parent::match($requestUrl, $requestMethod);
         
         if (is_array($result)) {
-            $result['method'] = $requestMethod;
+            $result['target']['method'] = $requestMethod;
         }
         
         return $result;

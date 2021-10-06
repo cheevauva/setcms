@@ -28,7 +28,7 @@ class FrontController
     public function execute(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $this->request = $request;
-        
+
         try {
             return $this->process($request, $response);
         } catch (HttpStatusCode $ex) {
@@ -39,14 +39,12 @@ class FrontController
             $model->trace = $ex->getTraceAsString();
             $model->addMessage($ex->getMessage());
 
-            if (strpos($contentType, 'html') !== false) {
-                $contentType = 'text/html';
-                $content = $this->getTwig($request)->render('error.twig', $model->toArray());
-            }
-
             if (strpos($contentType, 'json') !== false) {
                 $contentType = 'application/json';
                 $content = $this->model2json($model);
+            } else {
+                $contentType = 'text/html';
+                $content = $this->getTwig($request)->render('error.twig', $model->toArray());
             }
 
             $response->getBody()->write($content);
@@ -117,12 +115,7 @@ class FrontController
 
     protected function processByParams(ServerRequestInterface $request): \SetCMS\Action
     {
-        $section = $request->getAttribute('section', 'Index');
-        $module = $request->getAttribute('module', '');
-        $method = $request->getAttribute('method', 'GET');
-        $action = $request->getAttribute('action', 'index');
-
-        return new \SetCMS\Action($module, $action, $request);
+        return new \SetCMS\Action($request);
     }
 
     protected function process(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
@@ -142,7 +135,7 @@ class FrontController
         $model = $this->invokeAction($action);
 
         if (stripos($action->getComment(), VarDoc::RESPONSE_HTML) !== false) {
-            $template = sprintf('modules/%s/%s.twig', $action->getModule(), $action->getAction()->getName());
+            $template = sprintf('modules/%s/%s/%s.twig', $action->getModule(), $request->getAttribute('section', 'Index'), $action->getAction()->getName());
             $html = $this->getTwig($request)->render($template, $model->toArray());
 
             $response = $response->withHeader('Content-type', 'text/html');

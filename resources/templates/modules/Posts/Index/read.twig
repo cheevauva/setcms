@@ -1,0 +1,21 @@
+{% extends "layout.twig" %}
+
+{% block title %}Пост - {{ entity.title }}{% endblock %}
+
+{% block content %}
+    {% if entity %}
+        <h1>{{ entity.title }}</h1>
+        <p>
+            {{ entity.message }}
+        </p>
+
+        <p>
+            Дата создания: {{ entity.dateCreated.format('d.m.Y H:i:s') }} |
+            <a href="{{ link('index', {module: entity.module}) }}">К списку</a> |
+            <a href="{{ link('admin_edit', {'module': entity.module, 'id': entity.id}) }}">Редактировать</a>
+        </p>
+    {% endif %}
+    {% if not model.isValid() %}
+        <div>{{ model.getFirstMessage('id') }}</div>
+    {% endif %}
+{% endblock %}

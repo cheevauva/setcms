@@ -11,9 +11,16 @@ class Action
     private ServerRequestInterface $request;
     private Module $module;
     private \ReflectionMethod $action;
+    private string $method;
+    private string $section;
 
-    public function __construct(string $module, string $action, ServerRequestInterface $request)
+    public function __construct(ServerRequestInterface $request)
     {
+        $module = $request->getAttribute('module', '');
+        $action = $request->getAttribute('action', 'index');
+        $this->method = $request->getAttribute('method', '');
+        $this->section = $request->getAttribute('section', 'Index');
+
         $this->request = $request;
         $moduleClassName = sprintf('SetCMS\Module\%s', $module);
 
@@ -29,11 +36,15 @@ class Action
             throw ModuleException::notDefinedPrefix($this->module->getLabel());
         }
 
-//                if (!method_exists($className, $match['action'])) {
-//                    throw ModuleException::notFoundAction($module->getModule(), $match['section'], $match['action']);
-//                }
+        $controllerClassName = $this->getControllerClassName();
+
+        if (!method_exists($controllerClassName, $action)) {
+            throw ModuleException::notFoundAction($this->module, $this->section, $action);
+        }
 
         $this->action = (new \ReflectionClass($this->getControllerClassName()))->getMethod($action);
+
+        $this->getController();
     }
 
     public function getModule(): Module
@@ -43,19 +54,19 @@ class Action
 
     public function getControllerClassName(): string
     {
-        return sprintf('%s%s', $this->module->getPrefix(), 'Index');
+        return sprintf('%s%s', $this->module->getPrefix(), ucfirst($this->section));
     }
 
-    protected function getController()
+    private function getController()
     {
         $comment = $this->action->getDocComment();
 
-        if (stripos($comment, VarDoc::PREFIX_ACCESS . 'index') === false) {
-            throw ModuleException::notAllowSectionAction($this->module->getModule(), $match['action'], $match['section']);
+        if (stripos($comment, VarDoc::PREFIX_ACCESS . strtolower($this->section)) === false) {
+            throw ModuleException::notAllowSectionAction($this->module, $this->action->getName(), $this->section);
         }
 
-        if (stripos($comment, VarDoc::PREFIX_METHOD . 'get') === false) {
-            throw ModuleException::notAllowActionForThatRequestMethod($this->module->getModule(), $match['section'], $match['action'], $requestMethod);
+        if (stripos($comment, VarDoc::PREFIX_METHOD . strtolower($this->method)) === false) {
+            throw ModuleException::notAllowActionForThatRequestMethod($this->module, $this->section, $this->action->getName(), $this->method);
         }
 
         return;

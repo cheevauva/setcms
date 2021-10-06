@@ -1,7 +1,7 @@
 {% extends "layout.twig" %}
 
 {% block content %}
-    <form class="setcms-form row" action="{{ link('save', {'module': 'Posts'}) }}" setcms-redirect="{{ link('read', {'module': 'Posts', 'id': '${entity.id}'}) }}">
+    <form class="setcms-form row" action="{{ link('admin_save', {'module': 'Posts'}) }}" setcms-redirect="{{ link('read', {'module': 'Posts', 'id': '${entity.id}'}) }}">
         {% if entity.id %}
             <input name="id" type="hidden" value="{{ entity.id }}">
         {% endif %}

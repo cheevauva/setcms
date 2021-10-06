@@ -1,0 +1,14 @@
+{% extends "layout.twig" %}
+
+{% block content %}
+    {% for entity in entities %}
+        <h4><a href="{{ link('read', {'module': entity.module, 'id': entity.id}) }}">{{ entity.title }}</a></h4>
+        <p>{{ entity.message }}</p>
+        <p>
+            Дата создания: {{ entity.dateCreated.format('d.m.Y H:i:s') }} | 
+            Дата изменения: {{ entity.dateModified.format('d.m.Y H:i:s') }} | 
+            <a href="{{ link('admin_edit', {'module': entity.module, 'id': entity.id}) }}">Редактировать</a>
+        </p>
+        <hr>
+    {%  endfor %}
+{% endblock %}

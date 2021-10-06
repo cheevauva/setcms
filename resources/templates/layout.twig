@@ -101,7 +101,7 @@
 
             <div class="row g-5">
                 <div class="col-md-8">
-                    {{ render('help.twig',{module:'Users',action:'index'}) }}
+                    {{ render('help.twig',{module:'Users',action:'index', section:'index'}) }}
 
                     <article class="blog-post">
                         {% block content %}{% endblock %}
@@ -178,6 +178,9 @@
                 $.ajax({
                     url: $form.attr('action'),
                     data: new FormData($form.get(0)),
+                    headers: {
+                        Accept: "application/json; charset=utf-8",
+                    },
                     processData: false,
                     contentType: false,
                     type: 'POST',
