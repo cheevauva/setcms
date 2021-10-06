@@ -5,14 +5,15 @@ namespace SetCMS\Module\Posts;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\PDO\SQLite\Driver;
+use Psr\Container\ContainerInterface;
 
 class PostDatabase extends Connection
 {
 
-    public function __construct()
+    public function __construct(ContainerInterface $container)
     {
         parent::__construct([
-            'path' => 'cache/posts.db',
+            'path' => $container->get('basePath') . '/cache/posts.db',
             'driver' => 'pdo_sqlite',
             'charset' => 'UTF8',
         ], new Driver);

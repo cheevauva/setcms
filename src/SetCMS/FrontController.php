@@ -19,15 +19,15 @@ class FrontController
     protected Router $router;
     protected ServerRequestInterface $request;
     protected array $config;
+    protected string $basePath;
 
-    public function __construct(ContainerInterface $container, Router $router)
+    public function __construct(ContainerInterface $container, Router $router, string $basePath, array $config)
     {
+        $this->basePath = $basePath;
+        $this->config = $config;
         $this->container = $container;
         $this->router = $router;
-        $this->router->addRoutes(require 'resources/routes.php');
-        $this->config = [
-            'theme' => 'manlix',
-        ];
+        $this->router->addRoutes(require $this->basePath . '/resources/routes.php');
     }
 
     public function execute(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
@@ -90,9 +90,9 @@ class FrontController
             return $this->twig;
         }
 
-        $loader = new \Twig\Loader\FilesystemLoader('resources/templates');
+        $loader = new \Twig\Loader\FilesystemLoader($this->basePath . '/resources/templates');
         $twig = new \Twig\Environment($loader, [
-            'cache' => 'cache/twig',
+            'cache' => $this->basePath . '/cache/twig',
             'auto_reload' => true,
         ]);
         $twig->addFunction(new \Twig\TwigFunction('theme_path', function ($path) {
