@@ -1,35 +1,35 @@
-{% extends theme_path('layout.twig') %}
+{% extends theme_path('layout_admin.twig') %}
 
 {% block content %}
-    <form class="setcms-form row" action="{{ link('admin_save', {'module': 'Posts'}) }}" setcms-redirect="{{ link('read', {'module': 'Posts', 'id': '${entity.id}'}) }}">
+    <form class="setcms-form g-3" action="{{ link('admin_save', {'module': 'Posts'}) }}" setcms-redirect="{{ link('read', {'module': 'Posts', 'id': '${entity.id}'}) }}">
         {% if entity.id %}
             <input name="id" type="hidden" value="{{ entity.id }}">
         {% endif %}
 
-        <div>
+        <div class="m-3">
             <label for="slug" class="form-label">slug</label>
             <input name="slug" value="{{ entity.slug }}" class="form-control">
             <div class="invalid-feedback"></div>
         </div>
-        <div>
+        <div class="m-3">
             <label for="title" class="form-label">title</label>
             <input name="title" value="{{ entity.title }}" class="form-control">
             <div class="invalid-feedback"></div>
         </div>
-        <div>
+        <div class="m-3">
             <label for="message" class="form-label">message</label>
             <textarea name="message" class="form-control">{{ entity.message }}</textarea>
             <div class="invalid-feedback"></div>
         </div>
-        <div>
+        <div class="m-3">
             <label for="message" class="form-label">Дата создания</label>
             <input name="dateCreated" class="form-control" value="{{ entity.dateCreated.format('Y-m-d H:i:s') }}" disabled="1"/>
         </div>
-        <div>
+        <div class="m-3">
             <label for="message" class="form-label">Дата изменения</label>
             <input name="dateModified" class="form-control" value="{{ entity.dateModified.format('Y-m-d H:i:s') }}" disabled="1"/>
         </div>
-        <div>
+        <div class="m-3">
             <button class="setcms-submit-button btn btn-primary mb-3" type="button">Отправить</button>
         </div>
     </form>
