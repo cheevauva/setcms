@@ -1,0 +1,11 @@
+{% extends theme_path('layout.twig') %}
+
+{% block content %}
+    <div class="m-3">
+        Досвидание, {{ entity.username }}. :(
+    </div>
+
+    <div class="m-3">
+        Перейти на <a href="{{ link('home') }}">главную страницу</a>
+    </div>
+{% endblock %}

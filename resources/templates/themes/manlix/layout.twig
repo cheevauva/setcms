@@ -25,7 +25,11 @@
             <header class="blog-header py-3">
                 <div class="row flex-nowrap justify-content-between align-items-center">
                     <div class="col-4 pt-1">
-                        <a class="link-secondary" href="#"></a>
+                        {% if currentUser.id %}
+                            {{ currentUser.username }}, <a href="{{ link('do_logout', {module: 'Users'}) }}">выйти</a>?
+                        {% else %}
+                            Гость, <a class="link-secondary" href="{{ link('login') }}">войти</a> или <a class="link-secondary" href="{{ link('registration') }}">зарегистрироваться</a>?</a>
+                        {% endif %}
                     </div>
                     <div class="col-4 text-center">
                         <a class="blog-header-logo text-dark" href="{{ link('home') }}">SetCMS</a>
@@ -205,11 +209,12 @@
                             window.location.href = $form.attr('setcms-redirect').interpolate(data.result);
                             return;
                         }
-                        
+                        console.log(data);
+
                         $.each(data.messages, function (index, message) {
                             if (message.field) {
                                 var $field;
-
+                                
                                 $field = $form.find('[name="' + message.field + '"]');
                                 $field.addClass('is-invalid');
                                 $field.parent().find('.invalid-feedback').text(message.message);

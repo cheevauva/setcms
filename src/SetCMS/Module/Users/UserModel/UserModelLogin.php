@@ -3,6 +3,7 @@
 namespace SetCMS\Module\Users\UserModel;
 
 use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModel;
+use SetCMS\Module\Users\User;
 
 class UserModelLogin extends OrdinaryModel
 {
@@ -23,8 +24,12 @@ class UserModelLogin extends OrdinaryModel
 
     protected function bind(\SetCMS\Module\Ordinary\OrdinaryEntity $entity): \SetCMS\Module\Ordinary\OrdinaryEntity
     {
+        assert($entity instanceof User);
+
         $entity->username = $this->username;
-        
+        $entity->password(User::hashPassword($this->password));
+
         return parent::bind($entity);
     }
+
 }

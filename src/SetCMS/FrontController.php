@@ -10,6 +10,10 @@ use SetCMS\Router as Router;
 use SetCMS\HttpStatusCode\HttpStatusCode;
 use SetCMS\Model;
 use SetCMS\Action;
+use SetCMS\Session;
+use SetCMS\Module\Users\UserDAO;
+use SetCMS\Module\Users\User;
+use SetCMS\Module\Users\UserException;
 
 class FrontController
 {
@@ -20,9 +24,14 @@ class FrontController
     protected ServerRequestInterface $request;
     protected array $config;
     protected string $basePath;
+    protected Session $session;
+    protected UserDAO $userDAO;
+    protected ?User $currentUser = null;
 
-    public function __construct(ContainerInterface $container, Router $router, string $basePath, array $config)
+    public function __construct(ContainerInterface $container, Router $router, Session $session, UserDAO $userDAO, string $basePath, array $config)
     {
+        $this->userDAO = $userDAO;
+        $this->session = $session;
         $this->basePath = $basePath;
         $this->config = $config;
         $this->container = $container;
@@ -84,6 +93,24 @@ class FrontController
         return $request;
     }
 
+    protected function getCurrentUser(): ?User
+    {
+        if (!$this->currentUser && $this->session->get('userId')) {
+            try {
+                $this->currentUser = $this->userDAO->getById($this->session->get('userId'));
+            } catch (UserException $ex) {
+                $this->session->set('userId', null);
+            }
+        }
+
+        return $this->currentUser;
+    }
+
+    protected function isAdmin()
+    {
+        return in_array($this->getCurrentUser()->id, $this->config['admin_users'] ?? [], true);
+    }
+
     protected function getTwig(): ?\Twig\Environment
     {
         if (!empty($this->twig)) {
@@ -95,6 +122,7 @@ class FrontController
             'cache' => $this->basePath . '/cache/twig',
             'auto_reload' => true,
         ]);
+        $twig->addGlobal('currentUser', $this->getCurrentUser());
         $twig->addFunction(new \Twig\TwigFunction('theme_path', function ($path) {
             return new \Twig\Markup(sprintf('themes/%s/%s', $this->config['theme'], $path), 'UTF-8');
         }));
@@ -104,6 +132,9 @@ class FrontController
             $content = $this->getTwig()->render($template, $model->toArray());
 
             return new \Twig\Markup($content, 'UTF-8');
+        }));
+        $twig->addFunction(new \Twig\TwigFunction('is_admin', function () {
+            return $this->isAdmin();
         }));
         $twig->addFunction(new \Twig\TwigFunction('link', function (string $route, $params = [], $query = '') {
             $self = $this->request->getServerParams()['SCRIPT_NAME'];
@@ -147,6 +178,10 @@ class FrontController
 
         $action = new Action($request);
         $model = $this->invokeAction($action);
+        
+        if ($action->isAdmin() && !$this->isAdmin()) {
+            throw UserException::notAllow('Только администратор');
+        }
 
         if (stripos($action->getComment(), VarDoc::RESPONSE_HTML) !== false) {
             $template = sprintf('modules/%s/%s/%s.twig', $action->getModule(), $request->getAttribute('section', 'Index'), $action->getAction()->getName());

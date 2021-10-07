@@ -31,7 +31,9 @@ class UserService extends OrdinaryService
         }
 
         try {
-            $model->entity($this->dao()->getByUsernameAndPassword($model->username, $model->password));
+            $blankUser = $model->entity($this->newEntity());
+            $user = $this->dao()->getByUsernameAndPassword($blankUser->username, $blankUser->password());
+            $model->entity($user);
         } catch (UserException $ex) {
             $model->addMessage($ex->getMessage(), 'username');
         }

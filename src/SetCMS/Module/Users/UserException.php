@@ -3,6 +3,7 @@
 namespace SetCMS\Module\Users;
 
 use SetCMS\HttpStatusCode\NotFound;
+use SetCMS\HttpStatusCode\Forbidden;
 
 class UserException extends \Exception
 {
@@ -12,6 +13,18 @@ class UserException extends \Exception
         return new class($message) extends UserException implements NotFound {
             
         };
+    }
+
+    public static function notAllow(string $message): self
+    {
+        return new class($message) extends UserException implements Forbidden {
+            
+        };
+    }
+    
+    public static function alreadyAuthorized(): self
+    {
+        return static::notAllow('Пользователь уже авторизован');
     }
 
     public static function loginFail(): self

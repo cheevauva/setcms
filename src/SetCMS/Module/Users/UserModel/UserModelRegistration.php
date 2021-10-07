@@ -50,7 +50,7 @@ class UserModelRegistration extends OrdinaryModel
         assert($entity instanceof User);
 
         $entity->username = $this->username;
-        $entity->password = $this->password;
+        $entity->password(User::hashPassword($this->password));
 
         return $entity;
     }

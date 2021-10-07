@@ -1,0 +1,10 @@
+{% extends theme_path('layout.twig') %}
+
+{% block content %}
+    <div class="m-3">
+        Привет, {{ entity.username }}!
+    </div>
+    <div class="m-3">
+        <a href="{{ link('do_logout', {module: 'Users', id: entity.id}) }}" class="btn btn-primary">Выйти</a>
+    </div>
+{% endblock %}

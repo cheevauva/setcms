@@ -72,6 +72,11 @@ class Action
         return;
     }
 
+    public function isAdmin(): bool
+    {
+        return stripos($this->action->getDocComment(), VarDoc::PREFIX_ACCESS . 'admin') !== false;
+    }
+    
     public function getComment(): string
     {
         return $this->action->getDocComment();

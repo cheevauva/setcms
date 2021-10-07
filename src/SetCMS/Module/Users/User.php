@@ -8,6 +8,20 @@ class User extends OrdinaryEntity
 {
 
     public string $username;
-    public string $password;
+    protected string $password;
+
+    public static function hashPassword(string $password): string
+    {
+        return md5($password);
+    }
+
+    public function password(?string $password = null)
+    {
+        if (is_null($password)) {
+            return $this->password;
+        }
+
+        return $this->password = $password;
+    }
 
 }

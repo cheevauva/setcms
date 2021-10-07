@@ -1,7 +1,7 @@
 {% extends theme_path('layout.twig') %}
 
 {% block content %}
-    <form class="setcms-form row g-2" action="{{ link('do_registation') }}" setcms-redirect="{{ link('login', {'module': 'Users', 'id': '${entity.id}'}, 'username=${entity.username}') }}">
+    <form class="setcms-form row g-2" action="{{ link('do_registration') }}" setcms-redirect="{{ link('login', {'module': 'Users', 'id': '${entity.id}'}, 'username=${entity.username}') }}">
         <div>
             <input name="username" value="" class="form-control" placeholder="Пользователь">
             <div class="invalid-feedback"></div>

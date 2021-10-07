@@ -4,7 +4,7 @@ namespace SetCMS\Module\Ordinary;
 
 use SetCMS\Module\Ordinary\OrdinaryDAO;
 use SetCMS\Module\Ordinary\OrdinaryEntity;
-use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelSave;
+use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModel;
 use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelRead;
 use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelList;
 
@@ -37,15 +37,13 @@ abstract class OrdinaryService
         return $model;
     }
 
-    public function save(OrdinaryModelSave $model): OrdinaryModelSave
+    public function save(OrdinaryModel $model): OrdinaryModel
     {
         if (!$model->isValid()) {
             return $model;
         }
 
         $model->entity(!empty($model->id) ? $this->dao()->getById((int) $model->id) : $this->newEntity());
-        $model->prepareEntity();
-        
         $model->entity()->dateModified = new \DateTime;
 
         $this->dao()->save($model->entity());
