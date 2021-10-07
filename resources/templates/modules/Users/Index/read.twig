@@ -2,9 +2,11 @@
 
 {% block content %}
     <div class="m-3">
-        Привет, {{ entity.username }}!
+        {% if currentUser.id == entity.id %}Привет,{% else %}Это{% endif %} {{ entity.username }}!
     </div>
-    <div class="m-3">
-        <a href="{{ link('do_logout', {module: 'Users', id: entity.id}) }}" class="btn btn-primary">Выйти</a>
-    </div>
+    {% if currentUser.id == entity.id %}
+        <div class="m-3">
+            <a href="{{ link('do_logout', {module: 'Users', id: entity.id}) }}" class="btn btn-primary">Выйти</a>
+        </div>
+    {% endif %}
 {% endblock %}

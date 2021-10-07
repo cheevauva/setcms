@@ -106,8 +106,12 @@ class FrontController
         return $this->currentUser;
     }
 
-    protected function isAdmin()
+    protected function isAdmin(): bool
     {
+        if (!$this->getCurrentUser()) {
+            return false;
+        }
+        
         return in_array($this->getCurrentUser()->id, $this->config['admin_users'] ?? [], true);
     }
 
