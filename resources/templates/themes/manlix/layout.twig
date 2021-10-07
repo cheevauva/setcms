@@ -205,7 +205,7 @@
                             window.location.href = $form.attr('setcms-redirect').interpolate(data.result);
                             return;
                         }
-
+                        
                         $.each(data.messages, function (index, message) {
                             if (message.field) {
                                 var $field;

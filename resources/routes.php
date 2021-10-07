@@ -1,6 +1,6 @@
 <?php
 
-return [
+$routes = [
     ['GET', '/[a:module]/read/[a:id]', ['action' => 'read'], 'read'],
     ['GET', '/[a:module]/edit/[a:id]', ['action' => 'edit'], 'edit'],
     ['GET', '/admin/[a:module]/read/[a:id]', ['action' => 'read', 'section' => 'Admin'], 'admin_read'],
@@ -15,3 +15,9 @@ return [
     ['POST', '/[a:module]/save', ['action' => 'save'], 'save'],
     ['POST', '/admin/[a:module]/save', ['action' => 'save', 'section' => 'Admin'], 'admin_save'],
 ];
+
+foreach (glob(__DIR__ . '/routes/*') as $file) {
+    require $file;
+}
+
+return $routes;

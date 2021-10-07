@@ -4,12 +4,12 @@ namespace SetCMS\Module\Ordinary\OrdinaryModel;
 
 use SetCMS\Module\Ordinary\OrdinaryEntity;
 
-abstract class OrdinaryModelCreate extends \SetCMS\Model
+abstract class OrdinaryModel extends \SetCMS\Model
 {
 
     private ?OrdinaryEntity $entity = null;
 
-    public function entity(?OrdinaryEntity $entity = null): ?OrdinaryEntity
+    public function entity(?OrdinaryEntity $entity = null): OrdinaryEntity
     {
         if ($entity instanceof OrdinaryEntity) {
             $this->entity = $this->bind($entity);
@@ -21,7 +21,10 @@ abstract class OrdinaryModelCreate extends \SetCMS\Model
     /**
      * Предназначен для связывания полей этой модели и сущности
      */
-    abstract protected function bind(OrdinaryEntity $entity): OrdinaryEntity;
+    protected function bind(OrdinaryEntity $entity): OrdinaryEntity
+    {
+        return $entity;
+    }
 
     public function toArray(): array
     {

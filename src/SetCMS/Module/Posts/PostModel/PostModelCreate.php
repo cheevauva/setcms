@@ -2,11 +2,11 @@
 
 namespace SetCMS\Module\Posts\PostModel;
 
-use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelCreate;
+use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModel;
 use SetCMS\Module\Posts\Post;
 use SetCMS\Module\Ordinary\OrdinaryEntity;
 
-class PostModelCreate extends OrdinaryModelCreate
+class PostModelCreate extends OrdinaryModel
 {
 
     public string $slug = '';

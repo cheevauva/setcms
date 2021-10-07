@@ -29,7 +29,7 @@ abstract class Model
             $comment = $property->getDocComment();
 
             if (!$property->getValue($this) && strpos($comment, VarDoc::REQUIRED) !== false) {
-                $this->addMessage(sprintf('Поле "%s", но оно не заполнено', $property->getName()), $property->getName());
+                $this->addMessage('Поле обязательно для заполнения', $property->getName());
             }
         }
 

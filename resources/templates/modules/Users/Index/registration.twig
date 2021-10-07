@@ -1,0 +1,21 @@
+{% extends theme_path('layout.twig') %}
+
+{% block content %}
+    <form class="setcms-form row g-2" action="{{ link('do_registation') }}" setcms-redirect="{{ link('login', {'module': 'Users', 'id': '${entity.id}'}, 'username=${entity.username}') }}">
+        <div>
+            <input name="username" value="" class="form-control" placeholder="Пользователь">
+            <div class="invalid-feedback"></div>
+        </div>
+        <div>
+            <input name="password" value="" class="form-control" placeholder="Пароль" type="password">
+            <div class="invalid-feedback"></div>
+        </div>
+        <div>
+            <input name="password2" value="" class="form-control" placeholder="Пароль (еще раз)" type="password">
+            <div class="invalid-feedback"></div>
+        </div>
+        <div>
+            <button class="setcms-submit-button btn btn-primary mb-3" type="button">Отправить</button>
+        </div>
+    </form>
+{% endblock %}

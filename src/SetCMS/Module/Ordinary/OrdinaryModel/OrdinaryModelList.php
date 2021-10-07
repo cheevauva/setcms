@@ -20,6 +20,7 @@ class OrdinaryModelList extends \SetCMS\Model
     public function toArray(): array
     {
         return [
+            'model' => $this,
             'entities' => $this->entities,
         ];
     }

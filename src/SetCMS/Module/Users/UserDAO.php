@@ -18,10 +18,15 @@ class UserDAO extends OrdinaryDAO
 
     protected function entity2record(\SetCMS\Module\Ordinary\OrdinaryEntity $entity): array
     {
-        return $this->ordinaryEntity2RecordBind($entity, []);
+        assert($entity instanceof User);
+
+        return $this->ordinaryEntity2RecordBind($entity, [
+            'username' => $entity->username,
+            'password' => $entity->password,
+        ]);
     }
 
-    protected function getException(): \Exception
+    protected function getException(): UserException
     {
         return new UserException;
     }
@@ -33,11 +38,52 @@ class UserDAO extends OrdinaryDAO
 
     protected function record2entity(array $row): User
     {
-        $user = new User();
+        $user = new User;
         $user->username = $row['username'];
         $user->password = $row['password'];
 
-        return $this->ordinaryRecord2EntityBind($user, $row);
+        return $this->ordinaryRecord2EntityBind($row, $user);
+    }
+
+    public function getByUsername(string $username): User
+    {
+        $qb = $this->getDatabase()->createQueryBuilder();
+        $qb->select('t.*');
+        $qb->from($this->getTableName(), 't');
+        $qb->andWhere('t.username = :username');
+        $qb->setParameters([
+            'username' => $username,
+        ]);
+        $qb->setMaxResults(1);
+
+        $row = $qb->fetchAssociative();
+
+        if (empty($row)) {
+            throw $this->getException()::notFound();
+        }
+
+        return $this->record2entity($row);
+    }
+
+    public function getByUsernameAndPassword(string $username, string $password): User
+    {
+        $qb = $this->getDatabase()->createQueryBuilder();
+        $qb->select('t.*');
+        $qb->from($this->getTableName(), 't');
+        $qb->andWhere('t.username = :username AND t.password = :password');
+        $qb->setParameters([
+            'username' => $username,
+            'password' => $password,
+        ]);
+        $qb->setMaxResults(1);
+
+        $row = $qb->fetchAssociative();
+
+        if (empty($row)) {
+            throw $this->getException()::loginFail();
+        }
+
+        return $this->record2entity($row);
     }
 
     public function getDatabase(): UserDatabase

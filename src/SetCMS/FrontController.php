@@ -105,9 +105,13 @@ class FrontController
 
             return new \Twig\Markup($content, 'UTF-8');
         }));
-        $twig->addFunction(new \Twig\TwigFunction('link', function (string $route, $params = []) {
+        $twig->addFunction(new \Twig\TwigFunction('link', function (string $route, $params = [], $query = '') {
             $self = $this->request->getServerParams()['SCRIPT_NAME'];
             $link = $self . $this->router->generate($route, $params);
+
+            if ($query) {
+                $link .= '?' . (is_array($query) ? http_build_query($query) : $query);
+            }
 
             return new \Twig\Markup($link, 'UTF-8');
         }));

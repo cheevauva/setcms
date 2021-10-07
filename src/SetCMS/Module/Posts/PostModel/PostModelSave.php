@@ -3,11 +3,12 @@
 namespace SetCMS\Module\Posts\PostModel;
 
 use SetCMS\Module\Posts\Post;
-use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelSave;
+use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModel;
 
-class PostModelSave extends OrdinaryModelSave
+class PostModelSave extends OrdinaryModel
 {
 
+    public ?int $id = null;
 
     /**
      * @setcms-required
@@ -27,16 +28,16 @@ class PostModelSave extends OrdinaryModelSave
      */
     public string $title = '';
 
-    public function prepareEntity()
+    protected function bind(\SetCMS\Module\Ordinary\OrdinaryEntity $entity): Post
     {
-        $entity = $this->entity();
-
         assert($entity instanceof Post);
 
         $entity->id = $this->id;
         $entity->slug = $this->slug;
         $entity->title = $this->title;
         $entity->message = $this->message;
+
+        return $entity;
     }
 
 }
