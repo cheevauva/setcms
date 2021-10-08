@@ -1,0 +1,34 @@
+{% extends theme_path('layout_admin.twig') %}
+
+{% block content_buttons_top %}
+    <a href="{{ link('admin_create', {module:'Posts'}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
+{% endblock %}
+
+{% block content %}
+    <h2>Посты</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Тема</th>
+                    <th scope="col">Действия</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td>{{ entity.id }}</td>
+                        <td>{{ entity.title }}</td>
+                        <td>
+                            <a href="{{ link('admin_edit', {'module': entity.module, 'id': entity.id}) }}">Редактировать</a>
+                            <a href="{{ link('read', {'module': entity.module, 'id': entity.id}) }}" target="_blank">Просмотр</a>
+                        </td>
+                    </tr>
+                {%  endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!--a href="{{ link('admin_create', {module:'Posts'}) }}">Создать запись</a-->
+{% endblock %}

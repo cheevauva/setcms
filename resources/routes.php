@@ -6,6 +6,7 @@ $routes = [
     ['GET', '/admin/[a:module]/read/[a:id]', ['action' => 'read', 'section' => 'Admin'], 'admin_read'],
     ['GET', '/admin/[a:module]/edit/[a:id]', ['action' => 'edit', 'section' => 'Admin'], 'admin_edit'],
     ['GET', '/admin/[a:module]/create/', ['action' => 'create', 'section' => 'Admin'], 'admin_create'],
+    ['GET', '/admin/[a:module]/index/', ['action' => 'index', 'section' => 'Admin'], 'admin_index'],
     ['GET', '/', ['action' => 'index', 'module' => 'Posts'], 'home'],
     ['GET', '/[a:module]/', ['action' => 'index'], 'index'],
     ['GET', '/[a:module]', ['action' => 'index'], 'index_alt'],

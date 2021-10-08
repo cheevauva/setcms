@@ -40,6 +40,4 @@ class PostIndex
         return $this->service->list($model->fromArray($request->getQueryParams()));
     }
 
-
-
 }
