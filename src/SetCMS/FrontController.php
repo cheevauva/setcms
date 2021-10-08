@@ -111,7 +111,7 @@ class FrontController
         if (!$this->getCurrentUser()) {
             return false;
         }
-        
+
         return in_array($this->getCurrentUser()->id, $this->config['admin_users'] ?? [], true);
     }
 
@@ -167,8 +167,30 @@ class FrontController
         return $action->getAction()->invokeArgs($this->container->get($action->getControllerClassName()), $action->getArguments());
     }
 
+    protected function csrfProtect(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    {
+        if ($request->getMethod() === 'GET') {
+            $token = md5(microtime(true) . rand(1, 100000));
+            return $response->withHeader('X-CSRF-Token', $token)->withHeader('Set-Cookie', sprintf('X-CSRF-Token=%s;Path=/;SameSite=None; Secure', $token));
+        }
+
+        if (in_array($request->getMethod(), ['POST', 'PUT', 'DELETE', 'PATCH'], true)) {
+            if (empty($request->getCookieParams()['X-CSRF-Token']) || empty($request->getHeader('X-CSRF-Token')[0])) {
+                throw ModuleException::badRequest('Один из CSRF токенов пуст');
+            }
+
+            if ($request->getCookieParams()['X-CSRF-Token'] !== $request->getHeader('X-CSRF-Token')[0]) {
+                throw ModuleException::badRequest('CSRF токены не совпадают');
+            }
+        }
+
+        return $response;
+    }
+
     protected function process(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
+        $response = $this->csrfProtect($request, $response);
+
         $result = $this->router->match($request->getServerParams()['PATH_INFO'] ?? '/', $request->getServerParams()['REQUEST_METHOD']);
 
         if (!$result) {
@@ -182,7 +204,7 @@ class FrontController
 
         $action = new Action($request);
         $model = $this->invokeAction($action);
-        
+
         if ($action->isAdmin() && !$this->isAdmin()) {
             throw UserException::notAllow('Только администратор');
         }

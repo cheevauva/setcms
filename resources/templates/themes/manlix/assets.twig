@@ -3,8 +3,15 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 {% block javascript %}{% endblock %}
-<script>
+<script type="text/javascript">
     jQuery().ready(function () {
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2)
+                return parts.pop().split(';').shift();
+        };
+        
         $('.setcms-form .setcms-submit-button').on('click', function () {
             var $form;
 
@@ -16,6 +23,7 @@
                 url: $form.attr('action'),
                 data: new FormData($form.get(0)),
                 headers: {
+                    'X-CSRF-Token': getCookie('X-CSRF-Token'),
                     Accept: "application/json; charset=utf-8",
                 },
                 processData: false,
