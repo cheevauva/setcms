@@ -35,11 +35,11 @@ class UserModelRegistration extends OrdinaryModel
         parent::isValid();
 
         if (!empty($this->password) && !empty($this->password2) && $this->password !== $this->password2) {
-            $this->addMessage('Пароли не совпадают', 'password2');
+            $this->addMessageAsValidation('Пароли не совпадают', 'password2');
         }
 
         if (mb_strlen($this->password) < 8) {
-            $this->addMessage('Пароль должен содержать минимум 8 символов', 'password');
+            $this->addMessageAsValidation('Пароль должен содержать минимум 8 символов', 'password');
         }
 
         return empty($this->messages);

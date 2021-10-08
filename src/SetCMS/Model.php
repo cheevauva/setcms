@@ -18,8 +18,19 @@ abstract class Model
         VarDoc::TYPE_DATETIME => self::TYPE_DATETIME,
     ];
 
+    protected function removeValidationMessages()
+    {
+        foreach ($this->messages as $index => $message) {
+            if (!empty($message['validation'])) {
+                unset($this->messages[$index]);
+            }
+        }
+    }
+
     public function isValid(): bool
     {
+        $this->removeValidationMessages();
+
         $reflect = new ReflectionObject($this);
         $properties = $reflect->getProperties(ReflectionProperty::IS_PUBLIC);
 
@@ -29,18 +40,33 @@ abstract class Model
             $comment = $property->getDocComment();
 
             if (!$property->getValue($this) && strpos($comment, VarDoc::REQUIRED) !== false) {
-                $this->addMessage('Поле обязательно для заполнения', $property->getName());
+                $this->addMessageAsValidation('Поле обязательно для заполнения', $property->getName());
             }
         }
 
         return empty($this->messages);
     }
+    
+    public function clearMessages(): void
+    {
+        $this->messages = [];
+    }
 
-    public function addMessage(string $message, $field = null): void
+    protected function addMessageAsValidation(string $message, ?string $field = null): void
     {
         $this->messages[] = [
             'message' => $message,
             'field' => $field,
+            'validation' => true,
+        ];
+    }
+
+    public function addMessage(string $message, ?string $field = null): void
+    {
+        $this->messages[] = [
+            'message' => $message,
+            'field' => $field,
+            'validation' => false,
         ];
     }
 
@@ -66,35 +92,25 @@ abstract class Model
         $properties = $reflect->getProperties(ReflectionProperty::IS_PUBLIC);
 
         foreach ($properties as $property) {
-            $this->set($property, $array[$property->getName()] ?? $property->getValue($this));
+            $comment = $property->getDocComment();
+            $value = $array[$property->getName()] ?? $property->getValue($this);
+
+            foreach (self::TYPES as $vardoc => $type) {
+                if (strpos($comment, $vardoc) === false) {
+                    continue;
+                }
+
+                try {
+                    $value = $this->convert($type, $value);
+                } catch (ModelException $ex) {
+                    throw ModelException::invalidField($property->getName());
+                }
+            }
+
+            $property->setValue($this, $value);
         }
 
         return $this;
-    }
-
-    public function set($property, $value)
-    {
-        if (!($property instanceof ReflectionProperty)) {
-            $property = (new ReflectionObject($this))->getProperty($property);
-        }
-
-        assert($property instanceof ReflectionProperty);
-
-        $comment = $property->getDocComment();
-
-        foreach (self::TYPES as $vardoc => $type) {
-            if (strpos($comment, $vardoc) === false) {
-                continue;
-            }
-
-            try {
-                $value = $this->convert($type, $value);
-            } catch (ModelException $ex) {
-                throw ModelException::invalidField($property->getName());
-            }
-        }
-
-        $property->setValue($this, $value);
     }
 
     private function convert(string $type, $value)

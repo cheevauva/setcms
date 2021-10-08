@@ -92,8 +92,8 @@ class UserIndex
         $model->fromArray($request->getParsedBody());
 
         $this->service->login($model);
-        
-        if ($model->isValid()) {
+
+        if ($model->isValid() && $model->entity()) {
             $this->session->set('userId', $model->entity()->id);
         }
 

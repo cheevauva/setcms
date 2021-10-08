@@ -3,15 +3,35 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
 {% block javascript %}{% endblock %}
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+    <div class="toast-container position-absolute top-0 end-0 p-3">
+        <div id="setcms-uncatched-message" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <!--img src="..." class="rounded me-2" alt="..."-->
+                <strong class="me-auto">Сообщение</strong>
+                <small>1 секунду назад</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body"></div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     jQuery().ready(function () {
+        function altMessage(message) {
+            var $uncatchetMessage;
+            $uncatchetMessage = $('#setcms-uncatched-message');
+            $uncatchetMessage.find('.toast-body').html(message);
+            return new bootstrap.Toast($uncatchetMessage.get(0)).show();
+        }
+
         function getCookie(name) {
             const value = `; ${document.cookie}`;
             const parts = value.split(`; ${name}=`);
             if (parts.length === 2)
                 return parts.pop().split(';').shift();
-        };
-        
+        }
+
         $('.setcms-form .setcms-submit-button').on('click', function () {
             var $form;
 
@@ -29,7 +49,19 @@
                 processData: false,
                 contentType: false,
                 type: 'POST',
+                dataType: 'text',
+                error: function (ts) {
+                    altMessage(ts.responseText);
+                },
                 success: function (data) {
+                    try {
+                        data = JSON.parse(data);
+                        console.log(data);
+                    } catch (e) {
+                        console.log(data);
+                        return altMessage(data);
+                    }
+
                     if (data.success && $form.attr('setcms-redirect')) {
                         String.prototype.interpolate = function (params) {
                             const names = Object.keys(params);
@@ -40,7 +72,7 @@
                         window.location.href = $form.attr('setcms-redirect').interpolate(data.result);
                         return;
                     }
-                    console.log(data);
+
 
                     $.each(data.messages, function (index, message) {
                         if (message.field) {
@@ -49,6 +81,8 @@
                             $field = $form.find('[name="' + message.field + '"]');
                             $field.addClass('is-invalid');
                             $field.parent().find('.invalid-feedback').text(message.message);
+                        } else {
+                            altMessage(message.message);
                         }
                     });
                 }
