@@ -6,7 +6,7 @@
     </div>
     {% if currentUser.id == entity.id %}
         <div class="m-3">
-            <a href="{{ link('do_logout', {module: 'Users', id: entity.id}) }}" class="btn btn-primary">Выйти</a>
+            <a href="{{ link('action', {module: 'Users', action: 'logout'}) }}" class="btn btn-primary">Выйти</a>
         </div>
     {% endif %}
 {% endblock %}

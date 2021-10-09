@@ -1,7 +1,7 @@
 {% extends theme_path('layout_admin.twig') %}
 
 {% block content %}
-    <form class="setcms-form g-3" action="{{ link('admin_save', {'module': 'Posts'}) }}" setcms-redirect="{{ link('admin_edit', {'module': 'Posts', 'id': '${entity.id}'}) }}">
+    <form class="setcms-form g-3" action="{{ link('do_action_admin', {module: 'Posts', action: 'save'}) }}" setcms-redirect="{{ link('action_record_admin', {module: 'Posts', action: 'edit', 'id': '${entity.id}'}) }}">
         {% if entity.id %}
             <input name="id" type="hidden" value="{{ entity.id }}">
         {% endif %}

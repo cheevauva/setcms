@@ -26,9 +26,11 @@
                 <div class="row flex-nowrap justify-content-between align-items-center">
                     <div class="col-4 pt-1">
                         {% if currentUser.id %}
-                            {{ currentUser.username }}, <a href="{{ link('do_logout', {module: 'Users'}) }}">выйти</a>?
+                            {{ currentUser.username }}, <a href="{{ link('action', {module: 'Users', action: 'logout'}) }}">выйти</a>?
                         {% else %}
-                            Гость, <a class="link-secondary" href="{{ link('login') }}">войти</a> или <a class="link-secondary" href="{{ link('registration') }}">зарегистрироваться</a>?</a>
+                            Гость, 
+                            <a class="link-secondary" href="{{ link('action', {module: 'Users', action: 'login'}) }}">войти</a> или 
+                            <a class="link-secondary" href="{{ link('action', {module: 'Users', action: 'registration'}) }}">зарегистрироваться</a>?</a>
                         {% endif %}
                     </div>
                     <div class="col-4 text-center">

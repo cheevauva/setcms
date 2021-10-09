@@ -1,7 +1,7 @@
 {% extends theme_path('layout_admin.twig') %}
 
 {% block content_buttons_top %}
-    <a href="{{ link('admin_create', {module:'Posts'}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
+    <a href="{{ link('action_admin', {module:'Posts', action:'create'}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
 {% endblock %}
 
 {% block content %}
@@ -22,13 +22,12 @@
                         <td>{{ entity.id }}</td>
                         <td>{{ entity.title }}</td>
                         <td>
-                            <a href="{{ link('admin_edit', {'module': entity.module, 'id': entity.id}) }}">Редактировать</a>
-                            <a href="{{ link('read', {'module': entity.module, 'id': entity.id}) }}" target="_blank">Просмотр</a>
+                            <a href="{{ link('action_record_admin', {'module': entity.module, action: 'edit', 'id': entity.id}) }}">Редактировать</a>
+                            <a href="{{ link('action_record', {'module': entity.module, action: 'read', 'id': entity.id}) }}" target="_blank">Просмотр</a>
                         </td>
                     </tr>
                 {%  endfor %}
             </tbody>
         </table>
     </div>
-    <!--a href="{{ link('admin_create', {module:'Posts'}) }}">Создать запись</a-->
 {% endblock %}

@@ -55,7 +55,7 @@
             <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
             <div class="navbar-nav">
                 <div class="nav-item text-nowrap">
-                    <a class="nav-link px-3" href="{{ link('do_logout') }}">Выйти</a>
+                    <a class="nav-link px-3" href="{{ link('action', {module: 'Users', action: 'logout'}) }}">Выйти</a>
                 </div>
             </div>
         </header>
@@ -66,7 +66,7 @@
                     <div class="position-sticky pt-3">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="{{ link('admin_index', {module: 'Posts'}) }}">
+                                <a class="nav-link active" aria-current="page" href="{{ link('do_action_admin', {module: 'Posts', action: 'index'}) }}">
                                     <span data-feather="home"></span>
                                     Посты
                                 </a>

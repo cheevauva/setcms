@@ -7,12 +7,15 @@
             <p class="blog-post-meta">{{ entity.dateCreated.format('d.m.Y H:i:s') }} by <a href="#">Admin</a></p>
             <p>
                 {{ setcms_markdown(entity.message) }}
-                <a href="{{ link('read', {'module': entity.module, 'id': entity.id}) }}">Читать далее</a>
+                <a href="{{ link('action_record', {module: entity.module, action: 'read', 'id': entity.id}) }}">Читать</a>
+                {% if is_admin() %}
+                    | <a href="{{ link('action_record_admin', {module: entity.module, action: 'edit', id: entity.id}) }}">Редактировать</a>
+                {% endif %}
             </p>
         </article>
 
-                <!--a href="{{ link('admin_edit', {'module': entity.module, 'id': entity.id}) }}">Редактировать</a-->
-
     {%  endfor %}
-    <!--a href="{{ link('admin_create', {module:'Posts'}) }}">Создать запись</a-->
+    {% if is_admin() %}
+    <a href="{{ link('action_admin', {module:'Posts', action: 'create'}) }}">Создать запись</a>
+    {% endif %}
 {% endblock %}
