@@ -8,6 +8,8 @@ interface VarDoc
     public const PREFIX_METHOD = '@setcms-request-method-';
     public const RESPONSE_HTML = '@setcms-response-content-html';
     public const RESPONSE_JSON = '@setcms-response-content-json';
+    public const NEED_AUTH = '@setcms-need-auth';
+    public const NEED_NOAUTH = '@setcms-need-not-auth';
     public const REQUIRED = '@setcms-required';
     public const TYPE_DATETIME = '@setcms-type-datetime';
     public const TYPE_INT = '@setcms-type-int';

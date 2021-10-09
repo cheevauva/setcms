@@ -32,6 +32,11 @@ class UserException extends \Exception
         return static::notAllow('Пользователь уже авторизован');
     }
 
+    public static function notAuthorized(): self
+    {
+        return static::notAllow('Пользователь должен быть авторизован');
+    }
+
     public static function loginFail(): self
     {
         return static::notFound('Пользователь с таким паролем не найден');

@@ -48,6 +48,16 @@ class Action
         $this->getController();
     }
 
+    public function isNeedAuth(): bool
+    {
+        return strpos($this->getComment(), VarDoc::NEED_AUTH) !== false;
+    }
+
+    public function isNeedNotAuth(): bool
+    {
+        return strpos($this->getComment(), VarDoc::NEED_NOAUTH) !== false;
+    }
+
     public function getContentType(): string
     {
         $comment = $this->getComment();
@@ -61,7 +71,7 @@ class Action
                 return $type;
             }
         }
-        
+
         throw ModuleException::serverError('Не указан тип возвращаемого контента');
     }
 

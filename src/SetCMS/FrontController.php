@@ -143,12 +143,12 @@ class FrontController
         $twig->addFunction(new \Twig\TwigFunction('setcms_markdown', function ($content) {
             $pd = new \Parsedown;
             $pd->setSafeMode(true);
-            
+
             return new \Twig\Markup($pd->text($content), 'UTF-8');
         }));
 
 
-        
+
         $twig->addFunction(new \Twig\TwigFunction('link', function (string $route, $params = [], $query = '') {
             $self = $this->request->getServerParams()['SCRIPT_NAME'];
             $link = $self . $this->router->generate($route, $params);
@@ -212,6 +212,14 @@ class FrontController
         $this->request = $request;
 
         $action = new Action($request);
+
+        if ($action->isNeedAuth() && !$this->getCurrentUser()) {
+            throw UserException::notAuthorized();
+        }
+
+        if ($action->isNeedNotAuth() && $this->getCurrentUser()) {
+            throw UserException::alreadyAuthorized();
+        }
 
         if ($action->isAdmin() && !$this->isAdmin()) {
             throw UserException::onlyAdmin();

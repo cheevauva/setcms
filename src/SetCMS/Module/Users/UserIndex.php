@@ -47,13 +47,10 @@ class UserIndex
     /**
      * @setcms-request-method-get
      * @setcms-response-content-html
+     * @setcms-need-not-auth
      */
     public function login(ServerRequestInterface $request, UserModelLogin $model): UserModelLogin
     {
-        if ($this->session->get('userId')) {
-            throw UserException::alreadyAuthorized();
-        }
-
         $model->fromArray($request->getQueryParams());
         $model->entity(new User);
 
@@ -63,13 +60,10 @@ class UserIndex
     /**
      * @setcms-request-method-get
      * @setcms-response-content-html
+     * @setcms-need-auth
      */
     public function logout(ServerRequestInterface $request, OrdinaryModelRead $model): OrdinaryModelRead
     {
-        if (!$this->session->get('userId')) {
-            throw UserException::notAllow('Нужно авторизоваться чтобы выйти');
-        }
-
         $model->id = $this->session->get('userId');
 
         $this->service->read($model);
@@ -81,6 +75,7 @@ class UserIndex
     /**
      * @setcms-request-method-post
      * @setcms-response-content-json
+     * @setcms-need-not-auth
      */
     public function doLogin(ServerRequestInterface $request, UserModelLogin $model): UserModelLogin
     {
@@ -98,19 +93,17 @@ class UserIndex
     /**
      * @setcms-request-method-get
      * @setcms-response-content-html
+     * @setcms-need-not-auth
      */
     public function registration(UserModelRegistration $model): UserModelRegistration
     {
-        if ($this->session->get('userId')) {
-            throw UserException::alreadyAuthorized();
-        }
-
         return $model;
     }
 
     /**
      * @setcms-request-method-post
      * @setcms-response-content-json
+     * @setcms-need-not-auth
      */
     public function doRegistration(ServerRequestInterface $request, UserModelRegistration $model): UserModelRegistration
     {
@@ -120,5 +113,5 @@ class UserIndex
 
         return $model;
     }
-
+    
 }
