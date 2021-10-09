@@ -2,8 +2,6 @@
 
 namespace SetCMS\Database;
 
-use Doctrine\DBAL\Connection;
-
 abstract class Migration
 {
 

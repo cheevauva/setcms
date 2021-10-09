@@ -10,7 +10,7 @@ abstract class OrdinaryDAO
 {
 
     protected ConnectionFactory $connectionFactory;
-    protected Connection $db;
+    private Connection $db;
 
     public function __construct(ConnectionFactory $connectionFactory)
     {

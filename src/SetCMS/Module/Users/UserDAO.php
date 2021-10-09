@@ -15,6 +15,7 @@ class UserDAO extends OrdinaryDAO
         return $this->ordinaryEntity2RecordBind($entity, [
             'username' => $entity->username,
             'password' => $entity->password(),
+            'is_admin' => $entity->isAdmin,
         ]);
     }
 
@@ -33,6 +34,7 @@ class UserDAO extends OrdinaryDAO
         $user = new User;
         $user->username = $row['username'];
         $user->password($row['password']);
+        $user->isAdmin = (bool) $row['is_admin'];
 
         return $this->ordinaryRecord2EntityBind($row, $user);
     }

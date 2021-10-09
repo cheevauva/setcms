@@ -5,8 +5,9 @@ namespace SetCMS\Database\Migration;
 use SetCMS\Module\Users\UserDAO;
 use SetCMS\Module\Users\User;
 use SetCMS\Database\ConnectionFactory;
+use Doctrine\DBAL\Schema\Table;
 
-class Migration2 extends \SetCMS\Database\Migration
+class Migration1633807971 extends \SetCMS\Database\Migration
 {
 
     private UserDAO $userDAO;
@@ -35,6 +36,7 @@ class Migration2 extends \SetCMS\Database\Migration
         $table->addColumn('id', 'integer')->setAutoincrement(true);
         $table->addColumn('username', 'string')->setLength(30);
         $table->addColumn('password', 'string')->setLength(30);
+        $table->addColumn('is_admin', 'boolean');
         $table->addColumn('date_created', 'datetime');
         $table->addColumn('date_modified', 'datetime');
 
