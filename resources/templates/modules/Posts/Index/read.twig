@@ -6,13 +6,15 @@
     {% if entity %}
         <h1>{{ entity.title }}</h1>
         <p>
-            {{ entity.message|nl2br }}
+            {{ setcms_markdown(entity.message) }}
         </p>
 
         <p>
-            Дата создания: {{ entity.dateCreated.format('d.m.Y H:i:s') }} |
-            <a href="{{ link('index', {module: entity.module}) }}">К списку</a> 
-            <!--a href="{{ link('admin_edit', {'module': entity.module, 'id': entity.id}) }}">Редактировать</a-->
+            Дата создания: {{ entity.dateCreated.format('d.m.Y H:i:s') }}
+            | <a href="{{ link('index', {module: entity.module}) }}">К списку</a> 
+            {% if is_admin() %}
+            | <a href="{{ link('admin_edit', {'module': entity.module, 'id': entity.id}) }}">Редактировать</a>
+            {% endif %}
         </p>
     {% endif %}
     {% if not model.isValid() %}

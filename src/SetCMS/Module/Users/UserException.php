@@ -21,7 +21,12 @@ class UserException extends \Exception
             
         };
     }
-    
+
+    public static function onlyAdmin(): self
+    {
+        return static::notAllow('Только администратор');
+    }
+
     public static function alreadyAuthorized(): self
     {
         return static::notAllow('Пользователь уже авторизован');

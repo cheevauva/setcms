@@ -28,14 +28,14 @@ class FrontController
     protected UserDAO $userDAO;
     protected ?User $currentUser = null;
 
-    public function __construct(ContainerInterface $container, Router $router, Session $session, UserDAO $userDAO, string $basePath, array $config)
+    public function __construct(ContainerInterface $container, string $basePath, array $config)
     {
-        $this->userDAO = $userDAO;
-        $this->session = $session;
+        $this->container = $container;
+        $this->router = $container->get(Router::class);
+        $this->userDAO = $container->get(UserDAO::class);
+        $this->session = $container->get(Session::class);
         $this->basePath = $basePath;
         $this->config = $config;
-        $this->container = $container;
-        $this->router = $router;
         $this->router->addRoutes(require $this->basePath . '/resources/routes.php');
     }
 
@@ -140,6 +140,15 @@ class FrontController
         $twig->addFunction(new \Twig\TwigFunction('is_admin', function () {
             return $this->isAdmin();
         }));
+        $twig->addFunction(new \Twig\TwigFunction('setcms_markdown', function ($content) {
+            $pd = new \Parsedown;
+            $pd->setSafeMode(true);
+            
+            return new \Twig\Markup($pd->text($content), 'UTF-8');
+        }));
+
+
+        
         $twig->addFunction(new \Twig\TwigFunction('link', function (string $route, $params = [], $query = '') {
             $self = $this->request->getServerParams()['SCRIPT_NAME'];
             $link = $self . $this->router->generate($route, $params);
@@ -194,7 +203,7 @@ class FrontController
         $result = $this->router->match($request->getServerParams()['PATH_INFO'] ?? '/', $request->getServerParams()['REQUEST_METHOD']);
 
         if (!$result) {
-            throw ModuleException::notFound('На найден указанный ресурс');
+            throw ModuleException::notFound();
         }
 
         $request = $this->withAttributes($request, $result['params'] ?? []);
@@ -203,23 +212,25 @@ class FrontController
         $this->request = $request;
 
         $action = new Action($request);
-        $model = $this->invokeAction($action);
 
         if ($action->isAdmin() && !$this->isAdmin()) {
-            throw UserException::notAllow('Только администратор');
+            throw UserException::onlyAdmin();
         }
 
-        if (stripos($action->getComment(), VarDoc::RESPONSE_HTML) !== false) {
-            $template = sprintf('modules/%s/%s/%s.twig', $action->getModule(), $request->getAttribute('section', 'Index'), $action->getAction()->getName());
-            $html = $this->getTwig()->render($template, $model->toArray());
+        $model = $this->invokeAction($action);
 
-            $response = $response->withHeader('Content-type', 'text/html');
-            $response->getBody()->write($html);
-        }
+        switch ($action->getContentType()) {
+            case 'json':
+                $response = $response->withHeader('Content-type', 'application/json');
+                $response->getBody()->write($this->model2json($model));
+                break;
+            case 'html':
+                $template = sprintf('modules/%s/%s/%s.twig', $action->getModule(), $action->getSection(), $action->getAction()->getName());
+                $html = $this->getTwig()->render($template, $model->toArray());
 
-        if (stripos($action->getComment(), VarDoc::RESPONSE_JSON) !== false) {
-            $response = $response->withHeader('Content-type', 'application/json');
-            $response->getBody()->write($this->model2json($model));
+                $response = $response->withHeader('Content-type', 'text/html');
+                $response->getBody()->write($html);
+                break;
         }
 
         return $response;

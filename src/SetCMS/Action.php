@@ -4,6 +4,7 @@ namespace SetCMS;
 
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module;
+use SetCMS\VarDoc;
 
 class Action
 {
@@ -47,6 +48,28 @@ class Action
         $this->getController();
     }
 
+    public function getContentType(): string
+    {
+        $comment = $this->getComment();
+        $contentTypes = [
+            VarDoc::RESPONSE_HTML => 'html',
+            VarDoc::RESPONSE_JSON => 'json',
+        ];
+
+        foreach ($contentTypes as $contentType => $type) {
+            if (strpos($comment, $contentType) !== false) {
+                return $type;
+            }
+        }
+        
+        throw ModuleException::serverError('Не указан тип возвращаемого контента');
+    }
+
+    public function getSection(): string
+    {
+        return $this->section;
+    }
+
     public function getModule(): Module
     {
         return $this->module;
@@ -61,10 +84,6 @@ class Action
     {
         $comment = $this->action->getDocComment();
 
-        if (stripos($comment, VarDoc::PREFIX_ACCESS . strtolower($this->section)) === false) {
-            throw ModuleException::notAllowSectionAction($this->module, $this->action->getName(), $this->section);
-        }
-
         if (stripos($comment, VarDoc::PREFIX_METHOD . strtolower($this->method)) === false) {
             throw ModuleException::notAllowActionForThatRequestMethod($this->module, $this->section, $this->action->getName(), $this->method);
         }
@@ -74,9 +93,9 @@ class Action
 
     public function isAdmin(): bool
     {
-        return stripos($this->action->getDocComment(), VarDoc::PREFIX_ACCESS . 'admin') !== false;
+        return strtolower($this->section) === 'admin';
     }
-    
+
     public function getComment(): string
     {
         return $this->action->getDocComment();

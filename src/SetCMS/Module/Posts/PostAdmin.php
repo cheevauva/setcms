@@ -22,7 +22,6 @@ class PostAdmin
     /**
      * @setcms-request-method-get
      * @setcms-response-content-html
-     * @setcms-access-level-admin
      */
     public function edit(ServerRequestInterface $request, OrdinaryModelRead $model): OrdinaryModelRead
     {
@@ -35,7 +34,6 @@ class PostAdmin
     /**
      * @setcms-request-method-get
      * @setcms-response-content-html
-     * @setcms-access-level-admin
      */
     public function create(ServerRequestInterface $request, PostModelCreate $model): PostModelCreate
     {
@@ -48,7 +46,6 @@ class PostAdmin
     /**
      * @setcms-request-method-post
      * @setcms-response-content-json
-     * @setcms-access-level-admin
      */
     public function save(ServerRequestInterface $request, PostModelSave $model): PostModelSave
     {
@@ -58,7 +55,6 @@ class PostAdmin
     /**
      * @setcms-request-method-get
      * @setcms-response-content-html
-     * @setcms-access-level-admin
      */
     public function index(ServerRequestInterface $request, OrdinaryModelList $model): OrdinaryModelList
     {

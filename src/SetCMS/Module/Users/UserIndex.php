@@ -26,7 +26,6 @@ class UserIndex
     /**
      * @setcms-request-method-get
      * @setcms-response-content-html
-     * @setcms-access-level-index
      */
     public function index(ServerRequestInterface $request, OrdinaryModelList $model): OrdinaryModelList
     {
@@ -36,7 +35,6 @@ class UserIndex
     /**
      * @setcms-request-method-get
      * @setcms-response-content-html
-     * @setcms-access-level-index
      */
     public function read(ServerRequestInterface $request, OrdinaryModelRead $model): OrdinaryModelRead
     {
@@ -49,7 +47,6 @@ class UserIndex
     /**
      * @setcms-request-method-get
      * @setcms-response-content-html
-     * @setcms-access-level-index
      */
     public function login(ServerRequestInterface $request, UserModelLogin $model): UserModelLogin
     {
@@ -66,7 +63,6 @@ class UserIndex
     /**
      * @setcms-request-method-get
      * @setcms-response-content-html
-     * @setcms-access-level-index
      */
     public function logout(ServerRequestInterface $request, OrdinaryModelRead $model): OrdinaryModelRead
     {
@@ -85,7 +81,6 @@ class UserIndex
     /**
      * @setcms-request-method-post
      * @setcms-response-content-json
-     * @setcms-access-level-index
      */
     public function doLogin(ServerRequestInterface $request, UserModelLogin $model): UserModelLogin
     {
@@ -103,7 +98,6 @@ class UserIndex
     /**
      * @setcms-request-method-get
      * @setcms-response-content-html
-     * @setcms-access-level-index
      */
     public function registration(UserModelRegistration $model): UserModelRegistration
     {
@@ -117,7 +111,6 @@ class UserIndex
     /**
      * @setcms-request-method-post
      * @setcms-response-content-json
-     * @setcms-access-level-index
      */
     public function doRegistration(ServerRequestInterface $request, UserModelRegistration $model): UserModelRegistration
     {

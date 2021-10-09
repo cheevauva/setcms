@@ -24,7 +24,7 @@ class ModuleException extends \Exception
         };
     }
 
-    public static function notFound(string $message): self
+    public static function notFound(string $message = 'На найден указанный ресурс'): self
     {
         return new class($message) extends ModuleException implements NotFound {
             

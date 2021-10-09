@@ -5,7 +5,6 @@ namespace SetCMS;
 interface VarDoc
 {
 
-    public const PREFIX_ACCESS = '@setcms-access-level-';
     public const PREFIX_METHOD = '@setcms-request-method-';
     public const RESPONSE_HTML = '@setcms-response-content-html';
     public const RESPONSE_JSON = '@setcms-response-content-json';
