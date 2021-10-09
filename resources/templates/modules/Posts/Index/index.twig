@@ -7,7 +7,7 @@
             <p class="blog-post-meta">{{ entity.dateCreated.format('d.m.Y H:i:s') }} by <a href="#">Admin</a></p>
             <p>
                 {{ setcms_markdown(entity.message) }}
-                <a href="{{ link('action_record', {module: entity.module, action: 'read', 'id': entity.id}) }}">Читать</a>
+                <a href="{{ link('post_read_by_slug', {slug: entity.slug}) }}">Читать</a>
                 {% if is_admin() %}
                     | <a href="{{ link('action_record_admin', {module: entity.module, action: 'edit', id: entity.id}) }}">Редактировать</a>
                 {% endif %}

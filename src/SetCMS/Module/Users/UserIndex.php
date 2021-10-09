@@ -27,15 +27,6 @@ class UserIndex
      * @setcms-request-method-get
      * @setcms-response-content-html
      */
-    public function index(ServerRequestInterface $request, OrdinaryModelList $model): OrdinaryModelList
-    {
-        return $this->service->list($model->fromArray($request->getQueryParams()));
-    }
-
-    /**
-     * @setcms-request-method-get
-     * @setcms-response-content-html
-     */
     public function read(ServerRequestInterface $request, OrdinaryModelRead $model): OrdinaryModelRead
     {
         $model->id = $request->getAttribute('id');

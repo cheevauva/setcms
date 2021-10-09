@@ -3,7 +3,7 @@
 namespace SetCMS\Module\Posts;
 
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelRead;
+use SetCMS\Module\Posts\PostModel\PostModelRead;
 use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelList;
 use SetCMS\Module\Posts\PostService;
 
@@ -22,10 +22,11 @@ class PostIndex
      * @setcms-response-content-html
      * @setcms-access-level-index
      */
-    public function read(OrdinaryModelRead $model, ServerRequestInterface $request): OrdinaryModelRead
+    public function read(PostModelRead $model, ServerRequestInterface $request): PostModelRead
     {
         $params = $request->getQueryParams();
         $params['id'] = $request->getAttribute('id');
+        $params['slug'] = $request->getAttribute('slug');
 
         return $this->service->read($model->fromArray($params));
     }

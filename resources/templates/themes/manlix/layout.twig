@@ -26,7 +26,11 @@
                 <div class="row flex-nowrap justify-content-between align-items-center">
                     <div class="col-4 pt-1">
                         {% if currentUser.id %}
-                            {{ currentUser.username }}, <a href="{{ link('action', {module: 'Users', action: 'logout'}) }}">выйти</a>?
+                            {{ currentUser.username }}, 
+                            {% if currentUser.isAdmin %}
+                                <a href="{{ link('home_admin') }}">в админку</a> или
+                            {% endif %}
+                            <a href="{{ link('action', {module: 'Users', action: 'logout'}) }}">выйти</a>?
                         {% else %}
                             Гость, 
                             <a class="link-secondary" href="{{ link('action', {module: 'Users', action: 'login'}) }}">войти</a> или 
@@ -107,8 +111,6 @@
 
             <div class="row g-5">
                 <div class="col-md-8">
-                    <!--{{ render('help.twig',{module:'Users',action:'index', section:'index'}) }}-->
-
                     <article class="blog-post">
                         {% block content %}{% endblock %}
                     </article>

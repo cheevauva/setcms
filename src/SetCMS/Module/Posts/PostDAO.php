@@ -38,9 +38,27 @@ class PostDAO extends OrdinaryDAO
         return $post;
     }
 
-    protected function getException(): \Exception
+    protected function getException(): PostException
     {
         return new PostException;
+    }
+
+    public function getBySlug(string $slug): Post
+    {
+        $qb = $this->dbal()->createQueryBuilder();
+        $qb->select('t.*');
+        $qb->from($this->getTableName(), 't');
+        $qb->andWhere('t.slug = :slug');
+        $qb->setParameter('slug', $slug);
+        $qb->setMaxResults(1);
+
+        $row = $qb->fetchAssociative();
+
+        if (empty($row)) {
+            throw $this->getException()::notFound();
+        }
+
+        return $this->record2entity($row);
     }
 
 }
