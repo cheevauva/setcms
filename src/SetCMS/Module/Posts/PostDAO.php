@@ -6,17 +6,9 @@ use SetCMS\Module\Ordinary\OrdinaryDAO;
 use SetCMS\Module\Ordinary\OrdinaryEntity;
 use SetCMS\Module\Posts\Post;
 use SetCMS\Module\Posts\PostException;
-use SetCMS\Module\Posts\PostDatabase;
 
 class PostDAO extends OrdinaryDAO
 {
-
-    protected PostDatabase $db;
-
-    public function __construct(PostDatabase $db)
-    {
-        $this->db = $db;
-    }
 
     protected function entity2record(OrdinaryEntity $entity): array
     {
@@ -49,11 +41,6 @@ class PostDAO extends OrdinaryDAO
     protected function getException(): \Exception
     {
         return new PostException;
-    }
-
-    public function getDatabase(): PostDatabase
-    {
-        return $this->db;
     }
 
 }

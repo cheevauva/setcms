@@ -4,19 +4,35 @@ namespace SetCMS\Module\Ordinary;
 
 use SetCMS\Module\Ordinary\OrdinaryEntity;
 use Doctrine\DBAL\Connection;
+use SetCMS\Database\ConnectionFactory;
 
 abstract class OrdinaryDAO
 {
+
+    protected ConnectionFactory $connectionFactory;
+    protected Connection $db;
+
+    public function __construct(ConnectionFactory $connectionFactory)
+    {
+        $this->connectionFactory = $connectionFactory;
+    }
 
     abstract protected function getTableName(): string;
 
     abstract protected function getException(): \Exception;
 
-    abstract function getDatabase(): Connection;
+    protected function dbal(): Connection
+    {
+        if (empty($this->db)) {
+            $this->db = $this->connectionFactory->get(get_class($this));
+        }
+
+        return $this->db;
+    }
 
     public function list(int $offset = 0, $limit = 10, string $sort = 'id', string $order = ''): array
     {
-        $qb = $this->getDatabase()->createQueryBuilder();
+        $qb = $this->dbal()->createQueryBuilder();
         $qb->select('t.*');
         $qb->from($this->getTableName(), 't');
         $qb->setMaxResults($limit);
@@ -34,7 +50,7 @@ abstract class OrdinaryDAO
 
     public function getById(int $id): OrdinaryEntity
     {
-        $qb = $this->getDatabase()->createQueryBuilder();
+        $qb = $this->dbal()->createQueryBuilder();
         $qb->select('t.*');
         $qb->from($this->getTableName(), 't');
         $qb->andWhere('t.id = :id');
@@ -52,7 +68,7 @@ abstract class OrdinaryDAO
 
     public function save(OrdinaryEntity $entity): void
     {
-        $db = $this->getDatabase();
+        $db = $this->dbal();
 
         if (empty($entity->id)) {
             $db->insert($this->getTableName(), $this->entity2record($entity));
@@ -76,7 +92,7 @@ abstract class OrdinaryDAO
         $entity->id = (int) $record['id'];
         $entity->dateCreated = new \DateTime($record['date_created']);
         $entity->dateModified = new \DateTime($record['date_modified']);
-        
+
         return $entity;
     }
 

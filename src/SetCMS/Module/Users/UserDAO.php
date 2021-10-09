@@ -2,19 +2,11 @@
 
 namespace SetCMS\Module\Users;
 
-use SetCMS\Module\Users\UserDatabase;
 use SetCMS\Module\Ordinary\OrdinaryDAO;
 use SetCMS\Module\Users\User;
 
 class UserDAO extends OrdinaryDAO
 {
-
-    private UserDatabase $db;
-
-    public function __construct(UserDatabase $db)
-    {
-        $this->db = $db;
-    }
 
     protected function entity2record(\SetCMS\Module\Ordinary\OrdinaryEntity $entity): array
     {
@@ -47,7 +39,7 @@ class UserDAO extends OrdinaryDAO
 
     public function getByUsername(string $username): User
     {
-        $qb = $this->getDatabase()->createQueryBuilder();
+        $qb = $this->dbal()->createQueryBuilder();
         $qb->select('t.*');
         $qb->from($this->getTableName(), 't');
         $qb->andWhere('t.username = :username');
@@ -67,7 +59,7 @@ class UserDAO extends OrdinaryDAO
 
     public function getByUsernameAndPassword(string $username, string $password): User
     {
-        $qb = $this->getDatabase()->createQueryBuilder();
+        $qb = $this->dbal()->createQueryBuilder();
         $qb->select('t.*');
         $qb->from($this->getTableName(), 't');
         $qb->andWhere('t.username = :username AND t.password = :password');
@@ -84,11 +76,6 @@ class UserDAO extends OrdinaryDAO
         }
 
         return $this->record2entity($row);
-    }
-
-    public function getDatabase(): UserDatabase
-    {
-        return $this->db;
     }
 
 }

@@ -3,27 +3,14 @@
 namespace SetCMS\Module\Posts;
 
 use Doctrine\DBAL\Schema\Table;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\PDO\SQLite\Driver;
-use Psr\Container\ContainerInterface;
+use SetCMS\Module\Posts\PostDAO;
 
-class PostDatabase extends Connection
+class Migration1 extends \SetCMS\Database\Migration
 {
 
-    public function __construct(ContainerInterface $container)
+    public function up(): void
     {
-        parent::__construct([
-            'path' => $container->get('basePath') . '/cache/posts.db',
-            'driver' => 'pdo_sqlite',
-            'charset' => 'UTF8',
-        ], new Driver);
-
-        $this->createTable();
-    }
-
-    protected function createTable(): void
-    {
-        $schemaManager = $this->createSchemaManager();
+        $schemaManager = $this->dbal()->createSchemaManager();
 
         if ($schemaManager->tablesExist('posts')) {
             return;
@@ -37,8 +24,12 @@ class PostDatabase extends Connection
         $table->addColumn('date_created', 'datetime');
         $table->addColumn('date_modified', 'datetime');
 
-
         $schemaManager->createTable($table);
+    }
+
+    public function dbal(): \Doctrine\DBAL\Connection
+    {
+        return $this->connectionFactory->get(PostDAO::class);
     }
 
 }
