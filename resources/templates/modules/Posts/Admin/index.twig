@@ -1,7 +1,7 @@
 {% extends theme_path('layout_admin.twig') %}
 
 {% block content_buttons_top %}
-    <a href="{{ link('action_admin', {module:'Posts', action:'saveform'}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
+    <a href="{{ link('action_admin', {module: currentModule, action:'saveform'}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
 {% endblock %}
 
 {% block content_title %}

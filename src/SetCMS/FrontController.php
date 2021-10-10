@@ -115,7 +115,7 @@ class FrontController
         if ($this->getCurrentUser()->isAdmin) {
             return true;
         }
-        
+
         return in_array($this->getCurrentUser()->id, $this->config['admin_users'] ?? [], true);
     }
 
@@ -131,6 +131,7 @@ class FrontController
             'auto_reload' => true,
         ]);
         $twig->addGlobal('currentUser', $this->getCurrentUser());
+        $twig->addGlobal('currentModule', $this->request->getAttribute('module'));
         $twig->addGlobal('baseUrl', dirname($this->request->getServerParams()['SCRIPT_NAME']));
         $twig->addFunction(new \Twig\TwigFunction('theme_path', function ($path) {
             return new \Twig\Markup(sprintf('themes/%s/%s', $this->config['theme'], $path), 'UTF-8');

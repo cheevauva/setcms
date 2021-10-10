@@ -9,13 +9,13 @@
                 {{ setcms_markdown(entity.message) }}
                 <a href="{{ link('post_read_by_slug', {slug: entity.slug}) }}">Читать</a>
                 {% if is_admin() %}
-                    | <a href="{{ link('action_record_admin', {module: entity.module, action: 'edit', id: entity.id}) }}">Редактировать</a>
+                    | <a href="{{ link('action_record_admin', {module: entity.module, action: 'saveform', id: entity.id}) }}">Редактировать</a>
                 {% endif %}
             </p>
         </article>
 
     {%  endfor %}
     {% if is_admin() %}
-    <a href="{{ link('action_admin', {module:'Posts', action: 'create'}) }}">Создать запись</a>
+        <a href="{{ link('action_admin', {module: currentModule, action: 'saveform'}) }}">Создать запись</a>
     {% endif %}
 {% endblock %}
