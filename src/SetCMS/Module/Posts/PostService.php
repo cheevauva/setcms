@@ -33,7 +33,7 @@ class PostService extends OrdinaryService
         return $this->dao;
     }
 
-    protected function entity(): Post
+    public function entity(): Post
     {
         return new Post;
     }

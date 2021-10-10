@@ -3,19 +3,25 @@
 namespace SetCMS\Module\Posts;
 
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelRead;
-use SetCMS\Module\Posts\PostModel\PostModelSave;
 use SetCMS\Module\Posts\PostService;
+use SetCMS\Module\Posts\PostModel\PostModelSave;
 use SetCMS\Module\Posts\PostModel\PostModelCreate;
+use SetCMS\Module\Ordinary\OrdinaryController;
+use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelRead;
 use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelList;
+use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModel;
 
 class PostAdmin
 {
 
+    private OrdinaryController $ordinaryAdmin;
     private PostService $service;
 
-    public function __construct(PostService $postService)
+    public function __construct(PostService $postService, OrdinaryController $ordinaryAdmin)
     {
+        $this->ordinaryAdmin = $ordinaryAdmin;
+        $this->ordinaryAdmin->service($postService);
+
         $this->service = $postService;
     }
 
@@ -23,30 +29,9 @@ class PostAdmin
      * @setcms-request-method-get
      * @setcms-response-content-html
      */
-    public function edit(ServerRequestInterface $request, OrdinaryModelRead $model): OrdinaryModelRead
+    public function saveform(ServerRequestInterface $request, PostModelCreate $createModel, OrdinaryModelRead $editModel): OrdinaryModel
     {
-        $params = $request->getQueryParams();
-        $params['id'] = $request->getAttribute('id');
-
-        $model->fromArray($params);
-
-        if ($model->isValid()) {
-            $this->service->read($model);
-        }
-
-        return $model;
-    }
-
-    /**
-     * @setcms-request-method-get
-     * @setcms-response-content-html
-     */
-    public function create(ServerRequestInterface $request, PostModelCreate $model): PostModelCreate
-    {
-        $model->fromArray($request->getQueryParams());
-        $model->entity(new Post);
-
-        return $model;
+        return $this->ordinaryAdmin->saveform($request, $request->getAttribute('id') ? $editModel : $createModel);
     }
 
     /**
@@ -55,13 +40,7 @@ class PostAdmin
      */
     public function save(ServerRequestInterface $request, PostModelSave $model): PostModelSave
     {
-        $model->fromArray($request->getParsedBody());
-
-        if ($model->isValid()) {
-            $this->service->save($model);
-        }
-
-        return $model;
+        return $this->ordinaryAdmin->save($request, $model);
     }
 
     /**
@@ -70,13 +49,16 @@ class PostAdmin
      */
     public function index(ServerRequestInterface $request, OrdinaryModelList $model): OrdinaryModelList
     {
-        $model->fromArray($request->getQueryParams());
+        return $this->ordinaryAdmin->index($request, $model);
+    }
 
-        if ($model->isValid()) {
-            $this->service->list($model);
-        }
-
-        return $model;
+    /**
+     * @setcms-request-method-get
+     * @setcms-response-content-html
+     */
+    public function read(ServerRequestInterface $request, OrdinaryModelRead $model): OrdinaryModelRead
+    {
+        return $this->ordinaryAdmin->read($request, $model);
     }
 
 }

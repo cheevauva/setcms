@@ -45,7 +45,7 @@ class UserService extends OrdinaryService
         }
     }
 
-    protected function entity(): User
+    public function entity(): User
     {
         return new User;
     }

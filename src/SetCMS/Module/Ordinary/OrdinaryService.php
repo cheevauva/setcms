@@ -11,9 +11,11 @@ use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelList;
 abstract class OrdinaryService
 {
 
+    private ?OrdinaryEntity $entity = null;
+
     abstract protected function dao(): OrdinaryDAO;
 
-    abstract protected function entity(): OrdinaryEntity;
+    abstract public function entity(): OrdinaryEntity;
 
     public function read(OrdinaryModelRead $model): void
     {
