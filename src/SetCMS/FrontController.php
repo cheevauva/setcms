@@ -239,7 +239,7 @@ class FrontController
                 $response->getBody()->write($this->model2json($model));
                 break;
             case 'html':
-                $template = sprintf('modules/%s/%s/%s.twig', $action->getModule(), $action->getSection(), $action->getAction()->getName());
+                $template = sprintf('themes/%s/modules/%s/%s/%s.twig', $this->config['theme'], $action->getModule(), $action->getSection(), $action->getAction()->getName());
                 $html = $this->getTwig()->render($template, $model->toArray());
 
                 $response = $response->withHeader('Content-type', 'text/html');

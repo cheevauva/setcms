@@ -1,0 +1,24 @@
+{% extends theme_path('layout_admin.twig') %}
+{% import theme_path('macros/forms.twig') as forms %}
+
+{% block content_title %}
+    Создать пост
+{% endblock %}
+
+{% block content %}
+    <form class="setcms-form g-3" 
+          setcms-action="{{ link('do_action_admin', {module: entity.module, action: 'save'}) }}" 
+          setcms-redirect="{{ link('action_record_admin', {module: entity.module, action: 'read', 'id': '${entity.id}'}) }}"
+          >
+        {% if entity.id %}
+            {{ forms.hidden({name: 'id', value: entity.id }) }}
+        {% endif %}
+
+        {{ forms.input({name: 'slug', value: entity.slug, type: 'text', label: 'Псевдоним'}) }}
+        {{ forms.input({name: 'title', value: entity.title, type: 'text', label: 'Заголовок'}) }}
+        {{ forms.textarea({name: 'message', value: entity.message, label: 'Сообщение'}) }}
+        {{ forms.input({name: 'dateCreated', value: entity.dateCreated.format('Y-m-d H:i:s'), type: 'text', label: 'Дата создания', disabled: true}) }}
+        {{ forms.input({name: 'dateModified', value: entity.dateModified.format('Y-m-d H:i:s'), type: 'text', label: 'Дата изменения', disabled: true}) }}
+        {{ forms.submit({label: 'Сохранить'}) }}
+    </form>
+{% endblock %}

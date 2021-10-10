@@ -24,7 +24,7 @@ jQuery().ready(function () {
         $form.find('.is-invalid').removeClass('is-invalid');
 
         $.ajax({
-            url: $form.attr('action'),
+            url: $form.attr('setcms-action'),
             data: new FormData($form.get(0)),
             headers: {
                 'X-CSRF-Token': getCookie('X-CSRF-Token'),
