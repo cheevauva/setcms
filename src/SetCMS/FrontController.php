@@ -131,6 +131,7 @@ class FrontController
             'auto_reload' => true,
         ]);
         $twig->addGlobal('currentUser', $this->getCurrentUser());
+        $twig->addGlobal('baseUrl', dirname($this->request->getServerParams()['SCRIPT_NAME']));
         $twig->addFunction(new \Twig\TwigFunction('theme_path', function ($path) {
             return new \Twig\Markup(sprintf('themes/%s/%s', $this->config['theme'], $path), 'UTF-8');
         }));
@@ -184,7 +185,7 @@ class FrontController
     {
         if ($request->getMethod() === 'GET') {
             $token = md5(microtime(true) . rand(1, 100000));
-            return $response->withHeader('X-CSRF-Token', $token)->withHeader('Set-Cookie', sprintf('X-CSRF-Token=%s;Path=/;SameSite=None; Secure', $token));
+            return $response->withHeader('X-CSRF-Token', $token)->withHeader('Set-Cookie', sprintf('X-CSRF-Token=%s;Path=/;SameSite=Strict', $token));
         }
 
         if (in_array($request->getMethod(), ['POST', 'PUT', 'DELETE', 'PATCH'], true)) {

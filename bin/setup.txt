@@ -1,0 +1,16 @@
+<?php
+$zip = new ZipArchive;
+
+if (!$zip->open('setcms.zip')) {
+    die('Ошибка: не смог открыть архив setcms.zip');
+}
+
+if (!$zip->extractTo('./')) {
+    die('Ошибка: не смог распоковать архив');
+}
+
+$zip->close();
+
+unlink('setcms.zip');
+unlink('setup.php');
+mkdir('cache');
