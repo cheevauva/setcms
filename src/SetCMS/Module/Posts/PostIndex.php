@@ -22,13 +22,39 @@ class PostIndex
      * @setcms-response-content-html
      * @setcms-access-level-index
      */
+    public function readBySlug(PostModelRead $model, ServerRequestInterface $request): PostModelRead
+    {
+        $params = $request->getQueryParams();
+        $params['id'] = $request->getAttribute('id');
+        $params['slug'] = $request->getAttribute('slug');
+
+        $model->fromArray($params);
+        
+        if ($model->isValid()) {
+            $this->service->readBySlug($model);
+        }
+
+        return $model;
+    }
+
+    /**
+     * @setcms-request-method-get
+     * @setcms-response-content-html
+     * @setcms-access-level-index
+     */
     public function read(PostModelRead $model, ServerRequestInterface $request): PostModelRead
     {
         $params = $request->getQueryParams();
         $params['id'] = $request->getAttribute('id');
         $params['slug'] = $request->getAttribute('slug');
 
-        return $this->service->read($model->fromArray($params));
+        $model->fromArray($params);
+
+        if ($model->isValid()) {
+            $this->service->read($model);
+        }
+
+        return $model;
     }
 
     /**
@@ -38,7 +64,13 @@ class PostIndex
      */
     public function index(ServerRequestInterface $request, OrdinaryModelList $model): OrdinaryModelList
     {
-        return $this->service->list($model->fromArray($request->getQueryParams()));
+        $model->fromArray($request->getQueryParams());
+
+        if ($model->isValid()) {
+            $this->service->list($model);
+        }
+
+        return $model;
     }
 
 }

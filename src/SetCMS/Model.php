@@ -30,7 +30,16 @@ abstract class Model
     public function isValid(): bool
     {
         $this->removeValidationMessages();
+        
+        if (empty($this->messages)) {
+            $this->validate();
+        }
+        
+        return empty($this->messages);
+    }
 
+    private function validate(): void
+    {
         $reflect = new ReflectionObject($this);
         $properties = $reflect->getProperties(ReflectionProperty::IS_PUBLIC);
 
@@ -43,10 +52,8 @@ abstract class Model
                 $this->addMessageAsValidation('Поле обязательно для заполнения', $property->getName());
             }
         }
-
-        return empty($this->messages);
     }
-    
+
     public function clearMessages(): void
     {
         $this->messages = [];

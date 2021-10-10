@@ -3,7 +3,6 @@
 namespace SetCMS\Module\Users;
 
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelList;
 use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelRead;
 use SetCMS\Session;
 use SetCMS\Module\Users\UserService;
@@ -30,7 +29,10 @@ class UserIndex
     public function read(ServerRequestInterface $request, OrdinaryModelRead $model): OrdinaryModelRead
     {
         $model->id = $request->getAttribute('id');
-        $this->service->read($model);
+
+        if ($model->isValid()) {
+            $this->service->read($model);
+        }
 
         return $model;
     }
@@ -57,8 +59,10 @@ class UserIndex
     {
         $model->id = $this->session->get('userId');
 
-        $this->service->read($model);
-        $this->session->set('userId', null);
+        if ($model->isValid()) {
+            $this->service->read($model);
+            $this->session->set('userId', null);
+        }
 
         return $model;
     }
@@ -72,9 +76,11 @@ class UserIndex
     {
         $model->fromArray($request->getParsedBody());
 
-        $this->service->login($model);
+        if ($model->isValid()) {
+            $this->service->login($model);
+        }
 
-        if ($model->isValid() && $model->entity()) {
+        if ($model->entity() && $model->entity()->id) {
             $this->session->set('userId', $model->entity()->id);
         }
 
@@ -100,9 +106,11 @@ class UserIndex
     {
         $model->fromArray($request->getParsedBody());
 
-        $this->service->registation($model);
-
+        if ($model->isValid()) {
+            $this->service->registation($model);
+        }
+        
         return $model;
     }
-    
+
 }

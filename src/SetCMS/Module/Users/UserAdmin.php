@@ -22,7 +22,11 @@ class UserAdmin
      */
     public function index(ServerRequestInterface $request, OrdinaryModelList $model): OrdinaryModelList
     {
-        return $this->service->list($model->fromArray($request->getQueryParams()));
+        $model->fromArray($request->getQueryParams());
+        
+        $this->service->list($model);
+
+        return $model;
     }
 
 }

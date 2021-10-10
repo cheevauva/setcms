@@ -59,7 +59,7 @@ class MigrationService extends OrdinaryService
         return $this->migrationDAO;
     }
 
-    protected function newEntity(): Migration
+    protected function entity(): Migration
     {
         return new Migration;
     }

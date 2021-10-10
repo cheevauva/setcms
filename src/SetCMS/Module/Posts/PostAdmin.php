@@ -28,7 +28,13 @@ class PostAdmin
         $params = $request->getQueryParams();
         $params['id'] = $request->getAttribute('id');
 
-        return $this->service->read($model->fromArray($params));
+        $model->fromArray($params);
+
+        if ($model->isValid()) {
+            $this->service->read($model);
+        }
+
+        return $model;
     }
 
     /**
@@ -49,7 +55,13 @@ class PostAdmin
      */
     public function save(ServerRequestInterface $request, PostModelSave $model): PostModelSave
     {
-        return $this->service->save($model->fromArray($request->getParsedBody()));
+        $model->fromArray($request->getParsedBody());
+
+        if ($model->isValid()) {
+            $this->service->save($model);
+        }
+
+        return $model;
     }
 
     /**
@@ -58,7 +70,13 @@ class PostAdmin
      */
     public function index(ServerRequestInterface $request, OrdinaryModelList $model): OrdinaryModelList
     {
-        return $this->service->list($model->fromArray($request->getQueryParams()));
+        $model->fromArray($request->getQueryParams());
+
+        if ($model->isValid()) {
+            $this->service->list($model);
+        }
+
+        return $model;
     }
 
 }

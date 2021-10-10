@@ -26,12 +26,8 @@ class UserService extends OrdinaryService
 
     public function login(UserModelLogin $model): void
     {
-        if (!$model->isValid()) {
-            return;
-        }
-
         try {
-            $blankUser = $model->entity($this->newEntity());
+            $blankUser = $model->entity($this->entity());
             $user = $this->dao()->getByUsernameAndPassword($blankUser->username, $blankUser->password());
             $model->entity($user);
         } catch (UserException $ex) {
@@ -41,19 +37,15 @@ class UserService extends OrdinaryService
 
     public function registation(UserModelRegistration $model): void
     {
-        if (!$model->isValid()) {
-            return;
-        }
-
         try {
             $this->dao()->getByUsername($model->username);
             $model->addMessage('Пользователь уже существует', 'username');
         } catch (UserException $ex) {
-            $this->dao()->save($model->entity($this->newEntity()));
+            $this->dao()->save($model->entity($this->entity()));
         }
     }
 
-    protected function newEntity(): User
+    protected function entity(): User
     {
         return new User;
     }

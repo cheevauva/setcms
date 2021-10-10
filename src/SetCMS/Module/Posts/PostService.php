@@ -12,19 +12,15 @@ class PostService extends OrdinaryService
 
     private PostDAO $dao;
 
-    public function read(OrdinaryModelRead $model): PostModelRead
+    public function read(OrdinaryModelRead $model): void
     {
-        assert($model instanceof PostModelRead);
-
-        if ($model->id) {
-            parent::read($model);
+        if ($model instanceof PostModelRead && $model->slug) {
+            $entity = $this->dao()->getBySlug($model->slug);
+        } else {
+            $entity = $this->dao()->getById($model->id);
         }
-
-        if ($model->slug) {
-            $model->entity($this->dao()->getBySlug($model->slug));
-        }
-
-        return $model;
+        
+        $model->entity($entity);
     }
 
     public function __construct(PostDAO $dao)
@@ -37,7 +33,7 @@ class PostService extends OrdinaryService
         return $this->dao;
     }
 
-    protected function newEntity(): Post
+    protected function entity(): Post
     {
         return new Post;
     }
