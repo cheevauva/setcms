@@ -1,0 +1,12 @@
+{% extends setcms.path('layout.twig') %}
+
+{% block content %}
+    <div class="m-3">
+        {% if setcms.currentUser.id == entity.id %}Привет,{% else %}Это{% endif %} {{ entity.username }}!
+    </div>
+    {% if setcms.currentUser.id == entity.id %}
+        <div class="m-3">
+            <a href="{{ setcms.link('action', {module: 'Users', action: 'logout'}) }}" class="btn btn-primary">Выйти</a>
+        </div>
+    {% endif %}
+{% endblock %}

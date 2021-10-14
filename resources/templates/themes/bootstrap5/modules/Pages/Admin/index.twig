@@ -1,8 +1,8 @@
-{% extends theme_path('layout_admin.twig') %}
-{% import theme_path('macros/controls.twig') as controls %}
+{% extends setcms.path('layout_admin.twig') %}
+{% import setcms.path('macros/controls.twig') as controls %}
 
 {% block content_toolbar %}
-    <a href="{{ link('action_admin', {module: currentModule, action:'saveform'}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
+    <a href="{{ setcms.link('action_admin', {module: currentModule, action:'saveform'}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
 {% endblock %}
 
 {% block content_title %}Страницы{% endblock %}
@@ -28,8 +28,8 @@
                             <td>{{ entity.dateCreated.format('d.m.Y H:i:s') }}</td>
                             <td>{{ entity.dateModified.format('d.m.Y H:i:s') }}</td>
                             <td>
-                                <a href="{{ link('action_record_admin', {'module': entity.module, action: 'saveform', 'id': entity.id}) }}">Редактировать</a>
-                                <a href="{{ link('action_record_admin', {'module': entity.module, action: 'read', 'id': entity.id}) }}">Просмотр</a>
+                                <a href="{{ setcms.link('action_record_admin', {'module': entity.module, action: 'saveform', 'id': entity.id}) }}">Редактировать</a>
+                                <a href="{{ setcms.link('action_record_admin', {'module': entity.module, action: 'read', 'id': entity.id}) }}">Просмотр</a>
                             </td>
                         </tr>
                     {%  endfor %}

@@ -38,7 +38,7 @@ abstract class Model
         return empty($this->messages);
     }
 
-    private function validate(): void
+    protected function validate(): void
     {
         $reflect = new ReflectionObject($this);
         $properties = $reflect->getProperties(ReflectionProperty::IS_PUBLIC);

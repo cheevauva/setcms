@@ -28,6 +28,15 @@ class PostModelSave extends OrdinaryModel
      */
     public string $title = '';
 
+    protected function validate(): void
+    {
+        if (!empty($this->slug) && !preg_match('/^[a-z0-9_]+$/', $this->slug)) {
+            $this->addMessageAsValidation('Только латинские буквы, цифры и подчеркивание', 'slug');
+        }
+        
+        parent::validate();
+    }
+
     protected function bind(\SetCMS\Module\Ordinary\OrdinaryEntity $entity): Post
     {
         assert($entity instanceof Post);

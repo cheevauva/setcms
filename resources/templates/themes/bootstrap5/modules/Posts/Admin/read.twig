@@ -1,0 +1,20 @@
+{% extends setcms.path('layout_admin.twig') %}
+{% import setcms.path('macros/forms.twig') as forms %}
+
+{% block content_title %}{{ entity.title }}{% endblock %}
+
+{% block content_toolbar %}
+    <a href="{{ setcms.link('action_admin', {module: entity.module, action: 'index'}) }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    <a href="{{ setcms.link('action_record_admin', {module: entity.module, action: 'saveform', id: entity.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+{% endblock %}
+
+{% block content %}
+    <p>
+        {{ setcms.markdown(entity.message)|raw }}
+    </p>
+
+    <p>
+        {{ forms.input({name: 'dateCreated', value: entity.dateCreated.format('d.m.Y H:i:s'), label: 'Дата создания', disabled: true}) }}
+        {{ forms.input({name: 'dateModified', value: entity.dateModified.format('d.m.Y H:i:s'), label: 'Дата модификации', disabled: true}) }}
+    </p>
+{% endblock %}

@@ -1,11 +1,11 @@
-{% extends theme_path('layout_admin.twig') %}
-{% import theme_path('macros/forms.twig') as forms %}
+{% extends setcms.path('layout_admin.twig') %}
+{% import setcms.path('macros/forms.twig') as forms %}
 
 {% block content_title %}{% if entity.id %}Редактировать{% else %}Создать{% endif %} страницу{% endblock %}
 {% block content %}
     <form class="setcms-form g-3" 
-          setcms-action="{{ link('do_action_admin', {module: entity.module, action: 'save'}) }}" 
-          setcms-redirect="{{ link('action_record_admin', {module: entity.module, action: 'read', 'id': '${entity.id}'}) }}"
+          setcms-action="{{ setcms.link('do_action_admin', {module: entity.module, action: 'save'}) }}" 
+          setcms-redirect="{{ setcms.link('action_record_admin', {module: entity.module, action: 'read', 'id': '${entity.id}'}) }}"
           >
         {% if entity.id %}
             {{ forms.hidden({name: 'id', value: entity.id }) }}

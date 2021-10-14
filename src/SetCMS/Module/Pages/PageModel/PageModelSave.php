@@ -28,6 +28,15 @@ class PageModelSave extends OrdinaryModel
      */
     public string $title = '';
 
+    protected function validate(): void
+    {
+        parent::validate();
+        
+        if (!preg_match('/^[a-z0-9_]+$/', $this->slug)) {
+            $this->addMessageAsValidation('Только латинские буквы, цифры и подчеркивание', 'slug');
+        }
+    }
+
     protected function bind(\SetCMS\Module\Ordinary\OrdinaryEntity $entity): Page
     {
         assert($entity instanceof Page);

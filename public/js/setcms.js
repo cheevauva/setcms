@@ -6,7 +6,7 @@ jQuery().ready(function () {
         $uncatchetMessage.find('.toast-body').text(message);
         $uncatchetMessage.find('.toast-header .me-auto').text(title ? title : 'Сообщение');
 
-        return new bootstrap.Toast($uncatchetMessage.get(0)).show();
+        return (new bootstrap.Toast($uncatchetMessage.get(0))).show();
     }
 
     function getCookie(name) {
@@ -37,7 +37,7 @@ jQuery().ready(function () {
             error: function (ts) {
                 var message;
                 var data;
-
+ 
                 try {
                     data = JSON.parse(ts.responseText);
                     if (data.messages && data.messages[0] && data.messages[0].message) {

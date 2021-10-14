@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <base href="{{ baseUrl }}/"/>
+        <base href="{{ setcms.baseUrl }}/"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
@@ -48,47 +48,30 @@
     </head>
     <body>
         <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="{{ link('home_admin') }}">SetCMS</a>
+            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="{{ setcms.link('home_admin') }}">SetCMS</a>
             <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
             <div class="navbar-nav">
                 <div class="nav-item text-nowrap">
-                    <a class="nav-link px-3" href="{{ link('action', {module: 'Users', action: 'logout'}) }}">Выйти</a>
+                    <a class="nav-link px-3" href="{{ setcms.link('action', {module: 'Users', action: 'logout'}) }}">Выйти</a>
                 </div>
             </div>
         </header>
-        {% include theme_path('toasts.twig') %}
+        {% include setcms.path('toasts.twig') %}
         <div class="container-fluid">
             <div class="row">
                 <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                     <div class="position-sticky pt-3">
                         <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="{{ link('do_action_admin', {module: 'Posts', action: 'index'}) }}">
-                                    <span data-feather="home"></span>
-                                    Посты
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ link('do_action_admin', {module: 'Users', action: 'index'}) }}">
-                                    <span data-feather="file"></span>
-                                    Пользователи
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ link('do_action_admin', {module: 'Migrations', action: 'index'}) }}">
-                                    <span data-feather="file"></span>
-                                    Миграции
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ link('do_action_admin', {module: 'Pages', action: 'index'}) }}">
-                                    <span data-feather="file"></span>
-                                    Страницы
-                                </a>
-                            </li>
+                            {% for module in setcms.modules %}
+                                <li class="nav-item">
+                                    <a class="nav-link {% if module.name == setcms.currentModule %}active{% endif %}" href="{{ setcms.link('do_action_admin', {module: module.name, action: 'index'}) }}">
+                                        {{ module.label }}
+                                    </a>
+                                </li>
+                            {% endfor %}
                         </ul>
 
                         <!--h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
@@ -249,7 +232,7 @@
                 </main>
             </div>
         </div>
-        {% include theme_path('assets.twig') %}
+        {% include setcms.path('assets.twig') %}
         <style>
             body {
                 font-size: .875rem;

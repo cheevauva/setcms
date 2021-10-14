@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>{% block title %}Title{% endblock %}</title>
-        <base href="{{ baseUrl }}/"/>
+        <base href="{{ setcms.baseUrl }}/"/>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
@@ -26,20 +26,20 @@
             <header class="blog-header py-3">
                 <div class="row flex-nowrap justify-content-between align-items-center">
                     <div class="col-4 pt-1">
-                        {% if currentUser.id %}
-                            {{ currentUser.username }}, 
-                            {% if currentUser.isAdmin %}
-                                <a href="{{ link('home_admin') }}">в админку</a> или
+                        {% if setcms.currentUser.id %}
+                            {{ setcms.currentUser.username }}, 
+                            {% if setcms.currentUser.isAdmin %}
+                                <a href="{{ setcms.link('home_admin') }}">в админку</a> или
                             {% endif %}
-                            <a href="{{ link('action', {module: 'Users', action: 'logout'}) }}">выйти</a>?
+                            <a href="{{ setcms.link('action', {module: 'Users', action: 'logout'}) }}">выйти</a>?
                         {% else %}
                             Гость, 
-                            <a class="link-secondary" href="{{ link('action', {module: 'Users', action: 'login'}) }}">войти</a> или 
-                            <a class="link-secondary" href="{{ link('action', {module: 'Users', action: 'registration'}) }}">зарегистрироваться</a>?</a>
+                            <a class="link-secondary" href="{{ setcms.link('action', {module: 'Users', action: 'login'}) }}">войти</a> или 
+                            <a class="link-secondary" href="{{ setcms.link('action', {module: 'Users', action: 'registration'}) }}">зарегистрироваться</a>?</a>
                         {% endif %}
                     </div>
                     <div class="col-4 text-center">
-                        <a class="blog-header-logo text-dark" href="{{ link('home') }}">SetCMS</a>
+                        <a class="blog-header-logo text-dark" href="{{ setcms.link('home') }}">SetCMS</a>
                     </div>
                     <div class="col-4 d-flex justify-content-end align-items-center">
                         <a class="link-secondary" href="#" aria-label="Search">
@@ -49,7 +49,7 @@
                     </div>
                 </div>
             </header>
-            {% include theme_path('toasts.twig') %}
+            {% include setcms.path('toasts.twig') %}
             <!--div class="nav-scroller py-1 mb-2">
                 <nav class="nav d-flex justify-content-between">
                     <a class="p-2 link-secondary" href="#">World</a>
@@ -125,7 +125,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <div class="position-sticky" style="top: 2rem;">
+                    <div class="position-sticky">
                         <div class="p-4 mb-3 bg-light rounded">
                             <h4 class="fst-italic">Внимание</h4>
                             <p class="mb-0">
@@ -192,5 +192,5 @@
             </p>
         </footer-->
     </body>
-    {% include theme_path('assets.twig') %}
+    {% include setcms.path('assets.twig') %}
 </html>

@@ -1,0 +1,21 @@
+{% extends setcms.path('layout.twig') %}
+
+{% block content %}
+    {% for entity in entities %}
+        <article class="blog-post">
+            <h2 class="blog-post-title">{{ entity.title|e }}</h2>
+            <p class="blog-post-meta">{{ entity.dateCreated.format('d.m.Y H:i:s') }} by <a href="#">Admin</a></p>
+            <p>
+                {{ setcms.markdown(entity.message)|raw }}
+                <a href="{{ setcms.link('post_read_by_slug', {slug: entity.slug}) }}">Читать</a>
+                {% if setcms.currentUser.isAdmin %}
+                    | <a href="{{ setcms.link('action_record_admin', {module: entity.module, action: 'saveform', id: entity.id}) }}">Редактировать</a>
+                {% endif %}
+            </p>
+        </article>
+
+    {%  endfor %}
+    {% if setcms.currentUser.isAdmin %}
+        <a href="{{ setcms.link('action_admin', {module: setcms.currentModule, action: 'saveform'}) }}">Создать запись</a>
+    {% endif %}
+{% endblock %}

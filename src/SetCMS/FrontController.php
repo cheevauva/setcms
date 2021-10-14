@@ -130,40 +130,19 @@ class FrontController
             'cache' => $this->basePath . '/cache/twig',
             'auto_reload' => true,
         ]);
-        $twig->addGlobal('currentUser', $this->getCurrentUser());
-        $twig->addGlobal('currentModule', $this->request->getAttribute('module'));
-        $twig->addGlobal('baseUrl', dirname($this->request->getServerParams()['SCRIPT_NAME']));
-        $twig->addFunction(new \Twig\TwigFunction('theme_path', function ($path) {
-            return new \Twig\Markup(sprintf('themes/%s/%s', $this->config['theme'], $path), 'UTF-8');
-        }));
+
+        $theme = new Theme($this->config['theme'], $this->request, $this->router);
+        $theme->currentModule = $this->request->getAttribute('module');
+        $theme->currentUser = $this->getCurrentUser();
+        $theme->baseUrl = dirname($this->request->getServerParams()['SCRIPT_NAME']);
+
+        $twig->addGlobal('setcms', $theme);
         $twig->addFunction(new \Twig\TwigFunction('render', function ($template, $params = []) {
             $request = $this->withAttributes($this->request, $params);
             $model = $this->invokeAction(new Action($request));
             $content = $this->getTwig()->render($template, $model->toArray());
 
             return new \Twig\Markup($content, 'UTF-8');
-        }));
-        $twig->addFunction(new \Twig\TwigFunction('is_admin', function () {
-            return $this->isAdmin();
-        }));
-        $twig->addFunction(new \Twig\TwigFunction('setcms_markdown', function ($content) {
-            $pd = new \Parsedown;
-            $pd->setSafeMode(true);
-
-            return new \Twig\Markup($pd->text($content), 'UTF-8');
-        }));
-
-
-
-        $twig->addFunction(new \Twig\TwigFunction('link', function (string $route, $params = [], $query = '') {
-            $self = $this->request->getServerParams()['SCRIPT_NAME'];
-            $link = $self . $this->router->generate($route, $params);
-
-            if ($query) {
-                $link .= '?' . (is_array($query) ? http_build_query($query) : $query);
-            }
-
-            return new \Twig\Markup($link, 'UTF-8');
         }));
 
         return $this->twig = $twig;
