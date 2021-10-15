@@ -58,6 +58,21 @@ class Action
         return strpos($this->getComment(), VarDoc::NEED_NOAUTH) !== false;
     }
 
+    public function getWrapper(): ?string
+    {
+        $comment = $this->getComment();
+        $wrappers = [
+            VarDoc::WRAPPER_JSON_NONE => 'json-none',
+        ];
+        foreach ($wrappers as $contentType => $type) {
+            if (strpos($comment, $contentType) !== false) {
+                return $type;
+            }
+        }
+
+        return null;
+    }
+
     public function getContentType(): string
     {
         $comment = $this->getComment();

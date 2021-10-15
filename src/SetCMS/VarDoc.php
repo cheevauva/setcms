@@ -16,5 +16,6 @@ interface VarDoc
     public const TYPE_STRING = '@setcms-type-string';
     public const TYPE_FLOAT = '@setcms-type-float';
     public const TYPE_BOOL = '@setcms-type-bool';
+    public const WRAPPER_JSON_NONE = '@setcms-wrapper-json-none';
 
 }

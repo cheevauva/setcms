@@ -21,4 +21,9 @@ return [
         'driver' => 'pdo_sqlite',
         'charset' => 'UTF8',
     ],
+    SetCMS\Module\OAuth\OAuthClientDAO::class => [
+        'path' => ':basePath/cache/main.db', // pages.db
+        'driver' => 'pdo_sqlite',
+        'charset' => 'UTF8',
+    ],
 ];

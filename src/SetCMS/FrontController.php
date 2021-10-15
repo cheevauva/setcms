@@ -215,7 +215,7 @@ class FrontController
         switch ($action->getContentType()) {
             case 'json':
                 $response = $response->withHeader('Content-type', 'application/json');
-                $response->getBody()->write($this->model2json($model));
+                $response->getBody()->write($action->getWrapper() === 'json-none' ? json_encode($model->toArray(), JSON_UNESCAPED_UNICODE) : $this->model2json($model));
                 break;
             case 'html':
                 $template = sprintf('themes/%s/modules/%s/%s/%s.twig', $this->config['theme'], $action->getModule(), $action->getSection(), $action->getAction()->getName());

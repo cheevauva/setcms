@@ -30,11 +30,11 @@ abstract class Model
     public function isValid(): bool
     {
         $this->removeValidationMessages();
-        
+
         if (empty($this->messages)) {
             $this->validate();
         }
-        
+
         return empty($this->messages);
     }
 
@@ -99,6 +99,8 @@ abstract class Model
         $properties = $reflect->getProperties(ReflectionProperty::IS_PUBLIC);
 
         foreach ($properties as $property) {
+            assert($property instanceof ReflectionProperty);
+            
             $comment = $property->getDocComment();
             $value = $array[$property->getName()] ?? $property->getValue($this);
 
