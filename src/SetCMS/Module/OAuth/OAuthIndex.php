@@ -4,6 +4,7 @@ namespace SetCMS\Module\OAuth;
 
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelAuthorize;
+use SetCMS\Module\OAuth\OAuthModel\OAuthModel;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelToken;
 use SetCMS\Module\OAuth\OAuthService;
 
@@ -22,15 +23,31 @@ final class OAuthIndex
      * @setcms-response-content-json
      * @setcms-wrapper-json-none
      */
-    public function token(ServerRequestInterface $request, OAuthModelToken $model): OAuthModelToken
+    public function token(ServerRequestInterface $request, OAuthModelToken $model): OAuthModel
     {
         $model->fromArray($request->getQueryParams());
 
-        if ($model->isValid()) {
-            
+        if (!$model->isValid()) {
+            return $model;
         }
 
-        return $model;
+
+        $oauthModel = $model->getOAuthModel();
+        $oauthModel->fromArray($request->getQueryParams());
+
+        if (!$oauthModel->isValid()) {
+            return $oauthModel;
+        }
+        
+        if ($model->isGrantTypePassword()) {
+            $this->oauthService->tokenByPassword($oauthModel);
+        }
+        
+        if ($model->isGrantTypeRefreshToken()) {
+            $this->oauthService->refreshToken($oauthModel);
+        }
+        
+        return $oauthModel;
     }
 
     /**

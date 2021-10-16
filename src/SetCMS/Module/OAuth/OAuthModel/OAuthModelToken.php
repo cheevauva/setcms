@@ -2,7 +2,7 @@
 
 namespace SetCMS\Module\OAuth\OAuthModel;
 
-class OAuthModelToken extends \SetCMS\Model
+class OAuthModelToken extends OAuthModel
 {
 
     private const GRANT_TYPE_AUTH_CODE = 'authorization_code';
@@ -15,9 +15,6 @@ class OAuthModelToken extends \SetCMS\Model
         self::GRANT_TYPE_PASSWORD,
     ];
     public string $grant_type = '';
-    public string $username = '';
-    public string $password = '';
-    public string $scope = '';
 
     protected function validate(): void
     {
@@ -28,30 +25,28 @@ class OAuthModelToken extends \SetCMS\Model
                 $this->addMessageAsValidation(sprintf('grant_type is wrong, must be one of (%s)', implode(', ', $this->grantTypes)), 'invalid_request');
             }
         }
+    }
 
+    public function getOAuthModel(): OAuthModel
+    {
         switch ($this->grant_type) {
-            case self::GRANT_TYPE_PASSWORD:
-                if (empty($this->password)) {
-                    $this->addMessageAsValidation('password is required', 'invalid_request');
-                }
-
-                if (empty($this->username)) {
-                    $this->addMessageAsValidation('username is required', 'invalid_request');
-                }
+            case self::GRANT_TYPE_PASSWORD;
+                return new OAuthModelTokenPassword;
+            case self::GRANT_TYPE_REFRESH_TOKEN:
+                return new OAuthModelTokenRefreshToken;
+            case self::GRANT_TYPE_AUTH_CODE:
+                return new OAuthModelTokenAuthorizationCode;
         }
     }
 
-    public function toArray(): array
+    public function isGrantTypePassword(): bool
     {
-        $response = [];
+        return $this->grant_type === self::GRANT_TYPE_PASSWORD;
+    }
 
-        if ($this->messages) {
-            $message = reset($this->messages);
-            $response['error'] = $message['field'];
-            $response['error_description'] = $message['message'];
-        }
-
-        return $response;
+    public function isGrantTypeRefreshToken(): bool
+    {
+        return $this->grant_type === self::GRANT_TYPE_REFRESH_TOKEN;
     }
 
 }

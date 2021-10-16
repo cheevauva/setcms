@@ -48,14 +48,17 @@ abstract class OrdinaryDAO
         return $posts;
     }
 
-    public function getById(int $id): OrdinaryEntity
+    protected function getBy(array $criteria): OrdinaryEntity
     {
         $qb = $this->dbal()->createQueryBuilder();
         $qb->select('t.*');
         $qb->from($this->getTableName(), 't');
-        $qb->andWhere('t.id = :id');
-        $qb->setParameter('id', $id);
         $qb->setMaxResults(1);
+
+        foreach ($criteria as $field => $value) {
+            $qb->andWhere(sprintf('t.%s = :%s', $field, $field));
+            $qb->setParameter($field, $value);
+        }
 
         $row = $qb->fetchAssociative();
 
@@ -64,6 +67,11 @@ abstract class OrdinaryDAO
         }
 
         return $this->record2entity($row);
+    }
+
+    public function getById(int $id): OrdinaryEntity
+    {
+        return $this->getBy(['id' => $id]);
     }
 
     public function save(OrdinaryEntity $entity): void

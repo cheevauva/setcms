@@ -24,7 +24,7 @@ class Migration1634332523 extends \SetCMS\Database\Migration
         return $this->connectionFactory->get(OAuthClientDAO::class);
     }
 
-    public function up(): void
+    private function createOAuthClientsTable(): void
     {
         $schemaManager = $this->dbal()->createSchemaManager();
 
@@ -39,6 +39,33 @@ class Migration1634332523 extends \SetCMS\Database\Migration
         $table->addColumn('date_modified', 'datetime');
 
         $schemaManager->createTable($table);
+    }
+
+    private function createOAuthTokensTable(): void
+    {
+        $schemaManager = $this->dbal()->createSchemaManager();
+
+        if ($schemaManager->tablesExist('oauth_tokens')) {
+            return;
+        }
+
+        $table = new Table('oauth_tokens');
+        $table->addColumn('id', 'integer')->setAutoincrement(true);
+        $table->addColumn('token', 'string')->setLength(255);
+        $table->addColumn('refresh_token', 'string')->setLength(255);
+        $table->addColumn('client_id', 'integer')->setNotnull(true);
+        $table->addColumn('user_id', 'integer')->setNotnull(true);
+        $table->addColumn('date_expired', 'datetime')->setNotnull(true);
+        $table->addColumn('date_created', 'datetime');
+        $table->addColumn('date_modified', 'datetime');
+
+        $schemaManager->createTable($table);
+    }
+
+    public function up(): void
+    {
+        $this->createOAuthClientsTable();
+        $this->createOAuthTokensTable();
 
         $client = new OAuthClient;
         $client->name = 'SetCMS';
