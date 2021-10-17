@@ -8,6 +8,7 @@ use SetCMS\Module\OAuth\OAuthModel\OAuthModelAuthorizeCode;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelCallback;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModel;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelToken;
+use SetCMS\Module\OAuth\OAuthClientService;
 use SetCMS\Module\OAuth\OAuthService;
 
 final class OAuthIndex
@@ -104,22 +105,40 @@ final class OAuthIndex
             $token = reset($tokens);
             $this->oauthService->removeToken($token);
         }
-        
+
         return $model;
     }
 
     /**
      * @setcms-request-method-get
      * @setcms-response-content-json
-     * @setcms-response-with-headers
+     * 
      */
     public function callback(ServerRequestInterface $request, OAuthModelCallback $model): OAuthModelCallback
     {
-        $model->fromArray($request->getQueryParams());
+        //@setcms-response-with-headers
+        $params = $request->getQueryParams();
+        $params['client_id'] = $request->getAttribute('id');
+        
+        $model->fromArray($params);
 
         if ($model->isValid()) {
             $this->oauthService->callback($model);
         }
+
+        return $model;
+    }
+
+    /**
+     * @setcms-request-method-get
+     * @setcms-response-content-html
+     */
+    public function login(ServerRequestInterface $request, OAuthModelAuthorize $model): OAuthModelAuthorize
+    {
+        $model->fromArray($request->getQueryParams());
+        $model->isValid();
+
+        $model->oauthClients($this->oauthService->getClientsWithEnabledAuthorization());
 
         return $model;
     }

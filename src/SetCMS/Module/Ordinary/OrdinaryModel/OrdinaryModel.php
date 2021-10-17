@@ -4,7 +4,7 @@ namespace SetCMS\Module\Ordinary\OrdinaryModel;
 
 use SetCMS\Module\Ordinary\OrdinaryEntity;
 
-abstract class OrdinaryModel extends \SetCMS\Model
+class OrdinaryModel extends \SetCMS\Model
 {
 
     private ?OrdinaryEntity $entity = null;

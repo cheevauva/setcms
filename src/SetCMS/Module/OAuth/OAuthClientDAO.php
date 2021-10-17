@@ -15,12 +15,13 @@ class OAuthClientDAO extends OrdinaryDAO
     public function getTokenByAuthorizationCodeAndClient(string $code, OAuthClient $oauthClient): array
     {
         try {
-            $response = (new Client())->request('POST', $oauthClient->autorizationCodeGrantTypeUrl, [
+            $response = (new Client())->request('POST', $oauthClient->autorizationCodeUrl, [
                 RequestOptions::FORM_PARAMS => [
                     'grant_type' => 'authorization_code',
                     'code' => $code,
                     'redirect_uri' => $oauthClient->redirectURI,
-                    'client_id' => $oauthClient->id,
+                    'client_id' => $oauthClient->clientId,
+                    'client_secret' => $oauthClient->clientSecret,
                 ],
                 RequestOptions::HTTP_ERRORS => true,
                 RequestOptions::HEADERS => [
@@ -49,7 +50,8 @@ class OAuthClientDAO extends OrdinaryDAO
         $record['client_id'] = $entity->clientId;
         $record['client_secret'] = $entity->clientSecret;
         $record['redirect_uri'] = $entity->redirectURI;
-        $record['login_url'] = $entity->loginURL;
+        $record['login_url'] = $entity->loginUrl;
+        $record['autorization_code_url'] = $entity->autorizationCodeUrl;
 
         return $this->ordinaryEntity2RecordBind($entity, $record);
     }
@@ -71,7 +73,8 @@ class OAuthClientDAO extends OrdinaryDAO
         $client->clientId = $record['client_id'];
         $client->clientSecret = $record['client_secret'];
         $client->redirectURI = $record['redirect_uri'] ?? '';
-        $client->loginURL = $record['login_url'] ?? '';
+        $client->loginUrl = $record['login_url'] ?? '';
+        $client->autorizationCodeUrl = $record['autorization_code_url'];
 
         return $this->ordinaryRecord2EntityBind($record, $client);
     }

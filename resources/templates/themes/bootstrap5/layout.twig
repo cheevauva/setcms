@@ -34,7 +34,7 @@
                             <a href="{{ setcms.link('action', {module: 'OAuth', action: 'logout'}) }}">выйти</a>?
                         {% else %}
                             Гость, 
-                            <a class="link-secondary" href="{{ setcms.link('action', {module: 'OAuth', action: 'authorize'}, {client_id: 1, response_type: 'code', redirect_uri: setcms.link2('action', {module: 'OAuth', action: 'callback'})}) }}">войти</a> или 
+                            <a class="link-secondary" href="{{ setcms.link('action', {module: 'OAuth', action: 'login'}) }}">войти</a> или 
                             <a class="link-secondary" href="{{ setcms.link('action', {module: 'Users', action: 'registration'}) }}">зарегистрироваться</a>?</a>
                         {% endif %}
                     </div>

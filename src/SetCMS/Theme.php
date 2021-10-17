@@ -30,6 +30,10 @@ class Theme
             'name' => 'Migrations',
             'label' => 'Миграции',
         ],
+        [
+            'name' => 'OAuthClients',
+            'label' => 'OAuth клиенты-приложения',
+        ],
     ];
     public string $self;
     public Router $router;
@@ -49,7 +53,7 @@ class Theme
 
         return $pd->text($string);
     }
-    
+
     public function link2(string $route, $params = [], $query = ''): string
     {
         return $this->self . $this->link($route, $params, $query);

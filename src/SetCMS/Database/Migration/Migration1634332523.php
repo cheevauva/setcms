@@ -39,6 +39,7 @@ class Migration1634332523 extends \SetCMS\Database\Migration
         $table->addColumn('client_secret', 'string')->setLength(255)->setNotnull(false);
         $table->addColumn('redirect_uri', 'string')->setLength(255)->setNotnull(false);
         $table->addColumn('login_url', 'string')->setLength(255)->setNotnull(false);
+        $table->addColumn('autorization_code_url', 'string')->setLength(255)->setNotnull(false);
         $table->addColumn('date_created', 'datetime');
         $table->addColumn('date_modified', 'datetime');
 
@@ -95,8 +96,9 @@ class Migration1634332523 extends \SetCMS\Database\Migration
         $client->name = 'SetCMS';
         $client->clientId = 1;
         $client->clientSecret = OAuthClient::generateSecret();
-        $client->loginURL = 'index.php/Users/login?test=1';
-        $client->redirectURI = 'index.php/OAuth/code';
+        $client->redirectURI = 'http://localhost/setcms4/public/OAuth/callback/1';
+        $client->loginUrl = 'http://localhost/setcms4/public/index.php/OAuth/authorize';
+        $client->autorizationCodeUrl = 'http://localhost/setcms4/public/index.php/OAuth/token';
 
         $this->oauthClientDAO->save($client);
     }

@@ -174,5 +174,10 @@ class OAuthService
             $model->entity($this->generateAuthorizationCode($user, $client));
         }
     }
+    
+    public function getClientsWithEnabledAuthorization(): array
+    {
+        return $this->oauthClientDAO->list(0, 10);
+    }
 
 }

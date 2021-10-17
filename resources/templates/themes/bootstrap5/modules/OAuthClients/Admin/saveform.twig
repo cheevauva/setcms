@@ -1,0 +1,28 @@
+{% extends setcms.path('layout_admin.twig') %}
+{% import setcms.path('macros/forms.twig') as forms %}
+
+{% block content_title %}
+    Создать пост
+{% endblock %}
+
+{% block content %}
+    <form class="setcms-form g-3" 
+          setcms-action="{{ setcms.link('do_action_admin', {module: entity.module, action: 'save'}) }}" 
+          setcms-redirect="{{ setcms.link('action_admin', {module: entity.module, action: 'index'}) }}"
+          >
+        {% if entity.id %}
+            {{ forms.hidden({name: 'id', value: entity.id }) }}
+        {% endif %}
+
+        {{ forms.input({name: 'name', value: entity.name, type: 'text', label: 'Название'}) }}
+        {{ forms.input({name: 'client_id', value: entity.clientId, type: 'text', label: 'Client ID'}) }}
+        {{ forms.input({name: 'client_secret', value: entity.clientSecret, type: 'text', label: 'Client Secret'}) }}
+        {{ forms.input({name: 'redirect_uri', value: entity.redirectURI, type: 'text', label: 'Redirect URI'}) }}
+        {{ forms.input({name: 'login_url', value: entity.loginUrl, type: 'text', label: 'Ссылка на форму авторизации'}) }}
+        {{ forms.input({name: 'autorization_code_url', value: entity.autorizationCodeUrl, type: 'text', label: 'Ссылка для получения токена по коду авторизации'}) }}
+        
+        {{ forms.input({name: 'dateCreated', value: entity.dateCreated.format('Y-m-d H:i:s'), type: 'text', label: 'Дата создания', disabled: true}) }}
+        {{ forms.input({name: 'dateModified', value: entity.dateModified.format('Y-m-d H:i:s'), type: 'text', label: 'Дата изменения', disabled: true}) }}
+        {{ forms.submit({label: 'Сохранить'}) }}
+    </form>
+{% endblock %}

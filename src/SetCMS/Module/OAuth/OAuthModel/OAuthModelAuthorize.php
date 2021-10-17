@@ -44,6 +44,16 @@ class OAuthModelAuthorize extends OrdinaryModel
      * @var string 
      */
     public string $password = '';
+    private array $clients = [];
+
+    public function oauthClients(?array $clients = null): array
+    {
+        if (is_array($clients)) {
+            $this->clients = $clients;
+        }
+
+        return $this->clients;
+    }
 
     protected function validate(): void
     {
@@ -61,17 +71,13 @@ class OAuthModelAuthorize extends OrdinaryModel
             }
         }
     }
+    
+    public function toArray(): array
+    {
+        $array = parent::toArray();
+        $array['clients'] = $this->clients;
+        
+        return $array;
+    }
 
-//    public function toArray(): array
-//    {
-//        $response = [];
-//
-//        if ($this->messages) {
-//            $message = reset($this->messages);
-//            $response['error_description'] = $message['message'];
-//            $response['error'] = $message['field'];
-//        }
-//
-//        return $response;
-//    }
 }
