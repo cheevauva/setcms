@@ -112,11 +112,10 @@ final class OAuthIndex
     /**
      * @setcms-request-method-get
      * @setcms-response-content-json
-     * 
+     * @setcms-response-with-headers
      */
     public function callback(ServerRequestInterface $request, OAuthModelCallback $model): OAuthModelCallback
     {
-        //@setcms-response-with-headers
         $params = $request->getQueryParams();
         $params['client_id'] = $request->getAttribute('id');
         

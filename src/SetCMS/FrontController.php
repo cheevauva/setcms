@@ -99,19 +99,8 @@ class FrontController
         if ($this->currentUser) {
             return $this->currentUser;
         }
-
-        $tokens = $this->oauthService->parseTokens(array_filter([
-            $this->request->getHeader('Authorization')[0] ?? null,
-            $this->request->getCookieParams()['Authorization'] ?? null,
-        ]));
-
-        if (!$tokens) {
-            return null;
-        }
-
-        $token = reset($tokens);
         
-        $this->request = $this->request->withAttribute('token', $token);
+        $token = $this->request->getAttribute('accessToken');
 
         if ($token && !$this->currentUser) {
             try {
@@ -203,10 +192,22 @@ class FrontController
         return $response;
     }
 
+    protected function processAccessToken(ServerRequestInterface $request): ServerRequestInterface
+    {
+        $tokens = $this->oauthService->parseTokens(array_filter([
+            $this->request->getHeader('Authorization')[0] ?? null,
+            $this->request->getCookieParams()['Authorization'] ?? null,
+        ]));
+
+        return $request->withAttribute('accessToken', $tokens ? reset($tokens) : null);
+    }
+
     protected function process(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
+        $request = $this->processAccessToken($request);
+
         $result = $this->router->match($request->getServerParams()['PATH_INFO'] ?? '/', $request->getServerParams()['REQUEST_METHOD']);
-        
+
         if (!$result) {
             throw ModuleException::notFound();
         }
@@ -235,7 +236,7 @@ class FrontController
         }
 
         $model = $this->invokeAction($action);
-        
+
         if ($action->hasResponseHeaders()) {
             $callbackHeaderName = implode('.', [$action->getModule(), $action->getSection(), $action->getAction()->getName()]);
             $router = clone $this->router;
