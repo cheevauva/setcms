@@ -1,9 +1,13 @@
 {% extends setcms.path('layout.twig') %}
+{% import setcms.path('macros/forms.twig') as forms %}
 
 {% block content %}
     <form class="setcms-form row g-2" 
-          setcms-action="{{ setcms.link('do_action', {module: 'Users', action: 'doLogin'}) }}"
-          setcms-redirect="{{ setcms.link('action_record', {module: 'Users', action: 'read', id: '${entity.id}'}) }}">
+          setcms-action="{{ setcms.link('do_action', {module: 'OAuth', action: 'token'}) }}"
+          setcms-handler="login"
+          setcms-redirect="{{ setcms.link('action_record', {module: 'Users', action: 'profile'}) }}">
+        {{ forms.hidden({name: 'grant_type', value: 'password'}) }}
+        {{ forms.hidden({name: 'client_id', value: '1'}) }}
         <div>
             <input name="username" value="{{ entity.username }}" class="form-control" placeholder="Пользователь">
             <div class="invalid-feedback"></div>

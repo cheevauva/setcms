@@ -22,11 +22,16 @@ return [
         'charset' => 'UTF8',
     ],
     SetCMS\Module\OAuth\OAuthClientDAO::class => [
-        'path' => ':basePath/cache/main.db', 
+        'path' => ':basePath/cache/main.db',
         'driver' => 'pdo_sqlite',
         'charset' => 'UTF8',
     ],
     \SetCMS\Module\OAuth\OAuthTokenDAO::class => [
+        'path' => ':basePath/cache/main.db',
+        'driver' => 'pdo_sqlite',
+        'charset' => 'UTF8',
+    ],
+    \SetCMS\Module\OAuth\OAuthCodeDAO::class => [
         'path' => ':basePath/cache/main.db',
         'driver' => 'pdo_sqlite',
         'charset' => 'UTF8',

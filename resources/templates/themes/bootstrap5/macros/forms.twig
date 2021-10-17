@@ -1,7 +1,16 @@
 {% macro input(params) %}
-    <div class="mb-3">
-        <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
-        <input name="{{ params.name }}" type="{{ params.type }}" value="{{ params.value }}" class="form-control" size="{{ params.size }}" {% if params.disabled %}disabled="disabled"{% endif %}}>
+    <div class="mb-2">
+        {% if params.label %}
+            <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
+        {% endif %}
+        <input name="{{ params.name }}" 
+               type="{{ params.type }}"
+               value="{{ params.value }}"
+               class="form-control" 
+               size="{{ params.size }}" 
+               placeholder="{{ params.placeholder }}" 
+               {% if params.disabled %}disabled="disabled"{% endif %}
+               >
         <div class="invalid-feedback"></div>
     </div>
 {% endmacro %}
@@ -12,15 +21,17 @@
 
 
 {% macro textarea(params) %}
-    <div class="mb-3">
-        <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
+    <div class="mb-2">
+        {% if params.label %}
+            <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
+        {% endif %}
         <textarea name="{{ params.name }}" class="form-control">{{ params.value }}</textarea>
         <div class="invalid-feedback"></div>
     </div>
 {% endmacro %}
 
 {% macro submit(params) %}
-    <div class="mb-3">
+    <div class="mb-2">
         <button class="setcms-submit-button btn btn-primary mb-3" type="button">{{ params.label }}</button>
     </div>
 {% endmacro %}

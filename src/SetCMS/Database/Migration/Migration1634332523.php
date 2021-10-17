@@ -35,6 +35,10 @@ class Migration1634332523 extends \SetCMS\Database\Migration
         $table = new Table('oauth_clients');
         $table->addColumn('id', 'integer')->setAutoincrement(true);
         $table->addColumn('name', 'string')->setLength(255);
+        $table->addColumn('client_id', 'string')->setLength(255)->setNotnull(false);
+        $table->addColumn('client_secret', 'string')->setLength(255)->setNotnull(false);
+        $table->addColumn('redirect_uri', 'string')->setLength(255)->setNotnull(false);
+        $table->addColumn('login_url', 'string')->setLength(255)->setNotnull(false);
         $table->addColumn('date_created', 'datetime');
         $table->addColumn('date_modified', 'datetime');
 
@@ -62,13 +66,37 @@ class Migration1634332523 extends \SetCMS\Database\Migration
         $schemaManager->createTable($table);
     }
 
+    private function createOAuthCodesTable(): void
+    {
+        $schemaManager = $this->dbal()->createSchemaManager();
+
+        if ($schemaManager->tablesExist('oauth_codes')) {
+            return;
+        }
+
+        $table = new Table('oauth_codes');
+        $table->addColumn('id', 'integer')->setAutoincrement(true);
+        $table->addColumn('code', 'string')->setLength(255);
+        $table->addColumn('client_id', 'integer')->setNotnull(true);
+        $table->addColumn('user_id', 'integer')->setNotnull(true);
+        $table->addColumn('date_created', 'datetime');
+        $table->addColumn('date_modified', 'datetime');
+
+        $schemaManager->createTable($table);
+    }
+
     public function up(): void
     {
         $this->createOAuthClientsTable();
         $this->createOAuthTokensTable();
+        $this->createOAuthCodesTable();
 
         $client = new OAuthClient;
         $client->name = 'SetCMS';
+        $client->clientId = 1;
+        $client->clientSecret = OAuthClient::generateSecret();
+        $client->loginURL = 'index.php/Users/login?test=1';
+        $client->redirectURI = 'index.php/OAuth/code';
 
         $this->oauthClientDAO->save($client);
     }

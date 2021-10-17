@@ -9,6 +9,13 @@ use SetCMS\Module\OAuth\OAuthToken;
 class OAuthTokenDAO extends OrdinaryDAO
 {
 
+    public function getByAccessToken(string $token): OAuthToken
+    {
+        return $this->getBy([
+            'token' => $token,
+        ]);
+    }
+
     public function getByRefreshTokenAndClientId(string $refreshToken, string $clientId): OAuthToken
     {
         return $this->getBy([
@@ -48,7 +55,7 @@ class OAuthTokenDAO extends OrdinaryDAO
         $entity->idClient = $record['client_id'];
         $entity->idUser = $record['user_id'];
         $entity->dateExpiried = new \DateTime($record['date_expired']);
-        
+
         return $this->ordinaryRecord2EntityBind($record, $entity);
     }
 

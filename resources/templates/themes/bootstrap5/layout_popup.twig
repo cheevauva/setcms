@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+    <head>
+        <title>{% block title %}Title{% endblock %}</title>
+        <base href="{{ setcms.baseUrl }}/"/>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="container">
+            <header class="blog-header py-3">
+                <div class="row flex-nowrap justify-content-between align-items-center">
+                    <div class="col-12 text-center">
+                        <a class="blog-header-logo text-dark" href="{{ setcms.link('home') }}">SetCMS</a>
+                    </div>
+                </div>
+            </header>
+            {% include setcms.path('toasts.twig') %}
+        </div>
+
+        <main class="container">
+            <div class="row g-5">
+                <div class="col-md-12">
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        </main>
+    </body>
+    {% include setcms.path('assets.twig') %}
+</html>

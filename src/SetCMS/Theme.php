@@ -37,8 +37,9 @@ class Theme
     public function __construct(string $theme, ServerRequestInterface $request, Router $router)
     {
         $this->theme = $theme;
-        $this->self = $request->getServerParams()['SCRIPT_NAME'];
-        $this->router = $router;
+        $this->router = clone $router;
+        $this->router->setBasePath($request->getServerParams()['SCRIPT_NAME']);
+        $this->self = $request->getServerParams()['REQUEST_SCHEME'] . '://' . $request->getServerParams()['HTTP_HOST'];
     }
 
     public function markdown(string $string): string
@@ -48,10 +49,15 @@ class Theme
 
         return $pd->text($string);
     }
+    
+    public function link2(string $route, $params = [], $query = ''): string
+    {
+        return $this->self . $this->link($route, $params, $query);
+    }
 
     public function link(string $route, $params = [], $query = ''): string
     {
-        $link = $this->self . $this->router->generate($route, $params);
+        $link = $this->router->generate($route, $params);
 
         if ($query) {
             $link .= '?' . (is_array($query) ? http_build_query($query) : $query);

@@ -48,6 +48,16 @@ class Action
         $this->getController();
     }
 
+    public function hasResponseHeaders(): bool
+    {
+        return strpos($this->getComment(), VarDoc::RESPONSE_WITH_HEADERS) !== false;
+    }
+
+    public function isCSRFProtectEnabled(): bool
+    {
+        return strpos($this->getComment(), VarDoc::CSRF_PROTECT_DISABLED) === false;
+    }
+
     public function isNeedAuth(): bool
     {
         return strpos($this->getComment(), VarDoc::NEED_AUTH) !== false;

@@ -73,6 +73,11 @@ abstract class OrdinaryDAO
     {
         return $this->getBy(['id' => $id]);
     }
+    
+    public function remove(OrdinaryEntity $entity): void
+    {
+        $this->dbal()->delete($this->getTableName(), ['id' => $entity->id]);
+    }
 
     public function save(OrdinaryEntity $entity): void
     {

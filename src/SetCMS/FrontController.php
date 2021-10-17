@@ -10,10 +10,10 @@ use SetCMS\Router as Router;
 use SetCMS\HttpStatusCode\HttpStatusCode;
 use SetCMS\Model;
 use SetCMS\Action;
-use SetCMS\Session;
 use SetCMS\Module\Users\UserDAO;
 use SetCMS\Module\Users\User;
 use SetCMS\Module\Users\UserException;
+use SetCMS\Module\OAuth\OAuthService;
 
 class FrontController
 {
@@ -24,19 +24,20 @@ class FrontController
     protected ServerRequestInterface $request;
     protected array $config;
     protected string $basePath;
-    protected Session $session;
     protected UserDAO $userDAO;
     protected ?User $currentUser = null;
+    protected OAuthService $oauthService;
 
     public function __construct(ContainerInterface $container, string $basePath, array $config)
     {
         $this->container = $container;
         $this->router = $container->get(Router::class);
         $this->userDAO = $container->get(UserDAO::class);
-        $this->session = $container->get(Session::class);
+        $this->oauthService = $container->get(OAuthService::class);
         $this->basePath = $basePath;
         $this->config = $config;
         $this->router->addRoutes(require $this->basePath . '/resources/routes.php');
+        $this->headers = require $this->basePath . '/resources/headers.php';
     }
 
     public function execute(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
@@ -95,11 +96,28 @@ class FrontController
 
     protected function getCurrentUser(): ?User
     {
-        if (!$this->currentUser && $this->session->get('userId')) {
+        if ($this->currentUser) {
+            return $this->currentUser;
+        }
+
+        $tokens = $this->oauthService->parseTokens(array_filter([
+            $this->request->getHeader('Authorization')[0] ?? null,
+            $this->request->getCookieParams()['Authorization'] ?? null,
+        ]));
+
+        if (!$tokens) {
+            return null;
+        }
+
+        $token = reset($tokens);
+        
+        $this->request = $this->request->withAttribute('token', $token);
+
+        if ($token && !$this->currentUser) {
             try {
-                $this->currentUser = $this->userDAO->getById($this->session->get('userId'));
-            } catch (UserException $ex) {
-                $this->session->set('userId', null);
+                $this->currentUser = $this->oauthService->getUserByAccessToken($token);
+            } catch (\Exception $ex) {
+                $this->currentUser = null;
             }
         }
 
@@ -163,6 +181,10 @@ class FrontController
 
     protected function csrfProtect(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
+        if ($request->getHeaderLine('Authorization')) {
+            return $response;
+        }
+
         if ($request->getMethod() === 'GET') {
             $token = md5(microtime(true) . rand(1, 100000));
             return $response->withHeader('X-CSRF-Token', $token)->withHeader('Set-Cookie', sprintf('X-CSRF-Token=%s;Path=/;SameSite=Strict', $token));
@@ -183,10 +205,8 @@ class FrontController
 
     protected function process(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $response = $this->csrfProtect($request, $response);
-
         $result = $this->router->match($request->getServerParams()['PATH_INFO'] ?? '/', $request->getServerParams()['REQUEST_METHOD']);
-
+        
         if (!$result) {
             throw ModuleException::notFound();
         }
@@ -197,6 +217,10 @@ class FrontController
         $this->request = $request;
 
         $action = new Action($request);
+
+        if ($action->isCSRFProtectEnabled()) {
+            $response = $this->csrfProtect($request, $response);
+        }
 
         if ($action->isNeedAuth() && !$this->getCurrentUser()) {
             throw UserException::notAuthorized();
@@ -211,6 +235,14 @@ class FrontController
         }
 
         $model = $this->invokeAction($action);
+        
+        if ($action->hasResponseHeaders()) {
+            $callbackHeaderName = implode('.', [$action->getModule(), $action->getSection(), $action->getAction()->getName()]);
+            $router = clone $this->router;
+            $router->setBasePath($request->getServerParams()['SCRIPT_NAME']);
+            $headerRequest = $request->withAttribute('model', $model)->withAttribute('router', $router);
+            $response = $this->headers[$callbackHeaderName]($headerRequest, $response);
+        }
 
         switch ($action->getContentType()) {
             case 'json':

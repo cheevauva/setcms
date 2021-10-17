@@ -31,10 +31,10 @@
                             {% if setcms.currentUser.isAdmin %}
                                 <a href="{{ setcms.link('home_admin') }}">в админку</a> или
                             {% endif %}
-                            <a href="{{ setcms.link('action', {module: 'Users', action: 'logout'}) }}">выйти</a>?
+                            <a href="{{ setcms.link('action', {module: 'OAuth', action: 'logout'}) }}">выйти</a>?
                         {% else %}
                             Гость, 
-                            <a class="link-secondary" href="{{ setcms.link('action', {module: 'Users', action: 'login'}) }}">войти</a> или 
+                            <a class="link-secondary" href="{{ setcms.link('action', {module: 'OAuth', action: 'authorize'}, {client_id: 1, response_type: 'code', redirect_uri: setcms.link2('action', {module: 'OAuth', action: 'callback'})}) }}">войти</a> или 
                             <a class="link-secondary" href="{{ setcms.link('action', {module: 'Users', action: 'registration'}) }}">зарегистрироваться</a>?</a>
                         {% endif %}
                     </div>

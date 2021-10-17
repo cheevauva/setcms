@@ -39,6 +39,11 @@ class OAuthModelToken extends OAuthModel
         }
     }
 
+    public function isGrantTypeAuthorizationCode(): bool
+    {
+        return $this->grant_type === self::GRANT_TYPE_AUTH_CODE;
+    }
+
     public function isGrantTypePassword(): bool
     {
         return $this->grant_type === self::GRANT_TYPE_PASSWORD;

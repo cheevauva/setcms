@@ -9,6 +9,16 @@ jQuery().ready(function () {
         return (new bootstrap.Toast($uncatchetMessage.get(0))).show();
     }
 
+    var handlers = {
+        login: function (data) {
+            if (data.error) {
+                return altMessage(data.error_description);
+            }
+            
+            //localStorage.setItem('oauth', data);
+        }
+    }
+
     function getCookie(name) {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
@@ -37,7 +47,7 @@ jQuery().ready(function () {
             error: function (ts) {
                 var message;
                 var data;
- 
+
                 try {
                     data = JSON.parse(ts.responseText);
                     if (data.messages && data.messages[0] && data.messages[0].message) {
@@ -56,6 +66,10 @@ jQuery().ready(function () {
                 } catch (e) {
                     console.log(data);
                     return altMessage(data);
+                }
+
+                if ($form.attr('setcms-handler')) {
+                    handlers[$form.attr('setcms-handler')](data);
                 }
 
                 if (data.success && $form.attr('setcms-redirect')) {
