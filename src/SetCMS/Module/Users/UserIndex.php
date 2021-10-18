@@ -5,10 +5,11 @@ namespace SetCMS\Module\Users;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelRead;
 use SetCMS\Module\Users\UserService;
-use SetCMS\Module\Users\UserModel\UserModelLogin;
 use SetCMS\Module\Users\UserModel\UserModelRegistration;
 use SetCMS\Module\Users\User;
 use SetCMS\Module\OAuth\OAuthService;
+use SetCMS\Module\Users\UserModel\UserModelUserInfo;
+use SetCMS\RequestAttribute;
 
 final class UserIndex
 {
@@ -36,7 +37,21 @@ final class UserIndex
 
         return $model;
     }
-    
+
+    /**
+     * @setcms-request-method-get
+     * @setcms-response-content-json
+     * @setcms-wrapper-json-none
+     */
+    public function userinfo(ServerRequestInterface $request, UserModelUserInfo $model): UserModelUserInfo
+    {
+        $user = $this->oauthService->getUserByAccessToken((string) $request->getAttribute(RequestAttribute::ACCESS_TOKEN));
+        
+        $model->entity($user);
+        
+        return $model;
+    }
+
     /**
      * @setcms-request-method-get
      * @setcms-response-content-html

@@ -81,5 +81,5 @@ class Theme
         $model = $this->invokeAction(new Action($request));
         return $this->getTwig()->render($template, $model->toArray());
     }
-
+    
 }

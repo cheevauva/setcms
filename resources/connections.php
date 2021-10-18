@@ -36,4 +36,9 @@ return [
         'driver' => 'pdo_sqlite',
         'charset' => 'UTF8',
     ],
+    \SetCMS\Module\OAuth\OAuthUserDAO::class => [
+        'path' => ':basePath/cache/main.db',
+        'driver' => 'pdo_sqlite',
+        'charset' => 'UTF8',
+    ],
 ];

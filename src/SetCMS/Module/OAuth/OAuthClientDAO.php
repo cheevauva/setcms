@@ -12,6 +12,25 @@ use SetCMS\Module\OAuth\OAuthClient;
 class OAuthClientDAO extends OrdinaryDAO
 {
 
+    public function getExternalId(array $oauthData, OAuthClient $oauthClient): ?string
+    {
+        $response = (new Client())->request('GET', $oauthClient->userInfoUrl, [
+            RequestOptions::HTTP_ERRORS => false,
+            RequestOptions::HEADERS => [
+                'Accept' => 'application/json',
+                'Authorization' => $oauthData['token_type'] . ' ' . $oauthData['access_token']
+            ],
+        ]);
+        
+        $data = json_decode($response->getBody()->getContents(), true);
+
+        if (!empty($data['error'])) {
+            throw OAuthClientException::autorizationCodeFail($data['error_description'] ?? json_encode($data, JSON_UNESCAPED_UNICODE));
+        }
+
+        return $data[$oauthClient->userInfoParserRule] ?? null;
+    }
+
     public function getTokenByAuthorizationCodeAndClient(string $code, OAuthClient $oauthClient): array
     {
         try {
@@ -33,11 +52,11 @@ class OAuthClientDAO extends OrdinaryDAO
         }
 
         $data = json_decode($response->getBody()->getContents(), true);
-        
+
         if (!empty($data['error'])) {
             throw OAuthClientException::autorizationCodeFail($data['error_description']);
         }
-        
+
         return $data;
     }
 
@@ -52,6 +71,9 @@ class OAuthClientDAO extends OrdinaryDAO
         $record['redirect_uri'] = $entity->redirectURI;
         $record['login_url'] = $entity->loginUrl;
         $record['autorization_code_url'] = $entity->autorizationCodeUrl;
+        $record['userinfo_url'] = $entity->userInfoUrl;
+        $record['is_authorizable'] = (int) $entity->isAuthorizable;
+        $record['userinfo_parser_rule'] = $entity->userInfoParserRule;
 
         return $this->ordinaryEntity2RecordBind($entity, $record);
     }
@@ -75,6 +97,9 @@ class OAuthClientDAO extends OrdinaryDAO
         $client->redirectURI = $record['redirect_uri'] ?? '';
         $client->loginUrl = $record['login_url'] ?? '';
         $client->autorizationCodeUrl = $record['autorization_code_url'];
+        $client->isAuthorizable = !empty($record['is_authorizable']);
+        $client->userInfoUrl = $record['userinfo_url'] ?? '';
+        $client->userInfoParserRule = $record['userinfo_parser_rule'] ?? '';
 
         return $this->ordinaryRecord2EntityBind($record, $client);
     }

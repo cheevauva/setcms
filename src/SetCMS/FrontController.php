@@ -5,7 +5,6 @@ namespace SetCMS;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use SetCMS\VarDoc;
 use SetCMS\Router as Router;
 use SetCMS\HttpStatusCode\HttpStatusCode;
 use SetCMS\Model;
@@ -14,6 +13,7 @@ use SetCMS\Module\Users\UserDAO;
 use SetCMS\Module\Users\User;
 use SetCMS\Module\Users\UserException;
 use SetCMS\Module\OAuth\OAuthService;
+use SetCMS\RequestAttribute;
 
 class FrontController
 {
@@ -99,8 +99,8 @@ class FrontController
         if ($this->currentUser) {
             return $this->currentUser;
         }
-        
-        $token = $this->request->getAttribute('accessToken');
+
+        $token = $this->request->getAttribute(RequestAttribute::ACCESS_TOKEN);
 
         if ($token && !$this->currentUser) {
             try {
@@ -195,11 +195,11 @@ class FrontController
     protected function processAccessToken(ServerRequestInterface $request): ServerRequestInterface
     {
         $tokens = $this->oauthService->parseTokens(array_filter([
-            $this->request->getHeader('Authorization')[0] ?? null,
-            $this->request->getCookieParams()['Authorization'] ?? null,
+            $this->request->getHeaderLine('Authorization') ?? null,
+            $this->request->getCookieParams()['X-SetCMS-AccessToken'] ?? null,
         ]));
 
-        return $request->withAttribute('accessToken', $tokens ? reset($tokens) : null);
+        return $request->withAttribute(RequestAttribute::ACCESS_TOKEN, $tokens ? reset($tokens) : null);
     }
 
     protected function process(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface

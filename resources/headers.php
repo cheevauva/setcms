@@ -4,17 +4,15 @@ return [
     'OAuth.Index.callback' => function (\Psr\Http\Message\ServerRequestInterface $request, \Psr\Http\Message\ResponseInterface $response) {
         $model = $request->getAttribute('model');
         $router = $request->getAttribute('router');
-        
+
         assert($model instanceof \SetCMS\Module\OAuth\OAuthModel\OAuthModelCallback);
         assert($router instanceof \SetCMS\Router);
-        
-        if (!$model->token()) {
+
+        if (!$model->entity()) {
             return $response;
         }
-        
-        $token = base64_encode($model->token()['access_token']);
 
-        $response = $response->withHeader('Set-Cookie', sprintf('Authorization=%s;Path=/;SameSite=Strict', $token));
+        $response = $response->withHeader('Set-Cookie', sprintf('X-SetCMS-AccessToken=%s;Path=/', $model->entity()->token));
         $response = $response->withHeader('Location', $router->generate('home'));
 
         return $response;

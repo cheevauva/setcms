@@ -20,43 +20,42 @@ class OAuthClientModelSave extends OrdinaryModel
      * @setcms-required
      * @var string 
      */
-    public string $client_id = '';
+    public string $clientId = '';
 
     /**
      * @setcms-required
      * @var string 
      */
-    public string $client_secret = '';
+    public string $clientSecret = '';
 
     /**
      * @setcms-required
      * @var string 
      */
-    public string $redirect_uri = '';
+    public string $redirectURI = '';
 
     /**
      * @setcms-required
      * @var string 
      */
-    public string $login_url = '';
+    public string $loginUrl = '';
 
     /**
      * @setcms-required
      * @var string 
      */
-    public string $autorization_code_url = '';
+    public string $autorizationCodeUrl = '';
+    public bool $isAuthorizable = false;
+    public string $userInfoParserRule = '';
+    public string $userInfoUrl = '';
 
     protected function bind(\SetCMS\Module\Ordinary\OrdinaryEntity $entity): OAuthClient
     {
         assert($entity instanceof OAuthClient);
 
-        $entity->id = $this->id;
-        $entity->name = $this->name;
-        $entity->clientId = $this->client_id;
-        $entity->clientSecret = $this->client_secret;
-        $entity->loginUrl = $this->login_url;
-        $entity->autorizationCodeUrl = $this->autorization_code_url;
-        $entity->redirectURI = $this->redirect_uri;
+        foreach (get_object_vars($this) as $key => $value) {
+            $entity->{$key} = $value;
+        }
 
         return $entity;
     }

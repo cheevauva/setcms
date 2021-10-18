@@ -5,7 +5,6 @@ namespace SetCMS\Module\OAuth;
 use SetCMS\Module\OAuth\OAuthClientDAO;
 use SetCMS\Module\OAuth\OAuthTokenDAO;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelAuthorize;
-use SetCMS\Module\OAuth\OAuthModel\OAuthModelAuthorizeCode;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelCallback;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelTokenPassword;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelTokenRefreshToken;
@@ -18,6 +17,8 @@ use SetCMS\Module\OAuth\OAuthCode;
 use SetCMS\Module\OAuth\OAuthCodeDAO;
 use SetCMS\Module\Users\UserException;
 use SetCMS\Module\OAuth\OAuthClientException;
+use SetCMS\Module\OAuth\OAuthUserDAO;
+use SetCMS\Module\OAuth\OAuthUserException;
 
 class OAuthService
 {
@@ -25,17 +26,19 @@ class OAuthService
     private OAuthClientDAO $oauthClientDAO;
     private OAuthTokenDAO $oauthTokenDAO;
     private OAuthCodeDAO $oauthCodeDAO;
+    private OAuthUserDAO $oauthUserDAO;
     private UserService $userService;
 
-    public function __construct(OAuthClientDAO $oauthClientDAO, OAuthTokenDAO $oauthTokenDAO, UserService $userService, OAuthCodeDAO $oauthCodeDAO)
+    public function __construct(OAuthClientDAO $oauthClientDAO, OAuthTokenDAO $oauthTokenDAO, UserService $userService, OAuthCodeDAO $oauthCodeDAO, OAuthUserDAO $oauthUserDAO)
     {
         $this->oauthClientDAO = $oauthClientDAO;
         $this->oauthTokenDAO = $oauthTokenDAO;
         $this->oauthCodeDAO = $oauthCodeDAO;
+        $this->oauthUserDAO = $oauthUserDAO;
         $this->userService = $userService;
     }
 
-    public function generateToken(User $user, OAuthClient $oauthClient): OAuthToken
+    public function generateToken(User $user, OAuthClient $oauthClient, string $duration = '+1 hour'): OAuthToken
     {
         $oauthToken = new OAuthToken;
         $oauthToken->token = OAuthToken::generateToken();
@@ -114,18 +117,18 @@ class OAuthService
 
             switch ($parsedTokenType) {
                 case 'Bearer':
-                    $parsedTokens[] = base64_decode($parsedToken);
+                    $parsedTokens[] = $parsedToken;
                     break;
             }
         }
 
         return $parsedTokens;
     }
-    
+
     public function removeToken(string $token)
     {
         $oauthToken = $this->oauthTokenDAO->getByAccessToken($token);
-        
+
         $this->oauthTokenDAO->remove($oauthToken);
     }
 
@@ -152,8 +155,38 @@ class OAuthService
     public function callback(OAuthModelCallback $model): void
     {
         $oauthClient = $this->oauthClientDAO->getById($model->client_id);
-        
-        $model->token($this->oauthClientDAO->getTokenByAuthorizationCodeAndClient($model->code, $oauthClient));
+        $oauthData = $this->oauthClientDAO->getTokenByAuthorizationCodeAndClient($model->code, $oauthClient);
+
+        assert($oauthClient instanceof OAuthClient);
+
+        try {
+            $user = $this->getUserByAccessToken((string) $model->cms_token);
+        } catch (NotFound $ex) {
+            $externalId = $this->oauthClientDAO->getExternalId($oauthData, $oauthClient);
+            
+            if (empty($externalId)) {
+                throw OAuthClientException::internalError('externalId empty');
+            }
+
+            try {
+                $oauthUser = $this->oauthUserDAO->getByExternalIdAndClient($externalId, $oauthClient);
+                $user = $this->userService->getById($oauthUser->id);
+            } catch (NotFound $ex) {
+                $user = $this->userService->createUser($oauthClient->name . $externalId, microtime(true));
+
+                $oauthUser = new OAuthUser;
+                $oauthUser->clientId = $oauthClient->id;
+                $oauthUser->externalId = $externalId;
+                $oauthUser->userId = $user->id;
+                $oauthUser->refreshToken = $oauthData['refresh_token'];
+
+                $this->oauthUserDAO->save($oauthUser);
+            }
+        }
+
+        $oauthToken = $this->generateToken($user, $oauthClient, '+1 year');
+
+        $model->entity($oauthToken);
     }
 
     public function authorize(OAuthModelAuthorize $model): void
@@ -174,7 +207,7 @@ class OAuthService
             $model->entity($this->generateAuthorizationCode($user, $client));
         }
     }
-    
+
     public function getClientsWithEnabledAuthorization(): array
     {
         return $this->oauthClientDAO->list(0, 10);

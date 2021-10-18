@@ -6,6 +6,7 @@ use SetCMS\Module\Ordinary\OrdinaryEntity;
 
 class OAuthClient extends OrdinaryEntity
 {
+
     public string $module = 'OAuthClients';
     public string $name;
     public string $clientId;
@@ -13,9 +14,13 @@ class OAuthClient extends OrdinaryEntity
     public string $redirectURI;
     public string $loginUrl;
     public string $autorizationCodeUrl;
-    
+    public string $userInfoUrl;
+    public string $userInfoParserRule;
+    public bool $isAuthorizable = false;
+
     public static function generateSecret(): string
     {
         return md5(microtime());
     }
+
 }

@@ -17,9 +17,9 @@
         <h4>Войти с помощью</h4>
         {% for client in clients %}
             {% if '?' in client.loginUrl %}
-                <a href="{{ client.loginUrl }}&response_type=code&client_id={{ client.clientId }}&redirect_uri={{ client.redirectURI }}">{{ client.name }}</a>
+                <a href="{{ client.loginUrl }}&response_type=code&client_id={{ client.clientId }}&redirect_uri={{ client.redirectURI|url_encode }}">{{ client.name }}</a>
             {% else %}
-                <a href="{{ client.loginUrl }}?response_type=code&client_id={{ client.clientId }}&redirect_uri={{ client.redirectURI }}">{{ client.name }}</a>
+                <a href="{{ client.loginUrl }}?response_type=code&client_id={{ client.clientId }}&redirect_uri={{ client.redirectURI|url_encode }}">{{ client.name }}</a>
             {% endif %}
         {% endfor %}
     {% endif %}

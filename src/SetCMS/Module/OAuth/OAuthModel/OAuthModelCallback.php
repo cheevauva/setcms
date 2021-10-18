@@ -2,7 +2,10 @@
 
 namespace SetCMS\Module\OAuth\OAuthModel;
 
-class OAuthModelCallback extends \SetCMS\Model
+use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModel;
+use SetCMS\Module\OAuth\OAuthToken;
+
+class OAuthModelCallback extends OrdinaryModel
 {
 
     /**
@@ -16,22 +19,15 @@ class OAuthModelCallback extends \SetCMS\Model
      * @var string 
      */
     public string $code = '';
-    private array $token = [];
 
-    public function token(array $token = null): array
+    /**
+     * @var string|null
+     */
+    public ?string $cms_token = null;
+
+    public function entity(?\SetCMS\Module\Ordinary\OrdinaryEntity $entity = null): ?OAuthToken
     {
-        if (is_array($token)) {
-            $this->token = $token;
-        }
-
-        return $this->token;
+        return parent::entity($entity);
     }
-
-    public function toArray(): array
-    {
-        return [
-            'token' => $this->token,
-        ];
-    }
-
+    
 }

@@ -3,9 +3,13 @@
         {% if params.label %}
             <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
         {% endif %}
+        {% set value = params.value %}
+        {% if params.entity %}
+            {% set value = attribute(params.entity, params.name) %}
+        {% endif %}
         <input name="{{ params.name }}" 
                type="{{ params.type }}"
-               value="{{ params.value }}"
+               value="{{ value }}"
                class="form-control" 
                size="{{ params.size }}" 
                placeholder="{{ params.placeholder }}" 
@@ -15,17 +19,33 @@
     </div>
 {% endmacro %}
 
+{% macro checkbox(params) %}
+    {% set value = params.value %}
+    {% if params.entity %}
+        {% set value = attribute(params.entity, params.name) %}
+    {% endif %}
+    <div class="mb-2">
+        <input name="{{ params.name }}" class="form-check-input" type="hidden" value="0">
+        <input name="{{ params.name }}" class="form-check-input" type="checkbox" value="1" {% if value %}checked="checked"{% endif %} {% if params.disabled %}disabled="disabled"{% endif %}>
+        <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
+    </div>
+{% endmacro %}
+
 {% macro hidden(params) %}
     <input name="{{ params.name }}" type="hidden" value="{{ params.value }}">
 {% endmacro %}
 
 
 {% macro textarea(params) %}
+    {% set value = params.value %}
+    {% if params.entity %}
+        {% set value = attribute(params.entity, params.name) %}
+    {% endif %}
     <div class="mb-2">
         {% if params.label %}
             <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
         {% endif %}
-        <textarea name="{{ params.name }}" class="form-control">{{ params.value }}</textarea>
+        <textarea name="{{ params.name }}" class="form-control">{{ value }}</textarea>
         <div class="invalid-feedback"></div>
     </div>
 {% endmacro %}

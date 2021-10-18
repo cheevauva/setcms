@@ -8,8 +8,8 @@ use SetCMS\Module\OAuth\OAuthModel\OAuthModelAuthorizeCode;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelCallback;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModel;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelToken;
-use SetCMS\Module\OAuth\OAuthClientService;
 use SetCMS\Module\OAuth\OAuthService;
+use SetCMS\RequestAttribute;
 
 final class OAuthIndex
 {
@@ -96,15 +96,7 @@ final class OAuthIndex
      */
     public function logout(ServerRequestInterface $request, OAuthModelCallback $model): OAuthModelCallback
     {
-        $tokens = $this->oauthService->parseTokens(array_filter([
-            $request->getHeader('Authorization')[0] ?? null,
-            $request->getCookieParams()['Authorization'] ?? null,
-        ]));
-
-        if ($tokens) {
-            $token = reset($tokens);
-            $this->oauthService->removeToken($token);
-        }
+        $this->oauthService->removeToken($request->getAttribute(RequestAttribute::ACCESS_TOKEN));
 
         return $model;
     }
@@ -117,8 +109,9 @@ final class OAuthIndex
     public function callback(ServerRequestInterface $request, OAuthModelCallback $model): OAuthModelCallback
     {
         $params = $request->getQueryParams();
+        $params['cms_token'] = $request->getAttribute(RequestAttribute::ACCESS_TOKEN);
         $params['client_id'] = $request->getAttribute('id');
-        
+
         $model->fromArray($params);
 
         if ($model->isValid()) {

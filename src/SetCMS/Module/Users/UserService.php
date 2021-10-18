@@ -34,10 +34,21 @@ class UserService extends OrdinaryService
             $model->addMessage($ex->getMessage(), 'username');
         }
     }
-    
+
     public function getById(int $id): User
     {
         return $this->dao()->getById($id);
+    }
+
+    public function createUser(string $username, string $password): User
+    {
+        $user = $this->entity();
+        $user->username = $username;
+        $user->password(User::hashPassword($password));
+        
+        $this->dao()->save($user);
+        
+        return $user;
     }
 
     public function registation(UserModelRegistration $model): void
