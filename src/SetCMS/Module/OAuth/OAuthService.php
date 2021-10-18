@@ -176,7 +176,7 @@ class OAuthService
         } catch (NotFound $ex) {
             try {
                 $oauthUser = $this->oauthUserDAO->getByExternalIdAndClient($externalId, $oauthClient);
-                $user = $this->userService->getById($oauthUser->id);
+                $user = $this->userService->getById($oauthUser->userId);
             } catch (NotFound $ex) {
                 $oauthUser = new OAuthUser;
                 $user = $this->userService->createUser($oauthClient->name . $externalId, microtime(true));
