@@ -159,30 +159,36 @@ class OAuthService
 
         assert($oauthClient instanceof OAuthClient);
 
+        $externalId = $this->oauthClientDAO->getExternalId($oauthData, $oauthClient);
+
+        if (empty($externalId)) {
+            throw OAuthClientException::internalError('externalId empty');
+        }
+
         try {
             $user = $this->getUserByAccessToken((string) $model->cms_token);
-        } catch (NotFound $ex) {
-            $externalId = $this->oauthClientDAO->getExternalId($oauthData, $oauthClient);
-            
-            if (empty($externalId)) {
-                throw OAuthClientException::internalError('externalId empty');
-            }
 
+            try {
+                $oauthUser = $this->oauthUserDAO->getByExternalIdAndClient($externalId, $oauthClient);
+            } catch (NotFound $ex) {
+                $oauthUser = new OAuthUser;
+            }
+        } catch (NotFound $ex) {
             try {
                 $oauthUser = $this->oauthUserDAO->getByExternalIdAndClient($externalId, $oauthClient);
                 $user = $this->userService->getById($oauthUser->id);
             } catch (NotFound $ex) {
-                $user = $this->userService->createUser($oauthClient->name . $externalId, microtime(true));
-
                 $oauthUser = new OAuthUser;
-                $oauthUser->clientId = $oauthClient->id;
-                $oauthUser->externalId = $externalId;
-                $oauthUser->userId = $user->id;
-                $oauthUser->refreshToken = $oauthData['refresh_token'];
-
-                $this->oauthUserDAO->save($oauthUser);
+                $user = $this->userService->createUser($oauthClient->name . $externalId, microtime(true));
             }
         }
+
+        $oauthUser->clientId = $oauthClient->id;
+        $oauthUser->externalId = $externalId;
+        $oauthUser->userId = $user->id;
+        $oauthUser->refreshToken = $oauthData['refresh_token'] ?? '';
+
+        $this->oauthUserDAO->save($oauthUser);
 
         $oauthToken = $this->generateToken($user, $oauthClient, '+1 year');
 

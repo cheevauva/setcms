@@ -124,9 +124,7 @@ class Migration1634332523 extends \SetCMS\Database\Migration
         $client->loginUrl = $baseUrl . '/OAuth/authorize';
         $client->autorizationCodeUrl = $baseUrl . '/OAuth/token';
         $client->userInfoUrl = $baseUrl . '/Users/userinfo';
-        $client->userInfoParserRule = implode("\n", [
-            'externalId' => 'id',
-        ]);
+        $client->userInfoParserRule = 'id';
 
         $this->oauthClientDAO->save($client);
     }
@@ -142,9 +140,39 @@ class Migration1634332523 extends \SetCMS\Database\Migration
         $client->loginUrl = 'https://accounts.google.com/o/oauth2/v2/auth?scope=openid email profile&access_type=offline&include_granted_scopes=true';
         $client->autorizationCodeUrl = 'https://oauth2.googleapis.com/token';
         $client->userInfoUrl = 'https://www.googleapis.com/oauth2/v1/userinfo?alt=json';
-        $client->userInfoParserRule = implode("\n", [
-            'externalId' => 'id',
-        ]);
+        $client->userInfoParserRule = 'id';
+
+        $this->oauthClientDAO->save($client);
+    }
+
+    protected function addClientYandex($baseUrl)
+    {
+        $client = new OAuthClient;
+        $client->name = 'Yandex';
+        $client->clientId = 'нужно_заменить';
+        $client->isAuthorizable = false;
+        $client->clientSecret = 'нужно_заменить';
+        $client->redirectURI = $baseUrl . '/OAuth/callback/3';
+        $client->loginUrl = 'https://oauth.yandex.ru/authorize';
+        $client->autorizationCodeUrl = 'https://oauth.yandex.ru/token';
+        $client->userInfoUrl = 'https://login.yandex.ru/info';
+        $client->userInfoParserRule = 'id';
+
+        $this->oauthClientDAO->save($client);
+    }
+
+    protected function addClientVk($baseUrl)
+    {
+        $client = new OAuthClient;
+        $client->name = 'VK';
+        $client->clientId = 'нужно_заменить';
+        $client->isAuthorizable = false;
+        $client->clientSecret = 'нужно_заменить';
+        $client->redirectURI = $baseUrl . '/OAuth/callback/4';
+        $client->loginUrl = 'https://oauth.vk.com/authorize?scope=status friends photos&v=5.101';
+        $client->autorizationCodeUrl = 'https://oauth.vk.com/access_token';
+        $client->userInfoUrl = 'https://api.vk.com/method/account.getProfileInfo?access_token={accessToken}&v=5.81';
+        $client->userInfoParserRule = 'user_id';
 
         $this->oauthClientDAO->save($client);
     }
@@ -175,6 +203,8 @@ class Migration1634332523 extends \SetCMS\Database\Migration
 
         $this->addClientSetCMS($baseUrl);
         $this->addClientGoogle($baseUrl);
+        $this->addClientYandex($baseUrl);
+        $this->addClientVk($baseUrl);
         $this->addOAuthUserSetCMS();
     }
 

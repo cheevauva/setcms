@@ -14,21 +14,28 @@ class OAuthClientDAO extends OrdinaryDAO
 
     public function getExternalId(array $oauthData, OAuthClient $oauthClient): ?string
     {
-        $response = (new Client())->request('GET', $oauthClient->userInfoUrl, [
+        if (!empty($oauthData[$oauthClient->userInfoParserRule])) {
+            return (string) $oauthData[$oauthClient->userInfoParserRule];
+        }
+
+        $url = strtr($oauthClient->userInfoUrl, [
+            '{accessToken}' => $oauthData['access_token'],
+        ]);
+        $response = (new Client())->request('GET', $url, [
             RequestOptions::HTTP_ERRORS => false,
             RequestOptions::HEADERS => [
                 'Accept' => 'application/json',
-                'Authorization' => $oauthData['token_type'] . ' ' . $oauthData['access_token']
+                'Authorization' => implode(' ', array_filter([$oauthData['token_type'] ?? null, $oauthData['access_token']]))
             ],
         ]);
-        
+
         $data = json_decode($response->getBody()->getContents(), true);
 
         if (!empty($data['error'])) {
             throw OAuthClientException::autorizationCodeFail($data['error_description'] ?? json_encode($data, JSON_UNESCAPED_UNICODE));
         }
 
-        return $data[$oauthClient->userInfoParserRule] ?? null;
+        return (string) $data[$oauthClient->userInfoParserRule] ?? null;
     }
 
     public function getTokenByAuthorizationCodeAndClient(string $code, OAuthClient $oauthClient): array
