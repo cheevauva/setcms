@@ -24,9 +24,13 @@ class ConnectionFactory
         if (!isset($this->connectionsMetadata[$connection])) {
             throw DatabaseExeption::notFound($connection);
         }
-        
+
         if (empty($this->connections[$connection])) {
             $metadata = $this->connectionsMetadata[$connection];
+
+            if (is_string($metadata) && $this->connectionsMetadata[$metadata]) {
+                $metadata = $this->connectionsMetadata[$metadata];
+            }
 
             foreach ($metadata as $index => $value) {
                 $metadata[$index] = str_replace(':basePath', $this->basePath, $value);

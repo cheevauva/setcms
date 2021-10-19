@@ -1,44 +1,17 @@
 <?php
 
 return [
-    \SetCMS\Module\Migrations\MigrationDAO::class => [
-        'path' => ':basePath/cache/main.db', // migrations.db
-        'driver' => 'pdo_sqlite',
-        'charset' => 'UTF8',
-    ],
-    \SetCMS\Module\Posts\PostDAO::class => [
-        'path' => ':basePath/cache/main.db', // posts.db
-        'driver' => 'pdo_sqlite',
-        'charset' => 'UTF8',
-    ],
-    \SetCMS\Module\Users\UserDAO::class => [
-        'path' => ':basePath/cache/main.db', // users.db
-        'driver' => 'pdo_sqlite',
-        'charset' => 'UTF8',
-    ],
-    SetCMS\Module\Pages\PageDAO::class => [
-        'path' => ':basePath/cache/main.db', // pages.db
-        'driver' => 'pdo_sqlite',
-        'charset' => 'UTF8',
-    ],
-    SetCMS\Module\OAuth\OAuthClientDAO::class => [
+    \SetCMS\Database\ConnectionFactory::class => [
         'path' => ':basePath/cache/main.db',
         'driver' => 'pdo_sqlite',
         'charset' => 'UTF8',
     ],
-    \SetCMS\Module\OAuth\OAuthTokenDAO::class => [
-        'path' => ':basePath/cache/main.db',
-        'driver' => 'pdo_sqlite',
-        'charset' => 'UTF8',
-    ],
-    \SetCMS\Module\OAuth\OAuthCodeDAO::class => [
-        'path' => ':basePath/cache/main.db',
-        'driver' => 'pdo_sqlite',
-        'charset' => 'UTF8',
-    ],
-    \SetCMS\Module\OAuth\OAuthUserDAO::class => [
-        'path' => ':basePath/cache/main.db',
-        'driver' => 'pdo_sqlite',
-        'charset' => 'UTF8',
-    ],
+    \SetCMS\Module\Migrations\MigrationDAO::class => \SetCMS\Database\ConnectionFactory::class,
+    \SetCMS\Module\Posts\PostDAO::class => \SetCMS\Database\ConnectionFactory::class,
+    \SetCMS\Module\Users\UserDAO::class => \SetCMS\Database\ConnectionFactory::class,
+    \SetCMS\Module\Pages\PageDAO::class => \SetCMS\Database\ConnectionFactory::class,
+    \SetCMS\Module\OAuth\OAuthClientDAO::class => \SetCMS\Database\ConnectionFactory::class,
+    \SetCMS\Module\OAuth\OAuthTokenDAO::class => \SetCMS\Database\ConnectionFactory::class,
+    \SetCMS\Module\OAuth\OAuthCodeDAO::class => \SetCMS\Database\ConnectionFactory::class,
+    \SetCMS\Module\OAuth\OAuthUserDAO::class => \SetCMS\Database\ConnectionFactory::class,
 ];
