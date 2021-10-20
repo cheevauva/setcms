@@ -2,7 +2,7 @@
 {% import setcms.path('macros/controls.twig') as controls %}
 
 {% block content_toolbar %}
-    <a href="{{ setcms.link('action_admin', {module: currentModule, action:'saveform'}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
+    <a href="{{ setcms.link('action_admin', {module: setcms.currentModule, action:'saveform'}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
 {% endblock %}
 
 {% block content_title %}Страницы{% endblock %}

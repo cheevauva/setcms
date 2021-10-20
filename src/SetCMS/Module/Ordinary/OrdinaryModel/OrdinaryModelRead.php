@@ -8,9 +8,9 @@ class OrdinaryModelRead extends OrdinaryModel
 {
 
     /**
-     * @setcms-type-int
-     * @var int
+     * @setcms-type-string
+     * @var string
      */
-    public int $id = 0;
+    public string $id = '';
 
 }

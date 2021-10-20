@@ -8,7 +8,7 @@ use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModel;
 class OAuthClientModelSave extends OrdinaryModel
 {
 
-    public ?int $id = null;
+    public string $id = '';
 
     /**
      * @setcms-required

@@ -9,7 +9,7 @@ class OAuthCode extends OrdinaryEntity
 
     public string $code;
     public string $clientId;
-    public int $userId;
+    public string $userId;
 
     public static function generateCode(): string
     {

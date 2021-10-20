@@ -37,7 +37,6 @@ class Migration1634332523 extends \SetCMS\Database\Migration
         }
 
         $table = new Table('oauth_clients');
-        $table->addColumn('id', 'integer')->setAutoincrement(true);
         $table->addColumn('name', 'string')->setLength(255);
         $table->addColumn('client_id', 'string')->setLength(255)->setNotnull(false);
         $table->addColumn('client_secret', 'string')->setLength(255)->setNotnull(false);
@@ -49,6 +48,9 @@ class Migration1634332523 extends \SetCMS\Database\Migration
         $table->addColumn('userinfo_parser_rule', 'text')->setNotnull(false);
         $table->addColumn('date_created', 'datetime');
         $table->addColumn('date_modified', 'datetime');
+        $table->addColumn('id', 'string')->setLength(36);
+        $table->addUniqueIndex(['id']);
+        $table->setPrimaryKey(['id']);
 
         $schemaManager->createTable($table);
     }
@@ -62,14 +64,16 @@ class Migration1634332523 extends \SetCMS\Database\Migration
         }
 
         $table = new Table('oauth_tokens');
-        $table->addColumn('id', 'integer')->setAutoincrement(true);
         $table->addColumn('token', 'string')->setLength(255);
         $table->addColumn('refresh_token', 'string')->setLength(255);
-        $table->addColumn('client_id', 'integer')->setNotnull(true);
-        $table->addColumn('user_id', 'integer')->setNotnull(true);
+        $table->addColumn('client_id', 'string')->setLength(36);
+        $table->addColumn('user_id', 'string')->setLength(36);
         $table->addColumn('date_expired', 'datetime')->setNotnull(true);
         $table->addColumn('date_created', 'datetime');
         $table->addColumn('date_modified', 'datetime');
+        $table->addColumn('id', 'string')->setLength(36);
+        $table->addUniqueIndex(['id']);
+        $table->setPrimaryKey(['id']);
 
         $schemaManager->createTable($table);
     }
@@ -83,12 +87,14 @@ class Migration1634332523 extends \SetCMS\Database\Migration
         }
 
         $table = new Table('oauth_codes');
-        $table->addColumn('id', 'integer')->setAutoincrement(true);
         $table->addColumn('code', 'string')->setLength(255);
-        $table->addColumn('client_id', 'integer')->setNotnull(true);
-        $table->addColumn('user_id', 'integer')->setNotnull(true);
+        $table->addColumn('client_id', 'integer')->setLength(36);
+        $table->addColumn('user_id', 'integer')->setLength(36);
         $table->addColumn('date_created', 'datetime');
         $table->addColumn('date_modified', 'datetime');
+        $table->addColumn('id', 'string')->setLength(36);
+        $table->addUniqueIndex(['id']);
+        $table->setPrimaryKey(['id']);
 
         $schemaManager->createTable($table);
     }
@@ -102,42 +108,59 @@ class Migration1634332523 extends \SetCMS\Database\Migration
         }
 
         $table = new Table('oauth_users');
-        $table->addColumn('id', 'integer')->setAutoincrement(true);
-        $table->addColumn('client_id', 'integer')->setNotnull(true);
-        $table->addColumn('user_id', 'integer')->setNotnull(true);
+        $table->addColumn('client_id', 'integer')->setLength(36);
+        $table->addColumn('user_id', 'integer')->setLength(36);
         $table->addColumn('external_id', 'text');
         $table->addColumn('refresh_token', 'string')->setLength(255);
         $table->addColumn('date_created', 'datetime');
         $table->addColumn('date_modified', 'datetime');
+        $table->addColumn('id', 'string')->setLength(36);
+        $table->addUniqueIndex(['id']);
+        $table->setPrimaryKey(['id']);
 
         $schemaManager->createTable($table);
     }
 
-    protected function addClientSetCMS($baseUrl)
+    protected function addClientSetCMS($baseUrl): OAuthClient
     {
         $client = new OAuthClient;
         $client->name = 'SetCMS';
-        $client->clientId = 1;
+        $client->clientId = $client->id;
         $client->isAuthorizable = true;
         $client->clientSecret = OAuthClient::generateSecret();
-        $client->redirectURI = $baseUrl . '/OAuth/callback/1';
+        $client->redirectURI = $baseUrl . '/OAuth/callback/' . $client->id;
         $client->loginUrl = $baseUrl . '/OAuth/authorize';
         $client->autorizationCodeUrl = $baseUrl . '/OAuth/token';
         $client->userInfoUrl = $baseUrl . '/Users/userinfo';
         $client->userInfoParserRule = 'id';
 
         $this->oauthClientDAO->save($client);
+
+        return $client;
+    }
+    
+    protected function getAnyAdminId(): string
+    {
+        $qb = $this->dbal()->createQueryBuilder();
+        $qb->select('id');
+        $qb->from('users');
+        $qb->setMaxResults(1);
+        $qb->andWhere('is_admin = 1');
+        
+        return $qb->fetchOne();
     }
 
-    protected function addOAuthUserSetCMS()
+    protected function addOAuthUserSetCMS(OAuthClient $client): OAuthUser
     {
         $oauthUser = new OAuthUser;
-        $oauthUser->clientId = 1;
-        $oauthUser->externalId = 1;
+        $oauthUser->clientId = $client->id;
+        $oauthUser->externalId = $this->getAnyAdminId();
         $oauthUser->refreshToken = '';
-        $oauthUser->userId = 1;
+        $oauthUser->userId = $this->getAnyAdminId();
 
         $this->oauthUserDAO->save($oauthUser);
+
+        return $oauthUser;
     }
 
     public function up(): void
@@ -153,8 +176,8 @@ class Migration1634332523 extends \SetCMS\Database\Migration
             $baseUrl = 'http://localhost/index.php';
         }
 
-        $this->addClientSetCMS($baseUrl);
-        $this->addOAuthUserSetCMS();
+        $oauthClient = $this->addClientSetCMS($baseUrl);
+        $oauthUser = $this->addOAuthUserSetCMS($oauthClient);
     }
 
 }

@@ -77,7 +77,7 @@ class OAuthService
     public function tokenByPassword(OAuthModelTokenPassword $model): void
     {
         try {
-            $oauthClient = $this->oauthClientDAO->getById($model->client_id);
+            $oauthClient = $this->oauthClientDAO->get($model->client_id);
             $user = $this->userService->getByUsernameAndPassword($model->username, $model->password);
 
             $model->entity($this->generateToken($user, $oauthClient));
@@ -88,13 +88,13 @@ class OAuthService
 
     public function tokenByAuthorizationCode(OAuthModelTokenAuthorizationCode $model): void
     {
-        $oauthClient = $this->oauthClientDAO->getById($model->client_id);
+        $oauthClient = $this->oauthClientDAO->get($model->client_id);
         $oauthCode = $this->oauthCodeDAO->getByCodeAndClientId($model->code, $oauthClient->id);
         $user = $this->userService->getById($oauthCode->userId);
 
         $model->entity($this->generateToken($user, $oauthClient));
 
-        $this->oauthCodeDAO->remove($oauthCode);
+        $this->oauthCodeDAO->remove($oauthCode->id);
     }
 
     public function parseTokens(array $tokens): array
@@ -129,7 +129,7 @@ class OAuthService
     {
         $oauthToken = $this->oauthTokenDAO->getByAccessToken($token);
 
-        $this->oauthTokenDAO->remove($oauthToken);
+        $this->oauthTokenDAO->remove($oauthToken->id);
     }
 
     public function getUserByAccessToken(string $token): User
@@ -184,7 +184,7 @@ class OAuthService
 
     public function callback(OAuthModelCallback $model): void
     {
-        $oauthClient = $this->oauthClientDAO->getById($model->client_id);
+        $oauthClient = $this->oauthClientDAO->get($model->client_id);
         $oauthData = $this->oauthClientDAO->getTokenByAuthorizationCodeAndClient($model->code, $oauthClient);
 
         assert($oauthClient instanceof OAuthClient);
@@ -228,7 +228,7 @@ class OAuthService
     public function authorize(OAuthModelAuthorize $model): void
     {
         try {
-            $client = $this->oauthClientDAO->getById($model->client_id);
+            $client = $this->oauthClientDAO->get($model->client_id);
         } catch (OAuthClientException $ex) {
             $model->addMessage($ex->getMessage(), 'client_id');
         }

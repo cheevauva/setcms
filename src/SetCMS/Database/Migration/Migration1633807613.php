@@ -23,10 +23,12 @@ class Migration1633807613 extends Migration
         }
 
         $table = new Table('migrations');
-        $table->addColumn('id', 'integer')->setAutoincrement(true);
         $table->addColumn('migration', 'string')->setLength(255);
         $table->addColumn('date_created', 'datetime');
         $table->addColumn('date_modified', 'datetime');
+        $table->addColumn('id', 'string')->setLength(36);
+        $table->addUniqueIndex(['id']);
+        $table->setPrimaryKey(['id']);
 
         $schemaManager->createTable($table);
     }

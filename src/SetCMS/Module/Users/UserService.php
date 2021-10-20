@@ -35,9 +35,9 @@ class UserService extends OrdinaryService
         }
     }
 
-    public function getById(int $id): User
+    public function getById(string $id): User
     {
-        return $this->dao()->getById($id);
+        return $this->dao()->get($id);
     }
 
     public function createUser(string $username, string $password): User

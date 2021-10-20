@@ -17,7 +17,7 @@ class PostService extends OrdinaryService
         if ($model instanceof PostModelRead && $model->slug) {
             $entity = $this->dao()->getBySlug($model->slug);
         } else {
-            $entity = $this->dao()->getById($model->id);
+            $entity = $this->dao()->get($model->id);
         }
         
         $model->entity($entity);

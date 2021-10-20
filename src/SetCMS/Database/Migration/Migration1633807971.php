@@ -33,13 +33,15 @@ class Migration1633807971 extends \SetCMS\Database\Migration
         }
 
         $table = new Table('users');
-        $table->addColumn('id', 'integer')->setAutoincrement(true);
         $table->addColumn('username', 'string')->setLength(30);
         $table->addColumn('password', 'string')->setLength(30);
         $table->addColumn('is_admin', 'boolean');
         $table->addColumn('date_created', 'datetime');
         $table->addColumn('date_modified', 'datetime');
-
+        $table->addColumn('id', 'string')->setLength(36);
+        $table->addUniqueIndex(['id']);
+        $table->setPrimaryKey(['id']);
+        
         $schemaManager->createTable($table);
 
         $user = new User;

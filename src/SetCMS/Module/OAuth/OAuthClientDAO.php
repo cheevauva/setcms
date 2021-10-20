@@ -57,6 +57,11 @@ class OAuthClientDAO extends OrdinaryDAO
 
         $data = json_decode($response->getBody()->getContents(), true);
 
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            $response->getBody()->rewind();
+            throw OAuthClientException::autorizationCodeFail($response->getBody()->getContents());
+        }
+
         if (!empty($data['error'])) {
             throw OAuthClientException::autorizationCodeFail($data['error_description']);
         }

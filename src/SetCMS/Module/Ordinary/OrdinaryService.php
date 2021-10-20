@@ -19,7 +19,7 @@ abstract class OrdinaryService
 
     public function read(OrdinaryModelRead $model): void
     {
-        $model->entity($this->dao()->getById($model->id));
+        $model->entity($this->dao()->get($model->id));
     }
 
     public function list(OrdinaryModelList $model): void
@@ -29,7 +29,7 @@ abstract class OrdinaryService
 
     public function save(OrdinaryModel $model): void
     {
-        $model->entity(!empty($model->id) ? $this->dao()->getById((int) $model->id) : $this->entity());
+        $model->entity($this->dao()->has($model->id) ? $this->dao()->get($model->id) : $this->entity());
         $model->entity()->dateModified = new \DateTime;
 
         $this->dao()->save($model->entity());

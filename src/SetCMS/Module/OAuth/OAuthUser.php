@@ -9,7 +9,7 @@ class OAuthUser extends OrdinaryEntity
 
     public string $refreshToken;
     public string $externalId;
-    public int $clientId;
-    public int $userId;
+    public string $clientId;
+    public string $userId;
 
 }

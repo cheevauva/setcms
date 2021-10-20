@@ -69,24 +69,33 @@ abstract class OrdinaryDAO
         return $this->record2entity($row);
     }
 
-    public function getById(int $id): OrdinaryEntity
+    public function get(string $id): OrdinaryEntity
     {
         return $this->getBy(['id' => $id]);
     }
-    
-    public function remove(OrdinaryEntity $entity): void
+
+    public function remove(string $id): void
     {
-        $this->dbal()->delete($this->getTableName(), ['id' => $entity->id]);
+        $this->dbal()->delete($this->getTableName(), ['id' => $id]);
+    }
+
+    public function has(string $id): bool
+    {
+        $qb = $this->dbal()->createQueryBuilder();
+        $qb->select('id');
+        $qb->from($this->getTableName());
+        $qb->where('id = :id');
+        $qb->setParameter('id', $id);
+
+        return (bool) $qb->fetchOne();
     }
 
     public function save(OrdinaryEntity $entity): void
     {
         $db = $this->dbal();
 
-        if (empty($entity->id)) {
+        if (!$this->has($entity->id)) {
             $db->insert($this->getTableName(), $this->entity2record($entity));
-
-            $entity->id = $db->lastInsertId();
         } else {
             $db->update($this->getTableName(), $this->entity2record($entity), ['id' => $entity->id]);
         }
@@ -94,6 +103,7 @@ abstract class OrdinaryDAO
 
     protected function ordinaryEntity2RecordBind(OrdinaryEntity $entity, $record): array
     {
+        $record['id'] = $entity->id;
         $record['date_created'] = $entity->dateCreated->format('Y-m-d H:i:s');
         $record['date_modified'] = $entity->dateModified->format('Y-m-d H:i:s');
 
@@ -102,7 +112,7 @@ abstract class OrdinaryDAO
 
     protected function ordinaryRecord2EntityBind($record, OrdinaryEntity $entity): OrdinaryEntity
     {
-        $entity->id = (int) $record['id'];
+        $entity->id = $record['id'];
         $entity->dateCreated = new \DateTime($record['date_created']);
         $entity->dateModified = new \DateTime($record['date_modified']);
 
