@@ -1,0 +1,53 @@
+[
+    {
+        "name": "",
+        "clientId": "нужно_заменить",
+        "clientSecret": "нужно_заменить",
+        "redirectURI": "{setcms_host}/OAuth/callback/{id}",
+        "loginUrl": "",
+        "autorizationCodeUrl": "",
+        "userInfoUrl": "",
+        "userInfoParserRule": ""
+    },
+    {
+        "name": "Facebook",
+        "clientId": "нужно_заменить",
+        "clientSecret": "нужно_заменить",
+        "redirectURI": "{setcms_host}/OAuth/callback/{id}",
+        "loginUrl": "https://www.facebook.com/v12.0/dialog/oauth",
+        "autorizationCodeUrl": "https://graph.facebook.com/v12.0/oauth/access_token",
+        "userInfoUrl": "https://graph.facebook.com/v12.0/me?access_token={accessToken}",
+        "userInfoParserRule": "id"
+    },
+    {
+        "name": "VK",
+        "clientId": "нужно_заменить",
+        "clientSecret": "нужно_заменить",
+        "redirectURI": "{setcms_host}/OAuth/callback/{id}",
+        "loginUrl": "https://oauth.vk.com/authorize?scope=status friends photos&v=5.101",
+        "autorizationCodeUrl": "https://oauth.vk.com/access_token",
+        "userInfoUrl": "https://api.vk.com/method/account.getProfileInfo?access_token={accessToken}&v=5.81",
+        "userInfoParserRule": "user_id"
+    },
+    {
+        "name": "Yandex",
+        "clientId": "нужно_заменить",
+        "clientSecret": "нужно_заменить",
+        "redirectURI": "{setcms_host}/OAuth/callback/{id}",
+        "loginUrl": "https://oauth.yandex.ru/authorize",
+        "autorizationCodeUrl": "https://oauth.yandex.ru/token",
+        "userInfoUrl": "https://login.yandex.ru/info",
+        "userInfoParserRule": "id"
+    },
+    {
+        "name": "Google",
+        "clientId": "нужно_заменить",
+        "clientSecret": "нужно_заменить",
+        "redirectURI": "{setcms_host}/OAuth/callback/{id}",
+        "loginUrl": "https://accounts.google.com/o/oauth2/v2/auth?scope=openid email profile&access_type=offline&include_granted_scopes=true",
+        "autorizationCodeUrl": "https://oauth2.googleapis.com/token",
+        "userInfoUrl": "https://www.googleapis.com/oauth2/v1/userinfo?alt=json",
+        "userInfoParserRule": "id"
+    }
+]
+

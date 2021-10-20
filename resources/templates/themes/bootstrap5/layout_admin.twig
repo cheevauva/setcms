@@ -55,7 +55,7 @@
             <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
             <div class="navbar-nav">
                 <div class="nav-item text-nowrap">
-                    <a class="nav-link px-3" href="{{ setcms.link('action', {module: 'Users', action: 'logout'}) }}">Выйти</a>
+                    <a class="nav-link px-3" href="{{ setcms.link('action', {module: 'OAuth', action: 'logout'}) }}">Выйти</a>
                 </div>
             </div>
         </header>
@@ -233,6 +233,9 @@
             </div>
         </div>
         {% include setcms.path('assets.twig') %}
+        {% block styles %}{% endblock %}
+        {% block javascript %}{% endblock %}
+
         <style>
             body {
                 font-size: .875rem;

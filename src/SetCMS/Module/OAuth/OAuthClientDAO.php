@@ -12,16 +12,13 @@ use SetCMS\Module\OAuth\OAuthClient;
 class OAuthClientDAO extends OrdinaryDAO
 {
 
-    public function getExternalId(array $oauthData, OAuthClient $oauthClient): ?string
+    public function getResource(string $url, array $oauthData): ?array
     {
-        if (!empty($oauthData[$oauthClient->userInfoParserRule])) {
-            return (string) $oauthData[$oauthClient->userInfoParserRule];
-        }
-
-        $url = strtr($oauthClient->userInfoUrl, [
+        $preparedUrl = strtr($url, [
             '{accessToken}' => $oauthData['access_token'],
         ]);
-        $response = (new Client())->request('GET', $url, [
+
+        $response = (new Client())->request('GET', $preparedUrl, [
             RequestOptions::HTTP_ERRORS => false,
             RequestOptions::HEADERS => [
                 'Accept' => 'application/json',
@@ -35,7 +32,7 @@ class OAuthClientDAO extends OrdinaryDAO
             throw OAuthClientException::autorizationCodeFail($data['error_description'] ?? json_encode($data, JSON_UNESCAPED_UNICODE));
         }
 
-        return (string) $data[$oauthClient->userInfoParserRule] ?? null;
+        return $data;
     }
 
     public function getTokenByAuthorizationCodeAndClient(string $code, OAuthClient $oauthClient): array

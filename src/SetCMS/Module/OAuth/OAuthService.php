@@ -152,6 +152,36 @@ class OAuthService
         return $oauthCode;
     }
 
+    private function getValueFromNestedArrayByPath(array $array, string $path)
+    {
+        $address = explode('.', $path);
+        $count = count($address);
+        $val = $array;
+
+        for ($i = 0; $i < $count; $i++) {
+            if (isset($val[$address[$i]])) {
+                $val = $val[$address[$i]];
+            } else {
+                return null;
+            }
+        }
+
+        return $val;
+    }
+
+    public function getExternalId($oauthData, OAuthClient $oauthClient)
+    {
+        $externalId = $this->getValueFromNestedArrayByPath($oauthData, $oauthClient->userInfoParserRule);
+
+        if (!empty($externalId)) {
+            return $externalId;
+        }
+
+        $data = $this->oauthClientDAO->getResource($oauthClient->userInfoUrl, $oauthData);
+
+        return $this->getValueFromNestedArrayByPath($data, $oauthClient->userInfoParserRule);
+    }
+
     public function callback(OAuthModelCallback $model): void
     {
         $oauthClient = $this->oauthClientDAO->getById($model->client_id);
@@ -159,7 +189,7 @@ class OAuthService
 
         assert($oauthClient instanceof OAuthClient);
 
-        $externalId = $this->oauthClientDAO->getExternalId($oauthData, $oauthClient);
+        $externalId = $this->getExternalId($oauthData, $oauthClient);
 
         if (empty($externalId)) {
             throw OAuthClientException::internalError('externalId empty');

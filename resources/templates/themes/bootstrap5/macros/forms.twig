@@ -35,6 +35,22 @@
     <input name="{{ params.name }}" type="hidden" value="{{ params.value }}">
 {% endmacro %}
 
+{% macro select(params) %}
+    {% set value = params.value %}
+    {% if params.entity %}
+        {% set value = attribute(params.entity, params.name) %}
+    {% endif %}
+    {% if params.label %}
+        <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
+    {% endif %}
+    <div class="mb-2">
+        <select name="{{ params.name }}" class="form-control">
+            {% for val, option in params.options %}
+                <option value="{{ loop.index }}" {% if val == value %}selected="selected"{% endif %}>{{ option }}</option>
+            {% endfor %}
+        </select>
+    </div>
+{% endmacro %}
 
 {% macro textarea(params) %}
     {% set value = params.value %}
