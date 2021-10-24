@@ -41,15 +41,25 @@ class Migration1633807971 extends \SetCMS\Database\Migration
         $table->addColumn('id', 'string')->setLength(36);
         $table->addUniqueIndex(['id']);
         $table->setPrimaryKey(['id']);
-        
+
         $schemaManager->createTable($table);
 
-        $user = new User;
-        $user->username = 'admin';
-        $user->password(User::hashPassword('administrator'));
-        $user->isAdmin = true;
 
-        $this->userDAO->save($user);
+        $guest = new User;
+        $guest->id = -1;
+        $guest->username = 'guest';
+        $guest->password('guest');
+        $guest->isAdmin = false;
+
+        $this->userDAO->save($guest);
+
+        $admin = new User;
+        $admin->id = 1;
+        $admin->username = 'admin';
+        $admin->password(User::hashPassword('administrator'));
+        $admin->isAdmin = true;
+
+        $this->userDAO->save($admin);
     }
 
 }

@@ -7,13 +7,10 @@
 
 {% block content %}
     <form class="setcms-form g-3" 
-          setcms-action="{{ setcms.link('do_action_admin', {module: entity.module, action: 'save'}) }}" 
+          {{ forms.resourceCreateUpdateAction(model, entity) }}
           setcms-redirect="{{ setcms.link('action_admin', {module: entity.module, action: 'index'}) }}"
           >
-        {% if entity.id %}
-            {{ forms.hidden({name: 'id', value: entity.id }) }}
-        {% endif %}
-
+        {{ forms.hidden({name: 'id', value: entity.id }) }}
         {{ forms.select({name: 'preset', label: 'Пресет' }) }}
         {{ forms.input({value: entity.name, name: 'name', type: 'text', label: 'Название'}) }}
         {{ forms.input({entity: entity, name: 'clientId', type: 'text', label: 'Client ID'}) }}
@@ -38,7 +35,7 @@
                     $('[name="preset"]').append($('<option>').text(item.name).val(index))
                 })
             });
-            
+
             $('[name="preset"]').on('change', function () {
                 var index = $(this).val();
                 $.get('js/oauth/clients.json').done(function (data) {

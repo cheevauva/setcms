@@ -96,7 +96,17 @@ final class OAuthIndex
      */
     public function logout(ServerRequestInterface $request, OAuthModelCallback $model): OAuthModelCallback
     {
-        $this->oauthService->removeToken($request->getAttribute(RequestAttribute::ACCESS_TOKEN));
+        $token = $request->getAttribute(RequestAttribute::ACCESS_TOKEN);
+
+        if (empty($token) || $token === 'guest') {
+            return $model;
+        }
+
+        try {
+            $this->oauthService->removeToken($token);
+        } catch (\Exception $ex) {
+            return $model;
+        }
 
         return $model;
     }

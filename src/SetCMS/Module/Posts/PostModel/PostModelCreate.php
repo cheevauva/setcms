@@ -10,8 +10,8 @@ class PostModelCreate extends OrdinaryModel
 {
 
     public string $slug = '';
-    public string $title = 'Новая тема';
-    public string $message = 'Новое сообщение';
+    public string $title = '';
+    public string $message = '';
 
     public function bind(OrdinaryEntity $entity): Post
     {

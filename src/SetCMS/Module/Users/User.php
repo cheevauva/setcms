@@ -10,6 +10,7 @@ class User extends OrdinaryEntity
     public string $username;
     public bool $isAdmin = false;
     protected string $password;
+    public string $role;
 
     public static function hashPassword(string $password): string
     {

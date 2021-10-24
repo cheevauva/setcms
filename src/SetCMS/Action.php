@@ -44,8 +44,6 @@ class Action
         }
 
         $this->action = (new \ReflectionClass($this->getControllerClassName()))->getMethod($action);
-
-        $this->getController();
     }
 
     public function hasResponseHeaders(): bool
@@ -56,16 +54,6 @@ class Action
     public function isCSRFProtectEnabled(): bool
     {
         return strpos($this->getComment(), VarDoc::CSRF_PROTECT_DISABLED) === false;
-    }
-
-    public function isNeedAuth(): bool
-    {
-        return strpos($this->getComment(), VarDoc::NEED_AUTH) !== false;
-    }
-
-    public function isNeedNotAuth(): bool
-    {
-        return strpos($this->getComment(), VarDoc::NEED_NOAUTH) !== false;
     }
 
     public function getWrapper(): ?string
@@ -85,6 +73,10 @@ class Action
 
     public function getContentType(): string
     {
+        if ($this->section === 'Resource') {
+            return 'json';
+        }
+
         $comment = $this->getComment();
         $contentTypes = [
             VarDoc::RESPONSE_HTML => 'html',
@@ -115,20 +107,13 @@ class Action
         return sprintf('%s%s', $this->module->getPrefix(), ucfirst($this->section));
     }
 
-    private function getController()
+    public function isAllowRequestMethod(): bool
     {
-        $comment = $this->action->getDocComment();
-
-        if (stripos($comment, VarDoc::PREFIX_METHOD . strtolower($this->method)) === false) {
-            throw ModuleException::notAllowActionForThatRequestMethod($this->module, $this->section, $this->action->getName(), $this->method);
+        if ($this->section === 'Resource') {
+            return true;
         }
 
-        return;
-    }
-
-    public function isAdmin(): bool
-    {
-        return strtolower($this->section) === 'admin';
+        return stripos($this->action->getDocComment(), VarDoc::PREFIX_METHOD . strtolower($this->method)) !== false;
     }
 
     public function getComment(): string

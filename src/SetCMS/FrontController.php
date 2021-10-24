@@ -14,6 +14,7 @@ use SetCMS\Module\Users\User;
 use SetCMS\Module\Users\UserException;
 use SetCMS\Module\OAuth\OAuthService;
 use SetCMS\RequestAttribute;
+use SetCMS\ACL;
 
 class FrontController
 {
@@ -27,8 +28,9 @@ class FrontController
     protected UserDAO $userDAO;
     protected ?User $currentUser = null;
     protected OAuthService $oauthService;
+    protected ACL $acl;
 
-    public function __construct(ContainerInterface $container, string $basePath, array $config)
+    public function __construct(ContainerInterface $container, string $basePath, array $config, ACL $acl)
     {
         $this->container = $container;
         $this->router = $container->get(Router::class);
@@ -38,10 +40,22 @@ class FrontController
         $this->config = $config;
         $this->router->addRoutes(require $this->basePath . '/resources/routes.php');
         $this->headers = require $this->basePath . '/resources/headers.php';
+        $this->acl = $acl;
+        $this->acl->setup(require $this->basePath . '/resources/acl.php');
     }
 
     public function execute(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
+        switch ($request->getMethod()) {
+            case 'PUT':
+            case 'DELETE':
+            case 'POST':
+                if (strpos($request->getHeaderLine('Accept'), 'application/json') !== false && $request->getBody()->getContents()) {
+                    $request = $request->withParsedBody(json_decode($request->getBody()->getContents(), true));
+                }
+                break;
+        }
+
         $this->request = $request;
 
         try {
@@ -105,9 +119,15 @@ class FrontController
         if ($token && !$this->currentUser) {
             try {
                 $this->currentUser = $this->oauthService->getUserByAccessToken($token);
+                $this->currentUser->role = $this->currentUser->isAdmin ? 'admin' : 'user';
             } catch (\Exception $ex) {
                 $this->currentUser = null;
             }
+        }
+
+        if (!$this->currentUser) {
+            $this->currentUser = $this->oauthService->getUserByAccessToken('guest');
+            $this->currentUser->role = 'guest';
         }
 
         return $this->currentUser;
@@ -179,7 +199,7 @@ class FrontController
             return $response->withHeader('X-CSRF-Token', $token)->withHeader('Set-Cookie', sprintf('X-CSRF-Token=%s;Path=/;SameSite=Strict', $token));
         }
 
-        if (in_array($request->getMethod(), ['POST', 'PUT', 'DELETE', 'PATCH'], true)) {
+        if (in_array($request->getMethod(), ['POST'], true)) {
             if (empty($request->getCookieParams()['X-CSRF-Token']) || empty($request->getHeader('X-CSRF-Token')[0])) {
                 throw ModuleException::badRequest('Один из CSRF токенов пуст');
             }
@@ -218,21 +238,30 @@ class FrontController
         $this->request = $request;
 
         $action = new Action($request);
+        $currentUser = $this->getCurrentUser();
+
+        if (!$action->isAllowRequestMethod()) {
+            throw ModuleException::notAllowActionForThatRequestMethod($action->getModule(), $action->getSection(), $action->getAction()->getName(), $request->getMethod());
+        }
+
+        switch ($action->getSection()) {
+            case 'Resource':
+                $resource = $request->getAttribute('resource');
+                $rule = $request->getAttribute('action');
+                break;
+            case 'Index':
+            case 'Admin':
+                $resource = (string) $action->getModule();
+                $rule = $action->getAction()->getDeclaringClass()->getShortName() . '::' . $action->getAction()->getName();
+                break;
+        }
+
+        if (!$this->acl->isAllowed($currentUser->role, $resource, $rule)) {
+            throw ModuleException::notAllow();
+        }
 
         if ($action->isCSRFProtectEnabled()) {
             $response = $this->csrfProtect($request, $response);
-        }
-
-        if ($action->isNeedAuth() && !$this->getCurrentUser()) {
-            throw UserException::notAuthorized();
-        }
-
-        if ($action->isNeedNotAuth() && $this->getCurrentUser()) {
-            throw UserException::alreadyAuthorized();
-        }
-
-        if ($action->isAdmin() && !$this->isAdmin()) {
-            throw UserException::onlyAdmin();
         }
 
         $model = $this->invokeAction($action);

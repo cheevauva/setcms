@@ -31,7 +31,7 @@ class ModuleException extends \Exception
         };
     }
 
-    public static function notAllow(string $message): self
+    public static function notAllow(string $message = 'Доступ запрещен'): self
     {
         return new class($message) extends ModuleException implements Forbidden {
             

@@ -8,19 +8,23 @@ use SetCMS\Module\OAuth\OAuthClientDAO;
 use SetCMS\Module\OAuth\OAuthClient;
 use SetCMS\Module\OAuth\OAuthUserDAO;
 use SetCMS\Module\OAuth\OAuthUser;
+use SetCMS\Module\OAuth\OAuthTokenDAO;
+use SetCMS\Module\OAuth\OAuthToken;
 
 class Migration1634332523 extends \SetCMS\Database\Migration
 {
 
     private OAuthClientDAO $oauthClientDAO;
     private OAuthUserDAO $oauthUserDAO;
-
-    public function __construct(ConnectionFactory $connectionFactory, OAuthClientDAO $oauthClientDAO, OAuthUserDAO $oauthUserDAO)
+    private OAuthTokenDAO $oauthTokenDAO;
+    
+    public function __construct(ConnectionFactory $connectionFactory, OAuthClientDAO $oauthClientDAO, OAuthUserDAO $oauthUserDAO, OAuthTokenDAO $oauthTokenDAO)
     {
         parent::__construct($connectionFactory);
 
         $this->oauthClientDAO = $oauthClientDAO;
         $this->oauthUserDAO = $oauthUserDAO;
+        $this->oauthTokenDAO = $oauthTokenDAO;
     }
 
     public function dbal(): \Doctrine\DBAL\Connection
@@ -138,29 +142,33 @@ class Migration1634332523 extends \SetCMS\Database\Migration
 
         return $client;
     }
-    
-    protected function getAnyAdminId(): string
-    {
-        $qb = $this->dbal()->createQueryBuilder();
-        $qb->select('id');
-        $qb->from('users');
-        $qb->setMaxResults(1);
-        $qb->andWhere('is_admin = 1');
-        
-        return $qb->fetchOne();
-    }
 
-    protected function addOAuthUserSetCMS(OAuthClient $client): OAuthUser
+    protected function addOAuthUserSetCMS(OAuthClient $client): void
     {
         $oauthUser = new OAuthUser;
         $oauthUser->clientId = $client->id;
-        $oauthUser->externalId = $this->getAnyAdminId();
+        $oauthUser->externalId = -1;
         $oauthUser->refreshToken = '';
-        $oauthUser->userId = $this->getAnyAdminId();
+        $oauthUser->userId = -1;
 
         $this->oauthUserDAO->save($oauthUser);
 
-        return $oauthUser;
+        $oauthUser = new OAuthUser;
+        $oauthUser->clientId = $client->id;
+        $oauthUser->externalId = 1;
+        $oauthUser->refreshToken = '';
+        $oauthUser->userId = 1;
+
+        $this->oauthUserDAO->save($oauthUser);
+        
+        $oauthToken = new OAuthToken;
+        $oauthToken->token =  'guest';
+        $oauthToken->idClient = $client->id;
+        $oauthToken->dateExpiried = new \DateTime('+99 years');
+        $oauthToken->idUser = -1;
+        $oauthToken->tokenRefresh = 'guest';
+        
+        $this->oauthTokenDAO->save($oauthToken);
     }
 
     public function up(): void

@@ -2,7 +2,7 @@
 {% import setcms.path('macros/controls.twig') as controls %}
 
 {% block content_toolbar %}
-    <a href="{{ setcms.link('action_admin', {module: setcms.currentModule, action:'saveform'}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
+    <a href="{{ setcms.link('action_admin', {module: setcms.currentModule, action:'save'}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
 {% endblock %}
 
 {% block content_title %}Страницы{% endblock %}
@@ -28,7 +28,7 @@
                             <td>{{ entity.dateCreated.format('d.m.Y H:i:s') }}</td>
                             <td>{{ entity.dateModified.format('d.m.Y H:i:s') }}</td>
                             <td>
-                                <a href="{{ setcms.link('action_record_admin', {'module': entity.module, action: 'saveform', 'id': entity.id}) }}">Редактировать</a>
+                                <a href="{{ setcms.link('action_record_admin', {'module': entity.module, action: 'save', 'id': entity.id}) }}">Редактировать</a>
                                 <a href="{{ setcms.link('action_record_admin', {'module': entity.module, action: 'read', 'id': entity.id}) }}">Просмотр</a>
                             </td>
                         </tr>

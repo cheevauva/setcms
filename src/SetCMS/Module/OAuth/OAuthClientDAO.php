@@ -21,12 +21,18 @@ class OAuthClientDAO extends OrdinaryDAO
         $response = (new Client())->request('GET', $preparedUrl, [
             RequestOptions::HTTP_ERRORS => false,
             RequestOptions::HEADERS => [
-                'Accept' => 'application/json',
+                // 'Content-type' => 'application/json',
                 'Authorization' => implode(' ', array_filter([$oauthData['token_type'] ?? null, $oauthData['access_token']]))
             ],
         ]);
 
         $data = json_decode($response->getBody()->getContents(), true);
+
+        if (is_null($data) && json_last_error()) {
+            $response->getBody()->rewind();
+            
+            throw OAuthClientException::autorizationCodeFail(json_last_error_msg() . ': ' . $response->getBody()->getContents());
+        }
 
         if (!empty($data['error'])) {
             throw OAuthClientException::autorizationCodeFail($data['error_description'] ?? json_encode($data, JSON_UNESCAPED_UNICODE));
@@ -48,7 +54,7 @@ class OAuthClientDAO extends OrdinaryDAO
                 ],
                 RequestOptions::HTTP_ERRORS => true,
                 RequestOptions::HEADERS => [
-                    'Accept' => 'application/json',
+                //'Content-type' => 'application/json',
                 ],
             ]);
         } catch (GuzzleException $ex) {

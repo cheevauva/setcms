@@ -14,7 +14,7 @@ jQuery().ready(function () {
             if (data.error) {
                 return altMessage(data.error_description);
             }
-            
+
             //localStorage.setItem('oauth', data);
         }
     }
@@ -32,17 +32,21 @@ jQuery().ready(function () {
         $form = $(this).closest('form');
         $form.find('.invalid-feedback').text('');
         $form.find('.is-invalid').removeClass('is-invalid');
-
+        var formData = new FormData($form.get(0))
+        var object = {};
+        formData.forEach(function (value, key) {
+            object[key] = value;
+        });
         $.ajax({
             url: $form.attr('setcms-action'),
-            data: new FormData($form.get(0)),
+            data: JSON.stringify(object),
             headers: {
                 'X-CSRF-Token': getCookie('X-CSRF-Token'),
                 Accept: "application/json; charset=utf-8",
             },
             processData: false,
             contentType: false,
-            type: 'POST',
+            type: $form.attr('setcms-method') || 'POST',
             dataType: 'text',
             error: function (ts) {
                 var message;

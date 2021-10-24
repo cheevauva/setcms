@@ -5,7 +5,7 @@
 
 {% block content_toolbar %}
     <a href="{{ setcms.link('action_admin', {module: entity.module, action: 'index'}) }}" class="btn btn-sm btn-outline-secondary">Список</a> 
-    <a href="{{ setcms.link('action_record_admin', {module: entity.module, action: 'saveform', id: entity.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    <a href="{{ setcms.link('action_record_admin', {module: entity.module, action: 'save', id: entity.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
 {% endblock %}
 
 {% block content %}

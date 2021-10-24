@@ -10,5 +10,9 @@ class Posts extends \SetCMS\Module
         return __CLASS__ . '\Post';
     }
 
+    public function getResource(): string
+    {
+        return 'post';
+    }
 
 }
