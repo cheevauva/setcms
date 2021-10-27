@@ -45,9 +45,9 @@ class UserService extends OrdinaryService
         $user = $this->entity();
         $user->username = $username;
         $user->password(User::hashPassword($password));
-        
+
         $this->dao()->save($user);
-        
+
         return $user;
     }
 
@@ -57,7 +57,8 @@ class UserService extends OrdinaryService
             $this->dao()->getByUsername($model->username);
             $model->addMessage('Пользователь уже существует', 'username');
         } catch (UserException $ex) {
-            $this->dao()->save($model->entity($this->entity()));
+            $user = $model->entity($this->entity());
+            $this->dao()->save($user);
         }
     }
 

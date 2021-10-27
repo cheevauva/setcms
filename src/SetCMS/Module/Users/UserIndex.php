@@ -29,10 +29,10 @@ final class UserIndex
      */
     public function profile(ServerRequestInterface $request, OrdinaryModelRead $model): OrdinaryModelRead
     {
-        $model->id = $request->getAttribute('id');
+        $user = $this->oauthService->getUserByAccessToken((string) $request->getAttribute(RequestAttribute::ACCESS_TOKEN));
 
         if ($model->isValid()) {
-            $this->service->read($model);
+            $model->entity($user);
         }
 
         return $model;
@@ -46,9 +46,9 @@ final class UserIndex
     public function userinfo(ServerRequestInterface $request, UserModelUserInfo $model): UserModelUserInfo
     {
         $user = $this->oauthService->getUserByAccessToken((string) $request->getAttribute(RequestAttribute::ACCESS_TOKEN));
-        
+
         $model->entity($user);
-        
+
         return $model;
     }
 

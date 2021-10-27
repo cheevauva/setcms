@@ -9,7 +9,8 @@ return [
     'rules' => [
         'guest' => [
             'Users' => [
-                'UserIndex::userinfo' => true,
+                'UserIndex::registration' => true,
+                'UserIndex::doRegistration' => true,
             ],
             'OAuth' => [
                 'OAuthIndex::code' => true,
@@ -23,23 +24,18 @@ return [
                 'PostIndex::index' => true,
                 'PostIndex::read' => true,
             ],
-            'post' => [
-                'create' => false,
-                'read' => false,
-                'delete' => false,
-                'update' => false,
-                'index' => false,
-            ],
         ],
         'user' => [
+            'Users' => [
+                'UserIndex::profile' => true,
+                'UserIndex::registration' => false,
+                'UserIndex::userinfo' => true,
+            ],
             'OAuth' => [
                 'OAuthIndex::logout' => true,
             ],
             'post' => [
-                'create' => false,
                 'read' => true,
-                'delete' => false,
-                'update' => false,
                 'index' => true,
             ],
         ],
