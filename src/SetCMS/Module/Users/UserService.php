@@ -8,15 +8,19 @@ use SetCMS\Module\Users\User;
 use SetCMS\Module\Users\UserException;
 use SetCMS\Module\Users\UserModel\UserModelLogin;
 use SetCMS\Module\Users\UserModel\UserModelRegistration;
+use SetCMS\EventDispatcher;
+use SetCMS\Module\Users\UserEvent\RegistrationUserEvent;
 
 class UserService extends OrdinaryService
 {
 
     private UserDAO $dao;
+    private EventDispatcher $eventDispatcher;
 
-    public function __construct(UserDAO $userDAO)
+    public function __construct(UserDAO $userDAO, EventDispatcher $eventDispatcher)
     {
         $this->dao = $userDAO;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     protected function dao(): UserDAO
@@ -59,6 +63,8 @@ class UserService extends OrdinaryService
         } catch (UserException $ex) {
             $user = $model->entity($this->entity());
             $this->dao()->save($user);
+
+            $this->eventDispatcher->dispatch(new RegistrationUserEvent($user));
         }
     }
 

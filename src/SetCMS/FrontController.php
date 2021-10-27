@@ -30,18 +30,18 @@ class FrontController
     protected OAuthService $oauthService;
     protected ACL $acl;
 
-    public function __construct(ContainerInterface $container, string $basePath, array $config, ACL $acl)
+    public function __construct(ContainerInterface $container, ACL $acl)
     {
         $this->container = $container;
         $this->router = $container->get(Router::class);
         $this->userDAO = $container->get(UserDAO::class);
         $this->oauthService = $container->get(OAuthService::class);
-        $this->basePath = $basePath;
-        $this->config = $config;
-        $this->router->addRoutes(require $this->basePath . '/resources/routes.php');
-        $this->headers = require $this->basePath . '/resources/headers.php';
+        $this->basePath = $container->get('basePath');
+        $this->config = $container->get('config');
+        $this->router->addRoutes($container->get('routes'));
+        $this->headers = $container->get('headers');
         $this->acl = $acl;
-        $this->acl->setup(require $this->basePath . '/resources/acl.php');
+        $this->acl->setup($container->get('acl'));
     }
 
     public function execute(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface

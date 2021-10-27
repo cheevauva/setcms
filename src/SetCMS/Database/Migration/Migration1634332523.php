@@ -128,6 +128,7 @@ class Migration1634332523 extends \SetCMS\Database\Migration
     protected function addClientSetCMS($baseUrl): OAuthClient
     {
         $client = new OAuthClient;
+        $client->id = 1;
         $client->name = 'SetCMS';
         $client->clientId = $client->id;
         $client->isAuthorizable = true;
