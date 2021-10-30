@@ -8,6 +8,10 @@ return [
     ],
     'rules' => [
         'guest' => [
+            'Captcha' => [
+                'CaptchaIndex::generate' => true,
+                'CaptchaIndex::solve' => true,
+            ],
             'Users' => [
                 'UserIndex::registration' => true,
                 'UserIndex::doRegistration' => true,

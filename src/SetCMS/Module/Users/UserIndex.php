@@ -6,20 +6,22 @@ use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelRead;
 use SetCMS\Module\Users\UserService;
 use SetCMS\Module\Users\UserModel\UserModelRegistration;
-use SetCMS\Module\Users\User;
 use SetCMS\Module\OAuth\OAuthService;
 use SetCMS\Module\Users\UserModel\UserModelUserInfo;
 use SetCMS\RequestAttribute;
+use SetCMS\Module\Captcha\CaptchaService;
 
 final class UserIndex
 {
 
-    private UserService $service;
+    private UserService $userService;
     private OAuthService $oauthService;
+    private CaptchaService $captchaService;
 
-    public function __construct(UserService $userService, OAuthService $oauthService)
+    public function __construct(UserService $userService, OAuthService $oauthService, CaptchaService $captchaService)
     {
-        $this->service = $userService;
+        $this->userService = $userService;
+        $this->captchaService = $captchaService;
         $this->oauthService = $oauthService;
     }
 
@@ -71,8 +73,15 @@ final class UserIndex
     {
         $model->fromArray($request->getParsedBody());
 
-        if ($model->isValid()) {
-            $this->service->registation($model);
+        if (!$model->isValid()) {
+            return $model;
+        }
+
+        try {
+            $this->captchaService->useSolvedCaptchaById($model->captcha);
+            $this->userService->registation($model);
+        } catch (\Exception $ex) {
+            $model->addMessage($ex->getMessage(), 'captcha');
         }
 
         return $model;

@@ -30,6 +30,13 @@ class UserModelRegistration extends OrdinaryModel
      */
     public string $password2 = '';
 
+    /**
+     * @setcms-required
+     * @setcms-type-string
+     * @var string 
+     */
+    public string $captcha = '';
+
     public function isValid(): bool
     {
         parent::isValid();
