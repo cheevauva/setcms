@@ -2,8 +2,17 @@
 
 namespace SetCMS\Module\Captcha;
 
+use SetCMS\HttpStatusCode\NotFound;
+
 class CaptchaException extends \Exception
 {
+
+    public static function notFound($message = 'Капта не найдена')
+    {
+        return new class($message) extends CaptchaException implements NotFound {
+            
+        };
+    }
 
     public static function alreadyExpired(): self
     {

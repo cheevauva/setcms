@@ -10,6 +10,7 @@ use SetCMS\Module\OAuth\OAuthService;
 use SetCMS\Module\Users\UserModel\UserModelUserInfo;
 use SetCMS\RequestAttribute;
 use SetCMS\Module\Captcha\CaptchaService;
+use SetCMS\HttpStatusCode\NotFound;
 
 final class UserIndex
 {
@@ -81,7 +82,7 @@ final class UserIndex
             $this->captchaService->useSolvedCaptchaById($model->captcha);
             $this->userService->registation($model);
         } catch (\Exception $ex) {
-            $model->addMessage($ex->getMessage(), 'captcha');
+            $model->addMessage($ex instanceof NotFound ? 'Код не действителен, обновите картинку и введите код' : $ex->getMessage(), 'captcha');
         }
 
         return $model;
