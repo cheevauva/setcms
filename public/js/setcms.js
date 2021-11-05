@@ -36,7 +36,7 @@ jQuery().ready(function () {
         $captchaSolvedText.on('keyup', function () {
             $captchaSolvedText.removeClass('is-valid').removeClass('is-invalid');
             $captchaSolvedText.parent().find('.invalid-feedback').text();
-            
+
             var solvedText = $captchaSolvedText.val();
             if (solvedText.length === 7) {
                 $.ajax($captchaId.attr('setcms-action') + '?id=' + $captchaId.val() + '&solvedText=' + solvedText).done(function (data) {
@@ -132,7 +132,7 @@ jQuery().ready(function () {
 
                         $field = $form.find('[name="' + message.field + '"]');
                         $field.addClass('is-invalid');
-                        $field.parent().find('.invalid-feedback').text(message.message);
+                        $field.parent().find('.invalid-feedback').text(!$field.is(':hidden') ? message.message : message.field + ': ' + message.message);
                     } else {
                         altMessage(message.message);
                     }

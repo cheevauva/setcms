@@ -51,7 +51,11 @@ class Captcha extends OrdinaryEntity
     public function use()
     {
         $this->verifyDateExpiried();
-
+        
+        if ($this->isUsed) {
+            throw CaptchaException::alreadyUsed();
+        }
+        
         if (!$this->isSolved) {
             throw CaptchaException::unsolved();
         }

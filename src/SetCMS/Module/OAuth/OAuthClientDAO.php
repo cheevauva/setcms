@@ -41,6 +41,11 @@ class OAuthClientDAO extends OrdinaryDAO
         return $data;
     }
 
+    public function get(string $id): OAuthClient
+    {
+        return parent::get($id);
+    }
+    
     public function getTokenByAuthorizationCodeAndClient(string $code, OAuthClient $oauthClient): array
     {
         try {

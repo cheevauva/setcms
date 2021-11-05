@@ -38,6 +38,17 @@ abstract class Model
         return empty($this->messages);
     }
 
+    public function isValidField(string $field): bool
+    {
+        foreach ($this->messages as $message) {
+            if ($message['field'] === $field) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
     protected function validate(): void
     {
         $reflect = new ReflectionObject($this);
@@ -77,7 +88,7 @@ abstract class Model
         ];
     }
 
-    public function getFirstMessage(?string $field = null): string
+    public function getFieldMessage(?string $field = null): string
     {
         foreach ($this->messages as $message) {
             if ($message['field'] === $field) {

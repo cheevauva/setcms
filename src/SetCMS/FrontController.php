@@ -68,7 +68,7 @@ class FrontController
 
             if ($ex instanceof HttpStatusCode) {
                 $code = $ex::CODE;
-                $reason = $ex::REASON;
+                $reason = $ex->getMessage() ? $ex->getMessage() : $ex::REASON;
             }
 
             $contentType = $request->getServerParams()['HTTP_ACCEPT'] ?? 'text/html';

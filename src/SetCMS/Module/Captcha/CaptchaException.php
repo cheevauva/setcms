@@ -19,6 +19,11 @@ class CaptchaException extends \Exception
         return new static('Картинка и код для неё уже не действительны');
     }
 
+    public static function alreadyUsed(): self
+    {
+        return new static('Код уже использован, обновите картинку');
+    }
+
     public static function unsolved(): self
     {
         return new static('Код указан неверно');

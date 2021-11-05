@@ -4,6 +4,7 @@ namespace SetCMS\Module\OAuth;
 
 use SetCMS\Module\OAuth\OAuthClientDAO;
 use SetCMS\Module\OAuth\OAuthTokenDAO;
+use SetCMS\Module\OAuth\OAuthModel\OAuthModelDoAuthorize;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelAuthorize;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelCallback;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelTokenPassword;
@@ -225,10 +226,14 @@ class OAuthService
         $model->entity($oauthToken);
     }
 
-    public function authorize(OAuthModelAuthorize $model): void
+    public function authorize(OAuthModelDoAuthorize $model): void
     {
         try {
             $client = $this->oauthClientDAO->get($model->client_id);
+
+            if (!$client->isAuthorizable) {
+                throw OAuthClientException::autorizationNotAllow();
+            }
         } catch (OAuthClientException $ex) {
             $model->addMessage($ex->getMessage(), 'client_id');
         }
@@ -247,6 +252,15 @@ class OAuthService
     public function getClientsWithEnabledAuthorization(): array
     {
         return $this->oauthClientDAO->list(0, 10);
+    }
+
+    public function checkThePossibilityOfAuthorization(OAuthModelAuthorize $model): void
+    {
+        $oauthClient = $this->oauthClientDAO->get($model->client_id);
+
+        if (!$oauthClient->isAuthorizable) {
+            throw OAuthClientException::autorizationNotAllow();
+        }
     }
 
 }

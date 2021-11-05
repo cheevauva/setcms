@@ -4,21 +4,26 @@ namespace SetCMS\Module\OAuth;
 
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelAuthorize;
+use SetCMS\Module\OAuth\OAuthModel\OAuthModelDoAuthorize;
+use SetCMS\Module\OAuth\OAuthModel\OAuthModelLogin;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelAuthorizeCode;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelCallback;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModel;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelToken;
 use SetCMS\Module\OAuth\OAuthService;
 use SetCMS\RequestAttribute;
+use SetCMS\Module\Captcha\CaptchaService;
 
 final class OAuthIndex
 {
 
     private OAuthService $oauthService;
+    private CaptchaService $captchaService;
 
-    public function __construct(OAuthService $oauthService)
+    public function __construct(CaptchaService $captchaService, OAuthService $oauthService)
     {
         $this->oauthService = $oauthService;
+        $this->captchaService = $captchaService;
     }
 
     /**
@@ -62,12 +67,18 @@ final class OAuthIndex
      * @setcms-request-method-post
      * @setcms-response-content-json
      */
-    public function doAuthorize(ServerRequestInterface $request, OAuthModelAuthorize $model): OAuthModelAuthorize
+    public function doAuthorize(ServerRequestInterface $request, OAuthModelDoAuthorize $model): OAuthModelDoAuthorize
     {
         $model->fromArray($request->getParsedBody());
 
-        if ($model->isValid()) {
+        if (!$model->isValid()) {
+            return $model;
+        }
+        try {
+            $this->captchaService->useSolvedCaptchaById($model->captcha);
             $this->oauthService->authorize($model);
+        } catch (\Exception $ex) {
+            $model->addMessage($ex instanceof NotFound ? 'Код не действителен, обновите картинку и введите код' : $ex->getMessage(), 'captcha');
         }
 
         return $model;
@@ -135,7 +146,7 @@ final class OAuthIndex
      * @setcms-request-method-get
      * @setcms-response-content-html
      */
-    public function login(ServerRequestInterface $request, OAuthModelAuthorize $model): OAuthModelAuthorize
+    public function login(ServerRequestInterface $request, OAuthModelLogin $model): OAuthModelLogin
     {
         $model->fromArray($request->getQueryParams());
         $model->isValid();
@@ -152,7 +163,10 @@ final class OAuthIndex
     public function authorize(ServerRequestInterface $request, OAuthModelAuthorize $model): OAuthModelAuthorize
     {
         $model->fromArray($request->getQueryParams());
-        $model->isValid();
+
+        if ($model->isValid()) {
+            $this->oauthService->checkThePossibilityOfAuthorization($model);
+        }
 
         return $model;
     }

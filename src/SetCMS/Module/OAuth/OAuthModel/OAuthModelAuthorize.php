@@ -33,27 +33,6 @@ class OAuthModelAuthorize extends OrdinaryModel
      */
     public string $redirect_uri = '';
 
-    /**
-     * @setcms-required
-     * @var string 
-     */
-    public string $username = '';
-
-    /**
-     * @setcms-required
-     * @var string 
-     */
-    public string $password = '';
-    private array $clients = [];
-
-    public function oauthClients(?array $clients = null): array
-    {
-        if (is_array($clients)) {
-            $this->clients = $clients;
-        }
-
-        return $this->clients;
-    }
 
     protected function validate(): void
     {
@@ -75,7 +54,6 @@ class OAuthModelAuthorize extends OrdinaryModel
     public function toArray(): array
     {
         $array = parent::toArray();
-        $array['clients'] = $this->clients;
         
         return $array;
     }

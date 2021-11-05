@@ -10,12 +10,12 @@
         <input name="{{ params.name }}" 
                type="{{ params.type }}"
                value="{{ value }}"
-               class="form-control" 
+               class="form-control {% if params.model and not params.model.isValidField(params.name) %}is-invalid{% endif %}"  
                size="{{ params.size }}" 
                placeholder="{{ params.placeholder }}" 
                {% if params.disabled %}disabled="disabled"{% endif %}
                >
-        <div class="invalid-feedback"></div>
+        <div class="invalid-feedback">{{ params.model.getFieldMessage(params.name) }}</div>
     </div>
 {% endmacro %}
 
@@ -32,7 +32,10 @@
 {% endmacro %}
 
 {% macro hidden(params) %}
-    <input name="{{ params.name }}" type="hidden" value="{{ params.value }}">
+    <div class="m-0 p-0">
+        <input name="{{ params.name }}" type="hidden" value="{{ params.value }}" class="{% if params.model and not params.model.isValidField(params.name) %}is-invalid{% endif %}">
+        <div class="invalid-feedback">{% if params.model and not params.model.isValidField(params.name) %}{{ params.name }}: {{ params.model.getFieldMessage(params.name) }}{% endif %}</div>
+    </div>
 {% endmacro %}
 
 {% macro select(params) %}
