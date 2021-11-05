@@ -56,6 +56,11 @@ class Theme
         $this->router = clone $router;
         $this->router->setBasePath(rtrim($request->getServerParams()['SCRIPT_NAME'], '/'));
         $this->self = $request->getServerParams()['REQUEST_SCHEME'] . '://' . $request->getServerParams()['HTTP_HOST'];
+        $this->baseUrl = dirname($request->getServerParams()['SCRIPT_NAME']);
+
+        if (substr($this->baseUrl, -1) !== '/') {
+            $this->baseUrl .= '/';
+        }
     }
 
     public function markdown(string $string): string
