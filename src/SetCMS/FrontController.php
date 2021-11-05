@@ -161,7 +161,7 @@ class FrontController
         $theme = new Theme($this->config, $this->request, $this->router);
         $theme->currentModule = $this->request->getAttribute('module');
         $theme->currentUser = $this->getCurrentUser();
-        $theme->baseUrl = dirname($this->request->getServerParams()['SCRIPT_NAME']);
+        $theme->baseUrl = rtrim(dirname($this->request->getServerParams()['SCRIPT_NAME']), '/');
 
         $twig->addGlobal('setcms', $theme);
         $twig->addFunction(new \Twig\TwigFunction('render', function ($template, $params = []) {
