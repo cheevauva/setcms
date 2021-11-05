@@ -158,7 +158,7 @@ class FrontController
             'auto_reload' => true,
         ]);
 
-        $theme = new Theme($this->config['theme'], $this->request, $this->router);
+        $theme = new Theme($this->config, $this->request, $this->router);
         $theme->currentModule = $this->request->getAttribute('module');
         $theme->currentUser = $this->getCurrentUser();
         $theme->baseUrl = dirname($this->request->getServerParams()['SCRIPT_NAME']);

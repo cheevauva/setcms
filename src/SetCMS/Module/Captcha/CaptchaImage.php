@@ -116,7 +116,7 @@ class CaptchaImage
 
         rewind($file);
 
-        return base64_encode(stream_get_contents($file));
+        return stream_get_contents($file);
     }
 
 }

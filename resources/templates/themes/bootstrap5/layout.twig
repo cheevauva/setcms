@@ -1,7 +1,8 @@
 <!doctype html>
 <html>
     <head>
-        <title>{% block title %}Title{% endblock %}</title>
+        <title>{% block title %}{{ setcms.getDefaultTitle() }}{% endblock %}</title>
+        <meta name="keywords" content="{% block keywords %}{{ setcms.getDefaultKeywords() }}{% endblock %}"/>
         <base href="{{ setcms.baseUrl }}/"/>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">

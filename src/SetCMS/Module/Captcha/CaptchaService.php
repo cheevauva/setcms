@@ -40,7 +40,7 @@ class CaptchaService extends OrdinaryService
     public function createCaptcha(): Captcha
     {
         $captcha = new Captcha;
-        $captcha->content = (new CaptchaImage($captcha->text()))->toPNG();
+        $captcha->content = base64_encode((new CaptchaImage($captcha->text()))->toPNG());
 
         $this->dao()->save($captcha);
 

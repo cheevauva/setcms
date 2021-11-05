@@ -44,6 +44,12 @@ return [
             ],
         ],
         'admin' => [
+            'Migrations' => [
+                'MigrationAdmin::index' => true,
+            ],
+            'Users' => [
+                'UserAdmin::index' => true,
+            ],
             'OAuthClients' => [
                 'OAuthClientAdmin::index' => true,
                 'OAuthClientAdmin::read' => true,

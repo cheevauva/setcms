@@ -37,10 +37,22 @@ class Theme
     ];
     public string $self;
     public Router $router;
+    private array $config = [];
 
-    public function __construct(string $theme, ServerRequestInterface $request, Router $router)
+    public function getDefaultKeywords()
     {
-        $this->theme = $theme;
+        return $this->config['keywords'] ?? '';
+    }
+
+    public function getDefaultTitle()
+    {
+        return $this->config['title'] ?? '';
+    }
+
+    public function __construct(array $config, ServerRequestInterface $request, Router $router)
+    {
+        $this->config = $config;
+        $this->theme = $config['theme'];
         $this->router = clone $router;
         $this->router->setBasePath($request->getServerParams()['SCRIPT_NAME']);
         $this->self = $request->getServerParams()['REQUEST_SCHEME'] . '://' . $request->getServerParams()['HTTP_HOST'];
@@ -81,5 +93,5 @@ class Theme
         $model = $this->invokeAction(new Action($request));
         return $this->getTwig()->render($template, $model->toArray());
     }
-    
+
 }
