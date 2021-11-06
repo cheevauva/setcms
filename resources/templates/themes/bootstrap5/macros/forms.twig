@@ -32,8 +32,12 @@
 {% endmacro %}
 
 {% macro hidden(params) %}
+    {% set value = params.value %}
+    {% if params.entity %}
+        {% set value = attribute(params.entity, params.name) %}
+    {% endif %}
     <div class="m-0 p-0">
-        <input name="{{ params.name }}" type="hidden" value="{{ params.value }}" class="{% if params.model and not params.model.isValidField(params.name) %}is-invalid{% endif %}">
+        <input name="{{ params.name }}" type="hidden" value="{{ value }}" class="{% if params.model and not params.model.isValidField(params.name) %}is-invalid{% endif %}">
         <div class="invalid-feedback">{% if params.model and not params.model.isValidField(params.name) %}{{ params.name }}: {{ params.model.getFieldMessage(params.name) }}{% endif %}</div>
     </div>
 {% endmacro %}
@@ -49,7 +53,7 @@
     <div class="mb-2">
         <select name="{{ params.name }}" class="form-control">
             {% for val, option in params.options %}
-                <option value="{{ loop.index }}" {% if val == value %}selected="selected"{% endif %}>{{ option }}</option>
+                <option value="{{ val }}" {% if val == value %}selected="selected"{% endif %}>{{ option }}</option>
             {% endfor %}
         </select>
     </div>

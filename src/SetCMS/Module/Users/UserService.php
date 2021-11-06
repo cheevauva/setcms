@@ -6,13 +6,16 @@ use SetCMS\Module\Ordinary\OrdinaryService;
 use SetCMS\Module\Users\UserDAO;
 use SetCMS\Module\Users\User;
 use SetCMS\Module\Users\UserException;
-use SetCMS\Module\Users\UserModel\UserModelLogin;
 use SetCMS\Module\Users\UserModel\UserModelRegistration;
 use SetCMS\EventDispatcher;
 use SetCMS\Module\Users\UserEvent\RegistrationUserEvent;
+use SetCMS\HttpStatusCode\NotFound;
 
 class UserService extends OrdinaryService
 {
+
+    private const USER_GUEST_ID = '-1';
+    private const USER_MAIN_ADMIN_ID = '1';
 
     private UserDAO $dao;
     private EventDispatcher $eventDispatcher;
@@ -28,27 +31,50 @@ class UserService extends OrdinaryService
         return $this->dao;
     }
 
-    public function login(UserModelLogin $model): void
-    {
-        try {
-            $blankUser = $model->entity($this->entity());
-            $user = $this->getByUsernameAndPassword($model->username, $model->password);
-            $model->entity($user);
-        } catch (UserException $ex) {
-            $model->addMessage($ex->getMessage(), 'username');
-        }
-    }
-
     public function getById(string $id): User
     {
         return $this->dao()->get($id);
+    }
+
+    public function getGuestUser()
+    {
+        try {
+            $user = $this->dao()->get(static::USER_GUEST_ID);
+        } catch (NotFound $ex) {
+            $user = new User;
+            $user->id = static::USER_GUEST_ID;
+            $user->username = 'guest';
+            $user->password(User::passwordHash('guest'));
+            $user->role = $user::ROLE_GUEST;
+
+            $this->dao()->save($user);
+        }
+
+        return $user;
+    }
+
+    public function getMainAdminUser(): User
+    {
+        try {
+            $user = $this->dao()->get(static::USER_MAIN_ADMIN_ID);
+        } catch (NotFound $ex) {
+            $user = $this->entity();
+            $user->id = static::USER_MAIN_ADMIN_ID;
+            $user->username = 'admin';
+            $user->password(User::passwordHash('administrator'));
+            $user->role = $user::ROLE_ADMIN;
+
+            $this->dao()->save($user);
+        }
+
+        return $user;
     }
 
     public function createUser(string $username, string $password): User
     {
         $user = $this->entity();
         $user->username = $username;
-        $user->password(User::hashPassword($password));
+        $user->password(User::passwordHash($password));
 
         $this->dao()->save($user);
 
@@ -68,9 +94,20 @@ class UserService extends OrdinaryService
         }
     }
 
+    public function authenticate(string $username, string $password): User
+    {
+        $user = $this->dao()->getByUsername($username);
+
+        if (!$user->isThisYourPassword($password)) {
+            throw UserException::passwordInvalid();
+        }
+
+        return $user;
+    }
+
     public function getByUsernameAndPassword(string $username, string $password): User
     {
-        return $this->dao()->getByUsernameAndPassword($username, User::hashPassword($password));
+        return $this->dao()->getByUsernameAndPassword($username, User::passwordHash($password));
     }
 
     public function entity(): User

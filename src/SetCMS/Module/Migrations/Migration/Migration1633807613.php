@@ -1,15 +1,16 @@
 <?php
 
-namespace SetCMS\Database\Migration;
+namespace SetCMS\Module\Migrations\Migration;
 
-use SetCMS\Database\Migration;
 use SetCMS\Module\Migrations\MigrationDAO;
 use Doctrine\DBAL\Schema\Table;
 
-class Migration1633807613 extends Migration
+class Migration1633807613 implements MigrationInterface
 {
 
-    public function dbal(): \Doctrine\DBAL\Connection
+    use MigrationDBALTrait;
+
+    protected function dbal(): \Doctrine\DBAL\Connection
     {
         return $this->connectionFactory->get(MigrationDAO::class);
     }
@@ -31,6 +32,11 @@ class Migration1633807613 extends Migration
         $table->setPrimaryKey(['id']);
 
         $schemaManager->createTable($table);
+    }
+
+    public function down(): void
+    {
+        $this->dbal()->createSchemaManager()->dropTable('migrations');
     }
 
 }

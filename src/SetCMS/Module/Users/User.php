@@ -11,14 +11,20 @@ class User extends OrdinaryEntity
     public const ROLE_USER = 'user';
     public const ROLE_GUEST = 'guest';
 
+    public string $module = 'Users';
+    public string $resource = 'user';
     public string $username;
-    public bool $isAdmin = false;
     protected string $password;
     public string $role = User::ROLE_USER;
 
-    public static function hashPassword(string $password): string
+    public static function passwordVerify(string $password, string $hash): bool
     {
-        return md5($password);
+        return password_verify($password, $hash);
+    }
+
+    public static function passwordHash(string $password): string
+    {
+        return password_hash($password, PASSWORD_DEFAULT);
     }
 
     public function password(?string $password = null)
@@ -30,9 +36,19 @@ class User extends OrdinaryEntity
         return $this->password = $password;
     }
 
+    public function isThisYourPassword(string $password): bool
+    {
+        return static::passwordVerify($password, $this->password);
+    }
+
     public function hasRole(string $role): bool
     {
         return $role === $this->role;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole(static::ROLE_ADMIN);
     }
 
 }

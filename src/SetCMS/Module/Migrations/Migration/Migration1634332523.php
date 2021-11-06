@@ -1,29 +1,29 @@
 <?php
 
-namespace SetCMS\Database\Migration;
+namespace SetCMS\Module\Migrations\Migration;
 
 use Doctrine\DBAL\Schema\Table;
 use SetCMS\Database\ConnectionFactory;
 use SetCMS\Module\OAuth\OAuthClientDAO;
 use SetCMS\Module\OAuth\OAuthClient;
-use SetCMS\Module\OAuth\OAuthUserDAO;
-use SetCMS\Module\OAuth\OAuthUser;
+use SetCMS\Module\OAuth\OAuthUserService;
 use SetCMS\Module\OAuth\OAuthTokenDAO;
 use SetCMS\Module\OAuth\OAuthToken;
 
-class Migration1634332523 extends \SetCMS\Database\Migration
+class Migration1634332523 implements MigrationInterface
 {
 
-    private OAuthClientDAO $oauthClientDAO;
-    private OAuthUserDAO $oauthUserDAO;
-    private OAuthTokenDAO $oauthTokenDAO;
-    
-    public function __construct(ConnectionFactory $connectionFactory, OAuthClientDAO $oauthClientDAO, OAuthUserDAO $oauthUserDAO, OAuthTokenDAO $oauthTokenDAO)
-    {
-        parent::__construct($connectionFactory);
+    use MigrationDBALTrait;
 
+    private OAuthClientDAO $oauthClientDAO;
+    private OAuthUserService $oauthUserService;
+    private OAuthTokenDAO $oauthTokenDAO;
+
+    public function __construct(ConnectionFactory $connectionFactory, OAuthClientDAO $oauthClientDAO, OAuthUserService $oauthUserService, OAuthTokenDAO $oauthTokenDAO)
+    {
+        $this->connectionFactory = $connectionFactory;
         $this->oauthClientDAO = $oauthClientDAO;
-        $this->oauthUserDAO = $oauthUserDAO;
+        $this->oauthUserService = $oauthUserService;
         $this->oauthTokenDAO = $oauthTokenDAO;
     }
 
@@ -146,29 +146,16 @@ class Migration1634332523 extends \SetCMS\Database\Migration
 
     protected function addOAuthUserSetCMS(OAuthClient $client): void
     {
-        $oauthUser = new OAuthUser;
-        $oauthUser->clientId = $client->id;
-        $oauthUser->externalId = -1;
-        $oauthUser->refreshToken = '';
-        $oauthUser->userId = -1;
+        $this->oauthUserService->createOAuthUserForGuest($client);
+        $this->oauthUserService->createOAuthUserForAdmin($client);
 
-        $this->oauthUserDAO->save($oauthUser);
-
-        $oauthUser = new OAuthUser;
-        $oauthUser->clientId = $client->id;
-        $oauthUser->externalId = 1;
-        $oauthUser->refreshToken = '';
-        $oauthUser->userId = 1;
-
-        $this->oauthUserDAO->save($oauthUser);
-        
         $oauthToken = new OAuthToken;
-        $oauthToken->token =  'guest';
+        $oauthToken->token = 'guest';
         $oauthToken->idClient = $client->id;
         $oauthToken->dateExpiried = new \DateTime('+99 years');
         $oauthToken->idUser = -1;
         $oauthToken->tokenRefresh = 'guest';
-        
+
         $this->oauthTokenDAO->save($oauthToken);
     }
 
@@ -187,6 +174,11 @@ class Migration1634332523 extends \SetCMS\Database\Migration
 
         $oauthClient = $this->addClientSetCMS($baseUrl);
         $oauthUser = $this->addOAuthUserSetCMS($oauthClient);
+    }
+
+    public function down(): void
+    {
+        
     }
 
 }

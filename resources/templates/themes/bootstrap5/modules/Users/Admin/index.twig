@@ -13,8 +13,9 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Имя</th>
+                    <th scope="col">Роль</th>
                     <th scope="col">Дата создания</th>
-
+                    <th scope="col">Действие</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,7 +23,11 @@
                     <tr>
                         <td>{{ entity.id }}</td>
                         <td>{{ entity.username }}</td>
+                        <td>{{ entity.role }}</td>
                         <td>{{ entity.dateCreated.format('d.m.Y H:i:s') }}</td>
+                        <td>
+                            <a href="{{ setcms.link('action_record_admin', {'module': entity.module, action: 'save', 'id': entity.id}) }}">Редактировать</a>
+                        </td>
                     </tr>
                 {%  endfor %}
             </tbody>

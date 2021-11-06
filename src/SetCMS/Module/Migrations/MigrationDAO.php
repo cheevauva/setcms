@@ -5,7 +5,7 @@ namespace SetCMS\Module\Migrations;
 use SetCMS\Module\Ordinary\OrdinaryDAO;
 use SetCMS\Module\Migrations\MigrationException;
 use SetCMS\Module\Migrations\Migration;
-use SetCMS\Database\Migration as MigrationUnit;
+use SetCMS\Module\Migrations\Migration\MigrationInterface;
 
 class MigrationDAO extends OrdinaryDAO
 {
@@ -54,13 +54,19 @@ class MigrationDAO extends OrdinaryDAO
 
     public function getAll(): array
     {
-        $files = glob(str_replace('.php', '/*.php', (new \ReflectionClass(MigrationUnit::class))->getFileName()));
+        $files = glob(str_replace('MigrationInterface.php', '*.php', (new \ReflectionClass(MigrationInterface::class))->getFileName()));
         $migrations = [];
         
         foreach ($files as $file) {
-            $migrations[] = MigrationUnit::class . '\\' . str_replace('.php', '', basename($file));
+            $class = str_replace('\MigrationInterface', '', MigrationInterface::class) . '\\' . str_replace('.php', '', basename($file));
+            
+            if (!in_array(MigrationInterface::class, class_implements($class), true)) {
+                continue;
+            }
+            
+            $migrations[] = $class;
         }
-        
+
         sort($migrations, SORT_STRING);
         
         return $migrations;

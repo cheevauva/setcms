@@ -49,6 +49,7 @@ return [
             ],
             'Users' => [
                 'UserAdmin::index' => true,
+                'UserAdmin::save' => true,
             ],
             'OAuthClients' => [
                 'OAuthClientAdmin::index' => true,
@@ -67,6 +68,9 @@ return [
             ],
             'oauthclient' => [
                 'create' => true,
+                'update' => true,
+            ],
+            'user' => [
                 'update' => true,
             ],
             'post' => [

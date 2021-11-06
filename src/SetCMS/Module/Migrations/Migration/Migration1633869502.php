@@ -1,14 +1,16 @@
 <?php
 
-namespace SetCMS\Database\Migration;
+namespace SetCMS\Module\Migrations\Migration;
 
 use SetCMS\Module\Pages\PageDAO;
 use Doctrine\DBAL\Schema\Table;
 
-class Migration1633869502 extends \SetCMS\Database\Migration
+class Migration1633869502 implements MigrationInterface
 {
 
-    public function dbal(): \Doctrine\DBAL\Connection
+    use MigrationDBALTrait;
+
+    protected function dbal(): \Doctrine\DBAL\Connection
     {
         return $this->connectionFactory->get(PageDAO::class);
     }
@@ -30,8 +32,13 @@ class Migration1633869502 extends \SetCMS\Database\Migration
         $table->addColumn('id', 'string')->setLength(36);
         $table->addUniqueIndex(['id']);
         $table->setPrimaryKey(['id']);
-        
+
         $schemaManager->createTable($table);
+    }
+
+    public function down(): void
+    {
+        $this->dbal()->createSchemaManager()->dropTable('pages');
     }
 
 }

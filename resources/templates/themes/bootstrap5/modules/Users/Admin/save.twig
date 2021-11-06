@@ -1,0 +1,16 @@
+{% extends setcms.path('layout_admin.twig') %}
+{% import setcms.path('macros/forms.twig') as forms %}
+
+{% block content_title %}Сохранить пользователя{% endblock %}
+
+{% block content %}
+    <form class="setcms-form g-3" 
+          {{ forms.resourceCreateUpdateAction(model, entity) }}
+          setcms-redirect="{{ setcms.link('action_admin', {module: entity.module, action: 'index'}) }}"
+          >
+
+        {{ forms.hidden({entity: entity, name: 'id' }) }}
+        {{ forms.select({entity: entity, name: 'role', options: {'guest': 'Гость', 'user': 'Пользователь', 'admin': 'Админ'}, label: 'Роль'}) }}
+        {{ forms.submit({label: 'Сохранить'}) }}
+    </form>
+{% endblock %}

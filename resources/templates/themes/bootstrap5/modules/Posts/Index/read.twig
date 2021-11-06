@@ -11,13 +11,9 @@
 
         <p>
             Дата создания: {{ entity.dateCreated.format('d.m.Y H:i:s') }}
-            | <a href="{{ setcms.link('action', {module: entity.module, action: 'index'}) }}">К списку</a> 
             {% if setcms.currentUser.isAdmin %}
             | <a href="{{ setcms.link('action_record_admin', {module: entity.module, action: 'save', id: entity.id}) }}">Редактировать</a>
             {% endif %}
         </p>
-    {% endif %}
-    {% if not model.isValid() %}
-        <div>{{ model.getFirstMessage('id') }}</div>
     {% endif %}
 {% endblock %}

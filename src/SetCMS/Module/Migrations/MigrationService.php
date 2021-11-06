@@ -3,7 +3,7 @@
 namespace SetCMS\Module\Migrations;
 
 use SetCMS\Module\Migrations\MigrationDAO;
-use SetCMS\Database\Migration as MigrationUnit;
+use SetCMS\Module\Migrations\Migration\MigrationInterface;
 use SetCMS\Module\Migrations\Migration;
 use Psr\Container\ContainerInterface;
 use SetCMS\Module\Ordinary\OrdinaryService;
@@ -20,7 +20,7 @@ class MigrationService extends OrdinaryService
         $this->container = $container;
     }
 
-    public function addByMigrationObject(MigrationUnit $migrationObject): Migration
+    public function addByMigrationObject(MigrationInterface $migrationObject): Migration
     {
         $migration = new Migration;
         $migration->migration = get_class($migrationObject);
@@ -43,7 +43,7 @@ class MigrationService extends OrdinaryService
             $migrationClass = $migration;
             $migrationUnit = $this->container->get($migrationClass);
 
-            assert($migrationUnit instanceof MigrationUnit);
+            assert($migrationUnit instanceof MigrationInterface);
 
             try {
                 $migrationUnit->up();

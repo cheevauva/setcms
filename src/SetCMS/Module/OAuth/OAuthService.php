@@ -79,7 +79,7 @@ class OAuthService
     {
         try {
             $oauthClient = $this->oauthClientDAO->get($model->client_id);
-            $user = $this->userService->getByUsernameAndPassword($model->username, $model->password);
+            $user = $this->userService->authenticate($model->username, $model->password);
 
             $model->entity($this->generateToken($user, $oauthClient));
         } catch (NotFound $ex) {
@@ -239,7 +239,7 @@ class OAuthService
         }
 
         try {
-            $user = $this->userService->getByUsernameAndPassword($model->username, $model->password);
+            $user = $this->userService->authenticate($model->username, $model->password);
         } catch (UserException $ex) {
             $model->addMessage($ex->getMessage(), 'username');
         }

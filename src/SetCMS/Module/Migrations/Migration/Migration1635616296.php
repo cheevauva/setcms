@@ -1,13 +1,13 @@
 <?php
 
-namespace SetCMS\Database\Migration;
+namespace SetCMS\Module\Migrations\Migration;
 
 use Doctrine\DBAL\Schema\Table;
-use SetCMS\Database\ConnectionFactory;
 use SetCMS\Module\Captcha\CaptchaDAO;
 
-class Migration1635616296 extends \SetCMS\Database\Migration
+class Migration1635616296 implements MigrationInterface
 {
+    use MigrationDBALTrait;
 
     public function dbal(): \Doctrine\DBAL\Connection
     {
@@ -35,6 +35,15 @@ class Migration1635616296 extends \SetCMS\Database\Migration
         $table->setPrimaryKey(['id']);
 
         $schemaManager->createTable($table);
+    }
+
+    public function down(): void
+    {
+        $schemaManager = $this->dbal()->createSchemaManager();
+
+        if ($schemaManager->tablesExist('captcha')) {
+            $schemaManager->dropTable('captcha');
+        }
     }
 
 }

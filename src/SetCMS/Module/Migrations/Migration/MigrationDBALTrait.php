@@ -1,8 +1,10 @@
 <?php
 
-namespace SetCMS\Database;
+namespace SetCMS\Module\Migrations\Migration;
 
-abstract class Migration
+use SetCMS\Database\ConnectionFactory;
+
+trait MigrationDBALTrait
 {
 
     protected ConnectionFactory $connectionFactory;
@@ -12,6 +14,5 @@ abstract class Migration
         $this->connectionFactory = $connectionFactory;
     }
 
-    abstract public function dbal(): \Doctrine\DBAL\Connection;
-    abstract public function up(): void;
+    abstract protected function dbal(): \Doctrine\DBAL\Connection;
 }

@@ -18,6 +18,7 @@ class PostDAO extends OrdinaryDAO
             'title' => $entity->title,
             'message' => $entity->message,
             'slug' => $entity->slug,
+            'user_id' => $entity->userId,
         ];
 
         return $this->ordinaryEntity2RecordBind($entity, $record);
@@ -34,6 +35,7 @@ class PostDAO extends OrdinaryDAO
         $post->slug = $record['slug'];
         $post->message = $record['message'];
         $post->title = $record['title'];
+        $post->userId = $record['user_id'];
 
         return $post;
     }

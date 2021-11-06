@@ -119,7 +119,6 @@ class FrontController
         if ($token && !$this->currentUser) {
             try {
                 $this->currentUser = $this->oauthService->getUserByAccessToken($token);
-                $this->currentUser->role = $this->currentUser->isAdmin ? 'admin' : 'user';
             } catch (\Exception $ex) {
                 $this->currentUser = null;
             }
@@ -127,7 +126,6 @@ class FrontController
 
         if (!$this->currentUser) {
             $this->currentUser = $this->oauthService->getUserByAccessToken('guest');
-            $this->currentUser->role = 'guest';
         }
 
         return $this->currentUser;
@@ -139,7 +137,7 @@ class FrontController
             return false;
         }
 
-        if ($this->getCurrentUser()->isAdmin) {
+        if ($this->getCurrentUser()->isAdmin()) {
             return true;
         }
 

@@ -22,6 +22,11 @@ class UserException extends \Exception
         };
     }
 
+    public static function passwordInvalid(): self
+    {
+        return static::notAllow('Пароль указан неверно');
+    }
+
     public static function onlyAdmin(): self
     {
         return static::notAllow('Только администратор');
