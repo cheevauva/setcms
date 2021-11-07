@@ -34,6 +34,10 @@ class Theme
             'name' => 'OAuthClients',
             'label' => 'OAuth клиенты-приложения',
         ],
+        [
+            'name' => 'Blocks',
+            'label' => 'Блоки',
+        ],
     ];
     public string $self;
     public Router $router;

@@ -2,7 +2,10 @@
 
 namespace SetCMS\Module;
 
-class Posts extends \SetCMS\Module
+use SetCMS\Resource\ResourceModuleInterface;
+use SetCMS\Module;
+
+class Posts extends Module implements ResourceModuleInterface
 {
 
     public function getPrefix(): string

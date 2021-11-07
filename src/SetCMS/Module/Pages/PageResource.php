@@ -1,28 +1,31 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace SetCMS\Module\Pages;
 
-/**
- * Description of PageResource
- *
- * @author japanxt
- */
+use SetCMS\Module\Pages\PageService;
+use SetCMS\Module\Ordinary\OrdinaryResourceController;
+use Psr\Http\Message\ServerRequestInterface;
+use SetCMS\Module\Pages\PageModel\PageModelSave;
+
 class PageResource
 {
 
-    /**
-     * @setcms-request-method-post
-     * @setcms-response-content-json
-     */
-    public function save(ServerRequestInterface $request, PageModelSave $model): PageModelSave
+    private OrdinaryResourceController $ordinaryAdmin;
+
+    public function __construct(PageService $oageService, OrdinaryResourceController $ordinaryAdmin)
     {
-        return $this->ordinary->save($request, $model);
+        $this->ordinaryAdmin = $ordinaryAdmin;
+        $this->ordinaryAdmin->service($oageService);
+    }
+
+    public function update(ServerRequestInterface $request, PageModelSave $model): PageModelSave
+    {
+        return $this->ordinaryAdmin->save($request, $model);
+    }
+
+    public function create(ServerRequestInterface $request, PageModelSave $model): PageModelSave
+    {
+        return $this->ordinaryAdmin->save($request, $model);
     }
 
 }

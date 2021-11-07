@@ -4,19 +4,18 @@ namespace SetCMS\Module;
 
 use SetCMS\Resource\ResourceModuleInterface;
 use SetCMS\Module;
-use SetCMS\Module\OAuth;
 
-class OAuthClients extends Module implements ResourceModuleInterface
+class Blocks extends Module implements ResourceModuleInterface
 {
 
     public function getPrefix(): string
     {
-        return OAuth::class . '\OAuthClient';
+        return __CLASS__ . '\Block';
     }
 
     public function getResource(): string
     {
-        return 'oauthclient';
+        return 'block';
     }
 
 }

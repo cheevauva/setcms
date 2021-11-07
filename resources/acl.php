@@ -73,6 +73,10 @@ return [
             'user' => [
                 'update' => true,
             ],
+            'page' => [
+                'update' => true,
+                'create' => true,
+            ],
             'post' => [
                 'create' => true,
                 'read' => true,
