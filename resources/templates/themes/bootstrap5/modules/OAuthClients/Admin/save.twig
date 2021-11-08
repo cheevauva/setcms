@@ -8,7 +8,7 @@
 {% block content %}
     <form class="setcms-form g-3" 
           {{ forms.resourceCreateUpdateAction(model, entity) }}
-          setcms-redirect="{{ setcms.link('action_admin', {module: entity.module, action: 'index'}) }}"
+          setcms-redirect="{{ setcms.link('action_admin', {module: setcms.toModule(entity), action: 'index'}) }}"
           >
         {{ forms.hidden({name: 'id', value: entity.id }) }}
         {{ forms.select({name: 'preset', label: 'Пресет' }) }}

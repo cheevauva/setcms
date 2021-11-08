@@ -2,7 +2,7 @@
 
 namespace SetCMS\Module\Ordinary;
 
-class OrdinaryEntity
+abstract class OrdinaryEntity
 {
 
     public string $id;

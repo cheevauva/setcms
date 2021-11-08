@@ -5,9 +5,15 @@ namespace SetCMS;
 use Laminas\Permissions\Acl\Acl as LaminasAcl;
 use Laminas\Permissions\Acl\Role\GenericRole as Role;
 use Laminas\Permissions\Acl\Resource\GenericResource as Resource;
+use Psr\Container\ContainerInterface;
 
 class ACL extends LaminasAcl
 {
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->setup($container->get('acl'));
+    }
 
     public function setup(array $setup)
     {

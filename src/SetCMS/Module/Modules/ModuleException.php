@@ -1,6 +1,6 @@
 <?php
 
-namespace SetCMS;
+namespace SetCMS\Module\Modules;
 
 use SetCMS\HttpStatusCode\NotFound;
 use SetCMS\HttpStatusCode\Forbidden;
@@ -36,6 +36,11 @@ class ModuleException extends \Exception
         return new class($message) extends ModuleException implements Forbidden {
             
         };
+    }
+
+    public static function notAllowSection(string $module, string $section): self
+    {
+        return self::notAllow(sprintf('Не разрещенное действие "%s" в модуле "%s"', $module, $section));
     }
 
     public static function notFoundModule(string $module): self

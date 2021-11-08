@@ -2,30 +2,30 @@
 
 namespace SetCMS\Module\Pages;
 
-use SetCMS\Module\Pages\PageService;
-use SetCMS\Module\Ordinary\OrdinaryResourceController;
 use Psr\Http\Message\ServerRequestInterface;
+use SetCMS\Module\Pages\PageService;
 use SetCMS\Module\Pages\PageModel\PageModelSave;
 
 class PageResource
 {
 
-    private OrdinaryResourceController $ordinaryAdmin;
+    use \SetCMS\Module\Ordinary\OrdinaryResourceTrait;
 
-    public function __construct(PageService $oageService, OrdinaryResourceController $ordinaryAdmin)
+    private PageService $pageService;
+
+    public function __construct(PageService $pageService)
     {
-        $this->ordinaryAdmin = $ordinaryAdmin;
-        $this->ordinaryAdmin->service($oageService);
+        $this->pageService = $this->service($pageService);
     }
 
     public function update(ServerRequestInterface $request, PageModelSave $model): PageModelSave
     {
-        return $this->ordinaryAdmin->save($request, $model);
+        return $this->save($request, $model);
     }
 
     public function create(ServerRequestInterface $request, PageModelSave $model): PageModelSave
     {
-        return $this->ordinaryAdmin->save($request, $model);
+        return $this->save($request, $model);
     }
 
 }

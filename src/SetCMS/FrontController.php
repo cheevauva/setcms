@@ -7,14 +7,13 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\Router as Router;
 use SetCMS\HttpStatusCode\HttpStatusCode;
-use SetCMS\Model;
 use SetCMS\Action;
-use SetCMS\Module\Users\UserDAO;
-use SetCMS\Module\Users\User;
-use SetCMS\Module\Users\UserException;
-use SetCMS\Module\OAuth\OAuthService;
-use SetCMS\RequestAttribute;
 use SetCMS\ACL;
+use SetCMS\Module\Modules\ModuleDAO;
+use SetCMS\Module\Themes\ThemeDAO;
+use SetCMS\Module\Modules\ModuleException;
+use SetCMS\EventDispatcher;
+use SetCMS\Event\FrontControllerBeforeLaunchActionEvent as BeforeLaunchActionEvent;
 
 class FrontController
 {
@@ -25,23 +24,24 @@ class FrontController
     protected ServerRequestInterface $request;
     protected array $config;
     protected string $basePath;
-    protected UserDAO $userDAO;
-    protected ?User $currentUser = null;
-    protected OAuthService $oauthService;
     protected ACL $acl;
+    protected ModuleDAO $moduleDAO;
+    protected ThemeDAO $themeDAO;
+    protected Action $action;
+    protected EventDispatcher $eventDispatcher;
 
-    public function __construct(ContainerInterface $container, ACL $acl)
+    public function __construct(ContainerInterface $container, Router $router, ACL $acl, ModuleDAO $moduleDAO, ThemeDAO $themeDAO, Action $action, EventDispatcher $eventDispatcher)
     {
         $this->container = $container;
-        $this->router = $container->get(Router::class);
-        $this->userDAO = $container->get(UserDAO::class);
-        $this->oauthService = $container->get(OAuthService::class);
         $this->basePath = $container->get('basePath');
         $this->config = $container->get('config');
-        $this->router->addRoutes($container->get('routes'));
         $this->headers = $container->get('headers');
+        $this->router = $router;
         $this->acl = $acl;
-        $this->acl->setup($container->get('acl'));
+        $this->moduleDAO = $moduleDAO;
+        $this->themeDAO = $themeDAO;
+        $this->action = $action;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function execute(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
@@ -62,8 +62,8 @@ class FrontController
             return $this->process($request, $response);
         } catch (\Exception $ex) {
             $code = 500;
-            $reason = 'Внутренняя ошибка';
-            $message = $ex->getMessage();
+            $message = 'Внутренняя ошибка';
+            $reason = $ex->getMessage();
             $trace = $ex->getTraceAsString();
 
             if ($ex instanceof HttpStatusCode) {
@@ -94,11 +94,6 @@ class FrontController
         }
     }
 
-    protected function invokeAction(Action $action): Model
-    {
-        return $action->getAction()->invokeArgs($this->container->get($action->getControllerClassName()), $action->getArguments());
-    }
-
     protected function withAttributes(ServerRequestInterface $request, array $attributes): ServerRequestInterface
     {
         foreach ($attributes as $attribute => $attributeValue) {
@@ -106,42 +101,6 @@ class FrontController
         }
 
         return $request;
-    }
-
-    protected function getCurrentUser(): ?User
-    {
-        if ($this->currentUser) {
-            return $this->currentUser;
-        }
-
-        $token = $this->request->getAttribute(RequestAttribute::ACCESS_TOKEN);
-
-        if ($token && !$this->currentUser) {
-            try {
-                $this->currentUser = $this->oauthService->getUserByAccessToken($token);
-            } catch (\Exception $ex) {
-                $this->currentUser = null;
-            }
-        }
-
-        if (!$this->currentUser) {
-            $this->currentUser = $this->oauthService->getUserByAccessToken('guest');
-        }
-
-        return $this->currentUser;
-    }
-
-    protected function isAdmin(): bool
-    {
-        if (!$this->getCurrentUser()) {
-            return false;
-        }
-
-        if ($this->getCurrentUser()->isAdmin()) {
-            return true;
-        }
-
-        return in_array($this->getCurrentUser()->id, $this->config['admin_users'] ?? [], true);
     }
 
     protected function getTwig(): ?\Twig\Environment
@@ -156,14 +115,18 @@ class FrontController
             'auto_reload' => true,
         ]);
 
-        $theme = new Theme($this->config, $this->request, $this->router);
+        $theme = $this->themeDAO->get($this->config['theme']);
+        $theme->config = $this->config;
+        $theme->setRouter($this->router);
+        $theme->setRequest($this->request);
+        $theme->setModuleFinder($this->moduleDAO);
         $theme->currentModule = $this->request->getAttribute('module');
-        $theme->currentUser = $this->getCurrentUser();
+        $theme->currentUser = $this->request->getAttribute('user');
 
         $twig->addGlobal('setcms', $theme);
         $twig->addFunction(new \Twig\TwigFunction('render', function ($template, $params = []) {
             $request = $this->withAttributes($this->request, $params);
-            $model = $this->invokeAction(new Action($request));
+            $model = (new Action($request))();
             $content = $this->getTwig()->render($template, $model->toArray());
 
             return new \Twig\Markup($content, 'UTF-8');
@@ -180,9 +143,12 @@ class FrontController
             $request = $request->withAttribute($param, $paramVal);
         }
 
-        $action = new Action($request);
+        return $this->createAction($request)();
+    }
 
-        return $action->getAction()->invokeArgs($this->container->get($action->getControllerClassName()), $action->getArguments());
+    protected function createAction(ServerRequestInterface $request): Action
+    {
+        return (clone $this->action)->withRequest($request);
     }
 
     protected function csrfProtect(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
@@ -209,20 +175,8 @@ class FrontController
         return $response;
     }
 
-    protected function processAccessToken(ServerRequestInterface $request): ServerRequestInterface
-    {
-        $tokens = $this->oauthService->parseTokens(array_filter([
-            $this->request->getHeaderLine('Authorization') ?? null,
-            $this->request->getCookieParams()['X-SetCMS-AccessToken'] ?? null,
-        ]));
-
-        return $request->withAttribute(RequestAttribute::ACCESS_TOKEN, $tokens ? reset($tokens) : null);
-    }
-
     protected function process(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $request = $this->processAccessToken($request);
-
         $result = $this->router->match($request->getServerParams()['PATH_INFO'] ?? '/', $request->getServerParams()['REQUEST_METHOD']);
 
         if (!$result) {
@@ -234,41 +188,25 @@ class FrontController
 
         $this->request = $request;
 
-        $action = new Action($request);
-        $currentUser = $this->getCurrentUser();
-
-        if (!$action->isAllowRequestMethod()) {
-            throw ModuleException::notAllowActionForThatRequestMethod($action->getModule(), $action->getSection(), $action->getAction()->getName(), $request->getMethod());
-        }
-
-        switch ($action->getSection()) {
-            case 'Resource':
-                $resource = $request->getAttribute('resource');
-                $rule = $request->getAttribute('action');
-                break;
-            case 'Index':
-            case 'Admin':
-                $resource = (string) $action->getModule();
-                $rule = $action->getAction()->getDeclaringClass()->getShortName() . '::' . $action->getAction()->getName();
-                break;
-        }
-
-        if (!$this->acl->isAllowed($currentUser->role, $resource, $rule)) {
-            throw ModuleException::notAllow();
-        }
+        $action = $this->createAction($request);
 
         if ($action->isCSRFProtectEnabled()) {
             $response = $this->csrfProtect($request, $response);
         }
 
-        $model = $this->invokeAction($action);
+        $request = $this->eventDispatcher->dispatch(new BeforeLaunchActionEvent($action, $request))->request;
+        
+        $action->withRequest($request);
+
+        $this->request = $request;
+
+        $model = $action();
 
         if ($action->hasResponseHeaders()) {
-            $callbackHeaderName = implode('.', [$action->getModule(), $action->getSection(), $action->getAction()->getName()]);
             $router = clone $this->router;
             $router->setBasePath($request->getServerParams()['SCRIPT_NAME']);
             $headerRequest = $request->withAttribute('model', $model)->withAttribute('router', $router);
-            $response = $this->headers[$callbackHeaderName]($headerRequest, $response);
+            $response = $this->headers[$action->getCallbackHeaderName()]($headerRequest, $response);
         }
 
         switch ($action->getContentType()) {
@@ -277,8 +215,7 @@ class FrontController
                 $response->getBody()->write($action->getWrapper() === 'json-none' ? json_encode($model->toArray(), JSON_UNESCAPED_UNICODE) : $this->model2json($model));
                 break;
             case 'html':
-                $template = sprintf('themes/%s/modules/%s/%s/%s.twig', $this->config['theme'], $action->getModule(), $action->getSection(), $action->getAction()->getName());
-                $html = $this->getTwig()->render($template, $model->toArray());
+                $html = $this->getTwig()->render($action->getTemplate($this->config['theme']), $model->toArray());
 
                 $response = $response->withHeader('Content-type', 'text/html');
                 $response->getBody()->write($html);

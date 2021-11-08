@@ -5,26 +5,27 @@ namespace SetCMS\Module\OAuth;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\OAuth\OAuthClientService;
 use SetCMS\Module\OAuth\OAuthClientModel\OAuthClientModelSave;
-use SetCMS\Module\Ordinary\OrdinaryResourceController;
 
 class OAuthClientResource
 {
 
-    use \SetCMS\Module\Ordinary\OrdinaryCRUD;
+    use \SetCMS\Module\Ordinary\OrdinaryResourceTrait;
 
-    public function __construct(OAuthClientService $service, OrdinaryResourceController $ordinary)
+    private OAuthClientService $oauthClientService;
+
+    public function __construct(OAuthClientService $oauthClientService)
     {
-        $this->ordinary($ordinary)->service($service);
+        $this->oauthClientService = $this->service($oauthClientService);
     }
 
     public function create(ServerRequestInterface $request, OAuthClientModelSave $model): OAuthClientModelSave
     {
-        return $this->ordinary()->save($request, $model);
+        return $this->save($request, $model);
     }
 
     public function update(ServerRequestInterface $request, OAuthClientModelSave $model): OAuthClientModelSave
     {
-        return $this->ordinary()->save($request, $model);
+        return $this->save($request, $model);
     }
 
 }

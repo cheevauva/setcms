@@ -2,19 +2,16 @@
 
 namespace SetCMS\Module\Posts;
 
-use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\Posts\PostService;
-use SetCMS\Module\Ordinary\OrdinaryController;
 
 class PostAdmin
 {
 
-    use \SetCMS\Module\Ordinary\OrdinaryCRUD;
+    use \SetCMS\Module\Ordinary\OrdinaryAdminTrait;
 
-    public function __construct(PostService $postService, OrdinaryController $ordinaryAdmin)
+    public function __construct(PostService $postService)
     {
-        $this->ordinary($ordinaryAdmin);
-        $this->ordinary()->service($postService);
+        $this->service($postService);
     }
 
 }

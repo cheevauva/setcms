@@ -1,3 +1,3 @@
 <?php
 
-$routes[] = ['GET', '/[*:slug]', ['action' => 'read', 'module' => 'Posts'], 'post_read_by_slug'];
+$routes[] = ['GET', '/[*:slug]', ['action' => 'readBySlug', 'module' => 'Posts'], 'post_read_by_slug'];

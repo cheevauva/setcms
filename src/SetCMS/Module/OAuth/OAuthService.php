@@ -95,7 +95,7 @@ class OAuthService
 
         $model->entity($this->generateToken($user, $oauthClient));
 
-        $this->oauthCodeDAO->remove($oauthCode->id);
+        //$this->oauthCodeDAO->remove($oauthCode->id);
     }
 
     public function parseTokens(array $tokens): array

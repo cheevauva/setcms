@@ -3,52 +3,70 @@
 namespace SetCMS;
 
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Module;
 use SetCMS\VarDoc;
+use SetCMS\Module\Modules\ModuleDAO;
+use SetCMS\Module\Module;
+use SetCMS\Module\Modules\Contract\ModuleAdminInterface;
+use SetCMS\Module\Modules\Contract\ModuleIndexInterface;
+use SetCMS\Module\Modules\ModuleException;
+use Psr\Container\ContainerInterface;
 
 class Action
 {
 
     private ServerRequestInterface $request;
-    private Module $module;
     private \ReflectionMethod $action;
-    private string $method;
+    private string $requestMethod;
     private string $section;
+    private ModuleDAO $moduleDAO;
+    private Module $module;
+    private ContainerInterface $container;
 
-    public function __construct(ServerRequestInterface $request)
+    public function __construct(ModuleDAO $moduleDAO, ContainerInterface $container)
     {
-        $module = $request->getAttribute('module', '');
-        $action = $request->getAttribute('action', 'index');
-        $this->method = $request->getAttribute('method', '');
-        $this->section = $request->getAttribute('section', 'Index');
+        $this->moduleDAO = $moduleDAO;
+        $this->container = $container;
+    }
+
+    public function withRequest(ServerRequestInterface $request): self
+    {
+        $module = $this->moduleDAO->find($request->getAttribute('module'));
+
+        $action = $request->getAttribute('action', $module->getDefaultAction());
+        $section = $request->getAttribute('section', $module->getDefaultSection());
+        $controller = $module->getSectionClassName($section);
+        $requestMethod = $request->getAttribute('method', $request->getMethod());
+
+        if (!method_exists($controller, $action)) {
+            throw ModuleException::notFoundAction($module, $section, $action);
+        }
 
         $this->request = $request;
-        $moduleClassName = sprintf('SetCMS\Module\%s', $module);
+        $this->requestMethod = $requestMethod;
+        $this->module = $module;
+        $this->section = $section;
+        $this->action = (new \ReflectionClass($controller))->getMethod($action);
 
-        if (!class_exists($moduleClassName, true)) {
-            throw ModuleException::notFoundModule($module);
-        }
+        return $this;
+    }
 
-        $this->module = new $moduleClassName($module);
-
-        assert($this->module instanceof Module);
-
-        if (!method_exists($moduleClassName, 'getPrefix')) {
-            throw ModuleException::notDefinedPrefix($this->module->getLabel());
-        }
-
-        $controllerClassName = $this->getControllerClassName();
-
-        if (!method_exists($controllerClassName, $action)) {
-            throw ModuleException::notFoundAction($this->module, $this->section, $action);
-        }
-
-        $this->action = (new \ReflectionClass($this->getControllerClassName()))->getMethod($action);
+    private function getControllerClassName(): string
+    {
+        return $this->module->getSectionClassName($this->section);
     }
 
     public function hasResponseHeaders(): bool
     {
         return strpos($this->getComment(), VarDoc::RESPONSE_WITH_HEADERS) !== false;
+    }
+
+    public function getCallbackHeaderName(): string
+    {
+        return implode('.', [
+            $this->module->getName(),
+            $this->section,
+            $this->action->getName()
+        ]);
     }
 
     public function isCSRFProtectEnabled(): bool
@@ -92,36 +110,26 @@ class Action
         throw ModuleException::serverError('Не указан тип возвращаемого контента');
     }
 
-    public function getSection(): string
+    private function getSection(): string
     {
         return $this->section;
     }
 
-    public function getModule(): Module
-    {
-        return $this->module;
-    }
-
-    public function getControllerClassName(): string
-    {
-        return sprintf('%s%s', $this->module->getPrefix(), ucfirst($this->section));
-    }
-
-    public function isAllowRequestMethod(): bool
+    private function isAllowRequestMethod(): bool
     {
         if ($this->section === 'Resource') {
             return true;
         }
 
-        return stripos($this->action->getDocComment(), VarDoc::PREFIX_METHOD . strtolower($this->method)) !== false;
+        return stripos($this->action->getDocComment(), VarDoc::PREFIX_METHOD . strtolower($this->requestMethod)) !== false;
     }
 
-    public function getComment(): string
+    private function getComment(): string
     {
         return $this->action->getDocComment();
     }
 
-    public function getArguments(): array
+    private function getArguments(): array
     {
         $arguments = [];
 
@@ -139,9 +147,40 @@ class Action
         return $arguments;
     }
 
-    public function getAction(): \ReflectionMethod
+    private function getAction(): \ReflectionMethod
     {
         return $this->action;
+    }
+
+    public function getResourceRule(): array
+    {
+        switch ($this->section) {
+            case 'Resource':
+                $resource = $this->request->getAttribute('resource');
+                $rule = $this->request->getAttribute('action');
+                break;
+            case 'Index':
+            case 'Admin':
+                $resource = $this->module->getName();
+                $rule = $this->action->getDeclaringClass()->getShortName() . '::' . $this->action->getName();
+                break;
+        }
+
+        return [$resource, $rule];
+    }
+
+    public function __invoke()
+    {
+        if (!$this->isAllowRequestMethod()) {
+            throw ModuleException::notAllowActionForThatRequestMethod($this->module, $this->section, $this->action->getName(), $this->request->getMethod());
+        }
+
+        return $this->action->invokeArgs($this->container->get($this->getControllerClassName()), $this->getArguments());
+    }
+
+    public function getTemplate($theme)
+    {
+        return sprintf('themes/%s/modules/%s/%s/%s.twig', $theme, $this->module->getName(), $this->section, $this->action->getName());
     }
 
 }

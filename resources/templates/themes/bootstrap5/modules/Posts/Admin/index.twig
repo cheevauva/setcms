@@ -23,8 +23,8 @@
                         <td>{{ entity.id }}</td>
                         <td>{{ entity.title }}</td>
                         <td>
-                            <a href="{{ setcms.link('action_record_admin', {'module': entity.module, action: 'save', 'id': entity.id}) }}">Редактировать</a>
-                            <a href="{{ setcms.link('action_record_admin', {'module': entity.module, action: 'read', 'id': entity.id}) }}">Просмотр</a>
+                            <a href="{{ setcms.link('action_record_admin', {'module': setcms.toModule(entity), action: 'save', 'id': entity.id}) }}">Редактировать</a>
+                            <a href="{{ setcms.link('action_record_admin', {'module': setcms.toModule(entity), action: 'read', 'id': entity.id}) }}">Просмотр</a>
                         </td>
                     </tr>
                 {%  endfor %}

@@ -2,12 +2,16 @@
 
 namespace SetCMS\Module;
 
-class Captcha extends \SetCMS\Module
+use SetCMS\Module\Module as Module;
+use SetCMS\Module\Modules\Contract\ModuleIndexInterface;
+use SetCMS\Module\Captcha\CaptchaIndex;
+
+class Captcha extends Module implements ModuleIndexInterface
 {
 
-    public function getPrefix(): string
+    public function getIndexControllerClassName(): string
     {
-        return __CLASS__ . '\Captcha';
+        return CaptchaIndex::class;
     }
 
 }

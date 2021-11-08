@@ -11,8 +11,6 @@ class User extends OrdinaryEntity
     public const ROLE_USER = 'user';
     public const ROLE_GUEST = 'guest';
 
-    public string $module = 'Users';
-    public string $resource = 'user';
     public string $username;
     protected string $password;
     public string $role = User::ROLE_USER;

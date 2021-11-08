@@ -99,9 +99,9 @@
 {% macro resourceCreateUpdateAction(model, entity) %}
     {% if model.id %}
         setcms-method="PUT"
-        setcms-action="{{ setcms.link('resource_update', {module: entity.module, resource: entity.resource, id: entity.id}) }}"
+        setcms-action="{{ setcms.link('resource_update', {module: setcms.toModule(entity), resource: setcms.toResource(entity), id: entity.id}) }}"
     {% else %}
         setcms-method="POST"
-        setcms-action="{{ setcms.link('resource_create', {module: entity.module, resource: entity.resource, id: entity.id}) }}"
+        setcms-action="{{ setcms.link('resource_create', {module: setcms.toModule(entity), resource: setcms.toResource(entity), id: entity.id}) }}"
     {% endif %}
 {% endmacro %}

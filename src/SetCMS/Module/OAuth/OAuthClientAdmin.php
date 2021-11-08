@@ -3,16 +3,15 @@
 namespace SetCMS\Module\OAuth;
 
 use SetCMS\Module\OAuth\OAuthClientService;
-use SetCMS\Module\Ordinary\OrdinaryController;
 
 final class OAuthClientAdmin
 {
 
-    use \SetCMS\Module\Ordinary\OrdinaryCRUD;
+    use \SetCMS\Module\Ordinary\OrdinaryAdminTrait;
 
-    public function __construct(OAuthClientService $oauthClientService, OrdinaryController $ordinary)
+    public function __construct(OAuthClientService $oauthClientService)
     {
-        $this->ordinary(clone $ordinary)->service($oauthClientService);
+        $this->service($oauthClientService);
     }
 
 }

@@ -2,19 +2,18 @@
 
 namespace SetCMS\Module\Pages;
 
-use SetCMS\Module\Ordinary\OrdinaryController;
 use SetCMS\Module\Pages\PageService;
 
 class PageAdmin
 {
 
-    use \SetCMS\Module\Ordinary\OrdinaryCRUD;
+    use \SetCMS\Module\Ordinary\OrdinaryAdminTrait;
 
-    public function __construct(PageService $service, OrdinaryController $ordinary)
+    private PageService $pageService;
+
+    public function __construct(PageService $pageService)
     {
-
-        $this->ordinary(clone $ordinary);
-        $this->ordinary()->service($service);
+        $this->pageService = $this->service($pageService);
     }
 
 }

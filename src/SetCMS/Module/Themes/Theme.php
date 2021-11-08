@@ -1,10 +1,11 @@
 <?php
 
-namespace SetCMS;
+namespace SetCMS\Module\Themes;
 
 use SetCMS\Module\Users\User;
 use SetCMS\Router;
 use Psr\Http\Message\ServerRequestInterface;
+use SetCMS\Module\Modules\ModuleDAO;
 
 class Theme
 {
@@ -38,10 +39,15 @@ class Theme
             'name' => 'Blocks',
             'label' => 'Блоки',
         ],
+        [
+            'name' => 'Modules',
+            'label' => 'Модули',
+        ],
     ];
     public string $self;
     public Router $router;
-    private array $config = [];
+    public array $config = [];
+    public ModuleDAO $finder;
 
     public function getDefaultKeywords()
     {
@@ -53,11 +59,28 @@ class Theme
         return $this->config['title'] ?? '';
     }
 
-    public function __construct(array $config, ServerRequestInterface $request, Router $router)
+    public function setRouter(Router $router): void
     {
-        $this->config = $config;
-        $this->theme = $config['theme'];
         $this->router = clone $router;
+    }
+
+    public function toModule($entity)
+    {
+        return $this->finder->findByEntity($entity)->getName();
+    }
+
+    public function toResource($entity)
+    {
+        return $this->finder->findByEntity($entity)->getResource();
+    }
+
+    public function setModuleFinder($finder)
+    {
+        $this->finder = $finder;
+    }
+
+    public function setRequest(ServerRequestInterface $request): void
+    {
         $this->router->setBasePath(rtrim($request->getServerParams()['SCRIPT_NAME'], '/'));
         $this->self = $request->getServerParams()['REQUEST_SCHEME'] . '://' . $request->getServerParams()['HTTP_HOST'];
         $this->baseUrl = dirname($request->getServerParams()['SCRIPT_NAME']);
@@ -65,6 +88,11 @@ class Theme
         if (substr($this->baseUrl, -1) !== '/') {
             $this->baseUrl .= '/';
         }
+    }
+
+    public function __construct(string $name)
+    {
+        $this->theme = $name;
     }
 
     public function markdown(string $string): string

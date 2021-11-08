@@ -27,7 +27,10 @@ return [
             'Posts' => [
                 'PostIndex::index' => true,
                 'PostIndex::read' => true,
+                'PostIndex::readBySlug' => true,
             ],
+            'Blocks' => [],
+            'Modules' => [],
         ],
         'user' => [
             'Users' => [
@@ -65,6 +68,16 @@ return [
                 'PageAdmin::index' => true,
                 'PageAdmin::read' => true,
                 'PageAdmin::save' => true,
+            ],
+            'Blocks' => [
+                'BlockAdmin::index' => true,
+                'BlockAdmin::read' => true,
+                'BlockAdmin::save' => true,
+            ],
+            'Modules' => [
+                'ModuleAdmin::index' => true,
+                'ModuleAdmin::read' => true,
+                'ModuleAdmin::save' => true,
             ],
             'oauthclient' => [
                 'create' => true,

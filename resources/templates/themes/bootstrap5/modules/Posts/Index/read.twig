@@ -12,7 +12,7 @@
         <p>
             Дата создания: {{ entity.dateCreated.format('d.m.Y H:i:s') }}
             {% if setcms.currentUser.isAdmin %}
-            | <a href="{{ setcms.link('action_record_admin', {module: entity.module, action: 'save', id: entity.id}) }}">Редактировать</a>
+            | <a href="{{ setcms.link('action_record_admin', {module: setcms.toModule(entity), action: 'save', id: entity.id}) }}">Редактировать</a>
             {% endif %}
         </p>
     {% endif %}

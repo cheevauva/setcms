@@ -7,8 +7,6 @@ use SetCMS\Module\Ordinary\OrdinaryEntity;
 class OAuthClient extends OrdinaryEntity
 {
 
-    public string $module = 'OAuthClients';
-    public string $resource = 'oauthclient';
     public string $name;
     public string $clientId;
     public string $clientSecret;

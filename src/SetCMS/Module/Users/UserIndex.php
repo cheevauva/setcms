@@ -58,7 +58,6 @@ final class UserIndex
     /**
      * @setcms-request-method-get
      * @setcms-response-content-html
-     * @setcms-need-not-auth
      */
     public function registration(UserModelRegistration $model): UserModelRegistration
     {
@@ -68,7 +67,6 @@ final class UserIndex
     /**
      * @setcms-request-method-post
      * @setcms-response-content-json
-     * @setcms-need-not-auth
      */
     public function doRegistration(ServerRequestInterface $request, UserModelRegistration $model): UserModelRegistration
     {
