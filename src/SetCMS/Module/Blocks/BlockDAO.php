@@ -16,6 +16,7 @@ class BlockDAO extends OrdinaryDAO
         $record = [
             'side' => $entity->side,
             'block' => $entity->block,
+            'name' => $entity->name,
         ];
         
         return $this->ordinaryEntity2RecordBind($entity, $record);
@@ -28,13 +29,14 @@ class BlockDAO extends OrdinaryDAO
 
     protected function getTableName(): string
     {
-        
+        return 'blocks';
     }
 
     protected function record2entity(array $record): Block
     {
         $entity = new Block;
         $entity->side = $record['side'];
+        $entity->name = $record['name'];
         $entity->block = $record['block'];
 
         return $this->ordinaryRecord2EntityBind($record, $entity);

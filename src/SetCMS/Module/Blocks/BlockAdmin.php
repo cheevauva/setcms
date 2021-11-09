@@ -2,17 +2,16 @@
 
 namespace SetCMS\Module\Blocks;
 
-use SetCMS\Module\Ordinary\OrdinaryController;
-
 class BlockAdmin
 {
 
-    use \SetCMS\Module\Ordinary\OrdinaryControllerTrait;
+    use \SetCMS\Module\Ordinary\OrdinaryControllerTrait {
+        read as private;
+    }
 
-    public function __construct(BlockService $postService, OrdinaryController $ordinaryAdmin)
+    public function __construct(BlockService $blockService)
     {
-        $this->ordinary($ordinaryAdmin);
-        $this->ordinary()->service($postService);
+        $this->service($blockService);
     }
 
 }

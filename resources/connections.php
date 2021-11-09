@@ -15,4 +15,5 @@ return [
     \SetCMS\Module\OAuth\OAuthCodeDAO::class => \SetCMS\Database\ConnectionFactory::class,
     \SetCMS\Module\OAuth\OAuthUserDAO::class => \SetCMS\Database\ConnectionFactory::class,
     \SetCMS\Module\Captcha\CaptchaDAO::class => \SetCMS\Database\ConnectionFactory::class,
+    \SetCMS\Module\Blocks\BlockDAO::class => \SetCMS\Database\ConnectionFactory::class,
 ];

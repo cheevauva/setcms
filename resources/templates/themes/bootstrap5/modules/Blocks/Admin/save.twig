@@ -1,0 +1,18 @@
+{% extends setcms.path('layout_admin.twig') %}
+{% import setcms.path('macros/forms.twig') as forms %}
+
+{% block content_title %}{% if model.id %}Сохранить{% else %}Создать{% endif %} блок{% endblock %}
+
+{% block content %}
+    <form class="setcms-form g-3" 
+          {{ forms.resourceCreateUpdateAction(model, entity) }}
+          setcms-redirect="{{ setcms.link('action_admin', {module: setcms.toModule(entity), action: 'index'}) }}"
+          >
+
+        {{ forms.hidden({name: 'id', value: entity.id }) }}
+        {{ forms.input({entity: entity, name: 'name', type: 'text', label: 'Название'}) }}
+        {{ forms.input({entity: entity, name: 'block', type: 'text', label: 'Блок'}) }}
+        {{ forms.input({entity: entity, name: 'side', type: 'text', label: 'Сторона'}) }}
+        {{ forms.submit({label: 'Сохранить'}) }}
+    </form>
+{% endblock %}

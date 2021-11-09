@@ -91,6 +91,10 @@ return [
                 'update' => true,
                 'create' => true,
             ],
+            'block' => [
+                'update' => true,
+                'create' => true,
+            ],
             'post' => [
                 'create' => true,
                 'read' => true,

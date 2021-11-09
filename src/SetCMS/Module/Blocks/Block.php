@@ -9,5 +9,6 @@ class Block extends OrdinaryEntity
 
     public string $side;
     public string $block;
+    public string $name;
 
 }
