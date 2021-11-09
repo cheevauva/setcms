@@ -171,6 +171,10 @@ class Action
 
     public function __invoke()
     {
+        if (!$this->action->isPublic()) {
+            throw ModuleException::notAllow();
+        }
+        
         if (!$this->isAllowRequestMethod()) {
             throw ModuleException::notAllowActionForThatRequestMethod($this->module, $this->section, $this->action->getName(), $this->request->getMethod());
         }

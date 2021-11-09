@@ -8,7 +8,7 @@ use SetCMS\Module\Users\UserService;
 class UserAdmin
 {
 
-    use \SetCMS\Module\Ordinary\OrdinaryAdminTrait;
+    use \SetCMS\Module\Ordinary\OrdinaryControllerTrait;
 
     public function __construct(UserService $userService)
     {

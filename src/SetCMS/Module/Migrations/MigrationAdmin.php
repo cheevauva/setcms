@@ -7,7 +7,7 @@ use SetCMS\Module\Migrations\MigrationService;
 class MigrationAdmin
 {
 
-    use \SetCMS\Module\Ordinary\OrdinaryIndexTrait;
+    use \SetCMS\Module\Ordinary\OrdinaryControllerTrait;
 
     private MigrationService $migrationService;
 

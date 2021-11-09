@@ -6,13 +6,14 @@ use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\Ordinary\OrdinaryService;
 use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelList;
 use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelRead;
+use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModel;
 
-trait OrdinaryIndexTrait
+trait OrdinaryControllerTrait
 {
 
     private OrdinaryService $service;
 
-    private function service(?OrdinaryService $service = null): OrdinaryService
+    public function service(?OrdinaryService $service = null): OrdinaryService
     {
         if (!is_null($service)) {
             $this->service = $service;
@@ -49,6 +50,29 @@ trait OrdinaryIndexTrait
 
         if ($model->isValid()) {
             $this->service()->read($model);
+        }
+
+        return $model;
+    }
+
+    /**
+     * @setcms-request-method-get
+     * @setcms-response-content-html
+     */
+    public function save(ServerRequestInterface $request, OrdinaryModelRead $model): OrdinaryModel
+    {
+        if ($request->getAttribute('id')) {
+            $params = $request->getQueryParams();
+            $params['id'] = $request->getAttribute('id');
+
+            $model->fromArray($params);
+
+            if ($model->isValid()) {
+                $this->service()->read($model);
+            }
+        } else {
+            $model->fromArray($request->getQueryParams());
+            $model->entity($this->service()->entity());
         }
 
         return $model;

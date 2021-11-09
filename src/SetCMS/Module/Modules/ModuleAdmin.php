@@ -8,7 +8,7 @@ use SetCMS\Module\Modules\ModuleService;
 class ModuleAdmin
 {
 
-    use \SetCMS\Module\Ordinary\OrdinaryAdminTrait;
+    use \SetCMS\Module\Ordinary\OrdinaryControllerTrait;
 
     public function __construct(ModuleService $moduleService, OrdinaryController $ordinary)
     {

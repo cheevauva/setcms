@@ -7,7 +7,7 @@ use SetCMS\Module\Pages\PageService;
 class PageAdmin
 {
 
-    use \SetCMS\Module\Ordinary\OrdinaryAdminTrait;
+    use \SetCMS\Module\Ordinary\OrdinaryControllerTrait;
 
     private PageService $pageService;
 

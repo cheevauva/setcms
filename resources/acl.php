@@ -28,6 +28,7 @@ return [
                 'PostIndex::index' => true,
                 'PostIndex::read' => true,
                 'PostIndex::readBySlug' => true,
+                'PostIndex::save' => true,
             ],
             'Blocks' => [],
             'Modules' => [],

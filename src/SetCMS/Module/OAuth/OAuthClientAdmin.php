@@ -7,7 +7,7 @@ use SetCMS\Module\OAuth\OAuthClientService;
 final class OAuthClientAdmin
 {
 
-    use \SetCMS\Module\Ordinary\OrdinaryAdminTrait;
+    use \SetCMS\Module\Ordinary\OrdinaryControllerTrait;
 
     public function __construct(OAuthClientService $oauthClientService)
     {

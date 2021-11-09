@@ -9,7 +9,10 @@ use SetCMS\Module\Posts\PostService;
 class PostIndex
 {
 
-    use \SetCMS\Module\Ordinary\OrdinaryIndexTrait;
+    use \SetCMS\Module\Ordinary\OrdinaryControllerTrait {
+        save as private;
+        read as private;
+    }
 
     private PostService $postService;
 

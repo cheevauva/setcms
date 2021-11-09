@@ -4,10 +4,9 @@ namespace SetCMS\Module\Captcha;
 
 use SetCMS\Module\Captcha\CaptchaDAO;
 use SetCMS\Module\Captcha\Captcha;
-use SetCMS\Module\Ordinary\OrdinaryService;
 use SetCMS\Module\Captcha\CaptchaImage;
 
-class CaptchaService extends OrdinaryService
+class CaptchaService
 {
 
     private CaptchaDAO $captchaDAO;
