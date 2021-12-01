@@ -12,7 +12,7 @@ class Theme
 
     public string $theme;
     public ?User $currentUser;
-    public string $currentModule;
+    public ?string $currentModule = null;
     public string $baseUrl;
     public array $modules = [
         [
