@@ -11,7 +11,7 @@ return [
         if (!$model->entity()) {
             return $response;
         }
-
+        
         $response = $response->withHeader('Set-Cookie', sprintf('X-SetCMS-AccessToken=%s;Path=/', $model->entity()->token));
         $response = $response->withHeader('Location', $router->generate('home'));
 

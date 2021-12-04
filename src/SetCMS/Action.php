@@ -28,24 +28,28 @@ class Action
         $this->container = $container;
     }
 
-    public function withRequest(ServerRequestInterface $request): self
+    public function apply(object $object): self
     {
-        $module = $this->moduleDAO->find($request->getAttribute('module'));
+        if ($object instanceof ServerRequestInterface) {
+            $request = $object;
 
-        $action = $request->getAttribute('action', $module->getDefaultAction());
-        $section = $request->getAttribute('section', $module->getDefaultSection());
-        $controller = $module->getSectionClassName($section);
-        $requestMethod = $request->getAttribute('method', $request->getMethod());
+            $module = $this->moduleDAO->find($request->getAttribute('module'));
 
-        if (!method_exists($controller, $action)) {
-            throw ModuleException::notFoundAction($module, $section, $action);
+            $action = $request->getAttribute('action', $module->getDefaultAction());
+            $section = $request->getAttribute('section', $module->getDefaultSection());
+            $controller = $module->getSectionClassName($section);
+            $requestMethod = $request->getAttribute('method', $request->getMethod());
+
+            if (!method_exists($controller, $action)) {
+                throw ModuleException::notFoundAction($module, $section, $action);
+            }
+
+            $this->request = $request;
+            $this->requestMethod = $requestMethod;
+            $this->module = $module;
+            $this->section = $section;
+            $this->action = (new \ReflectionClass($controller))->getMethod($action);
         }
-
-        $this->request = $request;
-        $this->requestMethod = $requestMethod;
-        $this->module = $module;
-        $this->section = $section;
-        $this->action = (new \ReflectionClass($controller))->getMethod($action);
 
         return $this;
     }
@@ -84,7 +88,7 @@ class Action
         return null;
     }
 
-    public function getContentType(): array
+    public function getContentTypes(): array
     {
         if ($this->section === 'Resource') {
             return ['json'];
@@ -106,8 +110,6 @@ class Action
         if (!empty($types)) {
             return $types;
         }
-
-        throw ModuleException::serverError('Не указан тип возвращаемого контента');
     }
 
     private function getSection(): string

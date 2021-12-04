@@ -9,7 +9,6 @@ use SetCMS\Router as Router;
 use SetCMS\HttpStatusCode\HttpStatusCode;
 use SetCMS\Action;
 use SetCMS\ACL;
-use SetCMS\Module\Modules\ModuleDAO;
 use SetCMS\Module\Themes\ThemeDAO;
 use SetCMS\Module\Modules\ModuleException;
 use SetCMS\EventDispatcher;
@@ -25,23 +24,19 @@ class FrontController
     protected array $config;
     protected string $basePath;
     protected ACL $acl;
-    protected ModuleDAO $moduleDAO;
-    protected ThemeDAO $themeDAO;
     protected Action $action;
     protected EventDispatcher $eventDispatcher;
 
-    public function __construct(ContainerInterface $container, Router $router, ACL $acl, ModuleDAO $moduleDAO, ThemeDAO $themeDAO, Action $action, EventDispatcher $eventDispatcher)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
         $this->basePath = $container->get('basePath');
         $this->config = $container->get('config');
         $this->headers = $container->get('headers');
-        $this->router = $router;
-        $this->acl = $acl;
-        $this->moduleDAO = $moduleDAO;
-        $this->themeDAO = $themeDAO;
-        $this->action = $action;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->router = $container->get(Router::class);
+        $this->acl = $container->get(ACL::class);
+        $this->action = $container->get(Action::class);
+        $this->eventDispatcher = $container->get(EventDispatcher::class);
     }
 
     public function execute(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
@@ -61,6 +56,8 @@ class FrontController
         try {
             return $this->process($request, $response);
         } catch (\Exception $ex) {
+            echo $ex->getMessage(); // @todo надо сделать модуль для ошибок
+            die;
             $code = 500;
             $message = 'Внутренняя ошибка';
             $reason = $ex->getMessage();
@@ -71,23 +68,28 @@ class FrontController
                 $reason = $ex->getMessage() ? $ex->getMessage() : $ex::REASON;
             }
 
-            $contentType = $request->getServerParams()['HTTP_ACCEPT'] ?? 'text/html';
-
             $model = (new \SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelError);
             $model->message = $reason;
             $model->trace = $trace;
             $model->addMessage($message);
 
+            $contentTypes = [];
+            $contentType = $request->getServerParams()['HTTP_ACCEPT'] ?? 'text/html';
+
             if (strpos($contentType, 'json') !== false) {
-                $contentType = 'application/json';
-                $content = $this->model2json($model);
-            } else {
-                $contentType = 'text/html';
-                $content = $this->getTwig($request)->render('error.twig', $model->toArray());
+                $contentTypes[] = 'json';
+            }
+            if (strpos($contentType, 'html') !== false) {
+                $contentTypes[] = 'html';
             }
 
-            $response->getBody()->write($content);
-            $response = $response->withHeader('Content-type', $contentType);
+            if (empty($contentTypes)) {
+                $contentTypes[] = 'html';
+            }
+
+            $action = $this->createAction($request);
+
+            $response = $this->prepareResponse($action, $model, $request, $response);
             $response = $response->withStatus($code, $reason);
 
             return $response;
@@ -103,38 +105,6 @@ class FrontController
         return $request;
     }
 
-    protected function getTwig(): ?\Twig\Environment
-    {
-        if (!empty($this->twig)) {
-            return $this->twig;
-        }
-
-        $loader = new \Twig\Loader\FilesystemLoader($this->basePath . '/resources/templates');
-        $twig = new \Twig\Environment($loader, [
-            'cache' => $this->basePath . '/cache/twig',
-            'auto_reload' => true,
-        ]);
-
-        $theme = $this->themeDAO->get($this->config['theme']);
-        $theme->config = $this->config;
-        $theme->setRouter($this->router);
-        $theme->setRequest($this->request);
-        $theme->setModuleFinder($this->moduleDAO);
-        $theme->currentModule = $this->request->getAttribute('module');
-        $theme->currentUser = $this->request->getAttribute('user');
-
-        $twig->addGlobal('setcms', $theme);
-        $twig->addFunction(new \Twig\TwigFunction('render', function ($template, $params = []) {
-            $request = $this->withAttributes($this->request, $params);
-            $model = (new Action($request))();
-            $content = $this->getTwig()->render($template, $model->toArray());
-
-            return new \Twig\Markup($content, 'UTF-8');
-        }));
-
-        return $this->twig = $twig;
-    }
-
     protected function getModelByRoute($route, ServerRequestInterface $request): \SetCMS\Model
     {
         $result = $this->router->match($route, 'GET');
@@ -148,7 +118,7 @@ class FrontController
 
     protected function createAction(ServerRequestInterface $request): Action
     {
-        return (clone $this->action)->withRequest($request);
+        return (clone $this->action)->apply($request);
     }
 
     protected function csrfProtect(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
@@ -194,44 +164,42 @@ class FrontController
             $response = $this->csrfProtect($request, $response);
         }
 
-        $request = $this->eventDispatcher->dispatch(new BeforeLaunchActionEvent($action, $request))->request;
+        $request = (new BeforeLaunchActionEvent($action, $request))->dispatch($this->eventDispatcher)->request;
 
-        $action->withRequest($request);
+        $action->apply($request);
 
         $this->request = $request;
 
         $model = $action();
 
-        foreach ($action->getContentType() as $type) {
-            switch ($type) {
-                case 'http-headers':
-                    $router = clone $this->router;
-                    $router->setBasePath($request->getServerParams()['SCRIPT_NAME']);
-                    $headerRequest = $request->withAttribute('model', $model)->withAttribute('router', $router);
-                    $response = $this->headers[$action->getCallbackHeaderName()]($headerRequest, $response);
-                    break;
-                case 'json':
-                    $response = $response->withHeader('Content-type', 'application/json');
-                    $response->getBody()->write($action->getWrapper() === 'json-none' ? json_encode($model->toArray(), JSON_UNESCAPED_UNICODE) : $this->model2json($model));
-                    break;
-                case 'html':
-                    $html = $this->getTwig()->render($action->getTemplate($this->config['theme']), $model->toArray());
-
-                    $response = $response->withHeader('Content-type', 'text/html');
-                    $response->getBody()->write($html);
-                    break;
-            }
-        }
-        return $response;
+        return $this->prepareResponse($action, $model, $request, $response);
     }
 
-    protected function model2json(\SetCMS\Model $model): string
+    public function createResponder(string $type): Responder\ResponderInterface
     {
-        return json_encode([
-            'success' => empty($model->getMessages()),
-            'result' => $model->toArray(),
-            'messages' => $model->getMessages(),
-        ], JSON_UNESCAPED_UNICODE);
+        switch ($type) {
+            case 'html':
+                return clone $this->container->get(Responder\Html::class);
+            case 'json':
+                return clone $this->container->get(Responder\Json::class);
+            case 'http-headers':
+                return clone $this->container->get(Responder\HttpHeaders::class);
+        }
+    }
+
+    protected function prepareResponse($action, $model, $request, $response)
+    {
+        foreach ($action->getContentTypes() as $type) {
+            $responder = $this->createResponder($type);
+            $responder->apply($action);
+            $responder->apply($model);
+            $responder->apply(clone $this->router);
+            $responder->apply($request);
+
+            $response = $responder->prepareResponse($response);
+        }
+
+        return $response;
     }
 
 }

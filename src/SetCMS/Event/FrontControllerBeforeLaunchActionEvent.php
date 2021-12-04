@@ -7,6 +7,7 @@ use SetCMS\Action;
 
 class FrontControllerBeforeLaunchActionEvent
 {
+    use EventTrait;
 
     public Action $action;
     public ServerRequestInterface $request;
