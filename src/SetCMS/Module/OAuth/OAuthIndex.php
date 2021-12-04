@@ -103,7 +103,7 @@ final class OAuthIndex
     /**
      * @setcms-request-method-get
      * @setcms-response-content-json
-     * @setcms-response-with-headers
+     * @setcms-response-content-http-headers
      */
     public function logout(ServerRequestInterface $request, OAuthModelCallback $model): OAuthModelCallback
     {
@@ -125,7 +125,7 @@ final class OAuthIndex
     /**
      * @setcms-request-method-get
      * @setcms-response-content-json
-     * @setcms-response-with-headers
+     * @setcms-response-content-http-headers
      */
     public function callback(ServerRequestInterface $request, OAuthModelCallback $model): OAuthModelCallback
     {

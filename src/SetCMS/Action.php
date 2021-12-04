@@ -55,11 +55,6 @@ class Action
         return $this->module->getSectionClassName($this->section);
     }
 
-    public function hasResponseHeaders(): bool
-    {
-        return strpos($this->getComment(), VarDoc::RESPONSE_WITH_HEADERS) !== false;
-    }
-
     public function getCallbackHeaderName(): string
     {
         return implode('.', [
@@ -89,22 +84,27 @@ class Action
         return null;
     }
 
-    public function getContentType(): string
+    public function getContentType(): array
     {
         if ($this->section === 'Resource') {
-            return 'json';
+            return ['json'];
         }
 
         $comment = $this->getComment();
         $contentTypes = [
             VarDoc::RESPONSE_HTML => 'html',
             VarDoc::RESPONSE_JSON => 'json',
+            VarDoc::RESPONSE_HTTP_HEADERS => 'http-headers',
         ];
 
         foreach ($contentTypes as $contentType => $type) {
             if (strpos($comment, $contentType) !== false) {
-                return $type;
+                $types[] = $type;
             }
+        }
+
+        if (!empty($types)) {
+            return $types;
         }
 
         throw ModuleException::serverError('Не указан тип возвращаемого контента');
@@ -174,7 +174,7 @@ class Action
         if (!$this->action->isPublic()) {
             throw ModuleException::notAllow();
         }
-        
+
         if (!$this->isAllowRequestMethod()) {
             throw ModuleException::notAllowActionForThatRequestMethod($this->module, $this->section, $this->action->getName(), $this->request->getMethod());
         }

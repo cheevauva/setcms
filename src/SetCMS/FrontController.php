@@ -195,33 +195,33 @@ class FrontController
         }
 
         $request = $this->eventDispatcher->dispatch(new BeforeLaunchActionEvent($action, $request))->request;
-        
+
         $action->withRequest($request);
 
         $this->request = $request;
 
         $model = $action();
 
-        if ($action->hasResponseHeaders()) {
-            $router = clone $this->router;
-            $router->setBasePath($request->getServerParams()['SCRIPT_NAME']);
-            $headerRequest = $request->withAttribute('model', $model)->withAttribute('router', $router);
-            $response = $this->headers[$action->getCallbackHeaderName()]($headerRequest, $response);
+        foreach ($action->getContentType() as $type) {
+            switch ($type) {
+                case 'http-headers':
+                    $router = clone $this->router;
+                    $router->setBasePath($request->getServerParams()['SCRIPT_NAME']);
+                    $headerRequest = $request->withAttribute('model', $model)->withAttribute('router', $router);
+                    $response = $this->headers[$action->getCallbackHeaderName()]($headerRequest, $response);
+                    break;
+                case 'json':
+                    $response = $response->withHeader('Content-type', 'application/json');
+                    $response->getBody()->write($action->getWrapper() === 'json-none' ? json_encode($model->toArray(), JSON_UNESCAPED_UNICODE) : $this->model2json($model));
+                    break;
+                case 'html':
+                    $html = $this->getTwig()->render($action->getTemplate($this->config['theme']), $model->toArray());
+
+                    $response = $response->withHeader('Content-type', 'text/html');
+                    $response->getBody()->write($html);
+                    break;
+            }
         }
-
-        switch ($action->getContentType()) {
-            case 'json':
-                $response = $response->withHeader('Content-type', 'application/json');
-                $response->getBody()->write($action->getWrapper() === 'json-none' ? json_encode($model->toArray(), JSON_UNESCAPED_UNICODE) : $this->model2json($model));
-                break;
-            case 'html':
-                $html = $this->getTwig()->render($action->getTemplate($this->config['theme']), $model->toArray());
-
-                $response = $response->withHeader('Content-type', 'text/html');
-                $response->getBody()->write($html);
-                break;
-        }
-
         return $response;
     }
 
