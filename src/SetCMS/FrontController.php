@@ -56,8 +56,6 @@ class FrontController
         try {
             return $this->process($request, $response);
         } catch (\Exception $ex) {
-            echo $ex->getMessage(); // @todo надо сделать модуль для ошибок
-            die;
             $code = 500;
             $message = 'Внутренняя ошибка';
             $reason = $ex->getMessage();
@@ -80,16 +78,21 @@ class FrontController
                 $contentTypes[] = 'json';
             }
             if (strpos($contentType, 'html') !== false) {
-                $contentTypes[] = 'html';
+                $contentTypes[] = 'html-error';
             }
 
             if (empty($contentTypes)) {
-                $contentTypes[] = 'html';
+                $contentTypes[] = 'html-error';
             }
 
-            $action = $this->createAction($request);
+            foreach ($contentTypes as $type) {
+                $responder = $this->createResponder($type);
+                $responder->apply($model);
+                $responder->apply($request);
 
-            $response = $this->prepareResponse($action, $model, $request, $response);
+                $response = $responder->prepareResponse($response);
+            }
+
             $response = $response->withStatus($code, $reason);
 
             return $response;
@@ -172,7 +175,17 @@ class FrontController
 
         $model = $action();
 
-        return $this->prepareResponse($action, $model, $request, $response);
+        foreach ($action->getContentTypes() as $type) {
+            $responder = $this->createResponder($type);
+
+            $responder->apply($action);
+            $responder->apply($model);
+            $responder->apply($request);
+
+            $response = $responder->prepareResponse($response);
+        }
+
+        return $response;
     }
 
     public function createResponder(string $type): Responder\ResponderInterface
@@ -180,26 +193,16 @@ class FrontController
         switch ($type) {
             case 'html':
                 return clone $this->container->get(Responder\Html::class);
+            case 'html-error':
+                $responder = clone $this->container->get(Responder\Html::class);
+                $responder->template = 'error.twig';
+                
+                return $responder;
             case 'json':
                 return clone $this->container->get(Responder\Json::class);
             case 'http-headers':
                 return clone $this->container->get(Responder\HttpHeaders::class);
         }
-    }
-
-    protected function prepareResponse($action, $model, $request, $response)
-    {
-        foreach ($action->getContentTypes() as $type) {
-            $responder = $this->createResponder($type);
-            $responder->apply($action);
-            $responder->apply($model);
-            $responder->apply(clone $this->router);
-            $responder->apply($request);
-
-            $response = $responder->prepareResponse($response);
-        }
-
-        return $response;
     }
 
 }
