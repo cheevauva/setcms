@@ -16,6 +16,7 @@ class Html extends Responder
     protected array $config;
     protected Router $router;
     protected ModuleDAO $moduleDAO;
+    public string $template;
 
     public function __construct(Container $container)
     {
@@ -65,7 +66,7 @@ class Html extends Responder
 
     protected function getContent(): string
     {
-        return $this->getTwig()->render($this->action->getTemplate($this->config['theme']), $this->model->toArray());
+        return $this->getTwig()->render(sprintf('themes/%s/%s', $this->config['theme'], $this->template), $this->model->toArray());
     }
 
 }

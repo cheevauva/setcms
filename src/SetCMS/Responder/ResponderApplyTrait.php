@@ -9,7 +9,6 @@ use Psr\Http\Message\RequestInterface as Request;
 trait ResponderApplyTrait
 {
 
-    protected Action $action;
     protected Model $model;
     protected Request $request;
 
@@ -24,7 +23,7 @@ trait ResponderApplyTrait
         }
 
         if ($object instanceof Action) {
-            $this->action = $object;
+            $object->apply($this);
         }
 
         return $this;

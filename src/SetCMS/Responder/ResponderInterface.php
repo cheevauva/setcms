@@ -7,7 +7,7 @@ use Psr\Http\Message\ResponseInterface as Response;
 interface ResponderInterface
 {
 
-    public function apply(object $object): ResponderInterface;
+    public function apply(object $object): self;
 
     public function prepareResponse(Response $response): Response;
 }

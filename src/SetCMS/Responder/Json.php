@@ -4,10 +4,11 @@ namespace SetCMS\Responder;
 
 class Json extends Responder
 {
+    public ?string $wrapper = null;
 
     protected function getContent(): string
     {
-        switch ($this->action->getWrapper()) {
+        switch ($this->wrapper) {
             case 'json-none':
                 $data = $this->model->toArray();
                 break;

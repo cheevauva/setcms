@@ -19,12 +19,14 @@ class HttpHeaders implements ResponderInterface
     protected array $headers;
     protected Request $request;
     protected Model $model;
+    public string $callbackHeaderName;
 
     public function __construct(Container $container)
     {
         $this->headers = $container->get('headers');
         $this->router = $container->get(Router::class);
     }
+
 
     public function prepareResponse(Response $response): Response
     {
@@ -34,7 +36,8 @@ class HttpHeaders implements ResponderInterface
         $request = $this->request->withAttribute('model', $this->model);
         $request = $request->withAttribute('router', $this->router);
 
-        $response = $this->headers[$this->action->getCallbackHeaderName()]($request, $response);
+        $callback = $this->headers[$this->callbackHeaderName];
+        $response = $callback($request, $response);
 
         return $response;
     }
