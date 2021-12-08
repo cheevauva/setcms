@@ -1,24 +1,12 @@
 FROM php:7.4-fpm
 
-WORKDIR /app/backend
+WORKDIR /app/setcms
 
 RUN apt-get update
-RUN apt-get install -y libmemcached-dev
 RUN apt-get install -y libpng-dev
-RUN apt-get install -y libxml2-dev
-RUN apt-get install -y libzip-dev
-RUN apt-get install -y zlib1g-dev
 RUN apt-get install -y nano
 
-
 RUN docker-php-ext-install gd
-RUN docker-php-ext-install mysqli
-RUN docker-php-ext-install pdo_mysql
-RUN docker-php-ext-install soap
-RUN docker-php-ext-install zip
-
-RUN pecl install memcache-4.0.5.2 && \
-    docker-php-ext-enable memcache
 
 RUN php -r "copy('https://getcomposer.org/installer', '/composer-setup.php');" && \
     php /composer-setup.php  --version=1.10.22 --install-dir=/usr/local/bin && \

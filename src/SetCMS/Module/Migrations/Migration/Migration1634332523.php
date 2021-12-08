@@ -167,7 +167,7 @@ class Migration1634332523 implements MigrationInterface
         $this->createOAuthUsersTable();
 
         if ($_SERVER) {
-            $baseUrl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . dirname($_SERVER['SCRIPT_NAME']) . '/index.php';
+            $baseUrl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_ADDR'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER['SCRIPT_NAME']) . '/index.php';
         } else {
             $baseUrl = 'http://localhost/index.php';
         }

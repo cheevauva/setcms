@@ -7,4 +7,4 @@ down:
 	docker-compose -f $(COMPOSE_DEV) down
 
 php:
-	docker-compose -f $(COMPOSE_DEV) exec php bash
+	docker-compose -f $(COMPOSE_DEV) exec setcms_php bash

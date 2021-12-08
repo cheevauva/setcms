@@ -8,8 +8,6 @@ use Psr\Http\Message\ResponseInterface;
 use SetCMS\Router as Router;
 use SetCMS\HttpStatusCode\HttpStatusCode;
 use SetCMS\Action;
-use SetCMS\ACL;
-use SetCMS\Module\Themes\ThemeDAO;
 use SetCMS\Module\Modules\ModuleException;
 use SetCMS\EventDispatcher;
 use SetCMS\Event\FrontControllerBeforeLaunchActionEvent as BeforeLaunchActionEvent;
@@ -17,24 +15,16 @@ use SetCMS\Event\FrontControllerBeforeLaunchActionEvent as BeforeLaunchActionEve
 class FrontController
 {
 
-    protected \Twig\Environment $twig;
     protected ContainerInterface $container;
     protected Router $router;
     protected ServerRequestInterface $request;
-    protected array $config;
-    protected string $basePath;
-    protected ACL $acl;
     protected Action $action;
     protected EventDispatcher $eventDispatcher;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->basePath = $container->get('basePath');
-        $this->config = $container->get('config');
-        $this->headers = $container->get('headers');
         $this->router = $container->get(Router::class);
-        $this->acl = $container->get(ACL::class);
         $this->action = $container->get(Action::class);
         $this->eventDispatcher = $container->get(EventDispatcher::class);
     }

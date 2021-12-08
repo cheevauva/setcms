@@ -1,18 +1,18 @@
 version: "3.3"
 
 services:
-    nginx:
+    setcms_nginx:
         image: nginx:latest
         ports:
             - 8000:8000
         volumes:
             - ./nginx/:/etc/nginx/conf.d
-            - ./../:/app/backend/
+            - ./../:/app/setcms
         links:
-            - php
-    php:
+            - setcms_php
+    setcms_php:
         build:
             context: .
             dockerfile: ./Dockerfile.dev
         volumes:
-            - ./../:/app/backend/
+            - ./../:/app/setcms
