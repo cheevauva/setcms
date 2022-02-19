@@ -1,6 +1,6 @@
 <?php
 
-require_once 'autoload.php';
+require_once '../bootstrap.php';
 
 $request = Laminas\Diactoros\ServerRequestFactory::fromGlobals();
 

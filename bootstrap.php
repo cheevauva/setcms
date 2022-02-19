@@ -3,10 +3,10 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 'On');
 
-require_once '../vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 $container = new DI\Container();
-$container->set('basePath', dirname(__DIR__));
+$container->set('basePath', __DIR__);
 $container->set('config', require $container->get('basePath') . '/config.php');
 $container->set('connections', require $container->get('basePath') . '/resources/connections.php');
 $container->set('events', require $container->get('basePath') . '/resources/events.php');

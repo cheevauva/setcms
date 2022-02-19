@@ -140,7 +140,23 @@ class FrontController
 
     protected function process(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $result = $this->router->match($request->getServerParams()['PATH_INFO'] ?? '/', $request->getServerParams()['REQUEST_METHOD']);
+        $requestUri = $request->getServerParams()['REQUEST_URI'];
+        $scriptName = $request->getServerParams()['SCRIPT_NAME'];
+
+        if ($requestUri === $scriptName) {
+            $requestUri .= '/';
+        }
+        
+        if ($requestUri . 'index.php' === $scriptName) {
+            $requestUri = '/';
+        }
+
+        if (strpos($requestUri, 'index.php') !== false) {
+            $this->router->setBasePath($scriptName);
+        }
+
+
+        $result = $this->router->match($requestUri, $request->getServerParams()['REQUEST_METHOD']);
 
         if (!$result) {
             throw ModuleException::notFound();
@@ -186,7 +202,7 @@ class FrontController
             case 'html-error':
                 $responder = clone $this->container->get(Responder\Html::class);
                 $responder->template = 'error.twig';
-                
+
                 return $responder;
             case 'json':
                 return clone $this->container->get(Responder\Json::class);

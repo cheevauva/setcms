@@ -1,6 +1,6 @@
 <?php
 
-require_once 'autoload.php';
+require_once '../bootstrap.php';
 
 use SetCMS\Module\Migrations\MigrationService;
 

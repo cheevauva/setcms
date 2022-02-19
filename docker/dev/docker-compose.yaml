@@ -1,0 +1,25 @@
+version: "3.3"
+
+services:
+    nginx:
+        image: setcms_dev_nginx:latest
+        build:
+            context: ./nginx
+        volumes:
+            - ../../frontend:/setcms/frontend
+        ports:
+            - "8888:80"
+        links:
+            - php
+    compose:
+        build:
+            context: ./composer
+        volumes:
+            - ../../:/setcms
+        command: composer.phar install --prefer-dist --no-dev --no-scripts --no-plugins --no-interaction --no-progress
+    php:
+        image: setcms_dev_php:latest
+        build:
+            context: ./php
+        volumes:
+            - ../../:/setcms
