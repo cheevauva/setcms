@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Core\Form;
 
-class Message
+class FormMessage
 {
 //put your code here
 }

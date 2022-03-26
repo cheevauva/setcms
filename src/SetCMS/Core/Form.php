@@ -5,17 +5,23 @@ declare(strict_types=1);
 namespace SetCMS\Core;
 
 use SetCMS\Core\ApplyInterface;
-use SetCMS\Core\Form\Message;
+use SetCMS\Core\Form\FormMessage;
 use Exception;
 
 class Form implements ApplyInterface
 {
 
     private ?Form $parent = null;
+    private SplObjectStorage $messages;
+
+    public function __construct()
+    {
+        $this->messages = new \SplObjectStorage;
+    }
 
     public function isValid(): bool
     {
-        
+        return true;
     }
 
     public function apply(object $object): void
@@ -25,7 +31,11 @@ class Form implements ApplyInterface
         }
 
         if ($object instanceof Exception) {
-            $this->messages[] = new Message($object->getMessage());
+            $this->apply(new FormMessage($object->getMessage(), get_class($object)));
+        }
+
+        if ($object instanceof FormMessage) {
+            $this->messages->attach($object);
         }
     }
 

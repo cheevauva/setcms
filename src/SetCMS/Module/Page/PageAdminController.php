@@ -11,7 +11,7 @@ class PageAdminController extends Controller
 
     public function read(ServerRequestInterface $request, PageForm $form, PageEntityRetrieveByIdDAO $retrieveEntityById): PageForm
     {
-        return parent::readById($request, $form, $retrieveEntityById);
+        return parent::readByCriteria($request, $form, $retrieveEntityById);
     }
 
     public function save(ServerRequestInterface $request, PageForm $form, PageEntityRetrieveByIdDAO $retrieveEntityById, PageEntitySaveDAO $saveEntity, PageEntity $page): PageForm

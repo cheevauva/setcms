@@ -8,11 +8,12 @@ use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Core\Form;
 use SetCMS\Core\Entity;
 use SetCMS\Core\Entity\DAO\EntityRetrieveByIdDAO;
+use SetCMS\Core\Entity\DAO\EntityRetrieveByCriteriaDAO;
 use SetCMS\Core\Entity\DAO\EntitySaveDAO;
 use SetCMS\Core\Entity\Exception\EntityNotFoundException;
 use Exception;
 
-class Controller
+abstract class Controller
 {
 
     protected function readById(ServerRequestInterface $request, Form $form, EntityRetrieveByIdDAO $retrieveEntityById): Form
@@ -22,14 +23,19 @@ class Controller
 
         $form->fromArray($params);
 
+        return $this->readByCriteria($form, $retrieveEntityById);
+    }
+
+    protected function readByCriteria(Form $form, EntityRetrieveByCriteriaDAO $retrieveEntityDAO): Form
+    {
         if (!$form->isValid()) {
             return $form;
         }
 
         try {
-            $form->apply($retrieveEntityById);
-            $retrieveEntityById->serve();
-            $form->apply($retrieveEntityById->entity);
+            $form->apply($retrieveEntityDAO);
+            $retrieveEntityDAO->serve();
+            $form->apply($retrieveEntityDAO->entity);
         } catch (Exception $ex) {
             $form->apply($ex);
         }
