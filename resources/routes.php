@@ -1,8 +1,8 @@
 <?php
 
 $routes = [
-    ['GET', '/', ['action' => 'index', 'module' => 'Posts'], 'home'],
-    ['GET', '/~', ['action' => 'index', 'module' => 'Posts', 'section' => 'Admin'], 'home_admin'],
+    ['GET', '/', ['action' => 'index', 'module' => 'Post', 'section' => 'Index'], 'home'],
+    ['GET', '/~', ['action' => 'index', 'module' => 'Post', 'section' => 'Admin'], 'home_admin'],
     ['GET', '/[a:module]/[a:action]/[*:id]', ['section' => 'Index'], 'action_record'],
     ['GET', '/[a:module]/[a:action]', ['section' => 'Index'], 'action'],
     ['POST', '/[a:module]/[a:action]/[*:id]', ['section' => 'Index'], 'do_action_record'],

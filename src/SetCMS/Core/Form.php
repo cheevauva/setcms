@@ -7,6 +7,7 @@ namespace SetCMS\Core;
 use SetCMS\Core\ApplyInterface;
 use SetCMS\Core\Form\FormMessage;
 use Exception;
+use SplObjectStorage;
 
 class Form implements ApplyInterface
 {
@@ -16,12 +17,12 @@ class Form implements ApplyInterface
 
     public function __construct()
     {
-        $this->messages = new \SplObjectStorage;
+        $this->messages = new SplObjectStorage;
     }
 
     public function isValid(): bool
     {
-        return true;
+        return $this->messages->count() === 0;
     }
 
     public function apply(object $object): void
@@ -42,6 +43,11 @@ class Form implements ApplyInterface
     public function fromArray(array $array): void
     {
         
+    }
+    
+    public function toArray(): array
+    {
+        return [];
     }
 
 }

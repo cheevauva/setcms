@@ -12,14 +12,21 @@ use SetCMS\Module\Post\PostEntityRetrieveBySlugDAO;
 class PostIndexController extends Controller
 {
 
+    public function index(ServerRequestInterface $request, PostForm $form): PostForm
+    {
+        return $form;
+    }
+
     public function readBySlug(ServerRequestInterface $request, PostForm $form, PostEntityRetrieveBySlugDAO $retrieveBySlug): PostForm
     {
+        throw new \Exception('z');
+
         $params = $request->getQueryParams();
         $params['slug'] = $request->getAttribute('id') ?? null;
 
         $form->fromArray($params);
 
-        return parent::readByCriteria($request, $form, $retrieveBySlug);
+        return parent::readByCriteria($form, $retrieveBySlug);
     }
 
 }
