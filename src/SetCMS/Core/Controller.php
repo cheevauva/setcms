@@ -43,6 +43,28 @@ abstract class Controller
         return $form;
     }
 
+    protected function deleteById(ServerRequestInterface $request, Form $form, EntityRetrieveByIdDAO $retrieveEntityById, EntitySaveDAO $saveEntity)
+    {
+        $params = $request->getParsedBody();
+        $params['id'] = $request->getAttribute('id') ?? null;
+
+        $form->fromArray($params);
+
+        if (!$form->isValid()) {
+            return $form;
+        }
+
+        $form->apply($retrieveEntityById);
+
+        $retrieveEntityById->serve();
+
+        $saveEntity->entity = $retrieveEntityById->entity;
+        $saveEntity->entity->deleted = true;
+        $saveEntity->serve();
+
+        return $form;
+    }
+
     protected function saveById(ServerRequestInterface $request, Form $form, EntityRetrieveByIdDAO $retrieveEntityById, EntitySaveDAO $saveEntity, Entity $newEntity): Form
     {
         $params = $request->getParsedBody();
