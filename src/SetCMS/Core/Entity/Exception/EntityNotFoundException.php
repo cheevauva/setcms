@@ -1,0 +1,9 @@
+<?php
+
+declare(strict_types=1);
+
+namespace SetCMS\Core\Entity\Exception;
+
+class EntityNotFoundException extends \Exception
+{
+}
