@@ -1,8 +1,8 @@
 <?php
 
-namespace SetCMS\HttpStatusCode;
+namespace SetCMS\Throwable;
 
-interface InternalServerError extends HttpStatusCode
+interface InternalServerError extends \Throwable
 {
 
     public const CODE = 500;

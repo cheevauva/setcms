@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-use SetCMS\Module\Modules\ModuleException;
 use SetCMS\Core\ServantInterface;
 use SetCMS\Core\Controller;
 use SetCMS\Core\ApplyInterface;
+use SetCMS\Exception\ControllerNotFound;
+use SetCMS\Exception\MethodNotFound;
 
 class BuildControllerWithReflectionMethodServant implements ServantInterface, ApplyInterface
 {
@@ -23,11 +24,11 @@ class BuildControllerWithReflectionMethodServant implements ServantInterface, Ap
         $controllerClassName = sprintf('SetCMS\Module\%s\%s%sController', $this->module, $this->module, $this->section);
 
         if (!class_exists($controllerClassName, true)) {
-            throw ModuleException::notFound();
+            throw new ControllerNotFound($controllerClassName);
         }
 
         if (!method_exists($controllerClassName, $this->action)) {
-            throw ModuleException::notFoundAction($this->module, $this->section, $this->action);
+            throw new MethodNotFound($this->action);
         }
 
         $this->controller = new $controllerClassName;

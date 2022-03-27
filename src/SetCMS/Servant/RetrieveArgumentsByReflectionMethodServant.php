@@ -8,14 +8,15 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\Core\ServantInterface;
+use SetCMS\Core\ApplyInterface;
 
-class RetrieveArgumentsByReflectionMethodServant implements ServantInterface
+class RetrieveArgumentsByReflectionMethodServant implements ServantInterface, ApplyInterface
 {
 
     private ContainerInterface $container;
+    private ?ServerRequestInterface $request = null;
+    private ?ResponseInterface $response = null;
     public \ReflectionMethod $method;
-    public ?ServerRequestInterface $request = null;
-    public ?ResponseInterface $response = null;
     public array $arguments;
 
     public function __construct(ContainerInterface $container)
@@ -45,6 +46,17 @@ class RetrieveArgumentsByReflectionMethodServant implements ServantInterface
             }
 
             $this->arguments[$parameter->getPosition()] = $value;
+        }
+    }
+
+    public function apply(object $object): void
+    {
+        if ($object instanceof ServerRequestInterface) {
+            $this->request = $object;
+        }
+
+        if ($object instanceof ResponseInterface) {
+            $this->response = $object;
         }
     }
 

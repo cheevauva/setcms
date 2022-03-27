@@ -1,8 +1,8 @@
 <?php
 
-namespace SetCMS\HttpStatusCode;
+namespace SetCMS\Throwable;
 
-interface BadRequest extends HttpStatusCode
+interface BadRequest extends \Throwable
 {
 
     public const CODE = 400;

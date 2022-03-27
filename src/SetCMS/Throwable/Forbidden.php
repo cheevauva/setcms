@@ -1,8 +1,8 @@
 <?php
 
-namespace SetCMS\HttpStatusCode;
+namespace SetCMS\Throwable;
 
-interface Forbidden extends HttpStatusCode
+interface Forbidden extends \Throwable
 {
 
     public const CODE = 403;

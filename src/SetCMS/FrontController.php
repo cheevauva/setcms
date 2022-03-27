@@ -5,15 +5,11 @@ namespace SetCMS;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use SetCMS\Module\Modules\ModuleException;
 use SetCMS\EventDispatcher;
-use SetCMS\FrontController\TargetForm;
-use SetCMS\Servant\RetrieveArgumentsByReflectionMethodServant;
-use SetCMS\Servant\BuildControllerWithReflectionMethodServant;
-use SetCMS\Servant\MatchRequestRouterServant;
 use SetCMS\Servant\ParseBodyRequestServant;
-use SetCMS\Servant\PrepareResponseByMixedValueServant;
+use SetCMS\Servant\BuildResponseByMixedValueServant;
 use Throwable;
+use SetCMS\Servant\BuildMixedValueByRequestServant;
 
 class FrontController
 {
@@ -35,46 +31,22 @@ class FrontController
             $parseBody->request = $request;
             $parseBody->serve();
 
-            $output = $this->process($parseBody->request, $response);
+            $buildMixedValue = new BuildMixedValueByRequestServant($this->container);
+            $buildMixedValue->request = $parseBody->request;
+            $buildMixedValue->response = $response;
+            $buildMixedValue->serve();
+
+            $output = $buildMixedValue->mixedValue;
         } catch (Throwable $ex) {
             $output = $ex;
         }
 
-        $prepareResponse = new PrepareResponseByMixedValueServant;
+        $prepareResponse = new BuildResponseByMixedValueServant($this->container);
+        $prepareResponse->request = $request;
         $prepareResponse->mixedValue = $output;
         $prepareResponse->serve();
 
         return $prepareResponse->response;
-    }
-
-    protected function process(ServerRequestInterface $request, ResponseInterface $response): mixed
-    {
-        $matchRequest = new MatchRequestRouterServant($this->container);
-        $matchRequest->request = $request;
-        $matchRequest->serve();
-
-        foreach ($matchRequest->result as $attribute => $attributeValue) {
-            $request = $request->withAttribute($attribute, $attributeValue);
-        }
-
-        $targetForm = new TargetForm;
-        $targetForm->fromArray($matchRequest->result);
-
-        if (!$targetForm->isValid()) {
-            throw ModuleException::notFound();
-        }
-
-        $controllerWithMethod = new BuildControllerWithReflectionMethodServant;
-        $controllerWithMethod->apply($targetForm);
-        $controllerWithMethod->serve();
-
-        $methodArguments = new RetrieveArgumentsByReflectionMethodServant($this->container);
-        $methodArguments->method = $controllerWithMethod->method;
-        $methodArguments->request = $request;
-        $methodArguments->response = $response;
-        $methodArguments->serve();
-
-        return $controllerWithMethod->method->invokeArgs($controllerWithMethod->controller, $methodArguments->arguments);
     }
 
 }
