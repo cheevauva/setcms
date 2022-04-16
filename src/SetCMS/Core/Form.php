@@ -42,9 +42,11 @@ class Form implements ApplyInterface
 
     public function fromArray(array $array): void
     {
-        
+        foreach ($array as $key => $value) {
+            $this->{$key} = $value;
+        }
     }
-    
+
     public function toArray(): array
     {
         return [];

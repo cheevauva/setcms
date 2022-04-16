@@ -55,9 +55,9 @@ class MatchRouteByRequestServant implements ServantInterface, ApplyInterface
     public function apply(object $object): void
     {
         if ($object instanceof ServerRequestInterface) {
-            $this->requestUri = $this->request->getServerParams()['REQUEST_URI'];
-            $this->scriptName = $this->request->getServerParams()['SCRIPT_NAME'];
-            $this->requestMethod = $this->request->getServerParams()['REQUEST_METHOD'];
+            $this->requestUri = $object->getServerParams()['REQUEST_URI'];
+            $this->scriptName = $object->getServerParams()['SCRIPT_NAME'];
+            $this->requestMethod = $object->getServerParams()['REQUEST_METHOD'];
         }
     }
 

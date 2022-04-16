@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Post;
+namespace SetCMS\Module\Post\DAO;
 
-use SetCMS\Core\Entity\DAO\EntityRetrieveByIdDAO;
+use SetCMS\Core\Entity\DAO\EntityDbRetrieveByIdDAO;
 use SetCMS\Module\Post\PostEntityDbMapper;
+use SetCMS\Module\Post\PostConstants;
 
-class PostEntityRetrieveByIdDAO extends EntityRetrieveByIdDAO
+class PostEntityDbRetrieveByIdDAO extends EntityDbRetrieveByIdDAO
 {
 
     public function __construct()

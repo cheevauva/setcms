@@ -5,28 +5,26 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post;
 
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Core\Controller;
-use SetCMS\Module\Post\Form\PostForm;
-use SetCMS\Module\Post\PostEntityRetrieveBySlugDAO;
+use SetCMS\Module\Post\Form\PostIndexForm;
+use SetCMS\Module\Post\Form\PostReadBySlugForm;
+use SetCMS\Module\Post\DAO\PostEntityDbRetrieveBySlugDAO;
 
-class PostIndexController extends Controller
+class PostIndexController
 {
 
-    public function index(ServerRequestInterface $request, PostForm $form): PostForm
+    use \SetCMS\Core\ControllerTrait;
+
+    public function index(PostIndexForm $form): PostIndexForm
     {
+        $form->isValid();
         return $form;
     }
 
-    public function readBySlug(ServerRequestInterface $request, PostForm $form, PostEntityRetrieveBySlugDAO $retrieveBySlug): PostForm
+    public function readBySlug(ServerRequestInterface $request, PostReadBySlugForm $form, PostEntityDbRetrieveBySlugDAO $servant): PostReadBySlugForm
     {
-        throw new \Exception('z');
-
-        $params = $request->getQueryParams();
-        $params['slug'] = $request->getAttribute('id') ?? null;
-
-        $form->fromArray($params);
-
-        return parent::readByCriteria($form, $retrieveBySlug);
+        return $this->serve($servant, $form, [
+            'slug' => $request->getAttribute('slug')
+        ]);
     }
 
 }

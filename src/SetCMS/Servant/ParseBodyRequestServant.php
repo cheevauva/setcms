@@ -16,7 +16,7 @@ class ParseBodyRequestServant implements ServantInterface
     {
         $content = $this->request->getBody()->getContents();
 
-        if (strpos($this->request->getHeaderLine('Accept'), 'application/json') !== false && $content) {
+        if (strpos($this->request->getHeaderLine('Content-type'), 'application/json') !== false && $content) {
             $this->request = $this->request->withParsedBody(json_decode($content, true));
         }
     }

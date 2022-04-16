@@ -9,7 +9,7 @@ use SetCMS\Core\Entity\EntityDbMapper;
 use SetCMS\Core\Entity;
 use Doctrine\DBAL\Connection;
 
-abstract class EntitySaveDAO implements ServantInterface
+abstract class EntityDbSaveDAO implements ServantInterface
 {
 
     protected EntityDbMapper $mapper;

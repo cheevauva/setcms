@@ -30,7 +30,7 @@ class FrontController
             $parseBody = new ParseBodyRequestServant;
             $parseBody->request = $request;
             $parseBody->serve();
-
+            
             $buildMixedValue = new BuildMixedValueByRequestServant($this->container);
             $buildMixedValue->request = $parseBody->request;
             $buildMixedValue->response = $response;

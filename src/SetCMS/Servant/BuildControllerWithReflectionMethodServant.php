@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SetCMS\Servant;
 
 use SetCMS\Core\ServantInterface;
-use SetCMS\Core\Controller;
 use SetCMS\Core\ApplyInterface;
 use SetCMS\Exception\ControllerNotFound;
 use SetCMS\Exception\MethodNotFound;
@@ -16,7 +15,7 @@ class BuildControllerWithReflectionMethodServant implements ServantInterface, Ap
     public string $module;
     public string $section;
     public string $action;
-    public Controller $controller;
+    public object $controller;
     public \ReflectionMethod $method;
 
     public function serve(): void

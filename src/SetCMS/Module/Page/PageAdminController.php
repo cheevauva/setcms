@@ -3,20 +3,36 @@
 namespace SetCMS\Module\Page;
 
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Module\Page\Form\PageForm;
-use SetCMS\Core\Controller;
+use SetCMS\Module\Page\Form\PageReadForm;
+use SetCMS\Module\Page\Form\PageSaveForm;
+use SetCMS\Module\Page\Form\PageDeleteForm;
+use SetCMS\Module\Page\Servant\PageEntitySaveServant;
+use SetCMS\Module\Page\DAO\PageEntityDbRetrieveByIdDAO;
 
-class PageAdminController extends Controller
+class PageAdminController
 {
 
-    public function read(ServerRequestInterface $request, PageForm $form, PageEntityRetrieveByIdDAO $retrieveEntityById): PageForm
+    use \SetCMS\Core\ControllerTrait;
+
+    public function read(ServerRequestInterface $request, PageReadForm $form, PageEntityDbRetrieveByIdDAO $servant): PageReadForm
     {
-        return parent::readByCriteria($request, $form, $retrieveEntityById);
+        return $this->serve($servant, $form, [
+            'id' => $request->getAttribute('id'),
+        ]);
     }
 
-    public function save(ServerRequestInterface $request, PageForm $form, PageEntityRetrieveByIdDAO $retrieveEntityById, PageEntitySaveDAO $saveEntity, PageEntity $page): PageForm
+    public function save(ServerRequestInterface $request, PageSaveForm $form, PageEntitySaveServant $servant): PageSaveForm
     {
-        return parent::saveById($request, $form, $retrieveEntityById, $saveEntity, $page);
+        $servant->id = $request->getAttribute('id');
+
+        return $this->serve($servant, $form, $request->getParsedBody());
+    }
+
+    public function delete(ServerRequestInterface $request, PageDeleteForm $form, PageEntitySaveServant $servant): PageDeleteForm
+    {
+        return $this->serve($servant, $form, [
+            'id' => $request->getAttribute('id'),
+        ]);
     }
 
 }

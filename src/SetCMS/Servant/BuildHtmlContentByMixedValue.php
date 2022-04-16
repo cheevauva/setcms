@@ -32,7 +32,7 @@ class BuildHtmlContentByMixedValue implements ServantInterface
         $this->basePath = $container->get('basePath');
         $this->config = $container->get('config');
         $this->theme = $this->config['theme'];
-        $this->router = $container->get();
+        $this->router = $container->get(\AltoRouter::class);
     }
 
     public function serve(): void

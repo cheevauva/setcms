@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Post;
+namespace SetCMS\Module\Post\DAO;
 
-use SetCMS\Core\Entity\DAO\EntityRetrieveByCriteriaDAO;
+use SetCMS\Core\Entity\DAO\EntityDbRetrieveByCriteriaDAO;
 use SetCMS\Module\Post\PostEntityDbMapper;
+use SetCMS\Module\Post\PostConstants;
 
-class PostEntityRetrieveBySlugDAO extends EntityRetrieveByCriteriaDAO
+class PostEntityDbRetrieveBySlugDAO extends EntityDbRetrieveByCriteriaDAO
 {
 
     public string $slug;
