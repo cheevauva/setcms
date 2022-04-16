@@ -93,7 +93,7 @@ final class OAuthIndex
     {
         $model->fromArray($request->getQueryParams());
 
-        if ($model->isValid()) {
+        if ($model->valid()) {
             $this->oauthService->authorizationCode($model);
         }
 

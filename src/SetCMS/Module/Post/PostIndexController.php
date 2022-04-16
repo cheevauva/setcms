@@ -16,14 +16,14 @@ class PostIndexController
 
     public function index(PostIndexForm $form): PostIndexForm
     {
-        $form->isValid();
+        $form->valid();
         return $form;
     }
 
     public function readBySlug(ServerRequestInterface $request, PostReadBySlugForm $form, PostEntityDbRetrieveBySlugDAO $servant): PostReadBySlugForm
     {
         return $this->serve($servant, $form, [
-            'slug' => $request->getAttribute('slug')
+            'slug' => $request->getAttribute('slug'),
         ]);
     }
 

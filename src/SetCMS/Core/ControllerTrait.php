@@ -6,7 +6,6 @@ namespace SetCMS\Core;
 
 use SetCMS\Core\Form;
 use SetCMS\Core\ServantInterface;
-use Exception;
 
 trait ControllerTrait
 {
@@ -16,12 +15,12 @@ trait ControllerTrait
         $form->fromArray($array);
 
         try {
-            if ($form->isValid()) {
+            if ($form->valid()) {
                 $form->apply($servant);
                 $servant->serve();
                 $form->apply($servant);
             }
-        } catch (Exception $ex) {
+        } catch (\Throwable $ex) {
             $form->apply($ex);
         }
 

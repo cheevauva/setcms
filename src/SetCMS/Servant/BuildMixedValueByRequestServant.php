@@ -36,7 +36,7 @@ class BuildMixedValueByRequestServant implements ServantInterface
         $targetForm = new TargetForm;
         $targetForm->fromArray($matchRequest->result);
 
-        if (!$targetForm->isValid()) {
+        if (!$targetForm->valid()) {
             throw new \RuntimeException('invalid route');
         }
         

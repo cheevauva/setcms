@@ -17,13 +17,13 @@ class PostForm extends Form
     public string $message;
     public string $title;
 
-    public function isValid(): bool
+    public function valid(): bool
     {
         if (!empty($this->slug) && !preg_match('/^[a-z0-9_]+$/', $this->slug)) {
             $this->apply(new FormMessage('Только латинские буквы, цифры и подчеркивание', 'slug'));
         }
 
-        return parent::isValid();
+        return parent::valid();
     }
 
     public function apply(object $object): void

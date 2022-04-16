@@ -9,4 +9,5 @@ use SetCMS\Core\Form;
 class PostIndexForm extends Form
 {
     
+    public string $slug;
 }
