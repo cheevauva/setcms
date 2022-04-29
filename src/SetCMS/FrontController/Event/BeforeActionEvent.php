@@ -1,12 +1,13 @@
 <?php
 
-namespace SetCMS\Event;
+namespace SetCMS\FrontController\Event;
 
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Action;
 
-class FrontControllerBeforeLaunchActionEvent
+class BeforeActionEvent
 {
+
     use EventTrait;
 
     public Action $action;

@@ -1,6 +1,6 @@
 <?php
 
-namespace SetCMS\Event;
+namespace SetCMS\Core;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 

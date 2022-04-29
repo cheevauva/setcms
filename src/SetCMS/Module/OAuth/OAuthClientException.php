@@ -2,25 +2,17 @@
 
 namespace SetCMS\Module\OAuth;
 
-use SetCMS\HttpStatusCode\NotFound;
-use SetCMS\HttpStatusCode\InternalServerError;
-use SetCMS\HttpStatusCode\Forbidden;
-
 class OAuthClientException extends \Exception
 {
 
     public static function autorizationNotAllow($message = 'Для клиент-приложения запрещена авторизация'): self
     {
-        return new class($message) extends OAuthClientException implements Forbidden {
-            
-        };
+        return new static($message);
     }
 
     public static function internalError(string $message): self
     {
-        return new class($message) extends OAuthClientException implements InternalServerError {
-            
-        };
+        return new static($message);
     }
 
     public static function autorizationCodeFail(string $message)
@@ -30,9 +22,7 @@ class OAuthClientException extends \Exception
 
     public static function notFound(string $message = 'Клиент-приложение не найдено'): self
     {
-        return new class($message) extends OAuthClientException implements NotFound {
-            
-        };
+        return new static($message);
     }
 
 }

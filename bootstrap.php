@@ -22,3 +22,6 @@ $container->set('headers', require $container->get('basePath') . '/resources/hea
 $container->set('modules', require $container->get('basePath') . '/resources/modules.php');
 $container->set('themes', require $container->get('basePath') . '/resources/themes.php');
 
+$factory = $container->get(\DI\FactoryInterface::class);
+
+assert($factory instanceof \DI\FactoryInterface);

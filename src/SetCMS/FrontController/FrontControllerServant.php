@@ -1,6 +1,6 @@
 <?php
 
-namespace SetCMS;
+namespace SetCMS\FrontController;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -8,15 +8,16 @@ use Psr\Http\Message\ResponseInterface;
 use SetCMS\EventDispatcher;
 use SetCMS\Servant\ParseBodyRequestServant;
 use SetCMS\Servant\BuildResponseByMixedValueServant;
-use Throwable;
 use SetCMS\Servant\BuildMixedValueByRequestServant;
+use SetCMS\Core\ServantInterface;
 
-class FrontController
+class FrontControllerServant implements ServantInterface
 {
 
     protected ContainerInterface $container;
-    protected ServerRequestInterface $request;
     protected EventDispatcher $eventDispatcher;
+    public ServerRequestInterface $request;
+    public ResponseInterface $response;
 
     public function __construct(ContainerInterface $container)
     {
@@ -24,29 +25,29 @@ class FrontController
         $this->eventDispatcher = $container->get(EventDispatcher::class);
     }
 
-    public function execute(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
+    public function serve(): void
     {
         try {
             $parseBody = new ParseBodyRequestServant;
-            $parseBody->request = $request;
+            $parseBody->request = $this->request;
             $parseBody->serve();
-            
+
             $buildMixedValue = new BuildMixedValueByRequestServant($this->container);
             $buildMixedValue->request = $parseBody->request;
-            $buildMixedValue->response = $response;
+            $buildMixedValue->response = $this->response;
             $buildMixedValue->serve();
 
             $output = $buildMixedValue->mixedValue;
-        } catch (Throwable $ex) {
+        } catch (\Throwable $ex) {
             $output = $ex;
         }
 
         $prepareResponse = new BuildResponseByMixedValueServant($this->container);
-        $prepareResponse->request = $request;
+        $prepareResponse->request = $parseBody->request;
         $prepareResponse->mixedValue = $output;
         $prepareResponse->serve();
 
-        return $prepareResponse->response;
+        $this->response = $prepareResponse->response;
     }
 
 }

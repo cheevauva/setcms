@@ -2,40 +2,27 @@
 
 namespace SetCMS\Module\Modules;
 
-use SetCMS\HttpStatusCode\NotFound;
-use SetCMS\HttpStatusCode\Forbidden;
-use SetCMS\HttpStatusCode\BadRequest;
-use SetCMS\HttpStatusCode\InternalServerError;
-
 class ModuleException extends \Exception
 {
 
     public static function serverError(string $message): self
     {
-        return new class($message) extends ModuleException implements InternalServerError {
-            
-        };
+        return new static($message);
     }
 
     public static function badRequest(string $message): self
     {
-        return new class($message) extends ModuleException implements BadRequest {
-            
-        };
+        return new static($message);
     }
 
     public static function notFound(string $message = 'На найден указанный ресурс'): self
     {
-        return new class($message) extends ModuleException implements NotFound {
-            
-        };
+        return new static($message);
     }
 
     public static function notAllow(string $message = 'Доступ запрещен'): self
     {
-        return new class($message) extends ModuleException implements Forbidden {
-            
-        };
+        return new static($message);
     }
 
     public static function notAllowSection(string $module, string $section): self

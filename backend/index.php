@@ -2,15 +2,16 @@
 
 require_once '../bootstrap.php';
 
-$request = Laminas\Diactoros\ServerRequestFactory::fromGlobals();
+use SetCMS\FrontController\FrontControllerServant;
+use Laminas\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\Response;
 
-$frontController = $container->make(\SetCMS\FrontController::class, [
-    'basePath' => $container->get('basePath'),
-    'config' => $container->get('config'),
-]);
+$frontController = new FrontControllerServant($container);
+$frontController->request = ServerRequestFactory::fromGlobals();;
+$frontController->response = new Response;
+$frontController->serve();
 
-assert($frontController instanceof \SetCMS\FrontController);
-$response = $frontController->execute($request, new \Laminas\Diactoros\Response);
+$response = $frontController->response;
 
 http_response_code($response->getStatusCode());
 
