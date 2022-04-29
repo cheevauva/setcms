@@ -6,7 +6,7 @@ use SetCMS\FrontController\FrontControllerServant;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Response;
 
-$frontController = new FrontControllerServant($container);
+$frontController = FrontControllerServant::factory($factory);
 $frontController->request = ServerRequestFactory::fromGlobals();;
 $frontController->response = new Response;
 $frontController->serve();

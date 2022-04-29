@@ -10,6 +10,8 @@ use Psr\Http\Message\ServerRequestInterface;
 class ParseBodyRequestServant implements ServantInterface
 {
 
+    use \SetCMS\FactoryTrait;
+
     public ServerRequestInterface $request;
 
     public function serve(): void

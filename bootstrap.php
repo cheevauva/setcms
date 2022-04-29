@@ -1,27 +1,33 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 'On');
-
 require_once __DIR__ . '/vendor/autoload.php';
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__, [
+use DI\ContainerBuilder;
+use Psr\Container\ContainerInterface;
+use SetCMS\FactoryInterface;
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(__DIR__, [
     '.env',
     '.env.dist',
 ]);
-$env = $dotenv->load();
 
-$container = new DI\Container();
-$container->set('basePath', __DIR__);
-$container->set('env', $env);
-$container->set('config', require $container->get('basePath') . '/config.php');
-$container->set('events', require $container->get('basePath') . '/resources/events.php');
-$container->set('acl', require $container->get('basePath') . '/resources/acl.php');
-$container->set('routes', require $container->get('basePath') . '/resources/routes.php');
-$container->set('headers', require $container->get('basePath') . '/resources/headers.php');
-$container->set('modules', require $container->get('basePath') . '/resources/modules.php');
-$container->set('themes', require $container->get('basePath') . '/resources/themes.php');
+$containerBuilder = new ContainerBuilder();
+$containerBuilder->addDefinitions(require __DIR__ . '/resources/di.php');
+$containerBuilder->addDefinitions([
+    'basePath' => __DIR__,
+    'env' => $dotenv->load(),
+    'config' => require __DIR__ . '/config.php',
+    'events' => require __DIR__ . '/resources/events.php',
+    'acl' => require __DIR__ . '/resources/acl.php',
+    'routes' => require __DIR__ . '/resources/routes.php',
+    'headers' => require __DIR__ . '/resources/headers.php',
+    'modules' => require __DIR__ . '/resources/modules.php',
+    'themes' => require __DIR__ . '/resources/themes.php',
+]);
 
-$factory = $container->get(\DI\FactoryInterface::class);
+$container = $containerBuilder->build();
+$factory = $container->get(FactoryInterface::class);
 
-assert($factory instanceof \DI\FactoryInterface);
+assert($factory instanceof FactoryInterface);
+assert($container instanceof ContainerInterface);

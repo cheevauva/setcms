@@ -4,25 +4,27 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-use Psr\Container\ContainerInterface;
-use Throwable;
+use SetCMS\FactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
 use SetCMS\Core\Form;
 use SetCMS\Core\ServantInterface;
+use SetCMS\Servant\BuildResponseByExceptionServant;
 
 class BuildResponseByMixedValueServant implements ServantInterface
 {
 
-    private ContainerInterface $container;
+    use \SetCMS\FactoryTrait;
+
+    private FactoryInterface $factory;
     public object $mixedValue;
     public ServerRequestInterface $request;
     public ResponseInterface $response;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(FactoryInterface $container)
     {
-        $this->container = $container;
+        $this->factory = $container;
     }
 
     public function serve(): void
@@ -39,8 +41,8 @@ class BuildResponseByMixedValueServant implements ServantInterface
             $this->response = $object;
         }
 
-        if ($object instanceof Throwable) {
-            $builderResponseByException = new BuildResponseByExceptionServant($this->container);
+        if ($object instanceof \Throwable) {
+            $builderResponseByException = BuildResponseByExceptionServant::factory($this->factory);
             $builderResponseByException->exception = $object;
             $builderResponseByException->request = $this->request;
             $builderResponseByException->serve();

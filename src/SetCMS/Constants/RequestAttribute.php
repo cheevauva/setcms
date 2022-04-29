@@ -1,8 +1,8 @@
 <?php
 
-namespace SetCMS;
+namespace SetCMS\Constants;
 
-interface RequestAttribute
+interface ServerRequestAttribute
 {
 
     public const ACCESS_TOKEN = 'accessToken';

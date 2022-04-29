@@ -4,42 +4,44 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use SetCMS\FactoryInterface;
 use SetCMS\Core\ServantInterface;
 use SetCMS\TargetForm;
+use SetCMS\Servant\MatchRouteByRequestServant;
 
 class BuildMixedValueByRequestServant implements ServantInterface
 {
 
-    private ContainerInterface $container;
+    use \SetCMS\FactoryTrait;
+
+    private FactoryInterface $factory;
+    private MatchRouteByRequestServant $matchRequest;
     public ServerRequestInterface $request;
     public ?ResponseInterface $response = null;
     public object $mixedValue;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(FactoryInterface $factory)
     {
-        $this->container = $container;
+        $this->factory = $factory;
+        $this->matchRequest = MatchRouteByRequestServant::factory($this->factory);
     }
 
     public function serve(): void
     {
-        $matchRequest = new MatchRouteByRequestServant($this->container);
-        $matchRequest->apply($this->request);
-        $matchRequest->serve();
-
-        foreach ($matchRequest->result as $attribute => $attributeValue) {
-            $this->request = $this->request->withAttribute($attribute, $attributeValue);
-        }
-
+        $this->matchRequest->apply($this->request);
+        $this->matchRequest->serve();
+        echo '<pre>';
+        print_r($this->matchRequest->routerMatch);
+        die;
         $targetForm = new TargetForm;
-        $targetForm->fromArray($matchRequest->result);
+        $targetForm->fromArray($this->matchRequest->routerMatch);
 
         if (!$targetForm->valid()) {
             throw new \RuntimeException('invalid route');
         }
-        
+
         $controllerWithMethod = new BuildControllerWithReflectionMethodServant;
         $controllerWithMethod->apply($targetForm);
         $controllerWithMethod->serve();

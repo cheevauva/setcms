@@ -6,6 +6,7 @@ namespace SetCMS;
 
 use SetCMS\Core\Form;
 use SetCMS\Servant\BuildControllerWithReflectionMethodServant;
+use SetCMS\Router\RouterMatchDTO;
 
 class TargetForm extends Form
 {
@@ -21,11 +22,15 @@ class TargetForm extends Form
             $this->{$key} = $value;
         }
     }
-    
+
     public function apply(object $object): void
     {
         parent::apply($object);
-        
+
+        if ($object instanceof RouterMatchDTO) {
+            
+        }
+
         if ($object instanceof BuildControllerWithReflectionMethodServant) {
             $object->module = $this->module;
             $object->action = $this->action;

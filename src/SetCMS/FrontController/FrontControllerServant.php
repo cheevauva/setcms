@@ -5,49 +5,55 @@ namespace SetCMS\FrontController;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use SetCMS\EventDispatcher;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use SetCMS\FactoryInterface;
+use SetCMS\Core\ServantInterface;
 use SetCMS\Servant\ParseBodyRequestServant;
 use SetCMS\Servant\BuildResponseByMixedValueServant;
 use SetCMS\Servant\BuildMixedValueByRequestServant;
-use SetCMS\Core\ServantInterface;
 
 class FrontControllerServant implements ServantInterface
 {
 
-    protected ContainerInterface $container;
-    protected EventDispatcher $eventDispatcher;
+    use \SetCMS\FactoryTrait;
+
+    private FactoryInterface $factory;
+    private EventDispatcherInterface $eventDispatcher;
+    private BuildMixedValueByRequestServant $buildMixedValue;
+    private ParseBodyRequestServant $parseBody;
+    private BuildResponseByMixedValueServant $prepareResponse;
     public ServerRequestInterface $request;
     public ResponseInterface $response;
 
     public function __construct(ContainerInterface $container)
     {
-        $this->container = $container;
-        $this->eventDispatcher = $container->get(EventDispatcher::class);
+        $this->factory = $container->get(FactoryInterface::class);
+        $this->eventDispatcher = $container->get(EventDispatcherInterface::class);
+        $this->buildMixedValue = BuildMixedValueByRequestServant::factory($this->factory);
+        $this->parseBody = ParseBodyRequestServant::factory($this->factory);
+        $this->prepareResponse = BuildResponseByMixedValueServant::factory($this->factory);
     }
 
     public function serve(): void
     {
         try {
-            $parseBody = new ParseBodyRequestServant;
-            $parseBody->request = $this->request;
-            $parseBody->serve();
+            $this->parseBody->request = $this->request;
+            $this->parseBody->serve();
 
-            $buildMixedValue = new BuildMixedValueByRequestServant($this->container);
-            $buildMixedValue->request = $parseBody->request;
-            $buildMixedValue->response = $this->response;
-            $buildMixedValue->serve();
+            $this->buildMixedValue->request = $this->parseBody->request;
+            $this->buildMixedValue->response = $this->response;
+            $this->buildMixedValue->serve();
 
-            $output = $buildMixedValue->mixedValue;
+            $output = $this->buildMixedValue->mixedValue;
         } catch (\Throwable $ex) {
             $output = $ex;
         }
 
-        $prepareResponse = new BuildResponseByMixedValueServant($this->container);
-        $prepareResponse->request = $parseBody->request;
-        $prepareResponse->mixedValue = $output;
-        $prepareResponse->serve();
+        $this->prepareResponse->request = $this->parseBody->request;
+        $this->prepareResponse->mixedValue = $output;
+        $this->prepareResponse->serve();
 
-        $this->response = $prepareResponse->response;
+        $this->response = $this->prepareResponse->response;
     }
 
 }

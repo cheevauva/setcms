@@ -4,25 +4,28 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use SetCMS\FactoryInterface;
 use SetCMS\Core\ServantInterface;
 use SetCMS\Core\ApplyInterface;
-use SetCMS\Router;
-use SetCMS\Exception\RouteNotFound;
+use SetCMS\Router\RouterInterface;
+use SetCMS\Router\RouterException;
+use SetCMS\Router\RouterMatchDTO;
 
 class MatchRouteByRequestServant implements ServantInterface, ApplyInterface
 {
 
-    private Router $router;
+    use \SetCMS\FactoryTrait;
+
+    private RouterInterface $router;
     public string $requestUri;
     public ?string $scriptName = null;
     public string $requestMethod = 'GET';
-    public ?array $result = null;
+    public ?RouterMatchDTO $routerMatch = null;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(FactoryInterface $factory)
     {
-        $this->router = $container->get(Router::class);
+        $this->router = $factory->make(RouterInterface::class);
     }
 
     public function serve(): void
@@ -46,10 +49,16 @@ class MatchRouteByRequestServant implements ServantInterface, ApplyInterface
         $result = $this->router->match($requestUri, $this->requestMethod) ?: null;
 
         if (!$result) {
-            throw new RouteNotFound;
+            throw RouterException::notFound();
         }
 
-        $this->result = array_merge($result['params'], $result['target']);
+        $routerMatch = new RouterMatchDTO;
+        $routerMatch->params = $result['params'];
+        $routerMatch->target = $result['target'];
+        $routerMatch->name = $result['name'];
+        
+        $this->routerMatch = $routerMatch;
+        
     }
 
     public function apply(object $object): void

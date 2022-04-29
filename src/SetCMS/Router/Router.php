@@ -1,10 +1,10 @@
 <?php
 
-namespace SetCMS;
+namespace SetCMS\Router;
 
 use Psr\Container\ContainerInterface;
 
-class Router extends \AltoRouter
+class Router extends \AltoRouter implements RouterInterface
 {
 
     public function __construct(ContainerInterface $container)

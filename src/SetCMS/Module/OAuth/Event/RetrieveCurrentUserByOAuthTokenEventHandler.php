@@ -3,7 +3,7 @@
 namespace SetCMS\Module\OAuth\Event;
 
 use SetCMS\Event\FrontControllerBeforeLaunchActionEvent as Event;
-use SetCMS\RequestAttribute;
+use SetCMS\ServerRequestAttribute;
 use SetCMS\Module\OAuth\OAuthService;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -24,7 +24,7 @@ class RetrieveCurrentUserByOAuthTokenEventHandler
             $request->getCookieParams()['X-SetCMS-AccessToken'] ?? null,
         ]));
         
-        return $request->withAttribute(RequestAttribute::ACCESS_TOKEN, $tokens ? reset($tokens) : null);
+        return $request->withAttribute(ServerRequestAttribute::ACCESS_TOKEN, $tokens ? reset($tokens) : null);
     }
 
     public function __invoke(Event $event): Event
@@ -32,7 +32,7 @@ class RetrieveCurrentUserByOAuthTokenEventHandler
         $request = $event->request;
         $request = $this->processAccessToken($request);
 
-        $token = $request->getAttribute(RequestAttribute::ACCESS_TOKEN);
+        $token = $request->getAttribute(ServerRequestAttribute::ACCESS_TOKEN);
         $currentUser = $request->getAttribute('user', null);
 
         if ($token && !$currentUser) {

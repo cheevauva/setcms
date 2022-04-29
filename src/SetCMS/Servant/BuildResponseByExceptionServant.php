@@ -16,6 +16,8 @@ use SetCMS\Throwable\NotFound;
 class BuildResponseByExceptionServant implements ServantInterface
 {
 
+    use \SetCMS\FactoryTrait;
+
     private ContainerInterface $container;
     public ServerRequestInterface $request;
     public ResponseInterface $response;
