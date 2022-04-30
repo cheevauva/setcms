@@ -36,40 +36,7 @@ class UserService extends OrdinaryService
         return $this->dao()->get($id);
     }
 
-    public function getGuestUser()
-    {
-        try {
-            $user = $this->dao()->get(static::USER_GUEST_ID);
-        } catch (NotFound $ex) {
-            $user = new User;
-            $user->id = static::USER_GUEST_ID;
-            $user->username = 'guest';
-            $user->password(User::passwordHash('guest'));
-            $user->role = $user::ROLE_GUEST;
-
-            $this->dao()->save($user);
-        }
-
-        return $user;
-    }
-
-    public function getMainAdminUser(): User
-    {
-        try {
-            $user = $this->dao()->get(static::USER_MAIN_ADMIN_ID);
-        } catch (NotFound $ex) {
-            $user = $this->entity();
-            $user->id = static::USER_MAIN_ADMIN_ID;
-            $user->username = 'admin';
-            $user->password(User::passwordHash('administrator'));
-            $user->role = $user::ROLE_ADMIN;
-
-            $this->dao()->save($user);
-        }
-
-        return $user;
-    }
-
+ 
     public function createUser(string $username, string $password): User
     {
         $user = $this->entity();

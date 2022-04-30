@@ -3,18 +3,19 @@
 namespace SetCMS;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 use Psr\Container\ContainerInterface;
+use DI\FactoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 
 class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherInterface
 {
 
-    private ContainerInterface $container;
+    private FactoryInterface $factory;
 
-    public function __construct(ContainerInterface $container, array $events = [])
+    public function __construct(ContainerInterface $container)
     {
-        $this->container = $container;
-        
+        $this->factory = $container->get(FactoryInterface::class);
+
         foreach ($container->get('events') as $event => $eventListeners) {
             foreach ($eventListeners as $priority => $eventListener) {
                 $this->addListener($event, $eventListener, 999999 - $priority);
@@ -30,8 +31,8 @@ class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherI
             if ($stoppable && $event->isPropagationStopped()) {
                 break;
             }
-            
-            $this->container->get($listener)($event, $eventName, $this);
+
+            $this->factory->make($listener)($event, $eventName, $this);
         }
     }
 

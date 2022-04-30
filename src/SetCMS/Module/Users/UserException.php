@@ -10,16 +10,12 @@ class UserException extends \Exception
 
     public static function notFound(string $message = 'Пользователь не найден'): self
     {
-        return new class($message) extends UserException implements NotFound {
-            
-        };
+        return new static($message);
     }
 
     public static function notAllow(string $message): self
     {
-        return new class($message) extends UserException implements Forbidden {
-            
-        };
+        return new static($message);
     }
 
     public static function passwordInvalid(): self

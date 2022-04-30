@@ -11,7 +11,7 @@ use SetCMS\Module\OAuth\OAuthModel\OAuthModelCallback;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModel;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelToken;
 use SetCMS\Module\OAuth\OAuthService;
-use SetCMS\RequestAttribute;
+use SetCMS\ServerRequestAttribute;
 use SetCMS\Module\Captcha\CaptchaService;
 
 final class OAuthIndex
@@ -93,7 +93,7 @@ final class OAuthIndex
     {
         $model->fromArray($request->getQueryParams());
 
-        if ($model->isValid()) {
+        if ($model->valid()) {
             $this->oauthService->authorizationCode($model);
         }
 
@@ -107,7 +107,7 @@ final class OAuthIndex
      */
     public function logout(ServerRequestInterface $request, OAuthModelCallback $model): OAuthModelCallback
     {
-        $token = $request->getAttribute(RequestAttribute::ACCESS_TOKEN);
+        $token = $request->getAttribute(ServerRequestAttribute::ACCESS_TOKEN);
 
         if (empty($token) || $token === 'guest') {
             return $model;
@@ -130,7 +130,7 @@ final class OAuthIndex
     public function callback(ServerRequestInterface $request, OAuthModelCallback $model): OAuthModelCallback
     {
         $params = $request->getQueryParams();
-        $params['cms_token'] = $request->getAttribute(RequestAttribute::ACCESS_TOKEN);
+        $params['cms_token'] = $request->getAttribute(ServerRequestAttribute::ACCESS_TOKEN);
         $params['client_id'] = $request->getAttribute('id');
 
         $model->fromArray($params);

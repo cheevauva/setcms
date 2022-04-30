@@ -8,7 +8,7 @@ use SetCMS\Module\Users\UserService;
 use SetCMS\Module\Users\UserModel\UserModelRegistration;
 use SetCMS\Module\OAuth\OAuthService;
 use SetCMS\Module\Users\UserModel\UserModelUserInfo;
-use SetCMS\RequestAttribute;
+use SetCMS\ServerRequestAttribute;
 use SetCMS\Module\Captcha\CaptchaService;
 use SetCMS\HttpStatusCode\NotFound;
 
@@ -32,7 +32,7 @@ final class UserIndex
      */
     public function profile(ServerRequestInterface $request, OrdinaryModelRead $model): OrdinaryModelRead
     {
-        $user = $this->oauthService->getUserByAccessToken((string) $request->getAttribute(RequestAttribute::ACCESS_TOKEN));
+        $user = $this->oauthService->getUserByAccessToken((string) $request->getAttribute(ServerRequestAttribute::ACCESS_TOKEN));
 
         if ($model->isValid()) {
             $model->entity($user);
@@ -48,7 +48,7 @@ final class UserIndex
      */
     public function userinfo(ServerRequestInterface $request, UserModelUserInfo $model): UserModelUserInfo
     {
-        $user = $this->oauthService->getUserByAccessToken((string) $request->getAttribute(RequestAttribute::ACCESS_TOKEN));
+        $user = $this->oauthService->getUserByAccessToken((string) $request->getAttribute(ServerRequestAttribute::ACCESS_TOKEN));
 
         $model->entity($user);
 
