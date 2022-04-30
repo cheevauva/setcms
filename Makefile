@@ -1,9 +1,10 @@
 COMPOSE_DEV=./docker/dev/docker-compose.yaml
+COMPOSE_NAME=setcms4
+COMPOSE_ENV=./.env
 
-ps:;docker-compose -f $(COMPOSE_DEV) ps
-build:;docker-compose -f $(COMPOSE_DEV) build
-up:;docker-compose -f $(COMPOSE_DEV) up --build -d
-down:;docker-compose -f $(COMPOSE_DEV) down
-logs:;docker-compose -f $(COMPOSE_DEV) logs
-php:; docker-compose -f $(COMPOSE_DEV) exec php bash
-nginx:; docker-compose -f $(COMPOSE_DEV) exec nginx bash
+up:;docker-compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) up --build -d
+down:;docker-compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) down
+php:;docker-compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec php bash
+mysql:;docker-compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec mysql mysql -uroot -proot
+logs:;docker-compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) logs -f
+ps:;docker-compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) ps

@@ -45,7 +45,7 @@ class FrontController
         }
 
         $prepareResponse = BuildResponseByMixedValueServant::factory($factory);
-        $prepareResponse->request = $parseBody->request;
+        $prepareResponse->request = $parseBody->request ?? $request;
         $prepareResponse->mixedValue = $output;
         $prepareResponse->serve();
 
