@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post\DAO;
 
 use Psr\Container\ContainerInterface;
-use SetCMS\Core\Entity\DAO\EntityDbSaveDAO;
-use SetCMS\Module\Post\PostEntityDbMapper;
-use SetCMS\Module\Post\PostConstants;
 use SetCMS\FactoryInterface;
 use SetCMS\Database\MainConnection;
+use SetCMS\Module\Post\PostEntityDbMapper;
+use SetCMS\Module\Post\PostConstants;
+use SetCMS\Core\Entity\DAO\EntityDbRetrieveManyByCriteriaDAO;
 
-class PostEntityDbSaveDAO extends EntityDbSaveDAO
+class PostEntityDbRetrieveManyByCriteriaDAO extends EntityDbRetrieveManyByCriteriaDAO
 {
 
     public function __construct(ContainerInterface $container)

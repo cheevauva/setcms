@@ -17,7 +17,7 @@ abstract class EntityDbRetrieveManyByCriteriaDAO implements ServantInterface
     protected string $table;
     protected ?int $limit = null;
     protected bool $forUpdate = false;
-    public \Iterator $entities;
+    public ?\Iterator $entities = null;
 
     public function serve(): void
     {
@@ -30,7 +30,7 @@ abstract class EntityDbRetrieveManyByCriteriaDAO implements ServantInterface
             $qb->andWhere(sprintf('%s = :%s', $field, $field));
             $qb->setParameter($field, $value);
         }
-
+        
         $this->entities = $this->prepareEntities($qb->executeQuery()->iterateAssociative());
     }
 
@@ -38,7 +38,7 @@ abstract class EntityDbRetrieveManyByCriteriaDAO implements ServantInterface
     {
         foreach ($rows as $row) {
             $this->mapper->entity = null;
-            $this->mapper->row = $row;
+            $this->mapper->row = new \ArrayObject($row);
             $this->mapper->serve();
 
             yield $this->mapper->entity;

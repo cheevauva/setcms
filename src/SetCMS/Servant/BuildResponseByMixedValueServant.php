@@ -18,7 +18,7 @@ class BuildResponseByMixedValueServant implements ServantInterface
     use \SetCMS\FactoryTrait;
 
     private FactoryInterface $factory;
-    public object $mixedValue;
+    public ?object $mixedValue = null;
     public ServerRequestInterface $request;
     public ResponseInterface $response;
 

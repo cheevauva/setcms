@@ -23,7 +23,7 @@ final class Version20220430204715 extends AbstractMigration
         $posts->addColumn('slug', 'string')->setLength(255);
         $posts->addColumn('title', 'string')->setLength(255);
         $posts->addColumn('message', 'text');
-        $posts->addColumn('user_id', Types::GUID)->setNotnull(true)->setDefault(1);
+        $posts->addColumn('user_id', Types::GUID)->setNotnull(false);
 
         $this->addDefaultColumns($posts);
 
@@ -58,7 +58,7 @@ final class Version20220430204715 extends AbstractMigration
         $oauthTokens->addColumn('token', 'string')->setLength(255);
         $oauthTokens->addColumn('refresh_token', 'string')->setLength(255);
         $oauthTokens->addColumn('client_id', 'string')->setLength(36);
-        $oauthTokens->addColumn('user_id', 'string')->setLength(36);
+        $oauthTokens->addColumn('user_id', Types::GUID);
         $oauthTokens->addColumn('date_expired', 'datetime')->setNotnull(true);
 
         $this->addDefaultColumns($oauthTokens);
@@ -66,13 +66,13 @@ final class Version20220430204715 extends AbstractMigration
         $oauthCodes = $schema->createTable('oauth_codes');
         $oauthCodes->addColumn('code', 'string')->setLength(255);
         $oauthCodes->addColumn('client_id', 'integer')->setLength(36);
-        $oauthCodes->addColumn('user_id', 'integer')->setLength(36);
+        $oauthCodes->addColumn('user_id', Types::GUID);
 
         $this->addDefaultColumns($oauthCodes);
 
         $oauthUsers = $schema->createTable('oauth_users');
         $oauthUsers->addColumn('client_id', 'integer')->setLength(36);
-        $oauthUsers->addColumn('user_id', 'integer')->setLength(36);
+        $oauthUsers->addColumn('user_id', Types::GUID);
         $oauthUsers->addColumn('external_id', 'text');
         $oauthUsers->addColumn('refresh_token', 'string')->setLength(255);
 
@@ -91,6 +91,7 @@ final class Version20220430204715 extends AbstractMigration
     private function addDefaultColumns(Table $table)
     {
         $table->addColumn('id', Types::GUID);
+        $table->addColumn('entity_type', Types::STRING);
         $table->addColumn('date_created', Types::DATETIME_MUTABLE);
         $table->addColumn('date_modified', Types::DATETIME_MUTABLE);
         $table->addColumn('deleted', Types::BOOLEAN);
