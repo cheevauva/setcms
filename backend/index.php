@@ -6,7 +6,7 @@ use SetCMS\Controller\FrontController;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Response;
 
-$response = FrontController::factory($factory)->resolve(ServerRequestFactory::fromGlobals(), new Response);
+$response = (new FrontController)->resolve(ServerRequestFactory::fromGlobals(), new Response, $factory);
 
 http_response_code($response->getStatusCode());
 

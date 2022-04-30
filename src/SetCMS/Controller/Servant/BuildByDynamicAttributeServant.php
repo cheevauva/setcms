@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Controller\Servant;
 
 use SetCMS\Core\ServantInterface;
-use SetCMS\Exception\ControllerNotFound;
-use SetCMS\Exception\MethodNotFound;
+use SetCMS\Controller\ControllerException;
 
 class BuildByDynamicAttributeServant implements ServantInterface
 {
@@ -21,14 +20,15 @@ class BuildByDynamicAttributeServant implements ServantInterface
 
     public function serve(): void
     {
-        $controllerClassName = sprintf('SetCMS\Module\%s\%s%sController', $this->module, $this->module, $this->section);
+        $controllerClassName = sprintf('SetCMS\Module\%s\%s%sController', ucfirst($this->module), ucfirst($this->module), $this->section);
 
         if (!class_exists($controllerClassName, true)) {
-            throw new ControllerNotFound($controllerClassName);
+            throw ControllerException::controllerNotFound($controllerClassName);
         }
 
         if (!method_exists($controllerClassName, $this->action)) {
-            throw new MethodNotFound($this->action);
+            $controllerShortName = (new \ReflectionClass($controllerClassName))->getShortName();
+            throw ControllerException::methodNotFound(sprintf('%s::%s', $controllerShortName, $this->action));
         }
 
         $this->controller = new $controllerClassName;

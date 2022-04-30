@@ -21,8 +21,8 @@ abstract class DynamicController
     {
         $controllerBuilder = BuildByDynamicAttributeServant::factory($factory);
         $controllerBuilder->section = $this->getSection();
-        $controllerBuilder->module = 'Post';
-        $controllerBuilder->action = 'readBySlug';
+        $controllerBuilder->module = $request->getAttribute('module');
+        $controllerBuilder->action = $request->getAttribute('action');
         $controllerBuilder->serve();
 
         $methodArgumentsBuilder = RetrieveArgumentsByMethodServant::factory($factory);
