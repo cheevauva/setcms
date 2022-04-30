@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post\DAO;
 
 use Psr\Container\ContainerInterface;
-use SetCMS\Database\Connection\MainConnection;
+use SetCMS\Database\MainConnection;
 use SetCMS\Core\Entity\DAO\EntityDbRetrieveByCriteriaDAO;
 use SetCMS\Module\Post\PostEntityDbMapper;
 use SetCMS\Module\Post\PostConstants;

@@ -23,6 +23,7 @@ final class Version20220430204715 extends AbstractMigration
         $posts->addColumn('message', 'text');
         $posts->addColumn('date_created', 'datetime');
         $posts->addColumn('date_modified', 'datetime');
+        $posts->addColumn('date_modified', 'datetime');
         $posts->addColumn('id', 'string')->setLength(36);
         $posts->addColumn('user_id', 'string')->setLength(36)->setNotnull(true)->setDefault(1);
         $posts->addUniqueIndex(['id']);
