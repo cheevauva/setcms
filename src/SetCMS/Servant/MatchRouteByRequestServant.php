@@ -6,8 +6,8 @@ namespace SetCMS\Servant;
 
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\FactoryInterface;
-use SetCMS\Core\ServantInterface;
-use SetCMS\Core\ApplyInterface;
+use SetCMS\ServantInterface;
+use SetCMS\ApplyInterface;
 use SetCMS\Router\RouterInterface;
 use SetCMS\Router\RouterException;
 use SetCMS\Router\RouterMatchDTO;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Core;
 
-use SetCMS\Core\ApplyInterface;
+use SetCMS\ApplyInterface;
 use SetCMS\Core\Form\FormMessageStorage;
 use SetCMS\Core\Form\Message\FormMessage;
 use SetCMS\Core\Form\Message\FormMessagePopulate;

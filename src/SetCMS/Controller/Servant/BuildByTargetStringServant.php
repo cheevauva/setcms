@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Controller\Servant;
 
-use SetCMS\Core\ServantInterface;
+use SetCMS\ServantInterface;
 use SetCMS\FactoryInterface;
 
 class BuildByTargetStringServant implements ServantInterface

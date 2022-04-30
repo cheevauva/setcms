@@ -9,7 +9,7 @@ use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 use Twig\TwigFunction;
 use Twig\Markup;
-use SetCMS\Core\ServantInterface;
+use SetCMS\ServantInterface;
 use SetCMS\Core\Form;
 use Throwable;
 use SetCMS\Module\Themes\Theme;

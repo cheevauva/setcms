@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace SetCMS\Core\Entity\Servant;
 
-use SetCMS\Core\ServantInterface;
+use SetCMS\ServantInterface;
 use SetCMS\Core\Entity\DAO\EntityDbRetrieveByIdDAO;
 use SetCMS\Core\Entity\DAO\EntityDbSaveDAO;
-use SetCMS\Core\ApplyInterface;
+use SetCMS\ApplyInterface;
 use SetCMS\Core\Entity;
 use SetCMS\Core\Entity\Exception\EntityNotFoundException;
 

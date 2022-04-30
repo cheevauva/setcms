@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-use SetCMS\Core\ServantInterface;
+use SetCMS\ServantInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class ParseBodyRequestServant implements ServantInterface

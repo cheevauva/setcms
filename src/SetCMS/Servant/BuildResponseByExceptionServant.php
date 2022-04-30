@@ -6,7 +6,7 @@ namespace SetCMS\Servant;
 
 use Psr\Container\ContainerInterface;
 use SetCMS\Servant\BuildHtmlContentByMixedValue;
-use SetCMS\Core\ServantInterface;
+use SetCMS\ServantInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;

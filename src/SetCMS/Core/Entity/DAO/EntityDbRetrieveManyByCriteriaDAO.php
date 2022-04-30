@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Core\Entity\DAO;
 
 use Doctrine\DBAL\Connection;
-use SetCMS\Core\ServantInterface;
+use SetCMS\ServantInterface;
 use SetCMS\Core\Entity\EntityDbMapper;
 
 abstract class EntityDbRetrieveManyByCriteriaDAO implements ServantInterface

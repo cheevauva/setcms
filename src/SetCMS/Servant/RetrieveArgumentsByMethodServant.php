@@ -7,8 +7,8 @@ namespace SetCMS\Servant;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use SetCMS\Core\ServantInterface;
-use SetCMS\Core\ApplyInterface;
+use SetCMS\ServantInterface;
+use SetCMS\ApplyInterface;
 
 class RetrieveArgumentsByMethodServant implements ServantInterface, ApplyInterface
 {

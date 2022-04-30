@@ -2,10 +2,12 @@
 
 use SetCMS\Controller\IndexController;
 use SetCMS\Controller\AdminController;
+use SetCMS\Module\Post\PostIndexController;
+use SetCMS\Module\Post\PostAdminController;
 
 $routes = [
-    'home' => ['GET', '/', IndexController::toRoute()->resolve()],
-    'home_admin' => ['GET', '/~', AdminController::toRoute()->resolve()],
+    'home' => ['GET', '/', PostIndexController::toRoute()->index()],
+    'home_admin' => ['GET', '/~', PostAdminController::toRoute()->index()],
     'action_record' => ['GET', '/[a:module]/[a:action]/[*:id]', IndexController::toRoute()->resolve()],
     'action' => ['GET', '/[a:module]/[a:action]', IndexController::toRoute()->resolve()],
     'do_action_record' => ['POST', '/[a:module]/[a:action]/[*:id]', IndexController::toRoute()->resolve()],

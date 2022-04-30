@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Core\Entity\DAO;
 
-use SetCMS\Core\ServantInterface;
+use SetCMS\ServantInterface;
 use SetCMS\Core\Entity\EntityDbMapper;
 use SetCMS\Core\Entity;
 use Doctrine\DBAL\Connection;

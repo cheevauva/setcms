@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Servant;
 
 use Psr\Container\ContainerInterface;
-use SetCMS\Core\ServantInterface;
+use SetCMS\ServantInterface;
 use SetCMS\FrontController\TargetForm;
 
 class BuildMixedValueByRouteServant implements ServantInterface

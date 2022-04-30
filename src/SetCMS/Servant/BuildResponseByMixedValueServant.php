@@ -9,7 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
 use SetCMS\Core\Form;
-use SetCMS\Core\ServantInterface;
+use SetCMS\ServantInterface;
 use SetCMS\Servant\BuildResponseByExceptionServant;
 
 class BuildResponseByMixedValueServant implements ServantInterface

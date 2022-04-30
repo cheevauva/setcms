@@ -10,11 +10,19 @@ use SetCMS\Module\Post\Form\PostSaveForm;
 use SetCMS\Module\Post\Form\PostReadForm;
 use SetCMS\Module\Post\DAO\PostEntityDbRetrieveByIdDAO;
 use SetCMS\Module\Post\Servant\PostEntitySaveServant;
+use SetCMS\Module\Post\Form\PostIndexForm;
 
 class PostAdminController
 {
 
-    use \SetCMS\Core\ControllerTrait;
+    use \SetCMS\Controller\ControllerTrait;
+    use \SetCMS\Router\RouterTrait;
+
+    public function index(PostIndexForm $form): PostIndexForm
+    {
+        $form->valid();
+        return $form;
+    }
 
     public function read(ServerRequestInterface $request, PostReadForm $form, PostEntityDbRetrieveByIdDAO $servant): PostReadForm
     {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Core;
+namespace SetCMS;
 
 interface ServantInterface
 {
