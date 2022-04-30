@@ -7,7 +7,7 @@ namespace SetCMS\Core\Entity\DAO;
 use Doctrine\DBAL\Connection;
 use SetCMS\Core\Entity\EntityDbMapper;
 use SetCMS\Core\Entity;
-use SetCMS\Core\Entity\Exception\EntityNotFoundException;
+use SetCMS\Core\Entity\EntityException;
 
 abstract class EntityDbRetrieveByCriteriaDAO extends EntityDbRetrieveManyByCriteriaDAO
 {
@@ -28,7 +28,7 @@ abstract class EntityDbRetrieveByCriteriaDAO extends EntityDbRetrieveManyByCrite
         }
 
         if (!$this->entity) {
-            throw EntityNotFoundException::make();
+            throw EntityException::notFound();
         }
     }
 
