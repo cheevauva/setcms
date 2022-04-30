@@ -11,6 +11,8 @@ use Laminas\Diactoros\Response;
 use SetCMS\Core\Form;
 use SetCMS\ServantInterface;
 use SetCMS\Servant\BuildResponseByExceptionServant;
+use SetCMS\Servant\BuildHtmlContentByMixedValue;
+use SetCMS\TwigableInterface;
 
 class BuildResponseByMixedValueServant implements ServantInterface
 {
@@ -32,9 +34,25 @@ class BuildResponseByMixedValueServant implements ServantInterface
         $object = $this->mixedValue;
         $this->response = new Response;
 
+        if (is_null($object)) {
+            $this->response->getBody()->write('Success!');
+        }
+
         if ($object instanceof Form) {
-            $this->response = $this->response->withHeader('Content-type', 'application/json');
-            $this->response->getBody()->write(json_encode($object->toArray(), JSON_UNESCAPED_UNICODE));
+            if ($object instanceof TwigableInterface) {
+                $buildHtmlContent = BuildHtmlContentByMixedValue::factory($this->factory);
+                $buildHtmlContent->request = $this->request;
+                $buildHtmlContent->mixedValue = $object;
+                $buildHtmlContent->serve();
+                $this->response->getBody()->write($buildHtmlContent->htmlContent);
+            } else {
+                $this->response = $this->response->withHeader('Content-type', 'application/json');
+                $this->response->getBody()->write(json_encode([
+                    'result' => !$object->getMessages(),
+                    'data' => $object->toArray(),
+                    'messages' => $object->getMessages(),
+                ], JSON_UNESCAPED_UNICODE));
+            }
         }
 
         if ($object instanceof ResponseInterface) {

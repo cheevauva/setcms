@@ -16,22 +16,31 @@ use SetCMS\Module\Themes\Theme;
 use SetCMS\Throwable\NotFound;
 use SetCMS\Servant\BuildMixedValueByRouteServant;
 use Psr\Http\Message\ResponseInterface;
+use SetCMS\FactoryInterface;
+use SetCMS\Router\RouterInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 class BuildHtmlContentByMixedValue implements ServantInterface
 {
+
+    use \SetCMS\FactoryTrait;
 
     private string $basePath;
     private string $theme;
     private array $config;
     public object $mixedValue;
     public string $htmlContent;
+    public ServerRequestInterface $request;
+    private FactoryInterface $factory;
+    private RouterInterface $router;
 
     public function __construct(ContainerInterface $container)
     {
+        $this->factory = $container->get(FactoryInterface::class);
+        $this->router = $container->get(RouterInterface::class);
         $this->basePath = $container->get('basePath');
         $this->config = $container->get('config');
         $this->theme = $this->config['theme'];
-        $this->router = $container->get(\AltoRouter::class);
     }
 
     public function serve(): void
@@ -39,7 +48,8 @@ class BuildHtmlContentByMixedValue implements ServantInterface
         $object = $this->mixedValue;
 
         if ($object instanceof Form) {
-            $this->htmlContent = $this->getTwig()->render(sprintf('themes/%s/%s', $this->theme, $this->template), $object->toArray());
+            $template = (new \ReflectionObject($object))->getShortName();
+            $this->htmlContent = $this->getTwig()->render(sprintf('themes/%s/%s', $this->theme, sprintf('%s.twig', $template)), $object->toArray());
         }
 
         if ($object instanceof Throwable) {
@@ -69,7 +79,8 @@ class BuildHtmlContentByMixedValue implements ServantInterface
             'auto_reload' => true,
         ]);
 
-        $theme = new Theme($this->theme);
+        $theme = $this->theme();
+        $theme->theme = $this->theme;
         $theme->config = $this->config;
         $twig->addGlobal('setcms', $theme);
         $twig->addFunction(new TwigFunction('render', function ($route, $template, $params = []) {
@@ -103,6 +114,54 @@ class BuildHtmlContentByMixedValue implements ServantInterface
         }
 
         throw new \RuntimeException('Unsupport object');
+    }
+
+    private function theme()
+    {
+        return new class($this->router, $this->request) {
+
+            private RouterInterface $router;
+            private string $self;
+            private string $baseUrl;
+
+            public function __construct(RouterInterface $router, ServerRequestInterface $request)
+            {
+                $this->router = clone $router;
+                $this->router->setBasePath(rtrim($request->getServerParams()['SCRIPT_NAME'], '/'));
+                $this->self = $request->getServerParams()['REQUEST_SCHEME'] . '://' . $request->getServerParams()['HTTP_HOST'];
+                $this->baseUrl = dirname($request->getServerParams()['SCRIPT_NAME']);
+
+                if (substr($this->baseUrl, -1) !== '/') {
+                    $this->baseUrl .= '/';
+                }
+            }
+
+            public function markdown(?string $string = null): string
+            {
+                $pd = new \Parsedown;
+                $pd->setSafeMode(true);
+
+                return $pd->text($string);
+            }
+
+            public function link2(string $route, $params = [], $query = ''): string
+            {
+                return $this->self . $this->link($route, $params, $query);
+            }
+
+            public function link(string $route, $params = [], $query = ''): string
+            {
+                $link = $this->router->generate($route, $params);
+                $link .= $query ? ('?' . (is_array($query) ? http_build_query($query) : $query)) : '';
+                
+                return $link;
+            }
+
+            public function path(string $path): string
+            {
+                return sprintf('themes/%s/%s', $this->theme, $path);
+            }
+        };
     }
 
 }

@@ -6,8 +6,9 @@ namespace SetCMS\Module\Post\Form;
 
 use SetCMS\Core\Form;
 use SetCMS\Module\Post\DAO\PostEntityDbRetrieveManyByCriteriaDAO;
+use SetCMS\TwigableInterface;
 
-class PostIndexForm extends Form
+class PostIndexForm extends Form implements TwigableInterface
 {
 
     private ?array $pages = null;
@@ -15,7 +16,7 @@ class PostIndexForm extends Form
     public function toArray(): array
     {
         $array = parent::toArray();
-        $array['data']['pages'] = $this->pages;
+        $array['entities'] = $this->pages;
 
         return $array;
     }

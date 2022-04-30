@@ -55,6 +55,7 @@ class BuildResponseByExceptionServant implements ServantInterface
 
         if (strpos($accept, 'text/html') !== false) {
             $buildHtmlContent = new BuildHtmlContentByMixedValue($this->container);
+            $buildHtmlContent->request = $this->request;
             $buildHtmlContent->mixedValue = $this->exception;
             $buildHtmlContent->serve();
             $this->response->getBody()->write($buildHtmlContent->htmlContent);

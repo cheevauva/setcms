@@ -104,7 +104,7 @@ class Form implements ApplyInterface
         }
     }
 
-    public function toArray(): array
+    public function getMessages(): array
     {
         $messages = [];
 
@@ -114,11 +114,12 @@ class Form implements ApplyInterface
             }
         }
 
-        return [
-            'result' => $this->messages->count() === 0,
-            'data' => null,
-            'messages' => $messages,
-        ];
+        return $messages;
+    }
+
+    public function toArray(): array
+    {
+        return [];
     }
 
 }
