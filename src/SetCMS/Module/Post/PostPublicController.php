@@ -11,7 +11,7 @@ use SetCMS\Module\Post\DAO\PostEntityDbRetrieveBySlugDAO;
 use SetCMS\Module\Post\DAO\PostEntityDbRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Post\DAO\PostEntityDbSaveDAO;
 
-class PostIndexController
+class PostPublicController
 {
 
     use \SetCMS\Controller\ControllerTrait;
