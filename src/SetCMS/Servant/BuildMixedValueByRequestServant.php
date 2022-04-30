@@ -8,8 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\FactoryInterface;
 use SetCMS\Core\ServantInterface;
-use SetCMS\TargetForm;
-use SetCMS\Servant\MatchRouteByRequestServant;
+
 
 class BuildMixedValueByRequestServant implements ServantInterface
 {
@@ -30,23 +29,7 @@ class BuildMixedValueByRequestServant implements ServantInterface
 
     public function serve(): void
     {
-        $this->matchRequest->apply($this->request);
-        $this->matchRequest->serve();
-        echo '<pre>';
-        print_r($this->matchRequest->routerMatch);
-        die;
-        $targetForm = new TargetForm;
-        $targetForm->fromArray($this->matchRequest->routerMatch);
-
-        if (!$targetForm->valid()) {
-            throw new \RuntimeException('invalid route');
-        }
-
-        $controllerWithMethod = new BuildControllerWithReflectionMethodServant;
-        $controllerWithMethod->apply($targetForm);
-        $controllerWithMethod->serve();
-
-        $methodArguments = new RetrieveArgumentsByReflectionMethodServant($this->container);
+        $methodArguments = new RetrieveArgumentsByMethodServant($this->container);
         $methodArguments->method = $controllerWithMethod->method;
         $methodArguments->apply($this->request);
         $methodArguments->apply($this->response ?? $this->container->get(ResponseInterface::class));

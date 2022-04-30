@@ -10,8 +10,10 @@ use Psr\Http\Message\ResponseInterface;
 use SetCMS\Core\ServantInterface;
 use SetCMS\Core\ApplyInterface;
 
-class RetrieveArgumentsByReflectionMethodServant implements ServantInterface, ApplyInterface
+class RetrieveArgumentsByMethodServant implements ServantInterface, ApplyInterface
 {
+
+    use \SetCMS\FactoryTrait;
 
     private ContainerInterface $container;
     private ?ServerRequestInterface $request = null;
@@ -51,6 +53,10 @@ class RetrieveArgumentsByReflectionMethodServant implements ServantInterface, Ap
 
     public function apply(object $object): void
     {
+
+        if ($object instanceof \ReflectionMethod) {
+            $this->method = $object;
+        }
         if ($object instanceof ServerRequestInterface) {
             $this->request = $object;
         }

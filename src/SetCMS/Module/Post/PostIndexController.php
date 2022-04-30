@@ -12,7 +12,8 @@ use SetCMS\Module\Post\DAO\PostEntityDbRetrieveBySlugDAO;
 class PostIndexController
 {
 
-    use \SetCMS\Core\ControllerTrait;
+    use \SetCMS\Controller\ControllerTrait;
+    use \SetCMS\Router\RouterTrait;
 
     public function index(PostIndexForm $form): PostIndexForm
     {

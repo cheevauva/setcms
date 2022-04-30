@@ -27,14 +27,7 @@ class BuildMixedValueByRouteServant implements ServantInterface
         $matchRequest->requestUri = $this->route;
         $matchRequest->serve();
 
-        $targetForm = new TargetForm;
-        $targetForm->fromArray($matchRequest->routerMatch);
-
-        $controllerWithMethod = new BuildControllerWithReflectionMethodServant;
-        $controllerWithMethod->apply($targetForm);
-        $controllerWithMethod->serve();
-
-        $methodArguments = new RetrieveArgumentsByReflectionMethodServant($this->container);
+        $methodArguments = new RetrieveArgumentsByMethodServant($this->container);
         $methodArguments->method = $controllerWithMethod->method;
         $methodArguments->serve();
 

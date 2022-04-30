@@ -1,18 +1,20 @@
 <?php
 
-namespace SetCMS\FrontController;
+namespace SetCMS\Controller;
 
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use SetCMS\FactoryInterface;
-use SetCMS\Core\ServantInterface;
 use SetCMS\Servant\ParseBodyRequestServant;
 use SetCMS\Servant\BuildResponseByMixedValueServant;
 use SetCMS\Servant\BuildMixedValueByRequestServant;
+use SetCMS\Servant\MatchRouteByRequestServant;
+use SetCMS\Controller\Servant\BuildByTargetStringServant;
+use SetCMS\Servant\RetrieveArgumentsByMethodServant;
 
-class FrontControllerServant implements ServantInterface
+class FrontController
 {
 
     use \SetCMS\FactoryTrait;
@@ -22,8 +24,7 @@ class FrontControllerServant implements ServantInterface
     private BuildMixedValueByRequestServant $buildMixedValue;
     private ParseBodyRequestServant $parseBody;
     private BuildResponseByMixedValueServant $prepareResponse;
-    public ServerRequestInterface $request;
-    public ResponseInterface $response;
+    private MatchRouteByRequestServant $matchRequest;
 
     public function __construct(ContainerInterface $container)
     {
@@ -32,19 +33,29 @@ class FrontControllerServant implements ServantInterface
         $this->buildMixedValue = BuildMixedValueByRequestServant::factory($this->factory);
         $this->parseBody = ParseBodyRequestServant::factory($this->factory);
         $this->prepareResponse = BuildResponseByMixedValueServant::factory($this->factory);
+        $this->matchRequest = MatchRouteByRequestServant::factory($this->factory);
     }
 
-    public function serve(): void
+    public function resolve(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         try {
-            $this->parseBody->request = $this->request;
+            $this->matchRequest->apply($request);
+            $this->matchRequest->serve();
+            
+            $this->parseBody->request = $request;
             $this->parseBody->serve();
 
-            $this->buildMixedValue->request = $this->parseBody->request;
-            $this->buildMixedValue->response = $this->response;
-            $this->buildMixedValue->serve();
+            $controllerBuilder = BuildByTargetStringServant::factory($this->factory);
+            $controllerBuilder->target = $this->matchRequest->routerMatch->target;
+            $controllerBuilder->serve();
 
-            $output = $this->buildMixedValue->mixedValue;
+            $methodArgumentsBuilder = RetrieveArgumentsByMethodServant::factory($this->factory);
+            $methodArgumentsBuilder->apply($controllerBuilder->method);
+            $methodArgumentsBuilder->apply($this->parseBody->request);
+            $methodArgumentsBuilder->apply($response);
+            $methodArgumentsBuilder->serve();
+
+            $output = $controllerBuilder->method->invokeArgs($controllerBuilder->controller, $methodArgumentsBuilder->arguments);
         } catch (\Throwable $ex) {
             $output = $ex;
         }
@@ -53,7 +64,7 @@ class FrontControllerServant implements ServantInterface
         $this->prepareResponse->mixedValue = $output;
         $this->prepareResponse->serve();
 
-        $this->response = $this->prepareResponse->response;
+        return $this->prepareResponse->response;
     }
 
 }

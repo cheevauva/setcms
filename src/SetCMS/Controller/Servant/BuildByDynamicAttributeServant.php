@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Servant;
+namespace SetCMS\Controller\Servant;
 
 use SetCMS\Core\ServantInterface;
-use SetCMS\Core\ApplyInterface;
 use SetCMS\Exception\ControllerNotFound;
 use SetCMS\Exception\MethodNotFound;
 
-class BuildControllerWithReflectionMethodServant implements ServantInterface, ApplyInterface
+class BuildByDynamicAttributeServant implements ServantInterface
 {
+
+    use \SetCMS\FactoryTrait;
 
     public string $module;
     public string $section;
@@ -32,13 +33,6 @@ class BuildControllerWithReflectionMethodServant implements ServantInterface, Ap
 
         $this->controller = new $controllerClassName;
         $this->method = (new \ReflectionClass($controllerClassName))->getMethod($this->action);
-    }
-
-    public function apply(object $object): void
-    {
-        if ($object instanceof ApplyInterface) {
-            $object->apply($this);
-        }
     }
 
 }

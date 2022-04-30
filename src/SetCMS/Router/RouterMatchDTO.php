@@ -6,7 +6,18 @@ namespace SetCMS\Router;
 
 class RouterMatchDTO
 {
+
+    /**
+     * route name
+     * @var string
+     */
     public string $name;
-    public array $target;
     public array $params;
+
+    /**
+     * Controller::action
+     * @var string
+     */
+    public string $target;
+
 }
