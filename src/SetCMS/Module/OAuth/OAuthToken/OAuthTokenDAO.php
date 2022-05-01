@@ -1,6 +1,6 @@
 <?php
 
-namespace SetCMS\Module\OAuth;
+namespace SetCMS\Module\OAuth\OAuthToken;
 
 use SetCMS\Module\Ordinary\OrdinaryDAO;
 use SetCMS\Module\OAuth\OAuthTokenExeption;

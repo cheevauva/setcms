@@ -1,6 +1,6 @@
 <?php
 
-namespace SetCMS\Constants;
+namespace SetCMS;
 
 interface ServerRequestAttribute
 {

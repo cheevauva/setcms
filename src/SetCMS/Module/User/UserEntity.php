@@ -1,10 +1,10 @@
 <?php
 
-namespace SetCMS\Module\Users;
+declare(strict_types=1);
 
-use SetCMS\Module\Ordinary\OrdinaryEntity;
+namespace SetCMS\Module\User;
 
-class User extends OrdinaryEntity
+class UserEntity extends \SetCMS\Core\Entity
 {
 
     public const ROLE_ADMIN = 'admin';
@@ -13,7 +13,7 @@ class User extends OrdinaryEntity
 
     public string $username;
     protected string $password;
-    public string $role = User::ROLE_USER;
+    public string $role = UserEntity::ROLE_USER;
 
     public static function passwordVerify(string $password, string $hash): bool
     {

@@ -6,7 +6,7 @@ use SetCMS\Module\Ordinary\OrdinaryService;
 use SetCMS\Module\Users\UserDAO;
 use SetCMS\Module\Users\User;
 use SetCMS\Module\Users\UserException;
-use SetCMS\Module\Users\UserModel\UserModelRegistration;
+use SetCMS\Module\Users\UserModel\UserRegistrationForm;
 use SetCMS\EventDispatcher;
 use SetCMS\Module\Users\UserEvent\RegistrationUserEvent;
 use SetCMS\HttpStatusCode\NotFound;
@@ -48,7 +48,7 @@ class UserService extends OrdinaryService
         return $user;
     }
 
-    public function registation(UserModelRegistration $model): void
+    public function registation(UserRegistrationForm $model): void
     {
         try {
             $this->dao()->getByUsername($model->username);

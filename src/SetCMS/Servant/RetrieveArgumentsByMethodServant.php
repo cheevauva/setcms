@@ -33,6 +33,11 @@ class RetrieveArgumentsByMethodServant implements ServantInterface, ApplyInterfa
         foreach ($this->method->getParameters() as $parameter) {
             assert($parameter instanceof \ReflectionParameter);
 
+            if (!$parameter->getType()) {
+                $this->arguments[$parameter->getPosition()] = null;
+                continue;
+            }
+            
             $type = $parameter->getType()->getName();
 
             switch ($parameter->getType()->getName()) {

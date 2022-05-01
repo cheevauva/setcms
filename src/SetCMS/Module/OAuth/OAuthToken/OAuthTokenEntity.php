@@ -1,10 +1,9 @@
 <?php
 
-namespace SetCMS\Module\OAuth;
+namespace SetCMS\Module\OAuth\OAuthToken;
 
-use SetCMS\Module\Ordinary\OrdinaryEntity;
 
-class OAuthToken extends OrdinaryEntity
+class OAuthTokenEntity extends OrdinaryEntity
 {
 
     public string $token;

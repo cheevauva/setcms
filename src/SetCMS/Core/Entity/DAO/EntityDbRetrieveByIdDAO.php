@@ -8,7 +8,7 @@ class EntityDbRetrieveByIdDAO extends EntityDbRetrieveByCriteriaDAO
 {
 
     public string $id;
-    public bool $deleted = 0;
+    public bool $deleted = false;
 
     public function serve(): void
     {
