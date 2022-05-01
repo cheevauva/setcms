@@ -1,6 +1,7 @@
 {% extends setcms.path('layout.twig') %}
 
 {% block content %}
+    {{ messages|json_encode }}
     <div class="row g-0">
         <h4>Профиль пользователя</h4>
         <div class="mb-3">

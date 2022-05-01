@@ -49,8 +49,11 @@ class BuildHtmlContentByMixedValue implements ServantInterface
 
         if ($object instanceof Form) {
             $template = explode('@', (new \ReflectionObject($object))->getShortName())[0];
+            
+            $context = $object->toArray();
+            $context['messages'] = $object->getMessages();
 
-            $this->htmlContent = $this->getTwig()->render(sprintf('themes/%s/%s', $this->theme, sprintf('%s.twig', $template)), $object->toArray());
+            $this->htmlContent = $this->getTwig()->render(sprintf('themes/%s/%s', $this->theme, sprintf('%s.twig', $template)), $context);
         }
 
         if ($object instanceof Throwable) {
