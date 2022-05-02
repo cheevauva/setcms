@@ -69,6 +69,12 @@ class RetrieveArgumentsByMethodServant implements ServantInterface, ApplyInterfa
         if ($object instanceof ResponseInterface) {
             $this->response = $object;
         }
+        
+        if ($object instanceof \SplObjectStorage) {
+            foreach ($object as $item) {
+                $this->apply($item);
+            }
+        }
     }
 
 }

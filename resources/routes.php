@@ -2,25 +2,26 @@
 
 use SetCMS\Controller\PublicController;
 use SetCMS\Controller\PrivateController;
+use SetCMS\Controller\ResourceController;
 use SetCMS\Module\Post\PostPublicController;
 use SetCMS\Module\Post\PostPrivateController;
 
 $routes = [
     'home' => ['GET', '/', PostPublicController::toRoute()->index()],
     'home_admin' => ['GET', '/~', PostPrivateController::toRoute()->index()],
-    'action_record' => ['GET', '/[a:module]/[a:action]/[g:id]', PublicController::toRoute()->resolve()],
-    'action' => ['GET', '/[a:module]/[a:action]', PublicController::toRoute()->resolve()],
-    'do_action_record' => ['POST', '/[a:module]/[a:action]/[g:id]', PublicController::toRoute()->resolve()],
-    'do_action' => ['POST', '/[a:module]/[a:action]', PublicController::toRoute()->resolve()],
-    'action_record_admin' => ['GET', '/~/[a:module]/[a:action]/[g:id]', PrivateController::toRoute()->resolve()],
-    'action_admin' => ['GET', '/~/[a:module]/[a:action]', PrivateController::toRoute()->resolve()],
-    'do_action_record_admin' => ['POST', '/~/[a:module]/[a:action]/[g:id]', PrivateController::toRoute()->resolve()],
-    'do_action_admin' => ['POST', '/~/[a:module]/[a:action]/', PrivateController::toRoute()->resolve()],
-    'resource_index' => ['GET', '/-/[a:module]/[a:resource]/', ['section' => 'Resource', 'action' => 'index']],
-    'resource_create' => ['POST', '/-/[a:module]/[a:resource]/[g:id]', ['section' => 'Resource', 'action' => 'create']],
-    'resource_read' => ['GET', '/-/[a:module]/[a:resource]/[g:id]', ['section' => 'Resource', 'action' => 'read']],
-    'resource_update' => ['PUT', '/-/[a:module]/[a:resource]/[g:id]', ['section' => 'Resource', 'action' => 'update']],
-    'resource_delete' => ['DELETE', '/-/[a:module]/[a:resource]/[g:id]', ['section' => 'Resource', 'action' => 'delete']],
+    'action_record' => ['GET', '/[a:module]/[a:action]/[g:id]', PublicController::toRoute()->dynamicAction()],
+    'action' => ['GET', '/[a:module]/[a:action]', PublicController::toRoute()->dynamicAction()],
+    'do_action_record' => ['POST', '/[a:module]/[a:action]/[g:id]', PublicController::toRoute()->dynamicAction()],
+    'do_action' => ['POST', '/[a:module]/[a:action]', PublicController::toRoute()->dynamicAction()],
+    'action_record_admin' => ['GET', '/~/[a:module]/[a:action]/[g:id]', PrivateController::toRoute()->dynamicAction()],
+    'action_admin' => ['GET', '/~/[a:module]/[a:action]', PrivateController::toRoute()->dynamicAction()],
+    'do_action_record_admin' => ['POST', '/~/[a:module]/[a:action]/[g:id]', PrivateController::toRoute()->dynamicAction()],
+    'do_action_admin' => ['POST', '/~/[a:module]/[a:action]', PrivateController::toRoute()->dynamicAction()],
+    'resource_index' => ['GET', '/-/[a:module]/[a:resource]', ResourceController::toRoute()->dynamicAction()],
+    'resource_create' => ['POST', '/-/[a:module]/[a:resource]/[g:id]', ResourceController::toRoute()->dynamicAction()],
+    'resource_read' => ['GET', '/-/[a:module]/[a:resource]/[g:id]', ResourceController::toRoute()->dynamicAction()],
+    'resource_update' => ['PUT', '/-/[a:module]/[a:resource]/[g:id]', ResourceController::toRoute()->dynamicAction()],
+    'resource_delete' => ['DELETE', '/-/[a:module]/[a:resource]/[g:id]', ResourceController::toRoute()->dynamicAction()],
 ];
 
 foreach (glob(__DIR__ . '/routes/*') as $file) {
