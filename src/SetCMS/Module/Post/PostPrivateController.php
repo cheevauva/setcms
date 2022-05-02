@@ -22,13 +22,13 @@ class PostPrivateController
 
     public function index(PostPrivateIndexForm $form, PostEntityDbRetrieveManyByCriteriaDAO $servant): PostPrivateIndexForm
     {
-        return $this->serve($servant, $form, []);
+        return $this->serve($servant, $form);
     }
 
     public function read(ServerRequestInterface $request, PostPrivateReadForm $form, PostEntityDbRetrieveByIdDAO $servant): PostPrivateReadForm
     {
         $servant->id = $request->getAttribute('id');
-        
+
         return $this->serve($servant, $form);
     }
 
@@ -53,9 +53,9 @@ class PostPrivateController
 
     public function delete(ServerRequestInterface $request, PostDeleteForm $form, PostEntitySaveServant $servant): PostDeleteForm
     {
-        return $this->serve($servant, $form, [
-            'id' => $request->getAttribute('id'),
-        ]);
+        $servant->id = $request->getAttribute('id');
+
+        return $this->serve($servant, $form);
     }
 
 }
