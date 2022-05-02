@@ -29,7 +29,7 @@ class UserEntityRetrieveByAccessTokenServant implements ServantInterface
         $this->retrieveToken->id = $this->accessToken;
         $this->retrieveToken->serve();
 
-        $this->retrieveUser->id = $this->retrieveToken->oauthToken->idUser;
+        $this->retrieveUser->id = $this->retrieveToken->oauthToken->userId;
         $this->retrieveUser->serve();
 
         $this->user = $this->retrieveUser->entity;

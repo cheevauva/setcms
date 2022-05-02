@@ -20,7 +20,7 @@ class FrontController
             $matchRequest = MatchRouteByRequestServant::factory($factory);
             $matchRequest->apply($request);
             $matchRequest->serve();
-            
+
             foreach ($matchRequest->routerMatch->params as $pName => $pValue) {
                 $request = $request->withAttribute($pName, $pValue);
             }

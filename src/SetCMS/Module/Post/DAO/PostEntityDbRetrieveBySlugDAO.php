@@ -4,23 +4,12 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\DAO;
 
-use Psr\Container\ContainerInterface;
-use SetCMS\Database\MainConnection;
-use SetCMS\Core\Entity\DAO\EntityDbRetrieveByCriteriaDAO;
-use SetCMS\Module\Post\PostEntityDbMapper;
-use SetCMS\Module\Post\PostConstants;
-
-class PostEntityDbRetrieveBySlugDAO extends EntityDbRetrieveByCriteriaDAO
+class PostEntityDbRetrieveBySlugDAO extends \SetCMS\Core\Entity\DAO\EntityDbRetrieveByCriteriaDAO
 {
 
-    public string $slug;
+    use PostEntityDbTrait;
 
-    public function __construct(ContainerInterface $container)
-    {
-        $this->mapper = new PostEntityDbMapper;
-        $this->table = PostConstants::TABLE_NAME;
-        $this->db = $container->get(MainConnection::class);
-    }
+    public string $slug;
 
     public function serve(): void
     {

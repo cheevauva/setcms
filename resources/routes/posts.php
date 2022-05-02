@@ -1,3 +1,3 @@
 <?php
 
-$routes['post_read_by_slug'] = ['GET', '/[*:slug]', \SetCMS\Module\Post\PostPublicController::toRoute()->readBySlug()];
+$routes['post_read_by_slug'] = ['GET', '/[a:slug]', \SetCMS\Module\Post\PostPublicController::toRoute()->readBySlug()];

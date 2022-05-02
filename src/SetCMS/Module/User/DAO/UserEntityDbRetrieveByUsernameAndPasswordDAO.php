@@ -6,6 +6,8 @@ namespace SetCMS\Module\User\DAO;
 
 class UserEntityDbRetrieveByUsernameAndPasswordDAO extends \SetCMS\Core\Entity\DAO\EntityDbRetrieveByCriteriaDAO
 {
+    public string $password;
+    public string $username;
 
     use UserEntityDbTrait;
 }

@@ -12,6 +12,7 @@ class BuildByDynamicAttributeServant implements ServantInterface
 
     use \SetCMS\FactoryTrait;
 
+    public string $className;
     public string $module;
     public string $section;
     public string $action;
@@ -20,7 +21,10 @@ class BuildByDynamicAttributeServant implements ServantInterface
 
     public function serve(): void
     {
-        $controllerClassName = sprintf('SetCMS\Module\%s\%s%sController', ucfirst($this->module), ucfirst($this->module), $this->section);
+        $controllerClassName = strtr($this->className, [
+            '{module}' => ucfirst($this->module),
+            '{section}' => ucfirst($this->section),
+        ]);
 
         if (!class_exists($controllerClassName, true)) {
             throw ControllerException::controllerNotFound($controllerClassName);

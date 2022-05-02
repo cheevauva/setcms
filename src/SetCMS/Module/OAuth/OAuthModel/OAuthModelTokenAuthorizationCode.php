@@ -47,7 +47,7 @@ class OAuthModelTokenAuthorizationCode extends OAuthModel
 
         return [
             'access_token' => $oauthToken->token,
-            'refresh_token' => $oauthToken->tokenRefresh,
+            'refresh_token' => $oauthToken->refrechToken,
             'expires_in' => $oauthToken->dateExpiried->getTimestamp() - (new \DateTime)->getTimestamp(),
             'token_type' => 'Bearer',
         ];

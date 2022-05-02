@@ -2,18 +2,28 @@
 
 namespace SetCMS\Module\OAuth\OAuthToken;
 
+use SetCMS\GUID;
 
-class OAuthTokenEntity extends OrdinaryEntity
+class OAuthTokenEntity extends \SetCMS\Module\Ordinary\OrdinaryEntity
 {
 
-    public string $token;
-    public string $tokenRefresh;
-    public string $idClient;
-    public string $idUser;
+    public string $refrechToken;
+    public string $clientId;
+    public string $userId;
     public \DateTime $dateExpiried;
 
-    public static function generateToken(): string
+    public function __construct()
     {
-        return md5(microtime());
+        parent::__construct();
+
+        $this->refrechToken = GUID::generate();
+        $this->dateExpiried = new \DateTime('+1 hour');
     }
+
+    public function regenerate(): void
+    {
+        $this->dateExpiried = new \DateTime('+1 hour');
+        $this->dateModified = new \DateTime;
+    }
+
 }

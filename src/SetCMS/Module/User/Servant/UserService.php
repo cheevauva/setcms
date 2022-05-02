@@ -8,7 +8,7 @@ use SetCMS\Module\Users\User;
 use SetCMS\Module\Users\UserException;
 use SetCMS\Module\Users\UserModel\UserRegistrationForm;
 use SetCMS\EventDispatcher;
-use SetCMS\Module\Users\UserEvent\RegistrationUserEvent;
+use SetCMS\Module\Users\UserEvent\UserAfterRegistrationEvent;
 use SetCMS\HttpStatusCode\NotFound;
 
 class UserService extends OrdinaryService
@@ -57,7 +57,7 @@ class UserService extends OrdinaryService
             $user = $model->entity($this->entity());
             $this->dao()->save($user);
 
-            $this->eventDispatcher->dispatch(new RegistrationUserEvent($user));
+            $this->eventDispatcher->dispatch(new UserAfterRegistrationEvent($user));
         }
     }
 
