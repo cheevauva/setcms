@@ -10,7 +10,7 @@ use SetCMS\ServantInterface;
 trait ControllerTrait
 {
 
-    protected function serve(ServantInterface $servant, Form $form, array $array): Form
+    protected function serve(ServantInterface $servant, Form $form, array $array = []): Form
     {
         $form->fromArray($array);
 

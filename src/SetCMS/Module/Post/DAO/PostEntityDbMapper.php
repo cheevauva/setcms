@@ -29,7 +29,7 @@ class PostEntityDbMapper extends EntityDbMapper
     {
         parent::entity4row();
 
-        $this->entity()->content = $this->row['message'];
+        $this->entity()->message = $this->row['message'];
         $this->entity()->title = $this->row['title'];
         $this->entity()->slug = $this->row['slug'];
     }

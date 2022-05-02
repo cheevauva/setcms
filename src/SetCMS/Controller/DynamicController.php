@@ -24,7 +24,7 @@ abstract class DynamicController
         $executor->apply($request);
         $executor->apply($response);
         $executor->serve();
-
+        
         return $executor->mixedValue;
     }
 

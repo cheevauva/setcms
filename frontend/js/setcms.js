@@ -40,7 +40,7 @@ jQuery().ready(function () {
             var solvedText = $captchaSolvedText.val();
             if (solvedText.length === 7) {
                 $.ajax($captchaId.attr('setcms-action') + '?id=' + $captchaId.val() + '&solvedText=' + solvedText).done(function (data) {
-                    if (!data.success) {
+                    if (!data.result) {
                         $captchaSolvedText.addClass('is-invalid');
                         $captchaSolvedText.parent().find('.invalid-feedback').text(data.messages[0].message);
                     } else {
@@ -52,8 +52,8 @@ jQuery().ready(function () {
 
         $image.on('click', function () {
             $.ajax($image.attr('setcms-action')).done(function (data) {
-                $captchaId.val(data.result.entity.id);
-                $image.attr('src', 'data:image/png;base64,' + data.result.entity.content);
+                $captchaId.val(data.data.entity.id);
+                $image.attr('src', 'data:image/png;base64,' + data.data.entity.content);
                 $captchaSolvedText.val('');
                 $captchaSolvedText.removeClass('is-valid').removeClass('is-invalid');
                 $captchaSolvedText.parent().find('.invalid-feedback').text();
@@ -80,6 +80,7 @@ jQuery().ready(function () {
             data: JSON.stringify(object),
             headers: {
                 'X-CSRF-Token': getCookie('X-CSRF-Token'),
+                'Content-type': "application/json; charset=utf-8",
                 Accept: "application/json; charset=utf-8",
             },
             processData: false,
@@ -114,14 +115,14 @@ jQuery().ready(function () {
                     handlers[$form.attr('setcms-handler')](data);
                 }
 
-                if (data.success && $form.attr('setcms-redirect')) {
+                if (data.result && $form.attr('setcms-redirect')) {
                     String.prototype.interpolate = function (params) {
                         const names = Object.keys(params);
                         const vals = Object.values(params);
                         return new Function(...names, `return \`${this}\`;`)(...vals);
                     }
 
-                    window.location.href = $form.attr('setcms-redirect').interpolate(data.result);
+                    window.location.href = $form.attr('setcms-redirect').interpolate(data.data);
                     return;
                 }
 

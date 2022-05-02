@@ -14,5 +14,12 @@ class OAuthClientEntity extends \SetCMS\Core\Entity
     public string $userInfoUrl;
     public string $userInfoParserRule;
     public bool $isAuthorizable = false;
+    
+    public function __construct()
+    {
+        parent::__construct();
+        
+        $this->clientSecret = rand(9999, microtime(true));
+    }
 
 }

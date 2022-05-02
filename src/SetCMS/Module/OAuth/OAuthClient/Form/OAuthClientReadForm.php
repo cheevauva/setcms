@@ -1,12 +1,10 @@
 <?php
 
-namespace SetCMS\Module\Posts\PostModel;
+namespace SetCMS\Module\OAuth\OAuthClient\Form;
 
-use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModelRead;
-
-class OAuthClientModelRead extends OrdinaryModelRead
+class OAuthClientReadForm extends \SetCMS\Core\Form implements \SetCMS\TwigableInterface
 {
 
-    public string $slug = '';
+    public int $id;
 
 }

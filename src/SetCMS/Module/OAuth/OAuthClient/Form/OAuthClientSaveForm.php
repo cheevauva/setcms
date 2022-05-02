@@ -1,63 +1,39 @@
 <?php
 
-namespace SetCMS\Module\OAuth\OAuthClientModel;
+namespace SetCMS\Module\OAuth\OAuthClient\Form;
 
-use SetCMS\Module\OAuth\OAuthClient;
-use SetCMS\Module\Ordinary\OrdinaryModel\OrdinaryModel;
+use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityDbRetrieveByIdDAO;
+use SetCMS\Module\OAuth\OAuthClient\OAuthClientEntity;
 
-class OAuthClientModelSave extends OrdinaryModel
+class OAuthClientSaveForm extends \SetCMS\Core\Form implements \SetCMS\TwigableInterface
 {
 
-    public string $id = '';
-
-    /**
-     * @setcms-required
-     * @var string 
-     */
-    public string $name = '';
-
-    /**
-     * @setcms-required
-     * @var string 
-     */
-    public string $clientId = '';
-
-    /**
-     * @setcms-required
-     * @var string 
-     */
-    public string $clientSecret = '';
-
-    /**
-     * @setcms-required
-     * @var string 
-     */
-    public string $redirectURI = '';
-
-    /**
-     * @setcms-required
-     * @var string 
-     */
-    public string $loginUrl = '';
-
-    /**
-     * @setcms-required
-     * @var string 
-     */
-    public string $autorizationCodeUrl = '';
+    public string $id;
+    public string $name;
+    public string $clientId;
+    public string $clientSecret;
+    public string $redirectURI;
+    public string $loginUrl;
+    public ?string $autorizationCodeUrl = null;
     public bool $isAuthorizable = false;
-    public string $userInfoParserRule = '';
-    public string $userInfoUrl = '';
+    public ?string $userInfoParserRule = null;
+    public ?string $userInfoUrl = null;
 
-    protected function bind(\SetCMS\Module\Ordinary\OrdinaryEntity $entity): OAuthClient
+    public function apply(object $object): void
     {
-        assert($entity instanceof OAuthClient);
+        parent::apply($object);
 
-        foreach (get_object_vars($this) as $key => $value) {
-            $entity->{$key} = $value;
+        if ($object instanceof OAuthClientEntityDbRetrieveByIdDAO) {
+            $object->id = $this->id;
+            if ($object->oauthClient) {
+                $this->apply($object->oauthClient);
+            }
         }
 
-        return $entity;
+        if ($object instanceof OAuthClientEntity) {
+            $this->name = $object->name;
+            $this->autorizationCodeUrl = $object->autorizationCodeUrl;
+        }
     }
 
 }

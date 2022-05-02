@@ -1,0 +1,34 @@
+{% extends setcms.path('layout_admin.twig') %}
+
+{% block content_toolbar %}
+    <a href="{{ setcms.link('action_admin', {module: 'Post', action:'new'}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
+{% endblock %}
+
+{% block content_title %}Посты{% endblock %}
+
+{% block content %}
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Тема</th>
+                    <th scope="col">Действия</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in posts %}
+                    <tr>
+                        <td>{{ post.id }}</td>
+                        <td>{{ post.title }}</td>
+                        <td>
+                            <a href="{{ setcms.link('action_record_admin', {'module': 'Post', action: 'edit', 'id': post.id}) }}">Редактировать</a>
+                            <a href="{{ setcms.link('action_record_admin', {'module': 'Post', action: 'read', 'id': post.id}) }}">Просмотр</a>
+                        </td>
+                    </tr>
+                {%  endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

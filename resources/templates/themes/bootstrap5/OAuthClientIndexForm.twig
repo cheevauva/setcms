@@ -1,0 +1,33 @@
+{% extends setcms.path('layout_admin.twig') %}
+
+{% block content_toolbar %}
+    <a href="{{ setcms.link('action_oauthclients_admin', {action:'save'}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
+{% endblock %}
+
+{% block content_title %}OAuth{% endblock %}
+
+{% block content %}
+    <h3>Клиенты</h3>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Имя</th>
+                    <th scope="col">Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td>{{ entity.id }}</td>
+                        <td>{{ entity.name }}</td>
+                        <td>
+                            <a href="{{ setcms.link('action_oauthclients_record_admin', {action: 'save', 'id': entity.id}) }}">Редактировать</a>
+                        </td>
+                    </tr>
+                {%  endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

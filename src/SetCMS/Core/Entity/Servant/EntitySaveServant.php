@@ -9,7 +9,7 @@ use SetCMS\Core\Entity\DAO\EntityDbRetrieveByIdDAO;
 use SetCMS\Core\Entity\DAO\EntityDbSaveDAO;
 use SetCMS\ApplyInterface;
 use SetCMS\Core\Entity;
-use SetCMS\Core\Entity\Exception\EntityNotFoundException;
+use SetCMS\Core\Entity\EntityException;
 
 class EntitySaveServant implements ServantInterface
 {
@@ -26,8 +26,8 @@ class EntitySaveServant implements ServantInterface
             $this->retrieveById->id = $this->id ?? $this->entity->id;
             $this->retrieveById->serve();
 
-            $this->entity = $this->retrieveEntityById->entity;
-        } catch (EntityNotFoundException $ex) {
+            $this->entity = $this->retrieveById->entity;
+        } catch (EntityException $ex) {
             // nothing do
         }
 

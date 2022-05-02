@@ -9,6 +9,7 @@ use SetCMS\ServantInterface;
 use SetCMS\ApplyInterface;
 use SetCMS\Controller\Servant\BuildByDynamicAttributeServant;
 use SetCMS\Servant\RetrieveArgumentsByMethodServant;
+use SetCMS\AttributableInterface;
 
 class ExecuteDynamicControllerServant implements ServantInterface, ApplyInterface
 {
@@ -37,9 +38,9 @@ class ExecuteDynamicControllerServant implements ServantInterface, ApplyInterfac
         $controllerBuilder->module = $this->module ?? '';
         $controllerBuilder->action = $this->action;
         $controllerBuilder->serve();
-        
+
         $caller = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)[1] ?? null;
-        
+
         if ($caller && $caller['class'] === get_class($controllerBuilder->controller) && $caller['function'] === $this->action) {
             throw new \RuntimeException('Oh my sweet summer child - you know noting');
         }
@@ -49,7 +50,15 @@ class ExecuteDynamicControllerServant implements ServantInterface, ApplyInterfac
         $methodArgumentsBuilder->apply($this->storage);
         $methodArgumentsBuilder->serve();
 
-        $this->mixedValue = $controllerBuilder->method->invokeArgs($controllerBuilder->controller, $methodArgumentsBuilder->arguments);
+        $mixedValue = $controllerBuilder->method->invokeArgs($controllerBuilder->controller, $methodArgumentsBuilder->arguments);
+
+        if ($mixedValue instanceof AttributableInterface) {
+            $mixedValue->withAttribute('section', $this->section);
+            $mixedValue->withAttribute('module', $this->module);
+            $mixedValue->withAttribute('action', $this->action);
+        }
+
+        $this->mixedValue = $mixedValue;
     }
 
     public function apply(object $object): void

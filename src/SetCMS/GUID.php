@@ -7,7 +7,7 @@ namespace SetCMS;
 class GUID
 {
 
-    public const REGEX = '[A-Z0-9]{8}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{12}';
+    public const REGEX = '[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}';
 
     public static function generate(): string
     {

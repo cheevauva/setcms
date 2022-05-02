@@ -95,13 +95,3 @@
         <button class="setcms-submit-button btn btn-primary mb-3" type="button">{{ params.label }}</button>
     </div>
 {% endmacro %}
-
-{% macro resourceCreateUpdateAction(model, entity) %}
-    {% if model.id %}
-        setcms-method="PUT"
-        setcms-action="{{ setcms.link('resource_update', {module: setcms.toModule(entity), resource: setcms.toResource(entity), id: entity.id}) }}"
-    {% else %}
-        setcms-method="POST"
-        setcms-action="{{ setcms.link('resource_create', {module: setcms.toModule(entity), resource: setcms.toResource(entity), id: entity.id}) }}"
-    {% endif %}
-{% endmacro %}

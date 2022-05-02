@@ -49,11 +49,16 @@ class BuildHtmlContentByMixedValue implements ServantInterface
 
         if ($object instanceof Form) {
             $template = explode('@', (new \ReflectionObject($object))->getShortName())[0];
-            
-            $context = $object->toArray();
-            $context['messages'] = $object->getMessages();
 
-            $this->htmlContent = $this->getTwig()->render(sprintf('themes/%s/%s', $this->theme, sprintf('%s.twig', $template)), $context);
+            $context = $object->toArray();
+
+            if ($object->getMessages()) {
+                $this->htmlContent = $this->getTwig()->render('themes/bootstrap5/errors.twig', [
+                    'messages' =>  $object->getMessages(),
+                ]);
+            } else {
+                $this->htmlContent = $this->getTwig()->render(sprintf('themes/%s/%s', $this->theme, sprintf('%s.twig', $template)), $context);
+            }
         }
 
         if ($object instanceof Throwable) {
@@ -157,7 +162,7 @@ class BuildHtmlContentByMixedValue implements ServantInterface
             {
                 $link = $this->router->generate($route, $params);
                 $link .= $query ? ('?' . (is_array($query) ? http_build_query($query) : $query)) : '';
-                
+
                 return $link;
             }
 

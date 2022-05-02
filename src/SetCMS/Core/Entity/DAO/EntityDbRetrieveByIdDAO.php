@@ -14,7 +14,7 @@ class EntityDbRetrieveByIdDAO extends EntityDbRetrieveByCriteriaDAO
     {
         $this->criteria = [
             'id' => $this->id,
-            'deleted' => $this->deleted,
+            'deleted' => (int) $this->deleted,
         ];
 
         parent::serve();

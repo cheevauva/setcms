@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace SetCMS\Core;
 
 use SetCMS\ApplyInterface;
+use SetCMS\AttributableInterface;
 use SetCMS\Core\Form\FormMessageStorage;
 use SetCMS\Core\Form\Message\FormMessage;
 use SetCMS\Core\Form\Message\FormMessagePopulate;
 
-class Form implements ApplyInterface
+class Form implements ApplyInterface, AttributableInterface
 {
+
+    use \SetCMS\AttributableTrait;
 
     private ?Form $parent = null;
     private FormMessageStorage $messages;
@@ -48,6 +51,16 @@ class Form implements ApplyInterface
                 $this->messages->detach($message);
             }
         }
+    }
+
+    public function from(object $object): void
+    {
+        
+    }
+
+    public function to(object $object): void
+    {
+        
     }
 
     public function fromArray(array $array): void
@@ -100,7 +113,7 @@ class Form implements ApplyInterface
                 $form->valid();
             }
 
-            $this->{$property->getName()} = $value;
+            $this->{$property->getName()} = $value ?? $property->getDefaultValue();
         }
     }
 

@@ -11,23 +11,23 @@ use SetCMS\TwigableInterface;
 class PostIndexForm extends Form implements TwigableInterface
 {
 
-    private ?array $pages = null;
-
-    public function toArray(): array
-    {
-        $array = parent::toArray();
-        $array['entities'] = $this->pages;
-
-        return $array;
-    }
+    private ?\Iterator $posts = null;
 
     public function apply(object $object): void
     {
         parent::apply($object);
 
         if ($object instanceof PostEntityDbRetrieveManyByCriteriaDAO) {
-            $this->pages = $object->entities ? iterator_to_array($object->entities) : null;
+            $this->posts = $object->entities;
         }
+    }
+
+    public function toArray(): array
+    {
+        $array = parent::toArray();
+        $array['posts'] = $this->posts;
+
+        return $array;
     }
 
 }

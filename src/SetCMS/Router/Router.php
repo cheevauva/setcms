@@ -10,7 +10,7 @@ class Router extends \AltoRouter implements RouterInterface
     public function __construct(ContainerInterface $container)
     {
         $this->addMatchTypes([
-            'g' => '[' . \SetCMS\GUID::REGEX . ']++',
+            'g' => sprintf('(%s)++', \SetCMS\GUID::REGEX),
         ]);
         
         foreach ($container->get('routes') as $name => $route) {

@@ -2,7 +2,6 @@
 
 use SetCMS\Controller\PublicController;
 use SetCMS\Controller\PrivateController;
-use SetCMS\Controller\ResourceController;
 use SetCMS\Module\Post\PostPublicController;
 use SetCMS\Module\Post\PostPrivateController;
 
@@ -17,11 +16,6 @@ $routes = [
     'action_admin' => ['GET', '/~/[a:module]/[a:action]', PrivateController::toRoute()->dynamicAction()],
     'do_action_record_admin' => ['POST', '/~/[a:module]/[a:action]/[g:id]', PrivateController::toRoute()->dynamicAction()],
     'do_action_admin' => ['POST', '/~/[a:module]/[a:action]', PrivateController::toRoute()->dynamicAction()],
-    'resource_index' => ['GET', '/-/[a:module]/[a:resource]', ResourceController::toRoute()->dynamicAction()],
-    'resource_create' => ['POST', '/-/[a:module]/[a:resource]/[g:id]', ResourceController::toRoute()->dynamicAction()],
-    'resource_read' => ['GET', '/-/[a:module]/[a:resource]/[g:id]', ResourceController::toRoute()->dynamicAction()],
-    'resource_update' => ['PUT', '/-/[a:module]/[a:resource]/[g:id]', ResourceController::toRoute()->dynamicAction()],
-    'resource_delete' => ['DELETE', '/-/[a:module]/[a:resource]/[g:id]', ResourceController::toRoute()->dynamicAction()],
 ];
 
 foreach (glob(__DIR__ . '/routes/*') as $file) {
