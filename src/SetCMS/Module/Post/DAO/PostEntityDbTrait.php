@@ -13,9 +13,9 @@ use SetCMS\Database\MainConnection;
 trait PostEntityDbTrait
 {
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, FactoryInterface $factory)
     {
-        $this->mapper = PostEntityDbMapper::factory($container->get(FactoryInterface::class));
+        $this->mapper = PostEntityDbMapper::factory($factory);
         $this->table = PostConstants::TABLE_NAME;
         $this->db = $container->get(MainConnection::class);
     }

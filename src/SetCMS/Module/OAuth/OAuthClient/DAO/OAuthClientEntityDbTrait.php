@@ -15,13 +15,10 @@ trait OAuthClientEntityDbTrait
 
     use \SetCMS\FactoryTrait;
 
-    private FactoryInterface $factory;
-
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, FactoryInterface $factory)
     {
-        $this->factory = $container->get(FactoryInterface::class);
         $this->db = $container->get(MainConnection::class);
-        $this->mapper = OAuthClientEntityDbMapper::factory($this->factory);
+        $this->mapper = OAuthClientEntityDbMapper::factory($factory);
         $this->table = OAuthClientContstants::TABLE_NAME;
     }
 

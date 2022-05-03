@@ -9,7 +9,6 @@ use SetCMS\ServantInterface;
 use SetCMS\ApplyInterface;
 use SetCMS\Controller\Servant\BuildByDynamicAttributeServant;
 use SetCMS\Servant\RetrieveArgumentsByMethodServant;
-use SetCMS\AttributableInterface;
 
 class ExecuteDynamicControllerServant implements ServantInterface, ApplyInterface
 {
@@ -50,15 +49,7 @@ class ExecuteDynamicControllerServant implements ServantInterface, ApplyInterfac
         $methodArgumentsBuilder->apply($this->storage);
         $methodArgumentsBuilder->serve();
 
-        $mixedValue = $controllerBuilder->method->invokeArgs($controllerBuilder->controller, $methodArgumentsBuilder->arguments);
-
-        if ($mixedValue instanceof AttributableInterface) {
-            $mixedValue->withAttribute('section', $this->section);
-            $mixedValue->withAttribute('module', $this->module);
-            $mixedValue->withAttribute('action', $this->action);
-        }
-
-        $this->mixedValue = $mixedValue;
+        $this->mixedValue = $controllerBuilder->method->invokeArgs($controllerBuilder->controller, $methodArgumentsBuilder->arguments);
     }
 
     public function apply(object $object): void

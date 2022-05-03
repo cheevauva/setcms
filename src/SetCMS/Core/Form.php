@@ -5,15 +5,12 @@ declare(strict_types=1);
 namespace SetCMS\Core;
 
 use SetCMS\ApplyInterface;
-use SetCMS\AttributableInterface;
 use SetCMS\Core\Form\FormMessageStorage;
 use SetCMS\Core\Form\Message\FormMessage;
 use SetCMS\Core\Form\Message\FormMessagePopulate;
 
-class Form implements ApplyInterface, AttributableInterface
+class Form implements ApplyInterface
 {
-
-    use \SetCMS\AttributableTrait;
 
     private ?Form $parent = null;
     private FormMessageStorage $messages;

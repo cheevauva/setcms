@@ -15,11 +15,10 @@ trait UserEntityDbTrait
 
     private FactoryInterface $factory;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, FactoryInterface $factory)
     {
-        $this->factory = $container->get(FactoryInterface::class);
         $this->db = $container->get(MainConnection::class);
-        $this->mapper = UserEntityDbMapper::factory($this->factory);
+        $this->mapper = UserEntityDbMapper::factory($factory);
         $this->table = UserContstants::TABLE_NAME;
     }
 

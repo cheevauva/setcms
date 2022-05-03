@@ -3,8 +3,7 @@
 namespace SetCMS;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Container\ContainerInterface;
-use DI\FactoryInterface;
+use SetCMS\FactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 
 class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherInterface
@@ -12,9 +11,9 @@ class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherI
 
     private FactoryInterface $factory;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, FactoryInterface $factory)
     {
-        $this->factory = $container->get(FactoryInterface::class);
+        $this->factory = $factory;
 
         foreach ($container->get('events') as $event => $eventListeners) {
             foreach ($eventListeners as $priority => $eventListener) {
