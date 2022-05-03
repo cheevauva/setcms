@@ -6,7 +6,7 @@ namespace SetCMS\Module\Post\Form;
 
 use SetCMS\Form;
 use SetCMS\Module\Post\PostEntity;
-use SetCMS\Form\FormMessage;
+use SetCMS\Form\Message\FormMessage;
 use SetCMS\Module\Post\Servant\PostEntitySaveServant;
 use SetCMS\Module\Post\DAO\PostEntityDbRetrieveByIdDAO;
 
@@ -17,7 +17,7 @@ class PostPrivateSaveForm extends Form
     public string $message;
     public string $title;
     private ?PostEntity $post = null;
-    
+
     public function valid(): bool
     {
         if (!empty($this->slug) && !preg_match('/^[a-z0-9_]+$/', $this->slug)) {
@@ -36,17 +36,26 @@ class PostPrivateSaveForm extends Form
             $object->title = $this->title;
             $object->message = $this->message;
         }
-        
+    }
+
+    public function to(object $object): void
+    {
+        if ($object instanceof PostEntitySaveServant) {
+            $object->apply = $this;
+        }
+    }
+
+    public function from(object $object): void
+    {
         if ($object instanceof PostEntityDbRetrieveByIdDAO) {
             $this->post = $object->entity;
         }
-        
+
         if ($object instanceof PostEntitySaveServant) {
-            $object->apply = $this;
             $this->post = $object->entity;
         }
     }
-    
+
     public function toArray(): array
     {
         return [

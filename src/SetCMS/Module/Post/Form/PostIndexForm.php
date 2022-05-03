@@ -13,10 +13,8 @@ class PostIndexForm extends Form implements TwigableInterface
 
     private ?\Iterator $posts = null;
 
-    public function apply(object $object): void
+    public function from(object $object): void
     {
-        parent::apply($object);
-
         if ($object instanceof PostEntityDbRetrieveManyByCriteriaDAO) {
             $this->posts = $object->entities;
         }
@@ -24,10 +22,9 @@ class PostIndexForm extends Form implements TwigableInterface
 
     public function toArray(): array
     {
-        $array = parent::toArray();
-        $array['posts'] = $this->posts;
-
-        return $array;
+        return [
+            'posts' => $this->posts,
+        ];
     }
 
 }

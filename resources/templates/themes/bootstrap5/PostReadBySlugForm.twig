@@ -1,18 +1,18 @@
 {% extends setcms.path('layout.twig') %}
 
-{% block title %}{{ entity.title }}{% endblock %}
+{% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
-    {% if entity %}
-        <h1>{{ entity.title }}</h1>
+    {% if post %}
+        <h1>{{ post.title }}</h1>
         <p>
-            {{ setcms.markdown(entity.message)|raw }}
+            {{ setcms.markdown(post.message)|raw }}
         </p>
 
         <p>
-            Дата создания: {{ entity.dateCreated.format('d.m.Y H:i:s') }}
+            Дата создания: {{ post.dateCreated.format('d.m.Y H:i:s') }}
             {% if setcms.currentUser.isAdmin %}
-                | <a href="{{ setcms.link('action_record_admin', {module: setcms.toModule(entity), action: 'save', id: entity.id}) }}">Редактировать</a>
+                | <a href="{{ setcms.link('action_record_admin', {module: setcms.toModule(post), action: 'save', id: post.id}) }}">Редактировать</a>
             {% endif %}
         </p>
     {% endif %}

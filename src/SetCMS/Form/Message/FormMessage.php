@@ -7,17 +7,20 @@ namespace SetCMS\Form\Message;
 class FormMessage
 {
 
-    protected $message;
+    protected string $message;
+    protected string $field;
 
-    public function __construct(string $message)
+    public function __construct(string $message, string $field)
     {
         $this->message = $message;
+        $this->field = $field;
     }
 
     public function toArray(): array
     {
         return [
             'message' => $this->message,
+            'field' => $this->field,
         ];
     }
 

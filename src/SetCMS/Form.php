@@ -73,23 +73,23 @@ class Form implements ApplyInterface
             $propertyType = $property->getType()->getName();
             $value = $rawValue;
 
-            if (!$property->isInitialized($this) && !isset($rawValue)) {
-                $this->apply(new FormMessagePopulate('required' . $property));
+            if (!$property->isInitialized($this) && empty($rawValue)) {
+                $this->apply(new FormMessagePopulate('Обязательно для заполнения', $property->getName()));
                 continue;
             }
 
             if ($rawValueType === 'array' && in_array($propertyType, ['int', 'string', 'float', 'bool'], true)) {
-                $this->apply(new FormMessagePopulate('wrong type !array' . $property));
+                $this->apply(new FormMessagePopulate('Массив не может быть преобразован в скалярный тип данных', $property->getName()));
                 continue;
             }
 
             if ($rawValueType === 'object' && interface_exists($propertyType, true) && !is_a($rawValue, $propertyType, true)) {
-                $this->apply(new FormMessagePopulate('wrong type !interface' . $property));
+                $this->apply(new FormMessagePopulate('Объект не соответствует интерфейсу', $property->getName()));
                 continue;
             }
 
             if (class_exists($propertyType, true) && is_subclass_of($propertyType, self::class, true) && $rawValueType !== 'array') {
-                $this->apply(new FormMessagePopulate('wrong type !array 2form' . $property));
+                $this->apply(new FormMessagePopulate('Ожидается массив', $property->getName()));
                 continue;
             }
 
@@ -97,7 +97,7 @@ class Form implements ApplyInterface
                 try {
                     $value = new $propertyType($rawValue);
                 } catch (\Throwable $ex) {
-                    $this->apply(new FormMessagePopulate('wrong type !construct type' . $ex->getMessage() . $property));
+                    $this->apply(new FormMessagePopulate(sprintf('Проблема при вызове конструктора: %s', $ex->getMessage()), $property->getName()));
                     continue;
                 }
             }

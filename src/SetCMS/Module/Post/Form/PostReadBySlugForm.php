@@ -15,22 +15,25 @@ class PostReadBySlugForm extends Form implements TwigableInterface
     public string $slug;
     private ?PostEntity $post = null;
 
-    public function apply(object $object): void
+    public function to(object $object): void
     {
-        parent::apply($object);
-
         if ($object instanceof PostEntityDbRetrieveBySlugDAO) {
             $object->slug = $this->slug;
+        }
+    }
+
+    public function from(object $object): void
+    {
+        if ($object instanceof PostEntityDbRetrieveBySlugDAO) {
             $this->post = $object->entity;
         }
     }
-    
+
     public function toArray(): array
     {
-        $array = parent::toArray();
-        $array['entity'] = $this->post;
-        
-        return $array;
+        return [
+            'post' => $this->post,
+        ];
     }
 
 }

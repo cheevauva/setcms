@@ -16,11 +16,11 @@ trait ControllerTrait
 
         try {
             if ($form->valid()) {
-                $form->apply($servant);
+                $form->to($servant);
                 $servant->serve();
-                $form->apply($servant);
+                $form->from($servant);
             }
-        } catch (\Throwable $ex) {
+        } catch (\Exception $ex) {
             $form->apply($ex);
         }
 

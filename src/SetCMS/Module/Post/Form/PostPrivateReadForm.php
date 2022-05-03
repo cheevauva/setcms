@@ -11,10 +11,8 @@ class PostPrivateReadForm extends \SetCMS\Form implements \SetCMS\TwigableInterf
 {
     private ?PostEntity $post = null;
 
-    public function apply(object $object): void
+    public function from(object $object): void
     {
-        parent::apply($object);
-
         if ($object instanceof PostEntityDbRetrieveByIdDAO) {
             $this->post = $object->entity;
         }
