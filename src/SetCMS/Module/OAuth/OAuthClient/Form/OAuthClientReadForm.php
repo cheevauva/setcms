@@ -2,7 +2,7 @@
 
 namespace SetCMS\Module\OAuth\OAuthClient\Form;
 
-class OAuthClientReadForm extends \SetCMS\Core\Form implements \SetCMS\TwigableInterface
+class OAuthClientReadForm extends \SetCMS\Form implements \SetCMS\TwigableInterface
 {
 
     public int $id;

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Core\Entity\DAO;
+namespace SetCMS\Entity\DAO;
 
 use Doctrine\DBAL\Connection;
-use SetCMS\Core\Entity\EntityDbMapper;
-use SetCMS\Core\Entity;
-use SetCMS\Core\Entity\EntityException;
+use SetCMS\Entity\EntityDbMapper;
+use SetCMS\Entity;
+use SetCMS\Entity\EntityException;
 
 abstract class EntityDbRetrieveByCriteriaDAO extends EntityDbRetrieveManyByCriteriaDAO
 {

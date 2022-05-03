@@ -6,7 +6,7 @@ namespace SetCMS\Module\OAuth\OAuthClient\Form;
 
 use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityDbRetrieveManyDAO;
 
-class OAuthClientIndexForm extends \SetCMS\Core\Form implements \SetCMS\TwigableInterface
+class OAuthClientIndexForm extends \SetCMS\Form implements \SetCMS\TwigableInterface
 {
 
     public ?\Iterator $oauthClients = null;

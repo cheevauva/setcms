@@ -7,7 +7,7 @@ namespace SetCMS\Module\Post\Form;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\Module\Post\DAO\PostEntityDbRetrieveByIdDAO;
 
-class PostPrivateReadForm extends \SetCMS\Core\Form implements \SetCMS\TwigableInterface
+class PostPrivateReadForm extends \SetCMS\Form implements \SetCMS\TwigableInterface
 {
     private ?PostEntity $post = null;
 

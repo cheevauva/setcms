@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Module\Page\Servant;
 
 use DI\FactoryInterface;
-use SetCMS\Core\Entity\Servant\EntityDeleteServant;
+use SetCMS\Entity\Servant\EntityDeleteServant;
 use SetCMS\Module\Page\DAO\PageEntityDbRetrieveByIdDAO;
 use SetCMS\Module\Page\DAO\PageEntityDbSaveDAO;
 

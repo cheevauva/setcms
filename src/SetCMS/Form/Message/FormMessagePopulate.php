@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Core\Form\Message;
+namespace SetCMS\Form\Message;
 
 class FormMessagePopulate extends FormMessage
 {

@@ -12,7 +12,7 @@ use SetCMS\Module\Page\DAO\PageEntityDbRetrieveByIdDAO;
 class PageAdminController
 {
 
-    use \SetCMS\Core\ControllerTrait;
+    use \SetCMS\ControllerTrait;
 
     public function read(ServerRequestInterface $request, PageReadForm $form, PageEntityDbRetrieveByIdDAO $servant): PageReadForm
     {

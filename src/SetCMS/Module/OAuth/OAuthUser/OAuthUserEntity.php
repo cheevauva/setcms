@@ -6,7 +6,7 @@ namespace SetCMS\Module\OAuth\OAuthUser;
 
 use SetCMS\GUID;
 
-class OAuthUserEntity extends \SetCMS\Core\Entity
+class OAuthUserEntity extends \SetCMS\Entity
 {
 
     public string $refreshToken;

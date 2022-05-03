@@ -6,7 +6,7 @@ namespace SetCMS\Module\OAuth\OAuthUser\DAO;
 
 use SetCMS\Module\OAuth\OAuthUser\OAuthUserEntity;
 
-class OAuthUserEntityDbMapper extends \SetCMS\Core\Entity\EntityDbMapper
+class OAuthUserEntityDbMapper extends \SetCMS\Entity\EntityDbMapper
 {
 
     use \SetCMS\FactoryTrait;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Core\Entity;
+namespace SetCMS\Entity;
 
 use SetCMS\ServantInterface;
-use SetCMS\Core\Entity;
+use SetCMS\Entity;
 
 abstract class EntityDbMapper implements ServantInterface
 {

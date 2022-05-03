@@ -10,7 +10,7 @@ use Twig\Environment;
 use Twig\TwigFunction;
 use Twig\Markup;
 use SetCMS\ServantInterface;
-use SetCMS\Core\Form;
+use SetCMS\Form;
 use Throwable;
 use SetCMS\Module\Themes\Theme;
 use SetCMS\Throwable\NotFound;

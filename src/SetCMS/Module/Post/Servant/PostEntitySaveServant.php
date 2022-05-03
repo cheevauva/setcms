@@ -9,7 +9,7 @@ use SetCMS\Module\Post\DAO\PostEntityDbRetrieveByIdDAO;
 use SetCMS\Module\Post\DAO\PostEntityDbSaveDAO;
 use SetCMS\Module\Post\PostEntity;
 
-class PostEntitySaveServant extends \SetCMS\Core\Entity\Servant\EntitySaveServant
+class PostEntitySaveServant extends \SetCMS\Entity\Servant\EntitySaveServant
 {
 
     public function __construct(FactoryInterface $factory)

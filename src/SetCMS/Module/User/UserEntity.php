@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User;
 
-class UserEntity extends \SetCMS\Core\Entity
+class UserEntity extends \SetCMS\Entity
 {
 
     public const ROLE_ADMIN = 'admin';

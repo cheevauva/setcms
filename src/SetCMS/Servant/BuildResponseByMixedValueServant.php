@@ -8,7 +8,7 @@ use SetCMS\FactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
-use SetCMS\Core\Form;
+use SetCMS\Form;
 use SetCMS\ServantInterface;
 use SetCMS\Servant\BuildResponseByExceptionServant;
 use SetCMS\Servant\BuildHtmlContentByMixedValue;

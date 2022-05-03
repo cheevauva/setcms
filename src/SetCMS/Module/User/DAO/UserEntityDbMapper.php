@@ -6,7 +6,7 @@ namespace SetCMS\Module\User\DAO;
 
 use SetCMS\Module\User\UserEntity;
 
-class UserEntityDbMapper extends \SetCMS\Core\Entity\EntityDbMapper
+class UserEntityDbMapper extends \SetCMS\Entity\EntityDbMapper
 {
 
     use \SetCMS\FactoryTrait;

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Core\Entity\Servant;
+namespace SetCMS\Entity\Servant;
 
 use SetCMS\ServantInterface;
-use SetCMS\Core\Entity\DAO\EntityDbRetrieveByIdDAO;
-use SetCMS\Core\Entity\DAO\EntityDbSaveDAO;
-use SetCMS\Core\Entity;
+use SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO;
+use SetCMS\Entity\DAO\EntityDbSaveDAO;
+use SetCMS\Entity;
 
 class EntityDeleteServant implements ServantInterface
 {

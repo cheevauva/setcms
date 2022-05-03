@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Core;
+namespace SetCMS;
 
 use SetCMS\ApplyInterface;
-use SetCMS\Core\Form\FormMessageStorage;
-use SetCMS\Core\Form\Message\FormMessage;
-use SetCMS\Core\Form\Message\FormMessagePopulate;
+use SetCMS\Form\FormMessageStorage;
+use SetCMS\Form\Message\FormMessage;
+use SetCMS\Form\Message\FormMessagePopulate;
 
 class Form implements ApplyInterface
 {

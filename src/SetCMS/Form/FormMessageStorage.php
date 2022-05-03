@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Core\Form;
+namespace SetCMS\Form;
 
-use SetCMS\Core\Form\Message\FormMessage;
+use SetCMS\Form\Message\FormMessage;
 
 class FormMessageStorage extends \SplObjectStorage
 {

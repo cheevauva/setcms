@@ -2,7 +2,7 @@
 
 namespace SetCMS\Module\Page;
 
-use SetCMS\Core\Entity;
+use SetCMS\Entity;
 
 class PageEntity extends Entity
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page\Form;
 
-use SetCMS\Core\Form;
+use SetCMS\Form;
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\Servant\PageEntitySaveServant;
 use SetCMS\Module\Page\DAO\PageEntityDbRetrieveByIdDAO;

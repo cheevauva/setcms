@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Form;
 
-use SetCMS\Core\Form;
+use SetCMS\Form;
 use SetCMS\Module\Post\PostEntity;
-use SetCMS\Core\Form\FormMessage;
+use SetCMS\Form\FormMessage;
 use SetCMS\Module\Post\Servant\PostEntitySaveServant;
 use SetCMS\Module\Post\DAO\PostEntityDbRetrieveByIdDAO;
 

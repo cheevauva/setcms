@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\OAuth\OAuthToken\Form;
 
-class OAuthTokenForm extends \SetCMS\Core\Form
+class OAuthTokenForm extends \SetCMS\Form
 {
 
     private const GRANT_TYPE_AUTH_CODE = 'authorization_code';

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\DAO;
 
-class PostEntityDbRetrieveBySlugDAO extends \SetCMS\Core\Entity\DAO\EntityDbRetrieveByCriteriaDAO
+class PostEntityDbRetrieveBySlugDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByCriteriaDAO
 {
 
     use PostEntityDbTrait;

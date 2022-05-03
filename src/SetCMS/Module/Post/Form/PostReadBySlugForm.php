@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Form;
 
-use SetCMS\Core\Form;
+use SetCMS\Form;
 use SetCMS\Module\Post\DAO\PostEntityDbRetrieveBySlugDAO;
 use SetCMS\TwigableInterface;
 use SetCMS\Module\Post\PostEntity;

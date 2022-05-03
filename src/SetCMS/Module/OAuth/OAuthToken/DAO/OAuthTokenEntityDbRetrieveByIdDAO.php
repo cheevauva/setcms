@@ -6,7 +6,7 @@ namespace SetCMS\Module\OAuth\OAuthToken\DAO;
 
 use SetCMS\Module\OAuth\OAuthToken\OAuthTokenEntity;
 
-class OAuthTokenEntityDbRetrieveByIdDAO extends \SetCMS\Core\Entity\DAO\EntityDbRetrieveByIdDAO
+class OAuthTokenEntityDbRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO
 {
 
     use \SetCMS\FactoryTrait;

@@ -6,7 +6,7 @@ namespace SetCMS\Module\OAuth\OAuthUser\DAO;
 
 use SetCMS\Module\OAuth\OAuthUser\OAuthUserEntity;
 
-class OAuthUserEntityDbRetrieveByExternalIdAndClientIdDAO extends \SetCMS\Core\Entity\DAO\EntityDbRetrieveByCriteriaDAO
+class OAuthUserEntityDbRetrieveByExternalIdAndClientIdDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByCriteriaDAO
 {
 
     use OAuthUserEntityDbTrait;

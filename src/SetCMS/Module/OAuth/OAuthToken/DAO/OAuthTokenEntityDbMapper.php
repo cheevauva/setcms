@@ -6,7 +6,7 @@ namespace SetCMS\Module\OAuth\OAuthToken\DAO;
 
 use SetCMS\Module\OAuth\OAuthToken\OAuthTokenEntity;
 
-class OAuthTokenEntityDbMapper extends \SetCMS\Core\Entity\EntityDbMapper
+class OAuthTokenEntityDbMapper extends \SetCMS\Entity\EntityDbMapper
 {
 
     protected function entity(): OAuthTokenEntity

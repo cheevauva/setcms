@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page;
 
-use SetCMS\Core\Entity\EntityDbMapper;
+use SetCMS\Entity\EntityDbMapper;
 use SetCMS\Module\Page\PageEntity;
 
 class PageEntityDbMapper extends EntityDbMapper

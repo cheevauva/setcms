@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Core\Entity\DAO;
+namespace SetCMS\Entity\DAO;
 
 use SetCMS\ServantInterface;
-use SetCMS\Core\Entity\EntityDbMapper;
-use SetCMS\Core\Entity;
+use SetCMS\Entity\EntityDbMapper;
+use SetCMS\Entity;
 use Doctrine\DBAL\Connection;
 
 abstract class EntityDbSaveDAO implements ServantInterface

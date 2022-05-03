@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Core\Entity;
+namespace SetCMS\Entity;
 
 class EntityException extends \Exception
 {

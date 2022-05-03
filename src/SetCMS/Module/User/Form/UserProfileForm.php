@@ -2,7 +2,7 @@
 
 namespace SetCMS\Module\User\Form;
 
-use SetCMS\Core\Form;
+use SetCMS\Form;
 use SetCMS\Module\User\Servant\UserEntityRetrieveByAccessTokenServant;
 use SetCMS\TwigableInterface;
 use SetCMS\Module\User\UserEntity;

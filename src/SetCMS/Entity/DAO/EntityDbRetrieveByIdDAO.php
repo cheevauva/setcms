@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Core\Entity\DAO;
+namespace SetCMS\Entity\DAO;
 
 class EntityDbRetrieveByIdDAO extends EntityDbRetrieveByCriteriaDAO
 {

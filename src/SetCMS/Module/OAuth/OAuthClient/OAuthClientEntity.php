@@ -2,7 +2,7 @@
 
 namespace SetCMS\Module\OAuth\OAuthClient;
 
-class OAuthClientEntity extends \SetCMS\Core\Entity
+class OAuthClientEntity extends \SetCMS\Entity
 {
 
     public string $name;

@@ -5,7 +5,7 @@ namespace SetCMS\Module\OAuth\OAuthClient\Form;
 use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityDbRetrieveByIdDAO;
 use SetCMS\Module\OAuth\OAuthClient\OAuthClientEntity;
 
-class OAuthClientSaveForm extends \SetCMS\Core\Form implements \SetCMS\TwigableInterface
+class OAuthClientSaveForm extends \SetCMS\Form implements \SetCMS\TwigableInterface
 {
 
     public string $id;

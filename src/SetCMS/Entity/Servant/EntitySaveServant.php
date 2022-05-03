@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Core\Entity\Servant;
+namespace SetCMS\Entity\Servant;
 
 use SetCMS\ServantInterface;
-use SetCMS\Core\Entity\DAO\EntityDbRetrieveByIdDAO;
-use SetCMS\Core\Entity\DAO\EntityDbSaveDAO;
+use SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO;
+use SetCMS\Entity\DAO\EntityDbSaveDAO;
 use SetCMS\ApplyInterface;
-use SetCMS\Core\Entity;
-use SetCMS\Core\Entity\EntityException;
+use SetCMS\Entity;
+use SetCMS\Entity\EntityException;
 
 class EntitySaveServant implements ServantInterface
 {

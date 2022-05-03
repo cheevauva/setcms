@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\DAO;
 
-use SetCMS\Core\Entity\EntityDbMapper;
+use SetCMS\Entity\EntityDbMapper;
 use SetCMS\Module\Post\PostEntity;
 
 class PostEntityDbMapper extends EntityDbMapper
