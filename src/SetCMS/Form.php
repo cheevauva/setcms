@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace SetCMS;
 
 use SetCMS\ApplyInterface;
+use SetCMS\ArrayPropertyHydratableInterface;
 use SetCMS\Form\FormMessageStorage;
 use SetCMS\Form\Message\FormMessage;
 use SetCMS\Form\Message\FormMessagePopulate;
 use SetCMS\Servant\ArrayPropertyHydratorSevant;
 
-class Form implements ApplyInterface
+class Form implements ApplyInterface, ArrayPropertyHydratableInterface
 {
 
     private ?Form $parent = null;
@@ -67,7 +68,7 @@ class Form implements ApplyInterface
         $hydrator->array = $array;
         $hydrator->object = $this;
         $hydrator->serve();
-        
+
         foreach ($hydrator->messages as $message) {
             $this->apply(new FormMessagePopulate(...$message));
         }

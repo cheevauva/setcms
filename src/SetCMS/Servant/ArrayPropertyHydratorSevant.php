@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-class ArrayPropertyHydratorSevant implements \SetCMS\ServantInterface
+use SetCMS\ServantInterface;
+use SetCMS\ArrayPropertyHydratableInterface;
+
+class ArrayPropertyHydratorSevant implements ServantInterface
 {
 
     public array $array;
@@ -44,12 +47,12 @@ class ArrayPropertyHydratorSevant implements \SetCMS\ServantInterface
                 continue;
             }
 
-            if (class_exists($propertyType, true) && is_subclass_of($propertyType, self::class, true) && $rawValueType !== 'array') {
+            if (class_exists($propertyType, true) && is_subclass_of($propertyType, ArrayPropertyHydratableInterface::class, true) && $rawValueType !== 'array') {
                 yield ['Ожидается массив', $property->getName()];
                 continue;
             }
 
-            if (class_exists($propertyType, true) && !is_subclass_of($propertyType, self::class, true)) {
+            if (class_exists($propertyType, true) && !is_subclass_of($propertyType, ArrayPropertyHydratableInterface::class, true)) {
                 try {
                     $value = new $propertyType($rawValue);
                 } catch (\Throwable $ex) {
@@ -58,12 +61,12 @@ class ArrayPropertyHydratorSevant implements \SetCMS\ServantInterface
                 }
             }
 
-            if (class_exists($propertyType, true) && is_subclass_of($propertyType, self::class, true)) {
-                $form = new $propertyType;
-                assert($form instanceof self);
-                $form->apply($this->object);
-                $form->fromArray($this->array[$property->getName()]);
-                $form->valid();
+            if (class_exists($propertyType, true) && is_subclass_of($propertyType, ArrayPropertyHydratableInterface::class, true)) {
+                $value = new $propertyType;
+                $hydrator = new ArrayPropertyHydratorSevant;
+                $hydrator->object = $value;
+                $hydrator->array = $this->array[$property->getName()];
+                $hydrator->serve();
             }
 
             $this->object->{$property->getName()} = $value ?? $property->getDefaultValue();
