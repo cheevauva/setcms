@@ -39,12 +39,13 @@ class ServeScopeServant implements ServantInterface
         $hydrator->object = $this->scope;
         $hydrator->serve();
 
-        if ($hydrator->messages) {
-            yield from $hydrator->messages;
-            return;
+        foreach ($hydrator->messages as $message) {
+            yield $message;
         }
 
-        yield from $this->scope->satisfy();
+        foreach ($this->scope->satisfy() as $message) {
+            yield $message;
+        }
     }
 
 }

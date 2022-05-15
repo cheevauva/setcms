@@ -20,7 +20,7 @@ class PostPrivateSaveForm extends Scope implements Applicable
 
     public function satisfy(): \Iterator
     {
-        if (!empty($this->slug) && !preg_match('/^[a-z0-9_]+$/', $this->slug)) {
+        if (!empty($this->slug) && !preg_match('/^[a-zA-Z0-9_]+$/', $this->slug)) {
             yield ['Только латинские буквы, цифры и подчеркивание', 'slug'];
         }
     }
