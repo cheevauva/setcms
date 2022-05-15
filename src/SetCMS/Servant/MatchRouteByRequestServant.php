@@ -7,12 +7,12 @@ namespace SetCMS\Servant;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\FactoryInterface;
 use SetCMS\ServantInterface;
-use SetCMS\ApplyInterface;
+use SetCMS\Contract\Applicable;
 use SetCMS\Router\RouterInterface;
 use SetCMS\Router\RouterException;
 use SetCMS\Router\RouterMatchDTO;
 
-class MatchRouteByRequestServant implements ServantInterface, ApplyInterface
+class MatchRouteByRequestServant implements ServantInterface, Applicable
 {
 
     use \SetCMS\FactoryTrait;

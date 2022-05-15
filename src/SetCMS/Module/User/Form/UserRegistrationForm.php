@@ -4,7 +4,7 @@ namespace SetCMS\Module\User\Form;
 
 use SetCMS\Module\User\UserEntity;
 
-class UserRegistrationForm extends \SetCMS\Form
+class UserRegistrationForm extends \SetCMS\Scope
 {
 
     public string $username;

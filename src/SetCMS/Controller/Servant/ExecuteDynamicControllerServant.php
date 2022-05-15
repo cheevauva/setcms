@@ -6,11 +6,11 @@ namespace SetCMS\Controller\Servant;
 
 use SetCMS\FactoryInterface;
 use SetCMS\ServantInterface;
-use SetCMS\ApplyInterface;
+use SetCMS\Contract\Applicable;
 use SetCMS\Controller\Servant\BuildByDynamicAttributeServant;
 use SetCMS\Servant\RetrieveArgumentsByMethodServant;
 
-class ExecuteDynamicControllerServant implements ServantInterface, ApplyInterface
+class ExecuteDynamicControllerServant implements ServantInterface, Applicable
 {
 
     use \SetCMS\FactoryTrait;

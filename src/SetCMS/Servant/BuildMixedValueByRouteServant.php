@@ -32,7 +32,7 @@ class BuildMixedValueByRouteServant implements ServantInterface
         $methodArguments->serve();
 
         foreach ($methodArguments->arguments as $arg) {
-            if ($arg instanceof Form) {
+            if ($arg instanceof Scope) {
                 $arg->fromArray($this->params);
             }
         }

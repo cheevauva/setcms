@@ -127,15 +127,18 @@ jQuery().ready(function () {
                 }
 
 
-                $.each(data.messages, function (index, message) {
-                    if (message.field) {
+                $.each(data.messages, function (index, msg) {
+                    var message = msg[0] || null;
+                    var field = msg[1] || null;
+                    
+                    if (field) {
                         var $field;
 
-                        $field = $form.find('[name="' + message.field + '"]');
+                        $field = $form.find('[name="' + field + '"]');
                         $field.addClass('is-invalid');
-                        $field.parent().find('.invalid-feedback').text(!$field.is(':hidden') ? message.message : message.field + ': ' + message.message);
+                        $field.parent().find('.invalid-feedback').text(!$field.is(':hidden') ? message : field + ': ' + message);
                     } else {
-                        altMessage(message.message);
+                        altMessage(message);
                     }
                 });
             }

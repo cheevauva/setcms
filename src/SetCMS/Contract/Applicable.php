@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SetCMS;
+namespace SetCMS\Contract;
 
-interface ApplyInterface
+interface Applicable
 {
 
     public function apply(object $object): void;

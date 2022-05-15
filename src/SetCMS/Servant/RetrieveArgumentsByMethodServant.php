@@ -8,9 +8,9 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\ServantInterface;
-use SetCMS\ApplyInterface;
+use SetCMS\Contract\Applicable;
 
-class RetrieveArgumentsByMethodServant implements ServantInterface, ApplyInterface
+class RetrieveArgumentsByMethodServant implements ServantInterface, Applicable
 {
 
     use \SetCMS\FactoryTrait;

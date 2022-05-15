@@ -7,7 +7,7 @@ namespace SetCMS\Module\Page\Form;
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\DAO\PageEntityDbRetrieveByIdDAO;
 
-class PageReadForm extends \SetCMS\Form
+class PageReadForm extends \SetCMS\Scope
 {
 
     public string $id;

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Form;
 
-use SetCMS\Form;
+use SetCMS\Scope;
 use SetCMS\Module\Post\PostEntity;
-use SetCMS\Form\Message\FormMessage;
 use SetCMS\Module\Post\Servant\PostEntitySaveServant;
 use SetCMS\Module\Post\DAO\PostEntityDbRetrieveByIdDAO;
+use SetCMS\Contract\Applicable;
 
-class PostPrivateSaveForm extends Form
+class PostPrivateSaveForm extends Scope implements Applicable
 {
 
     public string $slug;
@@ -18,19 +18,15 @@ class PostPrivateSaveForm extends Form
     public string $title;
     private ?PostEntity $post = null;
 
-    public function valid(): bool
+    public function satisfy(): \Iterator
     {
         if (!empty($this->slug) && !preg_match('/^[a-z0-9_]+$/', $this->slug)) {
-            $this->apply(new FormMessage('Только латинские буквы, цифры и подчеркивание', 'slug'));
+            yield ['Только латинские буквы, цифры и подчеркивание', 'slug'];
         }
-
-        return parent::valid();
     }
 
     public function apply(object $object): void
     {
-        parent::apply($object);
-
         if ($object instanceof PostEntity) {
             $object->slug = $this->slug;
             $object->title = $this->title;

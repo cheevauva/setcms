@@ -2,12 +2,12 @@
 
 namespace SetCMS\Module\User\Form;
 
-use SetCMS\Form;
+use SetCMS\Scope;
 use SetCMS\Module\User\Servant\UserEntityRetrieveByAccessTokenServant;
-use SetCMS\TwigableInterface;
+use SetCMS\Contract\Twigable;
 use SetCMS\Module\User\UserEntity;
 
-class UserProfileForm extends Form implements TwigableInterface
+class UserProfileForm extends Scope implements Twigable
 {
 
     public string $token;

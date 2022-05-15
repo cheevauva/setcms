@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Form;
 
-use SetCMS\Form;
+use SetCMS\Scope;
 use SetCMS\Module\Post\DAO\PostEntityDbRetrieveManyByCriteriaDAO;
-use SetCMS\TwigableInterface;
+use SetCMS\Contract\Twigable;
 
-class PostIndexForm extends Form implements TwigableInterface
+class PostIndexForm extends Scope implements Twigable
 {
 
     private ?\Iterator $posts = null;

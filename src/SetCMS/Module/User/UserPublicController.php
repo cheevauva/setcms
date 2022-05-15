@@ -8,7 +8,7 @@ use SetCMS\Module\User\Form\UserProfileForm;
 use SetCMS\Module\User\Form\UserInfoForm;
 use SetCMS\Module\User\Form\UserRegistrationForm;
 use SetCMS\Module\User\Servant\UserEntityRetrieveByAccessTokenServant;
-use SetCMS\TwigableInterface;
+use SetCMS\Contract\Twigable;
 use SetCMS\Module\User\UserEntity;
 
 class UserPublicController
@@ -34,7 +34,7 @@ class UserPublicController
 
     public function registration(): UserRegistrationForm
     {
-        return new class() extends UserRegistrationForm implements \SetCMS\TwigableInterface {
+        return new class() extends UserRegistrationForm implements \SetCMS\Contract\Twigable {
 
             public function __construct()
             {

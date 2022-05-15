@@ -7,7 +7,7 @@ namespace SetCMS\Entity\Servant;
 use SetCMS\ServantInterface;
 use SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO;
 use SetCMS\Entity\DAO\EntityDbSaveDAO;
-use SetCMS\ApplyInterface;
+use SetCMS\Contract\Applicable;
 use SetCMS\Entity;
 use SetCMS\Entity\EntityException;
 
@@ -16,7 +16,7 @@ class EntitySaveServant implements ServantInterface
 
     protected EntityDbRetrieveByIdDAO $retrieveById;
     protected EntityDbSaveDAO $save;
-    public ApplyInterface $apply;
+    public Applicable $apply;
     public ?string $id = null;
     public Entity $entity;
 

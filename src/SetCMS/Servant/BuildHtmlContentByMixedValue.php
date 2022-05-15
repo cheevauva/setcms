@@ -10,7 +10,7 @@ use Twig\Environment;
 use Twig\TwigFunction;
 use Twig\Markup;
 use SetCMS\ServantInterface;
-use SetCMS\Form;
+use SetCMS\Scope;
 use Throwable;
 use SetCMS\Module\Themes\Theme;
 use SetCMS\Throwable\NotFound;
@@ -47,14 +47,14 @@ class BuildHtmlContentByMixedValue implements ServantInterface
     {
         $object = $this->mixedValue;
 
-        if ($object instanceof Form) {
+        if ($object instanceof Scope) {
             $template = explode('@', (new \ReflectionObject($object))->getShortName())[0];
 
             $context = $object->toArray();
 
-            if ($object->getMessages()) {
+            if ($object->messages) {
                 $this->htmlContent = $this->getTwig()->render('themes/bootstrap5/errors.twig', [
-                    'messages' =>  $object->getMessages(),
+                    'messages' =>  $object->messages,
                 ]);
             } else {
                 $this->htmlContent = $this->getTwig()->render(sprintf('themes/%s/%s', $this->theme, sprintf('%s.twig', $template)), $context);
@@ -114,7 +114,7 @@ class BuildHtmlContentByMixedValue implements ServantInterface
 
         $object = $buildMixedValueByRout->mixedValue;
 
-        if ($object instanceof Form) {
+        if ($object instanceof Scope) {
             return $this->getTwig()->render($template, $object->toArray());
         }
 

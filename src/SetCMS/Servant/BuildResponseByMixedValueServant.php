@@ -8,11 +8,11 @@ use SetCMS\FactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
-use SetCMS\Form;
+use SetCMS\Scope;
 use SetCMS\ServantInterface;
 use SetCMS\Servant\BuildResponseByExceptionServant;
 use SetCMS\Servant\BuildHtmlContentByMixedValue;
-use SetCMS\TwigableInterface;
+use SetCMS\Contract\Twigable;
 
 class BuildResponseByMixedValueServant implements ServantInterface
 {
@@ -38,8 +38,9 @@ class BuildResponseByMixedValueServant implements ServantInterface
             $this->response->getBody()->write('Success!');
         }
 
-        if ($object instanceof Form) {
-            if ($object instanceof TwigableInterface) {
+        if ($object instanceof Scope) {
+            $twig = $object;
+            if ($twig instanceof Twigable) {
                 $buildHtmlContent = BuildHtmlContentByMixedValue::factory($this->factory);
                 $buildHtmlContent->request = $this->request;
                 $buildHtmlContent->mixedValue = $object;
@@ -48,9 +49,9 @@ class BuildResponseByMixedValueServant implements ServantInterface
             } else {
                 $this->response = $this->response->withHeader('Content-type', 'application/json');
                 $this->response->getBody()->write(json_encode([
-                    'result' => !$object->getMessages(),
+                    'result' => !$object->messages,
                     'data' => $object->toArray(),
-                    'messages' => $object->getMessages(),
+                    'messages' => $object->messages,
                 ], JSON_UNESCAPED_UNICODE));
             }
         }

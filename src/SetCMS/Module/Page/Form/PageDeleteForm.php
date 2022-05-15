@@ -6,7 +6,7 @@ namespace SetCMS\Module\Page\Form;
 
 use SetCMS\Module\Page\Servant\PageEntityDeleteServant;
 
-class PageDeleteForm extends \SetCMS\Form
+class PageDeleteForm extends \SetCMS\Scope
 {
 
     public string $id;
