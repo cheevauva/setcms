@@ -2,22 +2,20 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Page\Scope;
+namespace SetCMS\Module\Post\Scope;
 
-use SetCMS\Module\Page\PageEntity;
-use SetCMS\Module\Page\Servant\PageEntitySaveServant;
-use SetCMS\Module\Page\DAO\PageEntityDbRetrieveByIdDAO;
+use SetCMS\Module\Post\PostEntity;
 
-class PagePrivateSaveScope extends \SetCMS\Entity\Scope\EntitySaveScope
+class PostPrivateSaveScope extends \SetCMS\Entity\Scope\EntitySaveScope
 {
 
     public string $slug;
-    public string $content;
+    public string $message;
     public string $title;
 
     public function __construct()
     {
-        $this->entity = new PageEntity;
+        $this->entity = new PostEntity;
     }
 
     public function satisfy(): \Iterator
@@ -29,17 +27,17 @@ class PagePrivateSaveScope extends \SetCMS\Entity\Scope\EntitySaveScope
 
     public function apply(object $object): void
     {
-        if ($object instanceof PageEntity) {
+        if ($object instanceof PostEntity) {
             $object->slug = $this->slug;
             $object->title = $this->title;
-            $object->content = $this->content;
+            $object->message = $this->message;
         }
     }
 
     public function toArray(): array
     {
         return [
-            'page' => $this->entity,
+            'post' => $this->entity,
         ];
     }
 

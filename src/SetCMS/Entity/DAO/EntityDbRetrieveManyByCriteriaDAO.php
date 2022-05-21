@@ -4,20 +4,12 @@ declare(strict_types=1);
 
 namespace SetCMS\Entity\DAO;
 
-use Doctrine\DBAL\Connection;
-use SetCMS\ServantInterface;
-use SetCMS\Entity\EntityDbMapper;
-
-abstract class EntityDbRetrieveManyByCriteriaDAO implements ServantInterface
+abstract class EntityDbRetrieveManyByCriteriaDAO extends EntityDbRetrieveManyDAO 
 {
 
-    protected EntityDbMapper $mapper;
-    protected Connection $db;
     protected array $criteria = [];
-    protected string $table;
     protected ?int $limit = null;
     protected bool $forUpdate = false;
-    public ?\Iterator $entities = null;
 
     public function serve(): void
     {
@@ -30,19 +22,8 @@ abstract class EntityDbRetrieveManyByCriteriaDAO implements ServantInterface
             $qb->andWhere(sprintf('%s = :%s', $field, $field));
             $qb->setParameter($field, $value);
         }
-        
-        $this->entities = $this->prepareEntities($qb->executeQuery()->iterateAssociative());
-    }
 
-    private function prepareEntities(\Iterator $rows): \Iterator
-    {
-        foreach ($rows as $row) {
-            $this->mapper->entity = null;
-            $this->mapper->row = new \ArrayObject($row);
-            $this->mapper->serve();
-
-            yield $this->mapper->entity;
-        }
+        $this->entities = $this->prepareEntitiesByRows($qb->executeQuery()->iterateAssociative());
     }
 
 }

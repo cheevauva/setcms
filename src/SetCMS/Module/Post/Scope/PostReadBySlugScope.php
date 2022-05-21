@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Post\Form;
+namespace SetCMS\Module\Post\Scope;
 
 use SetCMS\Scope;
 use SetCMS\Module\Post\DAO\PostEntityDbRetrieveBySlugDAO;
 use SetCMS\Contract\Twigable;
 use SetCMS\Module\Post\PostEntity;
 
-class PostReadBySlugForm extends Scope implements Twigable
+class PostReadBySlugScope extends Scope implements Twigable
 {
 
     public string $slug;

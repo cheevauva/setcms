@@ -4,32 +4,41 @@ declare(strict_types=1);
 
 namespace SetCMS\Entity\DAO;
 
-use Doctrine\DBAL\Connection;
-use SetCMS\Entity\EntityDbMapper;
+use Doctrine\DBAL\Query\QueryBuilder;
 use SetCMS\Entity;
-use SetCMS\Entity\EntityException;
+use SetCMS\Entity\Exception\EntityNotFoundException;
 
-abstract class EntityDbRetrieveByCriteriaDAO extends EntityDbRetrieveManyByCriteriaDAO
+abstract class EntityDbRetrieveByCriteriaDAO extends EntityDbDAO
 {
 
-    protected EntityDbMapper $mapper;
-    protected Connection $db;
     protected array $criteria = [];
-    protected string $table;
     protected ?int $limit = 1;
     public ?Entity $entity = null;
+    public ?array $row = null;
 
     public function serve(): void
     {
-        parent::serve();
+        $qb = $this->createQuery();
+        $this->row = $qb->fetchAssociative() ?: null;
 
-        foreach ($this->entities as $entity) {
-            $this->entity = $entity;
+        if ($this->throwExceptions && empty($this->row)) {
+            throw new EntityNotFoundException();
+        }
+        
+        $this->entity = $this->entity4row($this->row);
+    }
+
+    protected function createQuery(): QueryBuilder
+    {
+        $qb = parent::createQuery();
+
+        foreach ($this->criteria as $field => $value) {
+            $qb->andWhere(sprintf('%s = :%s', $field, $field));
         }
 
-        if (!$this->entity) {
-            throw EntityException::notFound();
-        }
+        $qb->setParameters($this->criteria);
+
+        return $qb;
     }
 
 }

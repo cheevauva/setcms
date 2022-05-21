@@ -9,7 +9,7 @@ use SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO;
 use SetCMS\Entity\DAO\EntityDbSaveDAO;
 use SetCMS\Entity;
 
-class EntityDeleteServant implements ServantInterface
+abstract class EntityDeleteServant implements ServantInterface
 {
 
     protected EntityDbRetrieveByIdDAO $retrieveById;
@@ -20,6 +20,7 @@ class EntityDeleteServant implements ServantInterface
     public function serve(): void
     {
         $this->retrieveById->id = $this->id ?? $this->entity->id;
+        $this->retrieveById->throwExceptions = true;
         $this->retrieveById->serve();
 
         $this->entity = $this->retrieveById->entity;

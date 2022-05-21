@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post;
 
 use \Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Module\Post\Form\PostDeleteForm;
-use SetCMS\Module\Post\Form\PostPrivateReadForm;
-use SetCMS\Module\Post\Form\PostPrivateSaveForm;
-use SetCMS\Module\Post\Form\PostPrivateEditForm;
+use SetCMS\Module\Post\Scope\PostDeleteForm;
+use SetCMS\Module\Post\Scope\PostPrivateReadScope;
+use SetCMS\Module\Post\Scope\PostPrivateSaveScope;
+use SetCMS\Module\Post\Scope\PostPrivateEditScope;
 use SetCMS\Module\Post\DAO\PostEntityDbRetrieveByIdDAO;
 use SetCMS\Module\Post\Servant\PostEntitySaveServant;
 use SetCMS\Module\Post\DAO\PostEntityDbRetrieveManyByCriteriaDAO;
-use SetCMS\Module\Post\Form\PostPrivateIndexForm;
+use SetCMS\Module\Post\Scope\PostPrivateIndexScope;
 
 class PostPrivateController
 {
@@ -20,31 +20,31 @@ class PostPrivateController
     use \SetCMS\Controller\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
-    public function index(PostPrivateIndexForm $form, PostEntityDbRetrieveManyByCriteriaDAO $servant): PostPrivateIndexForm
+    public function index(PostPrivateIndexScope $form, PostEntityDbRetrieveManyByCriteriaDAO $servant): PostPrivateIndexScope
     {
         return $this->serve($servant, $form);
     }
 
-    public function read(ServerRequestInterface $request, PostPrivateReadForm $form, PostEntityDbRetrieveByIdDAO $servant): PostPrivateReadForm
+    public function read(ServerRequestInterface $request, PostPrivateReadScope $form, PostEntityDbRetrieveByIdDAO $servant): PostPrivateReadScope
     {
-        $servant->id = $request->getAttribute('id');
-
-        return $this->serve($servant, $form);
+        return $this->serve($servant, $form, [
+            'id' => $request->getAttribute('id'),
+        ]);
     }
 
-    public function new(PostPrivateEditForm $form): PostPrivateEditForm
+    public function new(PostPrivateEditScope $form): PostPrivateEditScope
     {
         return $form;
     }
 
-    public function edit(ServerRequestInterface $request, PostPrivateEditForm $form, PostEntityDbRetrieveByIdDAO $servant): PostPrivateEditForm
+    public function edit(ServerRequestInterface $request, PostPrivateEditScope $form, PostEntityDbRetrieveByIdDAO $servant): PostPrivateEditScope
     {
-        $servant->id = $request->getAttribute('id');
-
-        return $this->serve($servant, $form);
+        return $this->serve($servant, $form, [
+            'id' => $request->getAttribute('id'),
+        ]);
     }
 
-    public function save(ServerRequestInterface $request, PostPrivateSaveForm $form, PostEntitySaveServant $servant): PostPrivateSaveForm
+    public function save(ServerRequestInterface $request, PostPrivateSaveScope $form, PostEntitySaveServant $servant): PostPrivateSaveScope
     {
         $servant->id = $request->getAttribute('id');
 

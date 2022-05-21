@@ -42,9 +42,9 @@ class PagePrivateController
 
     public function edit(ServerRequestInterface $request, PagePrivateEditScope $scope, PageEntityDbRetrieveByIdDAO $servant): PagePrivateEditScope
     {
-        $servant->id = $request->getAttribute('id');
-
-        return $this->serve($servant, $scope);
+        return $this->serve($servant, $scope, [
+            'id' => $request->getAttribute('id'),
+        ]);
     }
 
     public function delete(ServerRequestInterface $request, PageDeleteForm $form, PageEntitySaveServant $servant): PageDeleteForm

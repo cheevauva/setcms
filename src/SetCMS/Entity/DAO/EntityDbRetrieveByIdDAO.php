@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Entity\DAO;
 
-class EntityDbRetrieveByIdDAO extends EntityDbRetrieveByCriteriaDAO
+abstract class EntityDbRetrieveByIdDAO extends EntityDbRetrieveByCriteriaDAO
 {
 
     public string $id;

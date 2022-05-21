@@ -40,7 +40,7 @@ class FrontController
             $methodArgumentsBuilder->serve();
 
             $output = $controllerBuilder->method->invokeArgs($controllerBuilder->controller, $methodArgumentsBuilder->arguments);
-        } catch (\Throwable $ex) {
+        } catch (\Exception $ex) {
             $output = $ex;
         }
 

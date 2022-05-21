@@ -1,0 +1,17 @@
+<?php
+
+declare(strict_types=1);
+
+namespace SetCMS\Module\Post\Scope;
+
+class PostPrivateReadScope extends \SetCMS\Entity\Scope\EntityReadScope implements \SetCMS\Contract\Twigable
+{
+
+    public function toArray(): array
+    {
+        return [
+            'post' => $this->entity,
+        ];
+    }
+
+}

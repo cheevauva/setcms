@@ -11,7 +11,7 @@ abstract class EntityDbMapper implements ServantInterface
 {
 
     public ?Entity $entity = null;
-    public ?\ArrayObject $row = null;
+    public ?array $row = null;
 
     protected function entity(): Entity
     {
@@ -20,7 +20,7 @@ abstract class EntityDbMapper implements ServantInterface
 
     public function serve(): void
     {
-        if (!$this->row || !$this->row->count()) {
+        if (empty($this->row)) {
             $this->entity2row();
         } else {
             $this->entity4row();
