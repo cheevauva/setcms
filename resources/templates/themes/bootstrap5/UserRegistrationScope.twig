@@ -1,0 +1,15 @@
+{% extends setcms.path('layout.twig') %}
+{% import setcms.path('macros/forms.twig') as forms %}
+
+{% block content %}
+    <form class="setcms-form row g-0" 
+          setcms-action="{{ setcms.link('do_action', {module: 'User', action: 'doRegistration'}) }}" 
+          setcms-redirect="{{ setcms.link('home') }}"
+          >
+        {{ forms.input({entity: entity, name: 'username', type: 'text', label: 'Электронная почта'}) }}
+        {{ forms.input({entity: entity, name: 'password', type: 'password', label: 'Пароль'}) }}
+        {{ forms.input({entity: entity, name: 'password2', type: 'password', label: 'Пароль (еще раз)'}) }}
+        {{ forms.captcha({name: 'captcha', label: 'Код с картинки'}) }}
+        {{ forms.submit({label: 'Зарегистрироваться'}) }}
+    </form>
+{% endblock %}

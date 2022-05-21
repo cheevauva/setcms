@@ -9,7 +9,7 @@ use SetCMS\Module\OAuth\OAuthModel\OAuthModelLogin;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelAuthorizeCode;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelCallback;
 use SetCMS\ServerRequestAttribute;
-use SetCMS\Module\OAuth\OAuthToken\Form\OAuthTokenLogoutForm;
+use SetCMS\Module\OAuth\OAuthToken\Form\OAuthTokenLogoutScope;
 use SetCMS\Module\OAuth\OAuthToken\Form\OAuthTokenForm;
 
 final class OAuthPublicController
@@ -82,9 +82,9 @@ final class OAuthPublicController
         return $model;
     }
 
-    public function logout(ServerRequestInterface $request, OAuthTokenLogoutForm $form, $servant): OAuthTokenLogoutForm
+    public function logout(ServerRequestInterface $request, OAuthTokenLogoutScope $scope, $servant): OAuthTokenLogoutScope
     {
-        return $this->serve($servant, $form, [
+        return $this->protectedServe($request, $servant, $scope, [
             'token' => $request->getAttribute(ServerRequestAttribute::ACCESS_TOKEN),
         ]);
     }

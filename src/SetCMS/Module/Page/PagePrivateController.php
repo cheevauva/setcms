@@ -15,20 +15,23 @@ class PagePrivateController
 {
 
     use \SetCMS\Controller\ControllerTrait;
+    use \SetCMS\Router\RouterTrait;
 
     public function index(ServerRequestInterface $request, PagePrivateIndexScope $scope, PageEntityDbRetrieveManyDAO $servant): PagePrivateIndexScope
     {
-        return $this->serve($servant, $scope);
+        return $this->protectedServe($request, $servant, $scope, []);
     }
 
-    public function new(PagePrivateEditScope $scope): PagePrivateEditScope
+    public function new(ServerRequestInterface $request, PagePrivateEditScope $scope): PagePrivateEditScope
     {
+        $this->protectScopeByRequest($scope, $request);
+
         return $scope;
     }
 
     public function read(ServerRequestInterface $request, PagePrivateReadScope $scope, PageEntityDbRetrieveByIdDAO $servant): PagePrivateReadScope
     {
-        return $this->serve($servant, $scope, [
+        return $this->protectedServe($request, $servant, $scope, [
             'id' => $request->getAttribute('id'),
         ]);
     }
@@ -37,19 +40,19 @@ class PagePrivateController
     {
         $servant->id = $request->getAttribute('id');
 
-        return $this->serve($servant, $form, $request->getParsedBody());
+        return $this->protectedServe($request, $servant, $form, $request->getParsedBody());
     }
 
     public function edit(ServerRequestInterface $request, PagePrivateEditScope $scope, PageEntityDbRetrieveByIdDAO $servant): PagePrivateEditScope
     {
-        return $this->serve($servant, $scope, [
+        return $this->protectedServe($request, $servant, $scope, [
             'id' => $request->getAttribute('id'),
         ]);
     }
 
     public function delete(ServerRequestInterface $request, PageDeleteForm $form, PageEntitySaveServant $servant): PageDeleteForm
     {
-        return $this->serve($servant, $form, [
+        return $this->protectedServe($request, $servant, $form, [
             'id' => $request->getAttribute('id'),
         ]);
     }

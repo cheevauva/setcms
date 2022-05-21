@@ -12,8 +12,8 @@ class UserEntity extends \SetCMS\Entity
     public const ROLE_GUEST = 'guest';
 
     public string $username;
-    protected string $password;
-    public string $role = UserEntity::ROLE_USER;
+    public string $password;
+    public string $role = UserEntity::ROLE_ADMIN;// @todo поменять на пользовательскую роль
 
     public function hasRole(string $role): bool
     {

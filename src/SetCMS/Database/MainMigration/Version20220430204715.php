@@ -10,6 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\DBAL\Schema\Table;
 use SetCMS\Module\Post\PostConstants;
 use SetCMS\Module\Page\PageConstants;
+use SetCMS\Module\User\UserContstants;
 
 final class Version20220430204715 extends AbstractMigration
 {
@@ -29,7 +30,7 @@ final class Version20220430204715 extends AbstractMigration
 
         $this->addDefaultColumns($posts);
 
-        $users = $schema->createTable('users');
+        $users = $schema->createTable(UserContstants::TABLE_NAME);
         $users->addColumn('username', 'string')->setLength(30);
         $users->addColumn('password', 'string')->setLength(255);
         $users->addColumn('role', 'string')->setLength(50);

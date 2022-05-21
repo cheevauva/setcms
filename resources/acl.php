@@ -8,6 +8,14 @@ return [
     ],
     'rules' => [
         'guest' => [
+            'scope' => [
+                \SetCMS\Module\User\Scope\UserRegistrationScope::class => true,
+                \SetCMS\Module\User\Scope\UserDoRegistrationScope::class => true,
+                \SetCMS\Module\User\Scope\UserProfileScope::class => false,
+                \SetCMS\Module\User\Scope\UserInfoScope::class => false,
+                \SetCMS\Module\Post\Scope\PostIndexScope::class => true,
+                \SetCMS\Module\Post\Scope\PostReadBySlugScope::class => true,
+            ],
             'Captcha' => [
                 'CaptchaIndex::generate' => true,
                 'CaptchaIndex::solve' => true,
@@ -34,10 +42,11 @@ return [
             'Modules' => [],
         ],
         'user' => [
-            'Users' => [
-                'UserIndex::profile' => true,
-                'UserIndex::registration' => false,
-                'UserIndex::userinfo' => true,
+            'scope' => [
+                \SetCMS\Module\User\Scope\UserProfileScope::class => true,
+                \SetCMS\Module\User\Scope\UserRegistrationScope::class => false,
+                \SetCMS\Module\User\Scope\UserInfoScope::class => true,
+                \SetCMS\Module\User\Scope\UserDoRegistrationScope::class => false,
             ],
             'OAuth' => [
                 'OAuthIndex::logout' => true,
@@ -48,8 +57,22 @@ return [
             ],
         ],
         'admin' => [
-            'Migrations' => [
-                'MigrationAdmin::index' => true,
+            'scope' => [
+                // page
+                \SetCMS\Module\Page\Scope\PagePrivateIndexScope::class => true,
+                \SetCMS\Module\Page\Scope\PagePrivateSaveScope::class => true,
+                \SetCMS\Module\Page\Scope\PagePrivateEditScope::class => true,
+                \SetCMS\Module\Page\Scope\PagePrivateReadScope::class => true,
+                // post
+                \SetCMS\Module\Post\Scope\PostPrivateIndexScope::class => true,
+                \SetCMS\Module\Post\Scope\PostPrivateSaveScope::class => true,
+                \SetCMS\Module\Post\Scope\PostPrivateEditScope::class => true,
+                \SetCMS\Module\Post\Scope\PostPrivateReadScope::class => true,
+                // user
+                \SetCMS\Module\User\Scope\UserPrivateIndexScope::class => true,
+                \SetCMS\Module\User\Scope\UserPrivateEditScope::class => true,
+                \SetCMS\Module\User\Scope\UserPrivateSaveScope::class => true,
+                \SetCMS\Module\User\Scope\UserPrivateReadScope::class => true,
             ],
             'Users' => [
                 'UserAdmin::index' => true,
@@ -69,16 +92,6 @@ return [
                 'PageAdmin::index' => true,
                 'PageAdmin::read' => true,
                 'PageAdmin::save' => true,
-            ],
-            'Blocks' => [
-                'BlockAdmin::index' => true,
-                'BlockAdmin::read' => true,
-                'BlockAdmin::save' => true,
-            ],
-            'Modules' => [
-                'ModuleAdmin::index' => true,
-                'ModuleAdmin::read' => true,
-                'ModuleAdmin::save' => true,
             ],
             'oauthclient' => [
                 'create' => true,

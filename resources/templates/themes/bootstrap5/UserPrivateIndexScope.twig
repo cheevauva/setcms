@@ -1,0 +1,36 @@
+{% extends setcms.path('layout_admin.twig') %}
+
+{% block content_toolbar %}
+
+{% endblock %}
+
+{% block content_title %}Пользователи{% endblock %}
+
+{% block content %}
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Имя</th>
+                    <th scope="col">Роль</th>
+                    <th scope="col">Дата создания</th>
+                    <th scope="col">Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entity in entities %}
+                    <tr>
+                        <td>{{ entity.id }}</td>
+                        <td>{{ entity.username }}</td>
+                        <td>{{ entity.role }}</td>
+                        <td>{{ entity.dateCreated.format('d.m.Y H:i:s') }}</td>
+                        <td>
+                            <a href="{{ setcms.link('action_record_admin', {'module': 'User', action: 'edit', 'id': entity.id}) }}">Редактировать</a>
+                        </td>
+                    </tr>
+                {%  endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

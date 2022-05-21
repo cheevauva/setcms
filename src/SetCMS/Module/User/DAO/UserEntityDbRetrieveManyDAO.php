@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\DAO;
 
-class UserEntityDbRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO
+class UserEntityDbRetrieveManyDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveManyDAO
 {
 
     use UserEntityDbTrait;

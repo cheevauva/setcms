@@ -23,12 +23,12 @@ abstract class EntitySaveServant implements ServantInterface
     {
         if (!empty($this->id)) {
             $this->retrieveById->id = $this->id;
-            $this->retrieveById->throwExceptions = false;
+            $this->retrieveById->throwExceptions = true;
             $this->retrieveById->serve();
 
             $this->entity = $this->retrieveById->entity;
         }
-
+        
         $this->applier->apply($this->entity);
 
         $this->save->entity = $this->entity;

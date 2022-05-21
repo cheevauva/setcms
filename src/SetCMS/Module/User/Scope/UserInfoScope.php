@@ -1,12 +1,11 @@
 <?php
 
-namespace SetCMS\Module\User\Form;
+namespace SetCMS\Module\User\Scope;
 
 use SetCMS\Scope;
 use SetCMS\Module\User\Servant\UserEntityRetrieveByAccessTokenServant;
-use SetCMS\Contract\Twigable;
 
-class UserInfoForm extends Scope
+class UserInfoScope extends Scope
 {
 
     public string $token;

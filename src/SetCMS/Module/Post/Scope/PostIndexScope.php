@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Scope;
 
-use SetCMS\Contract\Twigable;
 
-class PostIndexScope extends \SetCMS\Entity\Scope\EntityIndexScope implements Twigable
+class PostIndexScope extends \SetCMS\Entity\Scope\EntityIndexScope implements \SetCMS\Contract\Twigable, \SetCMS\Contract\Protectable
 {
 
     public function toArray(): array

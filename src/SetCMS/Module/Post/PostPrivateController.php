@@ -19,42 +19,44 @@ class PostPrivateController
     use \SetCMS\Controller\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
-    public function index(PostPrivateIndexScope $form, PostEntityDbRetrieveManyDAO $servant): PostPrivateIndexScope
+    public function index(ServerRequestInterface $request, PostPrivateIndexScope $scope, PostEntityDbRetrieveManyDAO $servant): PostPrivateIndexScope
     {
-        return $this->serve($servant, $form);
+        return $this->protectedServe($request, $servant, $scope, []);
     }
 
-    public function read(ServerRequestInterface $request, PostPrivateReadScope $form, PostEntityDbRetrieveByIdDAO $servant): PostPrivateReadScope
+    public function read(ServerRequestInterface $request, PostPrivateReadScope $scope, PostEntityDbRetrieveByIdDAO $servant): PostPrivateReadScope
     {
-        return $this->serve($servant, $form, [
+        return $this->protectedServe($request, $servant, $scope, [
             'id' => $request->getAttribute('id'),
         ]);
     }
 
-    public function new(PostPrivateEditScope $form): PostPrivateEditScope
+    public function new(ServerRequestInterface $request, PostPrivateEditScope $scope): PostPrivateEditScope
     {
-        return $form;
+        $this->protectScopeByRequest($scope, $request);
+
+        return $scope;
     }
 
-    public function edit(ServerRequestInterface $request, PostPrivateEditScope $form, PostEntityDbRetrieveByIdDAO $servant): PostPrivateEditScope
+    public function edit(ServerRequestInterface $request, PostPrivateEditScope $scope, PostEntityDbRetrieveByIdDAO $servant): PostPrivateEditScope
     {
-        return $this->serve($servant, $form, [
+        return $this->protectedServe($request, $servant, $scope, [
             'id' => $request->getAttribute('id'),
         ]);
     }
 
-    public function save(ServerRequestInterface $request, PostPrivateSaveScope $form, PostEntitySaveServant $servant): PostPrivateSaveScope
+    public function save(ServerRequestInterface $request, PostPrivateSaveScope $scope, PostEntitySaveServant $servant): PostPrivateSaveScope
     {
         $servant->id = $request->getAttribute('id');
 
-        return $this->serve($servant, $form, $request->getParsedBody());
+        return $this->protectedServe($request, $servant, $scope, $request->getParsedBody());
     }
 
-    public function delete(ServerRequestInterface $request, PostDeleteForm $form, PostEntitySaveServant $servant): PostDeleteForm
+    public function delete(ServerRequestInterface $request, PostDeleteForm $scope, PostEntitySaveServant $servant): PostDeleteForm
     {
         $servant->id = $request->getAttribute('id');
 
-        return $this->serve($servant, $form);
+        return $this->protectedServe($request, $servant, $scope, []);
     }
 
 }

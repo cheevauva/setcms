@@ -49,7 +49,7 @@ class UserService extends OrdinaryService
     }
 
     public function registation(UserRegistrationForm $model): void
-    {
+    {            $this->captchaService->useSolvedCaptchaById($scope->captcha);
         try {
             $this->dao()->getByUsername($model->username);
             $model->addMessage('Пользователь уже существует', 'username');

@@ -1,0 +1,16 @@
+{% extends setcms.path('layout_admin.twig') %}
+{% import setcms.path('macros/forms.twig') as forms %}
+
+{% block content_title %}{{ post.title }}{% endblock %}
+
+{% block content_toolbar %}
+    <a href="{{ setcms.link('action_admin', {module: 'User', action: 'index'}) }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    <a href="{{ setcms.link('action_record_admin', {module: 'User', action: 'edit', id: entity.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+{% endblock %}
+
+{% block content %}
+    <form class="setcms-form g-3" >
+        {{ forms.input({entity: entity, name: 'username', label: 'Пользователь'}) }}
+        {{ forms.select({entity: entity, name: 'role', options: {'guest': 'Гость', 'entity': 'Пользователь', 'admin': 'Админ'}, label: 'Роль'}) }}
+    </form>
+{% endblock %}

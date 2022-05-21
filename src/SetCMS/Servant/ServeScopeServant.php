@@ -11,6 +11,8 @@ use SetCMS\Scope;
 class ServeScopeServant implements ServantInterface
 {
 
+    use \SetCMS\FactoryTrait;
+
     public ServantInterface $servent;
     public Scope $scope;
     public array $array = [];
