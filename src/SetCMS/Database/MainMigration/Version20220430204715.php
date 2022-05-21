@@ -8,6 +8,8 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\DBAL\Schema\Table;
+use SetCMS\Module\Post\PostConstants;
+use SetCMS\Module\Page\PageConstants;
 
 final class Version20220430204715 extends AbstractMigration
 {
@@ -19,7 +21,7 @@ final class Version20220430204715 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $posts = $schema->createTable('posts');
+        $posts = $schema->createTable(PostConstants::TABLE_NAME);
         $posts->addColumn('slug', 'string')->setLength(255);
         $posts->addColumn('title', 'string')->setLength(255);
         $posts->addColumn('message', 'text');
@@ -34,7 +36,7 @@ final class Version20220430204715 extends AbstractMigration
 
         $this->addDefaultColumns($users);
 
-        $pages = $schema->createTable('pages');
+        $pages = $schema->createTable(PageConstants::TABLE_NAME);
         $pages->addColumn('slug', 'string')->setLength(255);
         $pages->addColumn('title', 'string')->setLength(255);
         $pages->addColumn('content', 'text');

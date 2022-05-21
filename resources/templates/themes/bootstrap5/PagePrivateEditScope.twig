@@ -1,0 +1,20 @@
+{% extends setcms.path('layout_admin.twig') %}
+{% import setcms.path('macros/forms.twig') as forms %}
+
+{% block content_title %}{% if page.id %}Редактировать{% else %}Создать{% endif %} страницу{% endblock %}
+{% block content %}
+    <form class="setcms-form g-3" 
+          setcms-method="POST"
+          setcms-action="{{ setcms.link(page.id ? 'action_record_admin' : 'action_admin', {module: 'Page', action: 'save', id: page.id}) }}"
+          setcms-redirect="{{ setcms.link('action_record_admin', {module: 'Page', action: 'read', 'id': '${page.id}'}) }}"
+          >
+
+        {{ forms.hidden({name: 'id', value: page.id }) }}
+        {{ forms.input({name: 'slug', value: page.slug, type: 'text', label: 'Псевдоним'}) }}
+        {{ forms.input({name: 'title', value: page.title, type: 'text', label: 'Заголовок'}) }}
+        {{ forms.textarea({name: 'content', value: page.content, label: 'Текст'}) }}
+        {{ forms.input({name: 'dateCreated', value: page.dateCreated.format('Y-m-d H:i:s'), type: 'text', label: 'Дата создания', disabled: true}) }}
+        {{ forms.input({name: 'dateModified', value: page.dateModified.format('Y-m-d H:i:s'), type: 'text', label: 'Дата изменения', disabled: true}) }}
+        {{ forms.submit({label: 'Сохранить'}) }}
+    </form>
+{% endblock %}

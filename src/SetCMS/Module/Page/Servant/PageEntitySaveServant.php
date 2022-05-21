@@ -7,8 +7,8 @@ namespace SetCMS\Module\Page\Servant;
 use DI\FactoryInterface;
 use SetCMS\Entity\Servant\EntitySaveServant;
 use SetCMS\Module\Page\PageEntity;
-use SetCMS\Module\Page\PageEntityDbRetrieveByIdDAO;
-use SetCMS\Module\Page\PageEntityDbSaveDAO;
+use SetCMS\Module\Page\DAO\PageEntityDbRetrieveByIdDAO;
+use SetCMS\Module\Page\DAO\PageEntityDbSaveDAO;
 
 class PageEntitySaveServant extends EntitySaveServant
 {

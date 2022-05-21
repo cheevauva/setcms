@@ -9,6 +9,7 @@ use SetCMS\Module\Page\PageEntity;
 
 class PageEntityDbMapper extends EntityDbMapper
 {
+    use \SetCMS\FactoryTrait;
 
     protected function entity(): PageEntity
     {
