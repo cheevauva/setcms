@@ -5,8 +5,8 @@ namespace SetCMS\Module\Page;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\Page\Servant\PageEntitySaveServant;
 use SetCMS\Module\Page\DAO\PageEntityDbRetrieveByIdDAO;
+use SetCMS\Module\Page\DAO\PageEntityDbRetrieveManyDAO;
 use SetCMS\Module\Page\Scope\PagePrivateIndexScope;
-use SetCMS\Module\Page\DAO\PageEntityDbRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Page\Scope\PagePrivateEditScope;
 use SetCMS\Module\Page\Scope\PagePrivateSaveScope;
 use SetCMS\Module\Page\Scope\PagePrivateReadScope;
@@ -16,7 +16,7 @@ class PagePrivateController
 
     use \SetCMS\Controller\ControllerTrait;
 
-    public function index(ServerRequestInterface $request, PagePrivateIndexScope $scope, PageEntityDbRetrieveManyByCriteriaDAO $servant): PagePrivateIndexScope
+    public function index(ServerRequestInterface $request, PagePrivateIndexScope $scope, PageEntityDbRetrieveManyDAO $servant): PagePrivateIndexScope
     {
         return $this->serve($servant, $scope);
     }

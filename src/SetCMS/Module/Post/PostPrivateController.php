@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post;
 
 use \Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Module\Post\Scope\PostDeleteForm;
+use SetCMS\Module\Post\Servant\PostEntitySaveServant;
+use SetCMS\Module\Post\DAO\PostEntityDbRetrieveManyDAO;
+use SetCMS\Module\Post\DAO\PostEntityDbRetrieveByIdDAO;
 use SetCMS\Module\Post\Scope\PostPrivateReadScope;
 use SetCMS\Module\Post\Scope\PostPrivateSaveScope;
 use SetCMS\Module\Post\Scope\PostPrivateEditScope;
-use SetCMS\Module\Post\DAO\PostEntityDbRetrieveByIdDAO;
-use SetCMS\Module\Post\Servant\PostEntitySaveServant;
-use SetCMS\Module\Post\DAO\PostEntityDbRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Post\Scope\PostPrivateIndexScope;
 
 class PostPrivateController
@@ -20,7 +19,7 @@ class PostPrivateController
     use \SetCMS\Controller\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
-    public function index(PostPrivateIndexScope $form, PostEntityDbRetrieveManyByCriteriaDAO $servant): PostPrivateIndexScope
+    public function index(PostPrivateIndexScope $form, PostEntityDbRetrieveManyDAO $servant): PostPrivateIndexScope
     {
         return $this->serve($servant, $form);
     }

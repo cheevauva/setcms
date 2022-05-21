@@ -7,7 +7,16 @@ namespace SetCMS\Entity\DAO;
 abstract class EntityDbRetrieveManyDAO extends EntityDbDAO implements \SetCMS\ServantInterface
 {
 
+    public ?\Iterator $rows = null;
     public ?\Iterator $entities = null;
+
+    public function serve(): void
+    {
+        $qb = $this->createQuery();
+
+        $this->rows = $qb->executeQuery()->iterateAssociative();
+        $this->entities = $this->prepareEntitiesByRows($this->rows);
+    }
 
     protected function prepareEntitiesByRows(\Iterator $rows): \Iterator
     {

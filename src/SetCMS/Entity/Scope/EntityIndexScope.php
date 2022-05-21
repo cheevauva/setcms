@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Entity\Scope;
 
-use SetCMS\Entity\DAO\EntityDbRetrieveManyByCriteriaDAO;
+use SetCMS\Entity\DAO\EntityDbRetrieveManyDAO;
 
 abstract class EntityIndexScope extends \SetCMS\Scope
 {
@@ -13,7 +13,7 @@ abstract class EntityIndexScope extends \SetCMS\Scope
 
     public function from(object $object): void
     {
-        if ($object instanceof EntityDbRetrieveManyByCriteriaDAO) {
+        if ($object instanceof EntityDbRetrieveManyDAO) {
             $this->entities = $object->entities;
         }
     }
@@ -21,7 +21,7 @@ abstract class EntityIndexScope extends \SetCMS\Scope
     public function toArray(): array
     {
         return [
-            'entities' => $this->entities,
+            'entities' => iterator_to_array($this->entities),
         ];
     }
 
