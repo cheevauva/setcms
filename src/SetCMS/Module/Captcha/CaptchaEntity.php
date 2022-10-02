@@ -1,39 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SetCMS\Module\Captcha;
 
-use SetCMS\Module\Ordinary\OrdinaryEntity;
-use SetCMS\Module\Captcha\CaptchaException;
-
-class Captcha extends OrdinaryEntity
+class CaptchaEntity extends \SetCMS\Entity
 {
 
     public bool $isSolved = false;
     public bool $isUsed = false;
     public int $solveAttempts = 0;
     public \DateTime $dateExpiried;
-    private string $text;
-
-    public function text(?string $text = null): string
-    {
-        if (!is_null($text)) {
-            $this->text = $text;
-        }
-
-        return $this->text;
-    }
-
-    public static function generateText(): string
-    {
-        return rand(1000000, 9999999);
-    }
+    public string $text;
 
     public function __construct()
     {
         parent::__construct();
 
         $this->dateExpiried = new \DateTime('+5 minutes');
-        $this->text = Captcha::generateText();
+        $this->text = strval(rand(1000000, 9999999));
     }
 
     protected function verifyDateExpiried()
@@ -51,11 +36,11 @@ class Captcha extends OrdinaryEntity
     public function use()
     {
         $this->verifyDateExpiried();
-        
+
         if ($this->isUsed) {
             throw CaptchaException::alreadyUsed();
         }
-        
+
         if (!$this->isSolved) {
             throw CaptchaException::unsolved();
         }

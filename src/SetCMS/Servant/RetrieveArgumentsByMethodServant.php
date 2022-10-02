@@ -9,6 +9,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\ServantInterface;
 use SetCMS\Contract\Applicable;
+use SetCMS\FactoryInterface;
 
 class RetrieveArgumentsByMethodServant implements ServantInterface, Applicable
 {
@@ -37,7 +38,7 @@ class RetrieveArgumentsByMethodServant implements ServantInterface, Applicable
                 $this->arguments[$parameter->getPosition()] = null;
                 continue;
             }
-            
+
             $type = $parameter->getType()->getName();
 
             switch ($parameter->getType()->getName()) {
@@ -47,8 +48,14 @@ class RetrieveArgumentsByMethodServant implements ServantInterface, Applicable
                 case ResponseInterface::class;
                     $value = $this->response ?? $this->container->get(ResponseInterface::class);
                     break;
+                case FactoryInterface::class:
+                    $value = $this->container->get(FactoryInterface::class);
+                    break;
+                case ContainerInterface::class:
+                    $value = $this->container;
+                    break;
                 default:
-                    $value = $this->container->get($type);
+                    $value = $this->container->make($type);
                     break;
             }
 
@@ -69,7 +76,7 @@ class RetrieveArgumentsByMethodServant implements ServantInterface, Applicable
         if ($object instanceof ResponseInterface) {
             $this->response = $object;
         }
-        
+
         if ($object instanceof \SplObjectStorage) {
             foreach ($object as $item) {
                 $this->apply($item);

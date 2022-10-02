@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post\Scope;
 
 use SetCMS\Module\Post\PostEntity;
+use SetCMS\UUID;
 
 class PostPrivateSaveScope extends \SetCMS\Entity\Scope\EntitySaveScope
 {
 
+    public UUID $id;
     public string $slug;
     public string $message;
     public string $title;
@@ -28,6 +30,7 @@ class PostPrivateSaveScope extends \SetCMS\Entity\Scope\EntitySaveScope
     public function apply(object $object): void
     {
         if ($object instanceof PostEntity) {
+            $object->id = $this->id;
             $object->slug = $this->slug;
             $object->title = $this->title;
             $object->message = $this->message;

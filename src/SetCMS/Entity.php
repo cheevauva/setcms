@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace SetCMS;
 
-use SetCMS\GUID;
+use SetCMS\UUID;
 
 class Entity
 {
 
-    public string $id;
+    public UUID $id;
     public string $entityType;
     public \DateTime $dateCreated;
     public \DateTime $dateModified;
@@ -17,7 +17,7 @@ class Entity
 
     public function __construct()
     {
-        $this->id = GUID::generate();
+        $this->id = new UUID;
         $this->dateCreated = new \DateTime();
         $this->dateModified = new \DateTime();
         $this->entityType = get_class($this);

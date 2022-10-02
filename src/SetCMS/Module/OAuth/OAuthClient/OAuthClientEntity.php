@@ -6,7 +6,7 @@ class OAuthClientEntity extends \SetCMS\Entity
 {
 
     public string $name;
-    public string $clientId;
+    public UUID $clientId;
     public string $clientSecret;
     public string $redirectURI;
     public string $loginUrl;

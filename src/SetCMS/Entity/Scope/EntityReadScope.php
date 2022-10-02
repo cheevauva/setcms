@@ -6,12 +6,13 @@ namespace SetCMS\Entity\Scope;
 
 use SetCMS\Entity;
 use SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO;
+use SetCMS\UUID;
 
 abstract class EntityReadScope extends \SetCMS\Scope
 {
 
     protected ?Entity $entity = null;
-    public string $id;
+    public UUID $id;
 
     public function to(object $object): void
     {

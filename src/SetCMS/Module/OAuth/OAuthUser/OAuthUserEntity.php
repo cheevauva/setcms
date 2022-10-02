@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\OAuth\OAuthUser;
 
-use SetCMS\GUID;
+use SetCMS\UUID;
 
 class OAuthUserEntity extends \SetCMS\Entity
 {
@@ -18,7 +18,7 @@ class OAuthUserEntity extends \SetCMS\Entity
     {
         parent::__construct();
 
-        $this->refreshToken = GUID::generate();
+        $this->refreshToken = strval(new UUID);
     }
 
 }

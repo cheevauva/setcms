@@ -19,6 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 use SetCMS\FactoryInterface;
 use SetCMS\Router\RouterInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use SetCMS\UUID;
 
 class BuildHtmlContentByMixedValue implements ServantInterface
 {
@@ -54,7 +55,7 @@ class BuildHtmlContentByMixedValue implements ServantInterface
 
             if ($object->messages) {
                 $this->htmlContent = $this->getTwig()->render('themes/bootstrap5/errors.twig', [
-                    'messages' =>  $object->messages,
+                    'messages' => $object->messages,
                 ]);
             } else {
                 $this->htmlContent = $this->getTwig()->render(sprintf('themes/%s/%s', $this->theme, sprintf('%s.twig', $template)), $context);
@@ -92,6 +93,9 @@ class BuildHtmlContentByMixedValue implements ServantInterface
         $theme->theme = $this->theme;
         $theme->config = $this->config;
         $twig->addGlobal('setcms', $theme);
+        $twig->addFunction(new TwigFunction('UUID', function () {
+            return new Markup(strval(new UUID), 'UTF-8');
+        }));
         $twig->addFunction(new TwigFunction('render', function ($route, $template, $params = []) {
             try {
                 $content = $this->render($route, $template, $params);

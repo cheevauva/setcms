@@ -7,10 +7,10 @@
     <form class="setcms-form g-3" 
           setcms-method="POST"
           setcms-action="{{ setcms.link(post.id ? 'action_record_admin' : 'action_admin', {module: 'Post', action: 'save', id: post.id}) }}"
-          setcms-redirect="{{ setcms.link('action_record_admin', {module: 'Post', action: 'read', 'id': '${post.id}'}) }}"
+          setcms-redirect="{{ setcms.link('action_record_admin', {module: 'Post', action: 'read', 'id': '${post.id.uuid}'}) }}"
           >
 
-        {{ forms.hidden({name: 'id', value: post.id }) }}
+        {{ forms.hidden({name: 'id', value: post ? post.id : UUID() }) }}
         {{ forms.input({name: 'slug', value: post.slug, type: 'text', label: 'Псевдоним'}) }}
         {{ forms.input({name: 'title', value: post.title, type: 'text', label: 'Заголовок'}) }}
         {{ forms.textarea({name: 'message', value: post.message, label: 'Сообщение'}) }}

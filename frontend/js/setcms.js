@@ -52,8 +52,9 @@ jQuery().ready(function () {
 
         $image.on('click', function () {
             $.ajax($image.attr('setcms-action')).done(function (data) {
-                $captchaId.val(data.data.entity.id);
-                $image.attr('src', 'data:image/png;base64,' + data.data.entity.content);
+                console.log(data);
+                $captchaId.val(data.data.id.uuid);
+                $image.attr('src', 'data:image/png;base64,' + data.data.content);
                 $captchaSolvedText.val('');
                 $captchaSolvedText.removeClass('is-valid').removeClass('is-invalid');
                 $captchaSolvedText.parent().find('.invalid-feedback').text();

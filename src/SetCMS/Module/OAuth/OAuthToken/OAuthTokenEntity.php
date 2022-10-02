@@ -2,12 +2,12 @@
 
 namespace SetCMS\Module\OAuth\OAuthToken;
 
-use SetCMS\GUID;
+use SetCMS\UUID;
 
 class OAuthTokenEntity extends \SetCMS\Module\Ordinary\OrdinaryEntity
 {
 
-    public string $refrechToken;
+    public string $refreshToken;
     public string $clientId;
     public string $userId;
     public \DateTime $dateExpiried;
@@ -16,7 +16,7 @@ class OAuthTokenEntity extends \SetCMS\Module\Ordinary\OrdinaryEntity
     {
         parent::__construct();
 
-        $this->refrechToken = GUID::generate();
+        $this->refreshToken = strval(new UUID);
         $this->dateExpiried = new \DateTime('+1 hour');
     }
 

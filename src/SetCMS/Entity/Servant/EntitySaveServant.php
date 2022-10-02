@@ -9,6 +9,7 @@ use SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO;
 use SetCMS\Entity\DAO\EntityDbSaveDAO;
 use SetCMS\Contract\Applicable;
 use SetCMS\Entity;
+use SetCMS\UUID;
 
 abstract class EntitySaveServant implements ServantInterface
 {
@@ -17,7 +18,7 @@ abstract class EntitySaveServant implements ServantInterface
     protected EntityDbSaveDAO $save;
     public Applicable $applier;
     public Entity $entity;
-    public ?string $id = null;
+    public ?UUID $id = null;
 
     public function serve(): void
     {
@@ -28,7 +29,7 @@ abstract class EntitySaveServant implements ServantInterface
 
             $this->entity = $this->retrieveById->entity;
         }
-        
+
         $this->applier->apply($this->entity);
 
         $this->save->entity = $this->entity;

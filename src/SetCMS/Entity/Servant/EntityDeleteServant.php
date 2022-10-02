@@ -8,13 +8,14 @@ use SetCMS\ServantInterface;
 use SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO;
 use SetCMS\Entity\DAO\EntityDbSaveDAO;
 use SetCMS\Entity;
+use SetCMS\UUID;
 
 abstract class EntityDeleteServant implements ServantInterface
 {
 
     protected EntityDbRetrieveByIdDAO $retrieveById;
     protected EntityDbSaveDAO $save;
-    public ?string $id = null;
+    public ?UUID $id = null;
     public Entity $entity;
 
     public function serve(): void

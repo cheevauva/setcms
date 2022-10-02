@@ -1,24 +1,38 @@
 <?php
 
-namespace SetCMS\Module\Captcha;
+declare(strict_types=1);
 
-class CaptchaImage
+namespace SetCMS\Module\Captcha\Servant;
+
+use Psr\Container\ContainerInterface;
+use SetCMS\Module\Captcha\CaptchaEntity;
+use SetCMS\FactoryInterface;
+
+class CaptchaCreateServant implements \SetCMS\ServantInterface
 {
+
+    public CaptchaEntity $captcha;
 
     private const BACKGROUND_MIN = 160;
     private const TEXT_MAX = 50;
 
     private string $text;
-    private $image;
     private int $width = 100;
     private int $height = 50;
-
-    public function __construct(string $text)
+    protected ?\GdImage $image = null;
+    protected FactoryInterface $factory;
+    public function __construct(ContainerInterface $container)
     {
-        $this->text = $text;
+        $this->factory = $container->get(FactoryInterface::class);
+    }
+    public function serve(): void
+    {
+        $this->captcha = new CaptchaEntity();
+        $this->text = $this->captcha->text;
+        $this->createImage();
     }
 
-    public function create()
+    protected function createImage(): void
     {
         $image = imagecreatetruecolor($this->width, $this->height);
 
@@ -63,8 +77,8 @@ class CaptchaImage
 
         for ($x = 0; $x <= $this->width; $x++) {
             for ($y = 0; $y <= $this->height; $y++) {
-                $sinX = $x + (sin($x * $rand1 + $rand5) + sin($y * $rand3 + $rand6)) * $rand9 - $this->width / 2 + $center + 1;
-                $sinY = $y + (sin($x * $rand2 + $rand7) + sin($y * $rand4 + $rand8)) * $rand10;
+                $sinX = intval($x + (sin($x * $rand1 + $rand5) + sin($y * $rand3 + $rand6)) * $rand9 - $this->width / 2 + $center + 1);
+                $sinY = intval($y + (sin($x * $rand2 + $rand7) + sin($y * $rand4 + $rand8)) * $rand10);
 
                 if ($sinX < 0 || $sinY < 0 || $sinX >= $this->width - 1 || $sinY >= $this->height - 1) {
                     continue;
@@ -96,27 +110,14 @@ class CaptchaImage
                     $newColor = $newColor / 255;
                     $newColor0 = 1 - $newColor;
 
-                    $newred = $newColor0 * $colorText[0] + $newColor * $colorBackground[0];
-                    $newgreen = $newColor0 * $colorText[1] + $newColor * $colorBackground[1];
-                    $newblue = $newColor0 * $colorText[2] + $newColor * $colorBackground[2];
+                    $newred = intval($newColor0 * $colorText[0] + $newColor * $colorBackground[0]);
+                    $newgreen = intval($newColor0 * $colorText[1] + $newColor * $colorBackground[1]);
+                    $newblue = intval($newColor0 * $colorText[2] + $newColor * $colorBackground[2]);
                 }
 
                 imagesetpixel($this->image, $x, $y, imagecolorallocate($this->image, $newred, $newgreen, $newblue));
             }
         }
-    }
-
-    public function toPNG(): string
-    {
-        $file = fopen('php://memory', 'r+');
-
-        $this->create();
-
-        imagepng($this->image, $file);
-
-        rewind($file);
-
-        return stream_get_contents($file);
     }
 
 }

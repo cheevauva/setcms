@@ -16,7 +16,7 @@ abstract class EntityDbDAO implements \SetCMS\ServantInterface
     protected Connection $db;
     protected string $table;
     protected ?int $limit = null;
-    protected ?int $offset = null;
+    protected int $offset = 0;
     public bool $throwExceptions = false;
 
     protected function createQuery(): QueryBuilder

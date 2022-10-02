@@ -12,6 +12,7 @@ use SetCMS\Module\Post\Scope\PostPrivateReadScope;
 use SetCMS\Module\Post\Scope\PostPrivateSaveScope;
 use SetCMS\Module\Post\Scope\PostPrivateEditScope;
 use SetCMS\Module\Post\Scope\PostPrivateIndexScope;
+use SetCMS\UUID;
 
 class PostPrivateController
 {
@@ -47,15 +48,11 @@ class PostPrivateController
 
     public function save(ServerRequestInterface $request, PostPrivateSaveScope $scope, PostEntitySaveServant $servant): PostPrivateSaveScope
     {
-        $servant->id = $request->getAttribute('id');
-
         return $this->protectedServe($request, $servant, $scope, $request->getParsedBody());
     }
 
     public function delete(ServerRequestInterface $request, PostDeleteForm $scope, PostEntitySaveServant $servant): PostDeleteForm
     {
-        $servant->id = $request->getAttribute('id');
-
         return $this->protectedServe($request, $servant, $scope, []);
     }
 

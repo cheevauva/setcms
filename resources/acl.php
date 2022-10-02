@@ -9,6 +9,8 @@ return [
     'rules' => [
         'guest' => [
             'scope' => [
+                \SetCMS\Module\Captcha\Scope\CaptchaGenerateScope::class => true,
+                \SetCMS\Module\Captcha\Scope\CaptchaSolveScope::class => true,
                 \SetCMS\Module\User\Scope\UserRegistrationScope::class => true,
                 \SetCMS\Module\User\Scope\UserDoRegistrationScope::class => true,
                 \SetCMS\Module\User\Scope\UserProfileScope::class => false,

@@ -11,6 +11,7 @@ use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityDbRetrieveByIdDAO;
 use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityDbRetrieveManyDAO;
 use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityDbSaveDAO;
 use SetCMS\Module\OAuth\OAuthClient\OAuthClientEntity;
+use SetCMS\UUID;
 
 class OAuthClientPrivateController
 {
@@ -33,7 +34,7 @@ class OAuthClientPrivateController
         $oauthClient->autorizationCodeUrl = '';
         $oauthClient->userInfoUrl = '';
         $oauthClient->userInfoParserRule = '';
-        $oauthClient->clientId = \SetCMS\GUID::generate();
+        $oauthClient->clientId = new UUID;
 
         $servant->entity = $oauthClient;
         $servant->serve();
