@@ -41,7 +41,7 @@ class BuildResponseByMixedValueServant implements ServantInterface
         if ($object instanceof Scope) {
             $twig = $object;
             if ($twig instanceof Twigable) {
-                $buildHtmlContent = BuildHtmlContentByMixedValue::factory($this->factory);
+                $buildHtmlContent = BuildHtmlContentByMixedValue::make($this->factory);
                 $buildHtmlContent->request = $this->request;
                 $buildHtmlContent->mixedValue = $object;
                 $buildHtmlContent->serve();
@@ -61,7 +61,7 @@ class BuildResponseByMixedValueServant implements ServantInterface
         }
 
         if ($object instanceof \Throwable) {
-            $builderResponseByException = BuildResponseByExceptionServant::factory($this->factory);
+            $builderResponseByException = BuildResponseByExceptionServant::make($this->factory);
             $builderResponseByException->exception = $object;
             $builderResponseByException->request = $this->request;
             $builderResponseByException->serve();

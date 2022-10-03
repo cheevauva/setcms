@@ -19,7 +19,7 @@ trait OAuthUserEntityDbTrait
     {
         $this->factory = $container->get(FactoryInterface::class);
         $this->db = $container->get(MainConnection::class);
-        $this->mapper = OAuthUserEntityDbMapper::factory($this->factory);
+        $this->mapper = OAuthUserEntityDbMapper::make($this->factory);
         $this->table = OAuthUserContstants::TABLE_NAME;
     }
 

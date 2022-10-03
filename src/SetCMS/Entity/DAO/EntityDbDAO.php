@@ -12,18 +12,21 @@ use SetCMS\Entity\EntityDbMapper;
 abstract class EntityDbDAO implements \SetCMS\ServantInterface
 {
 
-    protected EntityDbMapper $mapper;
-    protected Connection $db;
-    protected string $table;
     protected ?int $limit = null;
     protected int $offset = 0;
     public bool $throwExceptions = false;
 
+    abstract protected function db(): Connection;
+
+    abstract protected function mapper(): EntityDbMapper;
+
+    abstract protected function table(): string;
+
     protected function createQuery(): QueryBuilder
     {
-        $qb = $this->db->createQueryBuilder();
+        $qb = $this->db()->createQueryBuilder();
         $qb->select('*');
-        $qb->from($this->table);
+        $qb->from($this->table());
         $qb->setMaxResults($this->limit);
         $qb->setFirstResult($this->offset);
 
@@ -32,7 +35,7 @@ abstract class EntityDbDAO implements \SetCMS\ServantInterface
 
     protected function entity2row(Entity $entity): array
     {
-        $mapper = clone $this->mapper;
+        $mapper = $this->mapper();
         $mapper->entity = $entity;
         $mapper->row = null;
         $mapper->serve();
@@ -42,7 +45,7 @@ abstract class EntityDbDAO implements \SetCMS\ServantInterface
 
     protected function entity4row(array $row): Entity
     {
-        $mapper = clone $this->mapper;
+        $mapper = $this->mapper();
         $mapper->entity = null;
         $mapper->row = $row;
         $mapper->serve();

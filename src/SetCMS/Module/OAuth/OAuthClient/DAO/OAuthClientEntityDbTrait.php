@@ -18,7 +18,7 @@ trait OAuthClientEntityDbTrait
     public function __construct(ContainerInterface $container, FactoryInterface $factory)
     {
         $this->db = $container->get(MainConnection::class);
-        $this->mapper = OAuthClientEntityDbMapper::factory($factory);
+        $this->mapper = OAuthClientEntityDbMapper::make($factory);
         $this->table = OAuthClientContstants::TABLE_NAME;
     }
 

@@ -13,7 +13,7 @@ class CaptchaCreateAsPngAndStoreServant extends CaptchaCreateAsPngServant
     {
         parent::serve();
 
-        $saveCaptcha = CaptchaEntityDbSaveDAO::factory($this->factory);
+        $saveCaptcha = CaptchaEntityDbSaveDAO::make($this->factory);
         $saveCaptcha->entity = $this->captcha;
         $saveCaptcha->serve();
     }

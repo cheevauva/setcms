@@ -7,7 +7,7 @@ namespace SetCMS\Module\Post\DAO;
 class PostEntityDbRetrieveBySlugDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByCriteriaDAO
 {
 
-    use PostEntityDbTrait;
+    use PostEntityDbDAOTrait;
 
     public string $slug;
 

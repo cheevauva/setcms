@@ -15,7 +15,7 @@ trait PageEntityDbTrait
 
     public function __construct(ContainerInterface $container, FactoryInterface $factory)
     {
-        $this->mapper = PageEntityDbMapper::factory($factory);
+        $this->mapper = PageEntityDbMapper::make($factory);
         $this->table = PageConstants::TABLE_NAME;
         $this->db = $container->get(MainConnection::class);
     }

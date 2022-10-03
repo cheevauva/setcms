@@ -26,13 +26,13 @@ class CaptchaResolveServant implements \SetCMS\ServantInterface
 
     public function serve(): void
     {
-        $retrieveById = CaptchaEntityDbRetrieveByIdDAO::factory($this->factory);
+        $retrieveById = CaptchaEntityDbRetrieveByIdDAO::make($this->factory);
         $retrieveById->id = $this->id;
         $retrieveById->serve();
         
         $this->solve($retrieveById->entity);
 
-        $saveCaptcha = CaptchaEntityDbSaveDAO::factory($this->factory);
+        $saveCaptcha = CaptchaEntityDbSaveDAO::make($this->factory);
         $saveCaptcha->entity = $retrieveById->entity;
         $saveCaptcha->serve();
 

@@ -16,7 +16,7 @@ abstract class DynamicController
 
     public function dynamicAction(ServerRequestInterface $request, ResponseInterface $response, FactoryInterface $factory)
     {
-        $executor = ExecuteDynamicControllerServant::factory($factory);
+        $executor = ExecuteDynamicControllerServant::make($factory);
         $executor->className = 'SetCMS\Module\{module}\{module}{section}Controller';
         $executor->section = $this->getSection();
         $executor->module = $request->getAttribute('module');

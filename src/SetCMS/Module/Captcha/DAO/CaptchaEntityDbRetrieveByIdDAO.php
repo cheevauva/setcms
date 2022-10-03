@@ -8,5 +8,5 @@ class CaptchaEntityDbRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityDbRetrieve
 {
 
     use \SetCMS\FactoryTrait;
-    use CaptchaEntityDbTrait;
+    use CaptchaEntityDbDAOTrait;
 }

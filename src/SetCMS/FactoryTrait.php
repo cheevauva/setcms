@@ -13,7 +13,7 @@ trait FactoryTrait
      * @param object|null $builder
      * @return static
      */
-    public static function factory(?object $builder = null)
+    public static function make(?object $builder = null)
     {
         if ($builder instanceof FactoryInterface) {
             return $builder->make(static::class);

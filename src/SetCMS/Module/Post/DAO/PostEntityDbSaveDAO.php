@@ -9,5 +9,5 @@ use SetCMS\Entity\DAO\EntityDbSaveDAO;
 class PostEntityDbSaveDAO extends EntityDbSaveDAO
 {
 
-    use PostEntityDbTrait;
+    use PostEntityDbDAOTrait;
 }

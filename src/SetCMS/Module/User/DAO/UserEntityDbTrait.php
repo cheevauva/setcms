@@ -18,7 +18,7 @@ trait UserEntityDbTrait
     public function __construct(ContainerInterface $container, FactoryInterface $factory)
     {
         $this->db = $container->get(MainConnection::class);
-        $this->mapper = UserEntityDbMapper::factory($factory);
+        $this->mapper = UserEntityDbMapper::make($factory);
         $this->table = UserContstants::TABLE_NAME;
     }
 

@@ -34,7 +34,7 @@ trait ControllerTrait
 
     private function serve(ServantInterface $servant, Scope $scope, array $array): Scope
     {
-        $serveScope = ServeScopeServant::factory($this->factory);
+        $serveScope = ServeScopeServant::make($this->factory);
         $serveScope->servent = $servant;
         $serveScope->scope = $scope;
         $serveScope->array = $array;

@@ -13,10 +13,14 @@ class UUID
 
     public function __construct(?string $uuid = null)
     {
-        $this->uuid = $uuid ?? $this->generate();
+        if (!empty($uuid)) {
+            $this->uuid = $uuid;
 
-        if (!$this->isValid()) {
-            throw new \RuntimeException('UUID имеет неправильный формат');
+            if (!$this->isValid()) {
+                throw new \RuntimeException('UUID имеет неправильный формат');
+            }
+        } else {
+            $this->uuid = $this->generate();
         }
     }
 

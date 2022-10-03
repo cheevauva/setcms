@@ -30,7 +30,7 @@ class UserRegistrationServant implements \SetCMS\ServantInterface
     public function serve(): void
     {
         try {
-            $retrieveByUsername = UserEntityDbRetrieveByUsernameDAO::factory($this->factory);
+            $retrieveByUsername = UserEntityDbRetrieveByUsernameDAO::make($this->factory);
             $retrieveByUsername->username = $this->username;
             $retrieveByUsername->throwExceptions = true;
             $retrieveByUsername->serve();
@@ -41,7 +41,7 @@ class UserRegistrationServant implements \SetCMS\ServantInterface
             $user->username = $this->username;
             $user->password = $this->password;
 
-            $save = UserEntityDbSaveDAO::factory($this->factory);
+            $save = UserEntityDbSaveDAO::make($this->factory);
             $save->entity = $user;
             $save->serve();
 

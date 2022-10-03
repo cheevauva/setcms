@@ -17,7 +17,7 @@ class FrontController
     public function resolve(ServerRequestInterface $request, ResponseInterface $response, FactoryInterface $factory): ResponseInterface
     {
         try {
-            $matchRequest = MatchRouteByRequestServant::factory($factory);
+            $matchRequest = MatchRouteByRequestServant::make($factory);
             $matchRequest->apply($request);
             $matchRequest->serve();
 
@@ -25,15 +25,15 @@ class FrontController
                 $request = $request->withAttribute($pName, $pValue);
             }
 
-            $parseBody = ParseBodyRequestServant::factory($factory);
+            $parseBody = ParseBodyRequestServant::make($factory);
             $parseBody->request = $request;
             $parseBody->serve();
 
-            $controllerBuilder = BuildByTargetStringServant::factory($factory);
+            $controllerBuilder = BuildByTargetStringServant::make($factory);
             $controllerBuilder->target = $matchRequest->routerMatch->target;
             $controllerBuilder->serve();
 
-            $methodArgumentsBuilder = RetrieveArgumentsByMethodServant::factory($factory);
+            $methodArgumentsBuilder = RetrieveArgumentsByMethodServant::make($factory);
             $methodArgumentsBuilder->apply($controllerBuilder->method);
             $methodArgumentsBuilder->apply($parseBody->request);
             $methodArgumentsBuilder->apply($response);
@@ -44,7 +44,7 @@ class FrontController
             $output = $ex;
         }
 
-        $prepareResponse = BuildResponseByMixedValueServant::factory($factory);
+        $prepareResponse = BuildResponseByMixedValueServant::make($factory);
         $prepareResponse->request = $parseBody->request ?? $request;
         $prepareResponse->mixedValue = $output;
         $prepareResponse->serve();

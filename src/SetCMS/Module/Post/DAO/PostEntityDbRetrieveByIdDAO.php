@@ -7,5 +7,5 @@ namespace SetCMS\Module\Post\DAO;
 class PostEntityDbRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO
 {
 
-    use PostEntityDbTrait;
+    use PostEntityDbDAOTrait;
 }

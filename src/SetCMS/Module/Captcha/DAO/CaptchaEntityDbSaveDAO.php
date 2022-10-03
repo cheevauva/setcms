@@ -8,5 +8,5 @@ class CaptchaEntityDbSaveDAO extends \SetCMS\Entity\DAO\EntityDbSaveDAO
 {
 
     use \SetCMS\FactoryTrait;
-    use CaptchaEntityDbTrait;
+    use CaptchaEntityDbDAOTrait;
 }

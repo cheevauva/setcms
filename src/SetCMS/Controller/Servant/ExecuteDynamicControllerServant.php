@@ -31,7 +31,7 @@ class ExecuteDynamicControllerServant implements ServantInterface, Applicable
 
     public function serve(): void
     {
-        $controllerBuilder = BuildByDynamicAttributeServant::factory($this->factory);
+        $controllerBuilder = BuildByDynamicAttributeServant::make($this->factory);
         $controllerBuilder->className = $this->className;
         $controllerBuilder->section = $this->section ?? '';
         $controllerBuilder->module = $this->module ?? '';
@@ -44,7 +44,7 @@ class ExecuteDynamicControllerServant implements ServantInterface, Applicable
             throw new \RuntimeException('Oh my sweet summer child - you know noting');
         }
 
-        $methodArgumentsBuilder = RetrieveArgumentsByMethodServant::factory($this->factory);
+        $methodArgumentsBuilder = RetrieveArgumentsByMethodServant::make($this->factory);
         $methodArgumentsBuilder->apply($controllerBuilder->method);
         $methodArgumentsBuilder->apply($this->storage);
         $methodArgumentsBuilder->serve();

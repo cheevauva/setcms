@@ -14,7 +14,7 @@ trait DynamicControllerTrait
 
     public function dynamicAction(ServerRequestInterface $request, ResponseInterface $response, FactoryInterface $factory)
     {
-        $executor = ExecuteDynamicControllerServant::factory($factory);
+        $executor = ExecuteDynamicControllerServant::make($factory);
         $executor->className = static::class;
         $executor->action = $request->getAttribute('action');
         $executor->apply($request);
