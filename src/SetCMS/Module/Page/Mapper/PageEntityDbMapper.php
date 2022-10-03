@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Page;
+namespace SetCMS\Module\Page\Mapper;
 
-use SetCMS\Entity\EntityDbMapper;
+use SetCMS\Entity\Mapper\EntityDbMapper;
 use SetCMS\Module\Page\PageEntity;
 
 class PageEntityDbMapper extends EntityDbMapper
 {
+
     use \SetCMS\FactoryTrait;
 
     protected function entity(): PageEntity

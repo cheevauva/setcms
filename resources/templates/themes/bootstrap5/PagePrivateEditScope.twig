@@ -6,7 +6,7 @@
     <form class="setcms-form g-3" 
           setcms-method="POST"
           setcms-action="{{ setcms.link(page.id ? 'action_record_admin' : 'action_admin', {module: 'Page', action: 'save', id: page.id}) }}"
-          setcms-redirect="{{ setcms.link('action_record_admin', {module: 'Page', action: 'read', 'id': '${page.id}'}) }}"
+          setcms-redirect="{{ setcms.link('action_record_admin', {module: 'Page', action: 'read', 'id': '${page.id.uuid}'}) }}"
           >
 
         {{ forms.hidden({name: 'id', value: page.id }) }}

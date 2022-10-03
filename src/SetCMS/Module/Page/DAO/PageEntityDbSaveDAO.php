@@ -7,5 +7,5 @@ namespace SetCMS\Module\Page\DAO;
 class PageEntityDbSaveDAO extends \SetCMS\Entity\DAO\EntityDbSaveDAO
 {
 
-    use PageEntityDbTrait;
+    use PageEntityDbDAOTrait;
 }

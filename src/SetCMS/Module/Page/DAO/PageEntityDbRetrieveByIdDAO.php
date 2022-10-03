@@ -11,7 +11,7 @@ class PageEntityDbRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByI
 
     public ?PageEntity $page = null;
 
-    use PageEntityDbTrait;
+    use PageEntityDbDAOTrait;
 
     public function serve(): void
     {
