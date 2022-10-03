@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Captcha\DAO;
 
-use SetCMS\Module\Captcha\CaptchaEntityDbMapper;
+use SetCMS\Module\Captcha\Mapper\CaptchaEntityDbMapper;
 use SetCMS\Module\Captcha\CaptchaConstants;
 
 trait CaptchaEntityDbDAOTrait

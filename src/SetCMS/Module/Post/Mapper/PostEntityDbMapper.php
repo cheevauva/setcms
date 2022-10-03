@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Post\DAO;
+namespace SetCMS\Module\Post\Mapper;
 
 use SetCMS\Entity\EntityDbMapper;
 use SetCMS\Module\Post\PostEntity;
