@@ -8,6 +8,6 @@ return [
         \SetCMS\Module\User\Servant\UserProtectScopeServant::class,
     ],
     \SetCMS\Event\FrontControllerBeforeLaunchActionEvent::class => [
-        \SetCMS\Module\OAuth\Event\RetrieveCurrentUserByOAuthTokenEventHandler::class,
+        \SetCMS\Module\OAuth\Event\RetrieveCurrentUserByOAuthTokenServant::class,
     ],
 ];
