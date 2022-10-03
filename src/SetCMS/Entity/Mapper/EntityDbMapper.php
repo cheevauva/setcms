@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Entity;
+namespace SetCMS\Entity\Mapper;
 
 use SetCMS\ServantInterface;
 use SetCMS\Entity;

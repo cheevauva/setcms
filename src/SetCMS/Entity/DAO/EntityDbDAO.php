@@ -7,7 +7,7 @@ namespace SetCMS\Entity\DAO;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use SetCMS\Entity;
-use SetCMS\Entity\EntityDbMapper;
+use SetCMS\Entity\Mapper\EntityDbMapper;
 
 abstract class EntityDbDAO implements \SetCMS\ServantInterface
 {

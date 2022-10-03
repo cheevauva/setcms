@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Mapper;
 
-use SetCMS\Entity\EntityDbMapper;
+use SetCMS\Entity\Mapper\EntityDbMapper;
 use SetCMS\Module\Post\PostEntity;
 
 class PostEntityDbMapper extends EntityDbMapper
