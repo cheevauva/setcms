@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\DAO;
 
-class PostEntityDbRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO
+use SetCMS\Entity\DAO\EntityDbSaveDAO;
+
+class PostEntitySaveDAO extends EntityDbSaveDAO
 {
 
     use PostEntityDbDAOTrait;

@@ -7,5 +7,5 @@ namespace SetCMS\Module\OAuth\OAuthToken\DAO;
 class OAuthTokenEntityDbSaveDAO extends \SetCMS\Entity\DAO\EntityDbSaveDAO
 {
 
-    use OAuthTokenEntityDbTrait;
+    use OAuthTokenEntityDbDAOTrait;
 }

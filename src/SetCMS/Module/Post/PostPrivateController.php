@@ -6,8 +6,8 @@ namespace SetCMS\Module\Post;
 
 use \Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\Post\Servant\PostEntitySaveServant;
-use SetCMS\Module\Post\DAO\PostEntityDbRetrieveManyDAO;
-use SetCMS\Module\Post\DAO\PostEntityDbRetrieveByIdDAO;
+use SetCMS\Module\Post\DAO\PostEntityRetrieveManyDAO;
+use SetCMS\Module\Post\DAO\PostEntityRetrieveByIdDAO;
 use SetCMS\Module\Post\Scope\PostPrivateReadScope;
 use SetCMS\Module\Post\Scope\PostPrivateSaveScope;
 use SetCMS\Module\Post\Scope\PostPrivateEditScope;
@@ -20,12 +20,12 @@ class PostPrivateController
     use \SetCMS\Controller\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
-    public function index(ServerRequestInterface $request, PostPrivateIndexScope $scope, PostEntityDbRetrieveManyDAO $servant): PostPrivateIndexScope
+    public function index(ServerRequestInterface $request, PostPrivateIndexScope $scope, PostEntityRetrieveManyDAO $servant): PostPrivateIndexScope
     {
         return $this->protectedServe($request, $servant, $scope, []);
     }
 
-    public function read(ServerRequestInterface $request, PostPrivateReadScope $scope, PostEntityDbRetrieveByIdDAO $servant): PostPrivateReadScope
+    public function read(ServerRequestInterface $request, PostPrivateReadScope $scope, PostEntityRetrieveByIdDAO $servant): PostPrivateReadScope
     {
         return $this->protectedServe($request, $servant, $scope, [
             'id' => $request->getAttribute('id'),
@@ -39,7 +39,7 @@ class PostPrivateController
         return $scope;
     }
 
-    public function edit(ServerRequestInterface $request, PostPrivateEditScope $scope, PostEntityDbRetrieveByIdDAO $servant): PostPrivateEditScope
+    public function edit(ServerRequestInterface $request, PostPrivateEditScope $scope, PostEntityRetrieveByIdDAO $servant): PostPrivateEditScope
     {
         return $this->protectedServe($request, $servant, $scope, [
             'id' => $request->getAttribute('id'),

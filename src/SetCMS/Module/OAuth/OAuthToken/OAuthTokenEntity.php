@@ -4,7 +4,7 @@ namespace SetCMS\Module\OAuth\OAuthToken;
 
 use SetCMS\UUID;
 
-class OAuthTokenEntity extends \SetCMS\Module\Ordinary\OrdinaryEntity
+class OAuthTokenEntity extends \SetCMS\Entity
 {
 
     public string $refreshToken;

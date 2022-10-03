@@ -7,7 +7,7 @@ namespace SetCMS\Module\OAuth\OAuthToken\DAO;
 class OAuthTokenEntityDbRetrieveByRefreshTokenAndClientIdDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByCriteriaDAO
 {
 
-    use OAuthTokenEntityDbTrait;
+    use OAuthTokenEntityDbDAOTrait;
 
     public string $refreshToken;
     public string $clientId;

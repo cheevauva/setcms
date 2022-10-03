@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\OAuth\OAuthToken\DAO;
+namespace SetCMS\Module\OAuth\OAuthToken\Mapper;
 
 use SetCMS\Module\OAuth\OAuthToken\OAuthTokenEntity;
 
-class OAuthTokenEntityDbMapper extends \SetCMS\Entity\EntityDbMapper
+class OAuthTokenEntityDbMapper extends \SetCMS\Entity\Mapper\EntityDbMapper
 {
 
     protected function entity(): OAuthTokenEntity

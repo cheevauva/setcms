@@ -9,6 +9,7 @@ use SetCMS\Module\OAuth\OAuthToken\OAuthTokenEntity;
 class OAuthTokenEntityDbRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO
 {
 
+    use OAuthTokenEntityDbDAOTrait;
     use \SetCMS\FactoryTrait;
 
     public ?OAuthTokenEntity $oauthToken = null;

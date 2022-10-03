@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\User\DAO;
+namespace SetCMS\Module\User\Mapper;
 
 use SetCMS\Module\User\UserEntity;
 
-class UserEntityDbMapper extends \SetCMS\Entity\EntityDbMapper
+class UserEntityDbMapper extends \SetCMS\Entity\Mapper\EntityDbMapper
 {
 
     use \SetCMS\FactoryTrait;

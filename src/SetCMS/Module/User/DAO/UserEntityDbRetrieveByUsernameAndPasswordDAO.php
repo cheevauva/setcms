@@ -9,5 +9,5 @@ class UserEntityDbRetrieveByUsernameAndPasswordDAO extends \SetCMS\Entity\DAO\En
     public string $password;
     public string $username;
 
-    use UserEntityDbTrait;
+    use UserEntityDbDAOTrait;
 }

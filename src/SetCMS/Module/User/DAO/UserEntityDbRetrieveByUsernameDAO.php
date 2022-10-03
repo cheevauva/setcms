@@ -9,7 +9,7 @@ class UserEntityDbRetrieveByUsernameDAO extends \SetCMS\Entity\DAO\EntityDbRetri
 
     public string $username;
 
-    use UserEntityDbTrait;
+    use UserEntityDbDAOTrait;
     use \SetCMS\FactoryTrait;
     
     public function serve(): void

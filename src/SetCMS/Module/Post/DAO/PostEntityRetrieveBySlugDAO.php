@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\DAO;
 
-class PostEntityDbRetrieveBySlugDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByCriteriaDAO
+class PostEntityRetrieveBySlugDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByCriteriaDAO
 {
 
     use PostEntityDbDAOTrait;
 
+    public bool $throwExceptions = true;
     public string $slug;
 
     public function serve(): void
