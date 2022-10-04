@@ -50,7 +50,8 @@
                                 {% if setcms.currentUser.hasRole('guest') %}
                                     <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('action', {module: 'OAuth', action: 'login'}) }}">Вход</a> 
                                     <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('action', {module: 'User', action: 'registration'}) }}">Регистрация</a>
-                                {% else %}
+                                {% endif %}
+                                {% if setcms.currentUser.hasRole('user') %}
                                     <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('action', {module: 'User', action: 'profile'}) }}">Профиль</a>
                                     <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('action', {module: 'OAuth', action: 'logout'}) }}">Выйти</a>
                                 {% endif %}

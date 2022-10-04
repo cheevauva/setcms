@@ -6,12 +6,13 @@ namespace SetCMS\Module\OAuth\OAuthClient\DAO;
 
 use SetCMS\Module\OAuth\OAuthClient\OAuthClientEntity;
 
-class OAuthClientEntityRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO
+class OAuthClientEntityRetrieveByClientIdDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByCriteriaDAO
 {
+    
+    public ?OAuthClientEntity $oauthClient = null;
+    public string $clientId;
 
     use OAuthClientEntityDbDAOTrait;
-
-    public ?OAuthClientEntity $oauthClient = null;
 
     public function serve(): void
     {

@@ -29,9 +29,9 @@ class OAuthClientSetCMSServant implements \SetCMS\ServantInterface
 
         $entity = new OAuthClientSetCMSEntity;
         $entity->name = 'SetCMS';
-        $entity->isAuthorizable = false;
-        $entity->redirectURI = '';
-        $entity->loginUrl = '';
+        $entity->isAuthorizable = true;
+        $entity->redirectURI = '/index.php/OAuth/callback';
+        $entity->loginUrl = '/index.php/OAuth/authorize';
         $entity->autorizationCodeUrl = '';
         $entity->userInfoUrl = '';
         $entity->userInfoParserRule = '';

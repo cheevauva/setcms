@@ -2,9 +2,9 @@
 
 namespace SetCMS\Module\OAuth\OAuthCode;
 
-use SetCMS\Module\Ordinary\OrdinaryEntity;
+use SetCMS\UUID;
 
-class OAuthCodeEntity extends OrdinaryEntity
+class OAuthCodeEntity extends \SetCMS\Entity
 {
 
     public string $code;
@@ -13,7 +13,9 @@ class OAuthCodeEntity extends OrdinaryEntity
 
     public function __construct()
     {
-        $this->code = md5(microtime());
+        parent::__construct();
+        
+        $this->code = strval(new UUID);
     }
 
 }

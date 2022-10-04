@@ -12,6 +12,7 @@ trait CaptchaEntityDbDAOTrait
 
     use \SetCMS\DITrait;
     use \SetCMS\Database\MainConnectionTrait;
+    use \SetCMS\FactoryTrait;
 
     protected function table(): string
     {

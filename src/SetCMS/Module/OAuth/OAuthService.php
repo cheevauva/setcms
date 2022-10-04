@@ -2,7 +2,7 @@
 
 namespace SetCMS\Module\OAuth;
 
-use SetCMS\Module\OAuth\OAuthModel\OAuthModelAuthorize;
+use SetCMS\Module\OAuth\OAuthModel\OAuthAuthorizeScope;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelTokenPassword;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelTokenRefreshToken;
 use SetCMS\Module\OAuth\OAuthModel\OAuthModelTokenAuthorizationCode;
@@ -116,12 +116,7 @@ class OAuthService
         return $this->getValueFromNestedArrayByPath($data, $oauthClient->userInfoParserRule);
     }
 
-    public function getClientsWithEnabledAuthorization(): array
-    {
-        return $this->oauthClientDAO->list(0, 10);
-    }
-
-    public function checkThePossibilityOfAuthorization(OAuthModelAuthorize $model): void
+    public function checkThePossibilityOfAuthorization(OAuthAuthorizeScope $model): void
     {
         $oauthClient = $this->oauthClientDAO->get($model->client_id);
 

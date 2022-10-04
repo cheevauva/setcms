@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\OAuth\Servant;
 
+use SetCMS\Module\OAuth\OAuthToken\OAuthTokenEntity;
+
 class OAuthCallbackServant implements \SetCMS\ServantInterface
 {
 
     public string $clientId;
     public string $code;
     public string $cmsToken;
+    public ?OAuthTokenEntity $oauthToken = null;
 
     public function serve(): void
     {
@@ -50,6 +53,8 @@ class OAuthCallbackServant implements \SetCMS\ServantInterface
         $this->oauthUserDAO->save($oauthUser);
 
         $oauthToken = $this->generateToken($user, $oauthClient, '+1 year');
+        
+        $this->oauthToken = $oauthToken;
     }
 
 }

@@ -13,8 +13,8 @@ abstract class EntityDbRetrieveManyByCriteriaDAO extends EntityDbRetrieveManyDAO
 
     public function serve(): void
     {
-
-
+        $qb = $this->createQuery();
+        
         foreach ($this->criteria as $field => $value) {
             $qb->andWhere(sprintf('%s = :%s', $field, $field));
             $qb->setParameter($field, $value);

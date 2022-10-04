@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\OAuth\Servant;
 
+use SetCMS\UUID;
 use SetCMS\Module\OAuth\OAuthCode\OAuthCodeEntity;
 use SetCMS\Module\OAuth\OAuthCode\DAO\OAuthCodeEntityDbSaveDAO;
 use SetCMS\Module\OAuth\OAuthClient\OAuthClientException;
-use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityRetrieveByIdDAO;
+use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityRetrieveByClientIdDAO;
 use SetCMS\Module\User\DAO\UserEntityDbRetrieveByUsernameAndPasswordDAO;
 
 class OAuthAuthorizeServant implements \SetCMS\ServantInterface
 {
 
-    private OAuthClientEntityRetrieveByIdDAO $retrieveOAuthClient;
-    private OAuthCodeEntityDbSaveDAO $saveOAuthCode;
-    private UserEntityDbRetrieveByUsernameAndPasswordDAO $retrieveUser;
+    use \SetCMS\DITrait;
+    use \SetCMS\FactoryTrait;
+
     public string $clientId;
     public string $username;
     public string $password;
@@ -23,26 +24,41 @@ class OAuthAuthorizeServant implements \SetCMS\ServantInterface
 
     public function serve(): void
     {
-        $this->retrieveOAuthClient->id = $this->clientId;
-        $this->retrieveOAuthClient->serve();
 
-        $this->retrieveUser->username = $this->username;
-        $this->retrieveUser->password = $this->password;
-        $this->retrieveUser->serve();
+        $retrieveUser = UserEntityDbRetrieveByUsernameAndPasswordDAO::make($this->factory());
+        $retrieveUser->username = $this->username;
+        $retrieveUser->password = $this->password;
+        $retrieveUser->serve();
 
-        $user = $this->retrieveUser->entity;
-        $client = $this->retrieveOAuthClient->oauthClient;
+        $user = $retrieveUser->entity;
+
+        if (empty($user)) {
+            throw new \Exception('Пользователь не найден');
+        }
+        
+        $retrieveOAuthClient = OAuthClientEntityRetrieveByClientIdDAO::make($this->factory());
+        $retrieveOAuthClient->clientId = $this->clientId;
+        $retrieveOAuthClient->serve();
+
+        $client = $retrieveOAuthClient->oauthClient;
+
+        if (empty($client)) {
+            throw new \Exception('Приложение для авторизации не найдено');
+        }
 
         if (!$client->isAuthorizable) {
             throw OAuthClientException::autorizationNotAllow();
         }
 
-        $this->oauthCode = new OAuthCodeEntity;
-        $this->oauthCode->userId = $user->id;
-        $this->oauthCode->clientId = $client->id;
+        $oauthCode = new OAuthCodeEntity;
+        $oauthCode->userId = (string) $user->id;
+        $oauthCode->clientId = (string) $client->id;
 
-        $this->saveOAuthCode->entity = $this->oauthCode;
-        $this->saveOAuthCode->serve();
+        $saveOAuthCode = OAuthCodeEntityDbSaveDAO::make($this->factory());
+        $saveOAuthCode->entity = $oauthCode;
+        $saveOAuthCode->serve();
+
+        $this->oauthCode = $oauthCode;
     }
 
 }
