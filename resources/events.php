@@ -1,7 +1,7 @@
 <?php
 
 return [
-    SetCMS\Module\User\Event\UserAfterRegistrationEvent::class => [
+    SetCMS\Module\User\Event\UserRegistrationEvent::class => [
         SetCMS\Module\OAuth\OAuthUser\Servant\OAuthUserCreateByUserServant::class,
     ],
     \SetCMS\Controller\Event\ScopeProtectionEvent::class => [

@@ -4,25 +4,28 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User;
 
+use SetCMS\Module\User\UserRoleEnum;
+
 class UserEntity extends \SetCMS\Entity
 {
 
-    public const ROLE_ADMIN = 'admin';
-    public const ROLE_USER = 'user';
-    public const ROLE_GUEST = 'guest';
-
     public string $username;
     public string $password;
-    public string $role = UserEntity::ROLE_ADMIN;// @todo поменять на пользовательскую роль
+    public UserRoleEnum $role = UserRoleEnum::GUEST;
+    
+    public function withRole(UserRoleEnum $role): void
+    {
+        $this->role = $role;
+    }
 
-    public function hasRole(string $role): bool
+    public function hasRole(UserRoleEnum $role): bool
     {
         return $role === $this->role;
     }
 
     public function isAdmin(): bool
     {
-        return $this->hasRole(static::ROLE_ADMIN);
+        return $this->hasRole(UserRoleEnum::ADMIN);
     }
 
 }

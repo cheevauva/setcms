@@ -2,7 +2,7 @@
 
 namespace SetCMS\Module\OAuth\OAuthClient\Form;
 
-use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityDbRetrieveByIdDAO;
+use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityRetrieveByIdDAO;
 use SetCMS\Module\OAuth\OAuthClient\OAuthClientEntity;
 
 class OAuthClientSaveForm extends \SetCMS\Scope implements \SetCMS\Contract\Twigable
@@ -23,7 +23,7 @@ class OAuthClientSaveForm extends \SetCMS\Scope implements \SetCMS\Contract\Twig
     {
         parent::apply($object);
 
-        if ($object instanceof OAuthClientEntityDbRetrieveByIdDAO) {
+        if ($object instanceof OAuthClientEntityRetrieveByIdDAO) {
             $object->id = $this->id;
             if ($object->oauthClient) {
                 $this->apply($object->oauthClient);

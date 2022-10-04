@@ -4,33 +4,27 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\Servant;
 
-use Psr\Container\ContainerInterface;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use SetCMS\FactoryInterface;
 use SetCMS\Entity\Exception\EntityNotFoundException;
 use SetCMS\Module\User\UserEntity;
-use SetCMS\Module\User\DAO\UserEntityDbSaveDAO;
-use SetCMS\Module\User\DAO\UserEntityDbRetrieveByUsernameDAO;
-use SetCMS\Module\User\Event\UserAfterRegistrationEvent;
+use SetCMS\Module\User\DAO\UserEntitySaveDAO;
+use SetCMS\Module\User\DAO\UserEntityRetrieveByUsernameDAO;
+use SetCMS\Module\User\Event\UserRegistrationEvent;
+use SetCMS\Module\User\UserRoleEnum;
 
 class UserRegistrationServant implements \SetCMS\ServantInterface
 {
 
-    private EventDispatcherInterface $eventDispatcher;
-    private FactoryInterface $factory;
+    use \SetCMS\DITrait;
+    use \SetCMS\EventDispatcherTrait;
+
     public string $username;
     public string $password;
-
-    public function __construct(FactoryInterface $factory, ContainerInterface $container)
-    {
-        $this->factory = $factory;
-        $this->eventDispatcher = $container->get(EventDispatcherInterface::class);
-    }
+    public ?UserEntity $user = null;
 
     public function serve(): void
     {
         try {
-            $retrieveByUsername = UserEntityDbRetrieveByUsernameDAO::make($this->factory);
+            $retrieveByUsername = UserEntityRetrieveByUsernameDAO::make($this->factory());
             $retrieveByUsername->username = $this->username;
             $retrieveByUsername->throwExceptions = true;
             $retrieveByUsername->serve();
@@ -40,12 +34,17 @@ class UserRegistrationServant implements \SetCMS\ServantInterface
             $user = new UserEntity;
             $user->username = $this->username;
             $user->password = $this->password;
+            $user->role = UserRoleEnum::USER;
 
-            $save = UserEntityDbSaveDAO::make($this->factory);
-            $save->entity = $user;
-            $save->serve();
+            $saveUser = UserEntitySaveDAO::make($this->factory());
+            $saveUser->entity = $user;
+            $saveUser->serve();
 
-            (new UserAfterRegistrationEvent($user))->dispatch($this->eventDispatcher);
+            $event = new UserRegistrationEvent;
+            $event->user = $user;
+            $event->dispatch($this->eventDispatcher());
+
+            $this->user = $user;
         }
     }
 

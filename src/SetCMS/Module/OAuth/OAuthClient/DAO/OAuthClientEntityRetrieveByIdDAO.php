@@ -6,10 +6,10 @@ namespace SetCMS\Module\OAuth\OAuthClient\DAO;
 
 use SetCMS\Module\OAuth\OAuthClient\OAuthClientEntity;
 
-class OAuthClientEntityDbRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO
+class OAuthClientEntityRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO
 {
 
-    use OAuthClientEntityDbTrait;
+    use OAuthClientEntityDbDAOTrait;
     
     public ?OAuthClientEntity $oauthClient = null;
     

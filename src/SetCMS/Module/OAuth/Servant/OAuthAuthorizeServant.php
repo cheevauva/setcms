@@ -7,13 +7,13 @@ namespace SetCMS\Module\OAuth\Servant;
 use SetCMS\Module\OAuth\OAuthCode\OAuthCodeEntity;
 use SetCMS\Module\OAuth\OAuthCode\DAO\OAuthCodeEntityDbSaveDAO;
 use SetCMS\Module\OAuth\OAuthClient\OAuthClientException;
-use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityDbRetrieveByIdDAO;
+use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityRetrieveByIdDAO;
 use SetCMS\Module\User\DAO\UserEntityDbRetrieveByUsernameAndPasswordDAO;
 
 class OAuthAuthorizeServant implements \SetCMS\ServantInterface
 {
 
-    private OAuthClientEntityDbRetrieveByIdDAO $retrieveOAuthClient;
+    private OAuthClientEntityRetrieveByIdDAO $retrieveOAuthClient;
     private OAuthCodeEntityDbSaveDAO $saveOAuthCode;
     private UserEntityDbRetrieveByUsernameAndPasswordDAO $retrieveUser;
     public string $clientId;

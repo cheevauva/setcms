@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\OAuth\OAuthClient\Form;
 
-use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityDbRetrieveManyDAO;
+use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityRetrieveManyDAO;
 
 class OAuthClientIndexForm extends \SetCMS\Scope implements \SetCMS\Contract\Twigable
 {
@@ -15,7 +15,7 @@ class OAuthClientIndexForm extends \SetCMS\Scope implements \SetCMS\Contract\Twi
     {
         parent::apply($object);
 
-        if ($object instanceof OAuthClientEntityDbRetrieveManyDAO) {
+        if ($object instanceof OAuthClientEntityRetrieveManyDAO) {
             $this->oauthClients = $object->entities;
         }
     }

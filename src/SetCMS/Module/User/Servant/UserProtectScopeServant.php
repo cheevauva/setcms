@@ -3,50 +3,42 @@
 namespace SetCMS\Module\User\Servant;
 
 use SetCMS\Controller\Event\ScopeProtectionEvent;
-use Psr\Container\ContainerInterface;
 use SetCMS\Module\User\UserEntity;
 use SetCMS\Scope;
 use SetCMS\ACL;
 
-class UserProtectScopeServant implements \SetCMS\ServantInterface
+class UserProtectScopeServant implements \SetCMS\ServantInterface, \SetCMS\Contract\Applicable
 {
 
-    private ACL $acl;
-    public ?UserEntity $user = null;
+    use \SetCMS\DITrait;
+
+    public UserEntity $user;
     public Scope $scope;
-    
+
     use \SetCMS\FactoryTrait;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->acl = $container->get(ACL::class);
-    }
-
-    public function __invoke(...$params)
-    {
-        $event = ($params[0] ?? null);
-        
-        if ($event instanceof ScopeProtectionEvent) {
-            $this->user = new UserEntity;//$event->request->getAttribute('user');
-            $this->scope = $event->scope;
-            $this->serve();
-        }
-
-        return $params;
-    }
 
     public function serve(): void
     {
+        $acl = ACL::make($this->container);
+
         if (empty($this->user) || empty($this->scope)) {
             throw new \RuntimeException('Потерян контекст текущего пользователя или выполняемоего действия');
         }
 
-        if (!$this->acl->hasResource('scope')) {
+        if (!$acl->hasResource('scope')) {
             throw ModuleException::serverError(sprintf('Не найден ресурс %s', 'scope'));
         }
 
-        if (!$this->acl->isAllowed($this->user->role, 'scope', get_class($this->scope))) {
+        if (!$acl->isAllowed($this->user->role->value, 'scope', get_class($this->scope))) {
             throw new \RuntimeException('Доступ запрещён');
+        }
+    }
+
+    public function apply(object $object): void
+    {
+        if ($object instanceof ScopeProtectionEvent) {
+            $this->user = $object->request->getAttribute('user') ?? new UserEntity;
+            $this->scope = $object->scope;
         }
     }
 

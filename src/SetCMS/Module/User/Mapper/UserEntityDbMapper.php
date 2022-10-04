@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Module\User\Mapper;
 
 use SetCMS\Module\User\UserEntity;
+use SetCMS\Module\User\UserRoleEnum;
 
 class UserEntityDbMapper extends \SetCMS\Entity\Mapper\EntityDbMapper
 {
@@ -22,7 +23,7 @@ class UserEntityDbMapper extends \SetCMS\Entity\Mapper\EntityDbMapper
 
         $this->row['username'] = $this->entity()->username;
         $this->row['password'] = $this->entity()->password;
-        $this->row['role'] = $this->entity()->role;
+        $this->row['role'] = $this->entity()->role->value;
     }
 
     protected function entity4row(): void
@@ -31,7 +32,7 @@ class UserEntityDbMapper extends \SetCMS\Entity\Mapper\EntityDbMapper
 
         $this->entity()->username = $this->row['username'];
         $this->entity()->password = $this->row['password'];
-        $this->entity()->role = $this->row['role'];
+        $this->entity()->role = UserRoleEnum::from($this->row['role']);
     }
 
 }

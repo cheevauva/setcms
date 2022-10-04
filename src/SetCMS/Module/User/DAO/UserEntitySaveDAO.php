@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\DAO;
 
-class UserEntityDbSaveDAO extends \SetCMS\Entity\DAO\EntityDbSaveDAO
+class UserEntitySaveDAO extends \SetCMS\Entity\DAO\EntityDbSaveDAO
 {
 
     use UserEntityDbDAOTrait;
-    use \SetCMS\FactoryTrait;
 }

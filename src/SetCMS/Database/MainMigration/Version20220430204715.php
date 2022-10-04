@@ -68,13 +68,13 @@ final class Version20220430204715 extends AbstractMigration
 
         $oauthCodes = $schema->createTable('oauth_codes');
         $oauthCodes->addColumn('code', 'string')->setLength(255);
-        $oauthCodes->addColumn('client_id', 'integer')->setLength(36);
+        $oauthCodes->addColumn('client_id', 'string')->setLength(36);
         $oauthCodes->addColumn('user_id', Types::GUID);
 
         $this->addDefaultColumns($oauthCodes);
 
         $oauthUsers = $schema->createTable('oauth_users');
-        $oauthUsers->addColumn('client_id', 'integer')->setLength(36);
+        $oauthUsers->addColumn('client_id', 'string')->setLength(36);
         $oauthUsers->addColumn('user_id', Types::GUID);
         $oauthUsers->addColumn('external_id', 'text');
         $oauthUsers->addColumn('refresh_token', 'string')->setLength(255);

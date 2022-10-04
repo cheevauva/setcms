@@ -4,21 +4,22 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\DAO;
 
-class UserEntityDbRetrieveByUsernameDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByCriteriaDAO
+class UserEntityRetrieveByUsernameDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByCriteriaDAO
 {
 
     public string $username;
 
     use UserEntityDbDAOTrait;
-    use \SetCMS\FactoryTrait;
-    
+
     public function serve(): void
     {
+        $this->limit = 1;
         $this->criteria = [
             'username' => $this->username,
             'deleted' => 0,
         ];
-        
+
         parent::serve();
     }
+
 }

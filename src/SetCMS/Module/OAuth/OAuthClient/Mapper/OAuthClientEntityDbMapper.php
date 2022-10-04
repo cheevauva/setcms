@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\OAuth\OAuthClient\DAO;
+namespace SetCMS\Module\OAuth\OAuthClient\Mapper;
 
 use SetCMS\Module\OAuth\OAuthClient\OAuthClientEntity;
 
-class OAuthClientEntityDbMapper extends \SetCMS\Entity\EntityDbMapper
+class OAuthClientEntityDbMapper extends \SetCMS\Entity\Mapper\EntityDbMapper
 {
 
     use \SetCMS\FactoryTrait;

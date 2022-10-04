@@ -41,7 +41,6 @@ class CaptchaResolveServant implements \SetCMS\ServantInterface
 
     private function solve(CaptchaEntity $captcha): void
     {
-        $captcha = $retrieveById->entity;
         $captcha->solve($this->solvedText);
     }
 

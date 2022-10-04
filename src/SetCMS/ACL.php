@@ -8,6 +8,8 @@ use Psr\Container\ContainerInterface;
 class ACL extends LaminasAcl
 {
 
+    use FactoryTrait;
+
     public function __construct(ContainerInterface $container)
     {
         $this->setup($container->get('acl'));

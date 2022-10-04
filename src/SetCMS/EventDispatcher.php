@@ -6,6 +6,8 @@ use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use SetCMS\FactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
+use SetCMS\Contract\Applicable;
+use SetCMS\ServantInterface;
 
 class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherInterface
 {
@@ -32,7 +34,17 @@ class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherI
                 break;
             }
 
-            $this->factory->make($listener)($event, $eventName, $this);
+            $listenerObject = $this->factory->make($listener);
+
+            if ($listenerObject instanceof Applicable) {
+                $listenerObject->apply($event);
+            }
+
+            if ($listenerObject instanceof ServantInterface) {
+                $listenerObject->serve();
+            } else {
+                $this->factory->make($listener)($event, $eventName, $this);
+            }
         }
     }
 

@@ -25,7 +25,7 @@ abstract class EntityDbRetrieveByCriteriaDAO extends EntityDbDAO
             throw new EntityNotFoundException();
         }
         
-        $this->entity = $this->entity4row($this->row);
+        $this->entity = $this->row ? $this->entity4row($this->row) : null;
     }
 
     protected function createQuery(): QueryBuilder

@@ -9,7 +9,7 @@ use SetCMS\Module\OAuth\OAuthUser\OAuthUserEntity;
 class OAuthUserEntityDbRetrieveByExternalIdAndClientIdDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByCriteriaDAO
 {
 
-    use OAuthUserEntityDbTrait;
+    use OAuthUserEntityDbDAOTrait;
 
     public string $exteranalId;
     public string $clientId;

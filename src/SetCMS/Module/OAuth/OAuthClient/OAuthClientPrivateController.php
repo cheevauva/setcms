@@ -7,9 +7,9 @@ namespace SetCMS\Module\OAuth\OAuthClient;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\OAuth\OAuthClient\Form\OAuthClientIndexForm;
 use SetCMS\Module\OAuth\OAuthClient\Form\OAuthClientSaveForm;
-use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityDbRetrieveByIdDAO;
-use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityDbRetrieveManyDAO;
-use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityDbSaveDAO;
+use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityRetrieveByIdDAO;
+use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityRetrieveManyDAO;
+use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntitySaveDAO;
 use SetCMS\Module\OAuth\OAuthClient\OAuthClientEntity;
 use SetCMS\UUID;
 
@@ -20,12 +20,12 @@ class OAuthClientPrivateController
     use \SetCMS\Controller\DynamicControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
-    public function index(OAuthClientIndexForm $form, OAuthClientEntityDbRetrieveManyDAO $servant): OAuthClientIndexForm
+    public function index(OAuthClientIndexForm $form, OAuthClientEntityRetrieveManyDAO $servant): OAuthClientIndexForm
     {
         return $this->serve($servant, $form, []);
     }
 
-    public function new(OAuthClientEntityDbSaveDAO $servant)
+    public function new(OAuthClientEntitySaveDAO $servant)
     {
         $oauthClient = new OAuthClientEntity;
         $oauthClient->name = 'test';
@@ -40,7 +40,7 @@ class OAuthClientPrivateController
         $servant->serve();
     }
 
-    public function save(ServerRequestInterface $request, OAuthClientSaveForm $form, OAuthClientEntityDbRetrieveByIdDAO $servant): OAuthClientSaveForm
+    public function save(ServerRequestInterface $request, OAuthClientSaveForm $form, OAuthClientEntityRetrieveByIdDAO $servant): OAuthClientSaveForm
     {
         return $this->serve($servant, $form, [
             'id' => $request->getAttribute('id'),

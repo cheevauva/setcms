@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace SetCMS\Module\User\Scope;
 
 use SetCMS\Module\User\UserEntity;
+use SetCMS\Module\User\UserRoleEnum;
 
 class UserPrivateSaveScope extends \SetCMS\Entity\Scope\EntitySaveScope
 {
 
-    public string $role;
+    public UserRoleEnum $role;
 
     public function __construct()
     {
