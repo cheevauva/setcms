@@ -50,8 +50,8 @@ class OAuthAuthorizeServant implements \SetCMS\ServantInterface
         }
 
         $oauthCode = new OAuthCodeEntity;
-        $oauthCode->userId = (string) $user->id;
-        $oauthCode->clientId = (string) $client->id;
+        $oauthCode->userId = $user->id;
+        $oauthCode->clientId = $client->id;
 
         $saveOAuthCode = OAuthCodeEntityDbSaveDAO::make($this->factory());
         $saveOAuthCode->entity = $oauthCode;

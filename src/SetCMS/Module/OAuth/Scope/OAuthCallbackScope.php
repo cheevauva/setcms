@@ -39,7 +39,7 @@ class OAuthCallbackScope extends \SetCMS\Scope
             'token' => $this->token->token,
             'refresh_token' => $this->token->refreshToken,
             'date_expiried' => $this->token->dateExpiried->format('Y-m-d H:i:s'),
-        ] : null;
+        ] : [];
     }
 
 }
