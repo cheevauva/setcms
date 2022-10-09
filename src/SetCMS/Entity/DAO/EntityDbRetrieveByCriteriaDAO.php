@@ -21,7 +21,7 @@ abstract class EntityDbRetrieveByCriteriaDAO extends EntityDbDAO
         $qb = $this->createQuery();
         $this->row = $qb->fetchAssociative() ?: null;
 
-        if ($this->throwExceptions && empty($this->row)) {
+        if (empty($this->row)) {
             throw new EntityNotFoundException();
         }
         

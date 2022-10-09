@@ -8,14 +8,25 @@ use SetCMS\FactoryInterface;
 use SetCMS\Servant\ParseBodyRequestServant;
 use SetCMS\Servant\BuildResponseByMixedValueServant;
 use SetCMS\Servant\MatchRouteByRequestServant;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use SetCMS\Controller\Servant\BuildByTargetStringServant;
 use SetCMS\Servant\RetrieveArgumentsByMethodServant;
+use SetCMS\Controller\Event\FrontControllerResolveEvent;
 
 class FrontController
 {
 
-    public function resolve(ServerRequestInterface $request, ResponseInterface $response, FactoryInterface $factory): ResponseInterface
+    public function resolve(ServerRequestInterface $request, ResponseInterface $response, $container): ResponseInterface
     {
+        $factory = $container->get(FactoryInterface::class);
+        $eventDispatcher = $container->get(EventDispatcherInterface::class);
+        
+        $resolveEvent = new FrontControllerResolveEvent;
+        $resolveEvent->request = $request;
+        $resolveEvent->dispatch($eventDispatcher);
+        
+        $request = $resolveEvent->request;
+
         try {
             $matchRequest = MatchRouteByRequestServant::make($factory);
             $matchRequest->apply($request);

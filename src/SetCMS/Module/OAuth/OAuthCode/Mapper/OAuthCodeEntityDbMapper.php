@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Module\OAuth\OAuthCode\Mapper;
 
 use SetCMS\Module\OAuth\OAuthCode\OAuthCodeEntity;
+use SetCMS\UUID;
 
 class OAuthCodeEntityDbMapper extends \SetCMS\Entity\Mapper\EntityDbMapper
 {
@@ -21,8 +22,8 @@ class OAuthCodeEntityDbMapper extends \SetCMS\Entity\Mapper\EntityDbMapper
         parent::entity2row();
 
         $this->row['code'] = $this->entity()->code;
-        $this->row['client_id'] = $this->entity()->clientId;
-        $this->row['user_id'] = $this->entity()->userId;
+        $this->row['client_id'] = (string) $this->entity()->clientId;
+        $this->row['user_id'] = (string) $this->entity()->userId;
     }
 
     protected function entity4row(): void
@@ -30,8 +31,8 @@ class OAuthCodeEntityDbMapper extends \SetCMS\Entity\Mapper\EntityDbMapper
         parent::entity4row();
 
         $this->entity()->code = $this->row['code'];
-        $this->entity()->userId = $this->row['user_id'];
-        $this->entity()->clientId = $this->row['client_id'];
+        $this->entity()->userId = new UUID($this->row['user_id']);
+        $this->entity()->clientId = new UUID($this->row['client_id']);
     }
 
 }

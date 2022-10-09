@@ -16,6 +16,11 @@ class OAuthClientEntityRetrieveByClientIdDAO extends \SetCMS\Entity\DAO\EntityDb
 
     public function serve(): void
     {
+        $this->criteria = [
+            'deleted' => 0,
+            'client_id' => $this->clientId,
+        ];
+        
         parent::serve();
 
         $this->oauthClient = $this->entity;

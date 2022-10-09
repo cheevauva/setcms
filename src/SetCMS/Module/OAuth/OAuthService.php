@@ -51,11 +51,6 @@ class OAuthService
 
     public function tokenByAuthorizationCode(OAuthModelTokenAuthorizationCode $model): void
     {
-        $oauthClient = $this->oauthClientDAO->get($model->client_id);
-        $oauthCode = $this->oauthCodeDAO->getByCodeAndClientId($model->code, $oauthClient->id);
-        $user = $this->userService->getById($oauthCode->userId);
-
-        $model->entity($this->generateToken($user, $oauthClient));
 
         //$this->oauthCodeDAO->remove($oauthCode->id);
     }
@@ -67,18 +62,11 @@ class OAuthService
         $this->oauthTokenDAO->remove($oauthToken->id);
     }
 
-    public function getUserByAccessToken(string $token): User
-    {
-        $oauthToken = $this->oauthTokenDAO->getByAccessToken($token);
-        $user = $this->userService->getById($oauthToken->userId);
-
-        return $user;
-    }
 
     public function generateAuthorizationCode(User $user, OAuthClient $oauthClient): OAuthCode
     {
         $oauthCode = new OAuthCode;
-        $oauthCode->clientId = $oauthClient->id;
+        $oauthCode->oauthClientId = $oauthClient->id;
         $oauthCode->userId = $user->id;
 
         $this->oauthCodeDAO->save($oauthCode);
@@ -103,18 +91,7 @@ class OAuthService
         return $val;
     }
 
-    public function getExternalId($oauthData, OAuthClient $oauthClient)
-    {
-        $externalId = $this->getValueFromNestedArrayByPath($oauthData, $oauthClient->userInfoParserRule);
 
-        if (!empty($externalId)) {
-            return $externalId;
-        }
-
-        $data = $this->oauthClientDAO->getResource($oauthClient->userInfoUrl, $oauthData);
-
-        return $this->getValueFromNestedArrayByPath($data, $oauthClient->userInfoParserRule);
-    }
 
     public function checkThePossibilityOfAuthorization(OAuthAuthorizeScope $model): void
     {

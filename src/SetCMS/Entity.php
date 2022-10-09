@@ -23,4 +23,10 @@ class Entity
         $this->entityType = get_class($this);
     }
 
+    public function markDeleted(): void
+    {
+        $this->deleted = true;
+        $this->dateModified = new \DateTime();
+    }
+
 }

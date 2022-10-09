@@ -6,6 +6,5 @@ namespace SetCMS\Module\User\DAO;
 
 class UserEntityDbRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO
 {
-    use \SetCMS\FactoryTrait;
     use UserEntityDbDAOTrait;
 }

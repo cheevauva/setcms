@@ -2,19 +2,20 @@
 
 namespace SetCMS\Module\OAuth;
 
+use SetCMS\ServerRequestAttribute;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\OAuth\Scope\OAuthAuthorizeScope;
 use SetCMS\Module\OAuth\Scope\OAuthDoAuthorizeScope;
 use SetCMS\Module\OAuth\Scope\OAuthLoginScope;
 use SetCMS\Module\OAuth\Scope\OAuthCallbackScope;
-use SetCMS\Module\OAuth\OAuthModel\OAuthModelAuthorizeCode;
-use SetCMS\ServerRequestAttribute;
-use SetCMS\Module\OAuth\OAuthToken\Form\OAuthTokenLogoutScope;
+use SetCMS\Module\OAuth\Scope\OAuthAuthorizeCodeScope;
+use SetCMS\Module\OAuth\Scope\OAuthLogoutScope;
 use SetCMS\Module\OAuth\OAuthToken\Form\OAuthTokenForm;
 use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityRetrieveManyDAO;
 use SetCMS\Module\OAuth\Servant\OAuthCheckThePossibilityOfAuthorizationServant;
 use SetCMS\Module\OAuth\Servant\OAuthAuthorizeWithCaptchaServant;
 use SetCMS\Module\OAuth\Servant\OAuthCallbackServant;
+use SetCMS\Module\OAuth\Servant\OAuthLogoutByTokenServant;
 
 final class OAuthPublicController
 {
@@ -42,18 +43,12 @@ final class OAuthPublicController
         return $oauthModel;
     }
 
-    public function code(ServerRequestInterface $request, OAuthModelAuthorizeCode $model): OAuthModelAuthorizeCode
+    public function code(ServerRequestInterface $request, OAuthAuthorizeCodeScope $scope): OAuthAuthorizeCodeScope
     {
-        $model->fromArray($request->getQueryParams());
-
-        if ($model->valid()) {
-            $this->oauthService->authorizationCode($model);
-        }
-
-        return $model;
+        return $this->protectedServe($request, $servant, $scope, $request->getQueryParams());
     }
 
-    public function logout(ServerRequestInterface $request, OAuthTokenLogoutScope $scope, $servant): OAuthTokenLogoutScope
+    public function logout(ServerRequestInterface $request, OAuthLogoutScope $scope, OAuthLogoutByTokenServant $servant): OAuthLogoutScope
     {
         return $this->protectedServe($request, $servant, $scope, [
             'token' => $request->getAttribute(ServerRequestAttribute::ACCESS_TOKEN),

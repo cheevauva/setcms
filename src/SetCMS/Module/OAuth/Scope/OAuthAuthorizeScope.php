@@ -42,9 +42,9 @@ class OAuthAuthorizeScope extends \SetCMS\Scope implements \SetCMS\Contract\Twig
     {
         $array = parent::toArray();
         $array['model'] = [
-            'client_id' => $this->client_id,
-            'response_type' => $this->response_type,
-            'redirect_uri' => $this->redirect_uri,
+            'client_id' => $this->client_id ?? null,
+            'response_type' => $this->response_type ?? null,
+            'redirect_uri' => $this->redirect_uri ?? null,
         ];
 
         return $array;

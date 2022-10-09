@@ -7,7 +7,7 @@ return [
     \SetCMS\Controller\Event\ScopeProtectionEvent::class => [
         \SetCMS\Module\User\Servant\UserProtectScopeServant::class,
     ],
-    \SetCMS\Event\FrontControllerBeforeLaunchActionEvent::class => [
-        \SetCMS\Module\OAuth\Event\RetrieveCurrentUserByOAuthTokenServant::class,
+    \SetCMS\Controller\Event\FrontControllerResolveEvent::class => [
+        \SetCMS\Module\OAuth\Servant\OAuthRetrieveCurrentUserByOAuthTokenServant::class,
     ],
 ];

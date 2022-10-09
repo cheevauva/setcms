@@ -6,5 +6,8 @@ namespace SetCMS\Entity\Exception;
 
 class EntityNotFoundException extends \Exception
 {
-//put your code here
+    public function __construct(string $message = "", int $code = 0, ?\Throwable $previous = null)
+    {
+        parent::__construct('Cущность не найдена', $code, $previous);
+    }
 }

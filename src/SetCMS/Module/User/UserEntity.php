@@ -12,7 +12,7 @@ class UserEntity extends \SetCMS\Entity
     public string $username;
     public string $password;
     public UserRoleEnum $role = UserRoleEnum::GUEST;
-    
+
     public function withRole(UserRoleEnum $role): void
     {
         $this->role = $role;
@@ -21,6 +21,11 @@ class UserEntity extends \SetCMS\Entity
     public function hasRole(UserRoleEnum $role): bool
     {
         return $role === $this->role;
+    }
+
+    public function hasRoleAsString(string $role): bool
+    {
+        return UserRoleEnum::from($role) === $this->role;
     }
 
     public function isAdmin(): bool

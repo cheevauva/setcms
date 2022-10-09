@@ -22,7 +22,7 @@ class OAuthCodeDAO extends OrdinaryDAO
         assert($entity instanceof OAuthCode);
 
         $record['code'] = $entity->code;
-        $record['client_id'] = $entity->clientId;
+        $record['client_id'] = $entity->oauthClientId;
         $record['user_id'] = $entity->userId;
 
         return $this->ordinaryEntity2RecordBind($entity, $record);
@@ -42,7 +42,7 @@ class OAuthCodeDAO extends OrdinaryDAO
     {
         $entity = new OAuthCode;
         $entity->code = $record['code'];
-        $entity->clientId = $record['client_id'];
+        $entity->oauthClientId = $record['client_id'];
         $entity->userId = $record['user_id'];
 
         return $this->ordinaryRecord2EntityBind($record, $entity);

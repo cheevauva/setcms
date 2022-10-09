@@ -17,7 +17,7 @@ trait DITrait
         $this->container = $container;
     }
 
-    private function factory(): FactoryInterface
+    protected function factory(): FactoryInterface
     {
         return $this->container->get(FactoryInterface::class);
     }

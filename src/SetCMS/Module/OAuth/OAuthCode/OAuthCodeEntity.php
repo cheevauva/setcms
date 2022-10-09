@@ -8,8 +8,8 @@ class OAuthCodeEntity extends \SetCMS\Entity
 {
 
     public string $code;
-    public string $clientId;
-    public string $userId;
+    public UUID $clientId;
+    public UUID $userId;
 
     public function __construct()
     {

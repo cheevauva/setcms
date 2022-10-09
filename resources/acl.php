@@ -1,5 +1,7 @@
 <?php
 
+use SetCMS\Module\User\UserRoleEnum;
+
 return [
     'roles' => [
         'guest' => [],
@@ -24,6 +26,7 @@ return [
                 \SetCMS\Module\OAuth\Scope\OAuthAuthorizeScope::class => true,
                 \SetCMS\Module\OAuth\Scope\OAuthDoAuthorizeScope::class => true,
                 \SetCMS\Module\OAuth\Scope\OAuthCallbackScope::class => true,
+                \SetCMS\Module\OAuth\Scope\OAuthLogoutScope::class => false,
             ],
         ],
         'user' => [
@@ -32,6 +35,8 @@ return [
                 \SetCMS\Module\User\Scope\UserRegistrationScope::class => false,
                 \SetCMS\Module\User\Scope\UserInfoScope::class => true,
                 \SetCMS\Module\User\Scope\UserDoRegistrationScope::class => false,
+                // OAuth
+                \SetCMS\Module\OAuth\Scope\OAuthLogoutScope::class => true,
             ],
         ],
         'admin' => [

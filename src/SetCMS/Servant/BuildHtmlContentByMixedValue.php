@@ -20,6 +20,7 @@ use SetCMS\FactoryInterface;
 use SetCMS\Router\RouterInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\UUID;
+use SetCMS\ServerRequestAttribute;
 
 class BuildHtmlContentByMixedValue implements ServantInterface
 {
@@ -52,6 +53,7 @@ class BuildHtmlContentByMixedValue implements ServantInterface
             $template = explode('@', (new \ReflectionObject($object))->getShortName())[0];
 
             $context = $object->toArray();
+            $context['currentUser'] = $this->request->getAttribute(ServerRequestAttribute::CURRENT_USER);
 
             if ($object->messages) {
                 $this->htmlContent = $this->getTwig()->render('themes/bootstrap5/errors.twig', [

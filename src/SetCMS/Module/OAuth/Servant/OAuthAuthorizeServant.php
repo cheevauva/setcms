@@ -24,7 +24,6 @@ class OAuthAuthorizeServant implements \SetCMS\ServantInterface
 
     public function serve(): void
     {
-
         $retrieveUser = UserEntityDbRetrieveByUsernameAndPasswordDAO::make($this->factory());
         $retrieveUser->username = $this->username;
         $retrieveUser->password = $this->password;

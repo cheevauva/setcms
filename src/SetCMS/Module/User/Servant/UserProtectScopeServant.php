@@ -6,6 +6,7 @@ use SetCMS\Controller\Event\ScopeProtectionEvent;
 use SetCMS\Module\User\UserEntity;
 use SetCMS\Scope;
 use SetCMS\ACL;
+use SetCMS\ServerRequestAttribute;
 
 class UserProtectScopeServant implements \SetCMS\ServantInterface, \SetCMS\Contract\Applicable
 {
@@ -37,7 +38,7 @@ class UserProtectScopeServant implements \SetCMS\ServantInterface, \SetCMS\Contr
     public function apply(object $object): void
     {
         if ($object instanceof ScopeProtectionEvent) {
-            $this->user = $object->request->getAttribute('user') ?? new UserEntity;
+            $this->user = $object->request->getAttribute(ServerRequestAttribute::CURRENT_USER) ?? new UserEntity;
             $this->scope = $object->scope;
         }
     }

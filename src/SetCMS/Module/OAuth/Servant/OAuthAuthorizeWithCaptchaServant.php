@@ -11,8 +11,6 @@ use SetCMS\UUID;
 class OAuthAuthorizeWithCaptchaServant extends OAuthAuthorizeServant
 {
 
-    use \SetCMS\DITrait;
-
     public UUID $captcha;
 
     public function serve(): void
