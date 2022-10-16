@@ -29,7 +29,7 @@ class UserProtectScopeServant implements \SetCMS\ServantInterface, \SetCMS\Contr
         if (!$acl->hasResource('scope')) {
             throw ModuleException::serverError(sprintf('Не найден ресурс %s', 'scope'));
         }
-
+        
         if (!$acl->isAllowed($this->user->role->value, 'scope', get_class($this->scope))) {
             throw new \RuntimeException('Доступ запрещён');
         }

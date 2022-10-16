@@ -14,26 +14,33 @@ use SetCMS\UUID;
 abstract class EntitySaveServant implements ServantInterface
 {
 
-    protected EntityDbRetrieveByIdDAO $retrieveById;
-    protected EntityDbSaveDAO $save;
     public Applicable $applier;
     public Entity $entity;
     public ?UUID $id = null;
 
     public function serve(): void
     {
-        if (!empty($this->id)) {
-            $this->retrieveById->id = $this->id;
-            $this->retrieveById->throwExceptions = true;
-            $this->retrieveById->serve();
+        $this->entity = $this->entity ?? $this->entity();
 
-            $this->entity = $this->retrieveById->entity;
+        if (!empty($this->id)) {
+            $retrieveById = $this->retrieveEntityById(); 
+            $retrieveById->id = $this->id;
+            $retrieveById->throwExceptions = true;
+            $retrieveById->serve();
+
+            $this->entity = $retrieveById->entity;
         }
 
         $this->applier->apply($this->entity);
 
-        $this->save->entity = $this->entity;
-        $this->save->serve();
+        $saveEntity = $this->saveEntity();
+        $saveEntity->entity = $this->entity;
+        $saveEntity->serve();
     }
 
+    abstract protected function entity(): Entity;
+
+    abstract protected function saveEntity(): EntityDbSaveDAO;
+
+    abstract protected function retrieveEntityById(): EntityDbRetrieveByIdDAO;
 }

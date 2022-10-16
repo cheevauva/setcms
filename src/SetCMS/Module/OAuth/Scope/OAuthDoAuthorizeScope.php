@@ -8,6 +8,7 @@ use SetCMS\Module\OAuth\OAuthCode\OAuthCodeEntity;
 
 class OAuthDoAuthorizeScope extends \SetCMS\Scope
 {
+
     private ?OAuthCodeEntity $oauthCode = null;
     public string $client_id;
     public string $response_type;
@@ -27,21 +28,22 @@ class OAuthDoAuthorizeScope extends \SetCMS\Scope
             $object->clientId = $this->client_id;
         }
     }
-    
+
     public function from(object $object): void
     {
         parent::from($object);
-        
+
         if ($object instanceof OAuthAuthorizeWithCaptchaServant) {
             $this->oauthCode = $object->oauthCode;
         }
     }
 
-    
     public function toArray(): array
     {
         return [
-            'entity' => $this->oauthCode,
+            'code' => $this->oauthCode->code,
+            'clientId' => $this->client_id,
         ];
     }
+
 }

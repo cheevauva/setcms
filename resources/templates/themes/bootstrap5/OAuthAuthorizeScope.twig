@@ -4,7 +4,7 @@
 {% block content %}
     <form class="setcms-form row g-1" 
           setcms-action="{{ setcms.link('do_action', {module: 'OAuth', action: 'doAuthorize'}) }}"
-          setcms-redirect="{{ model.redirect_uri }}?code=${entity.code}&client_id=${entity.clientId.uuid}">
+          setcms-redirect="{{ model.redirect_uri }}?code=${code}&client_id=${clientId}">
         {{ forms.hidden({model: oauthClient, name: 'client_id', value: model.client_id }) }}
         {{ forms.hidden({model: model, name: 'response_type', value: model.response_type }) }}
         {{ forms.hidden({model: model, name: 'redirect_uri', value: model.redirect_uri }) }}

@@ -10,6 +10,7 @@ use SetCMS\Module\Post\PostConstants;
 trait PostEntityDbDAOTrait
 {   
     use \SetCMS\DITrait;
+    use \SetCMS\FactoryTrait;
     use \SetCMS\Database\MainConnectionTrait;
 
     protected function mapper(): PostEntityDbMapper

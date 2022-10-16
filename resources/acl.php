@@ -56,6 +56,8 @@ return [
                 \SetCMS\Module\User\Scope\UserPrivateEditScope::class => true,
                 \SetCMS\Module\User\Scope\UserPrivateSaveScope::class => true,
                 \SetCMS\Module\User\Scope\UserPrivateReadScope::class => true,
+                // oauth
+                \SetCMS\Module\OAuth\OAuthClient\Scope\OAuthClientPrivateEditScope::class => true,
             ],
         ],
     ],

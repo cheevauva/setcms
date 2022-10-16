@@ -12,11 +12,21 @@ use SetCMS\Module\Post\PostEntity;
 class PostEntitySaveServant extends \SetCMS\Entity\Servant\EntitySaveServant
 {
 
-    public function __construct(FactoryInterface $factory)
+    use \SetCMS\DITrait;
+
+    protected function entity(): PostEntity
     {
-        $this->entity = new PostEntity;
-        $this->retrieveById = $factory->make(PostEntityRetrieveByIdDAO::class);
-        $this->save = $factory->make(PostEntitySaveDAO::class);
+        return new PostEntity;
+    }
+
+    protected function retrieveEntityById(): PostEntityRetrieveByIdDAO
+    {
+        return PostEntityRetrieveByIdDAO::make($this->factory());
+    }
+
+    protected function saveEntity(): PostEntitySaveDAO
+    {
+        return PostEntitySaveDAO::make($this->factory());
     }
 
 }
