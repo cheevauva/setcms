@@ -20,12 +20,12 @@ class UserPrivateController
 
     public function index(ServerRequestInterface $request, UserPrivateIndexScope $scope, UserEntityDbRetrieveManyDAO $servant): UserPrivateIndexScope
     {
-        return $this->protectedServe($request, $servant, $scope, []);
+        return $this->serve($request, $servant, $scope, []);
     }
 
     public function read(ServerRequestInterface $request, UserPrivateReadScope $scope, UserEntityDbRetrieveByIdDAO $servant): UserPrivateReadScope
     {
-        return $this->protectedServe($request, $servant, $scope, [
+        return $this->serve($request, $servant, $scope, [
             'id' => $request->getAttribute('id'),
         ]);
     }
@@ -39,7 +39,7 @@ class UserPrivateController
 
     public function edit(ServerRequestInterface $request, UserPrivateEditScope $scope, UserEntityDbRetrieveByIdDAO $servant): UserPrivateEditScope
     {
-        return $this->protectedServe($request, $servant, $scope, [
+        return $this->serve($request, $servant, $scope, [
             'id' => $request->getAttribute('id'),
         ]);
     }
@@ -48,7 +48,7 @@ class UserPrivateController
     {
         $servant->id = $request->getAttribute('id');
 
-        return $this->protectedServe($request, $servant, $scope, $request->getParsedBody());
+        return $this->serve($request, $servant, $scope, $request->getParsedBody());
     }
 
 }

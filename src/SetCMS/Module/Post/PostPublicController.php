@@ -18,12 +18,12 @@ class PostPublicController
 
     public function index(ServerRequestInterface $request, PostIndexScope $scope, PostEntityRetrieveManyDAO $servant): PostIndexScope
     {
-        return $this->protectedServe($request, $servant, $scope, []);
+        return $this->serve($request, $servant, $scope, []);
     }
 
     public function readBySlug(ServerRequestInterface $request, PostReadBySlugScope $scope, PostEntityRetrieveBySlugDAO $servant): PostReadBySlugScope
     {
-        return $this->protectedServe($request, $servant, $scope, [
+        return $this->serve($request, $servant, $scope, [
             'slug' => $request->getAttribute('slug'),
         ]);
     }

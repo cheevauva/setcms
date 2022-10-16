@@ -24,7 +24,7 @@ final class OAuthPublicController
 
     public function token(ServerRequestInterface $request, OAuthTokenForm $form): OAuthTokenForm
     {
-        return $this->serve($servant, $form, $request->getParsedBody());
+        return $this->directServe($servant, $form, $request->getParsedBody());
 
         $form->fromArray();
 
@@ -45,12 +45,12 @@ final class OAuthPublicController
 
     public function code(ServerRequestInterface $request, OAuthAuthorizeCodeScope $scope): OAuthAuthorizeCodeScope
     {
-        return $this->protectedServe($request, $servant, $scope, $request->getQueryParams());
+        return $this->serve($request, $servant, $scope, $request->getQueryParams());
     }
 
     public function logout(ServerRequestInterface $request, OAuthLogoutScope $scope, OAuthLogoutByTokenServant $servant): OAuthLogoutScope
     {
-        return $this->protectedServe($request, $servant, $scope, [
+        return $this->serve($request, $servant, $scope, [
             'token' => $request->getAttribute(ServerRequestAttribute::ACCESS_TOKEN),
         ]);
     }
@@ -61,22 +61,22 @@ final class OAuthPublicController
         $params['cms_token'] = $request->getAttribute(ServerRequestAttribute::ACCESS_TOKEN);
         $params['client_id'] = $params['client_id'] ?? $request->getAttribute('id');
 
-        return $this->protectedServe($request, $servant, $scope, $params);
+        return $this->serve($request, $servant, $scope, $params);
     }
 
     public function login(ServerRequestInterface $request, OAuthClientEntityRetrieveManyDAO $servant, OAuthLoginScope $scope): OAuthLoginScope
     {
-        return $this->protectedServe($request, $servant, $scope, $request->getQueryParams());
+        return $this->serve($request, $servant, $scope, $request->getQueryParams());
     }
 
     public function authorize(ServerRequestInterface $request, OAuthCheckThePossibilityOfAuthorizationServant $servant, OAuthAuthorizeScope $scope): OAuthAuthorizeScope
     {
-        return $this->protectedServe($request, $servant, $scope, $request->getQueryParams());
+        return $this->serve($request, $servant, $scope, $request->getQueryParams());
     }
 
     public function doAuthorize(ServerRequestInterface $request, OAuthAuthorizeWithCaptchaServant $servant, OAuthDoAuthorizeScope $scope): OAuthDoAuthorizeScope
     {
-        return $this->protectedServe($request, $servant, $scope, $request->getParsedBody());
+        return $this->serve($request, $servant, $scope, $request->getParsedBody());
     }
 
 }

@@ -32,7 +32,7 @@ trait ControllerTrait
         (new ScopeProtectionEvent($scope, $request))->dispatch($this->eventDispatcher);
     }
 
-    private function serve(ServantInterface $servant, Scope $scope, array $array): Scope
+    private function directServe(ServantInterface $servant, Scope $scope, array $array): Scope
     {
         $serveScope = ServeScopeServant::make($this->factory);
         $serveScope->servent = $servant;
@@ -43,11 +43,11 @@ trait ControllerTrait
         return $serveScope->scope;
     }
 
-    private function protectedServe(ServerRequestInterface $request, ServantInterface $servant, Scope $scope, array $array): Scope
+    private function serve(ServerRequestInterface $request, ServantInterface $servant, Scope $scope, array $array): Scope
     {
         $this->protectScopeByRequest($scope, $request);
 
-        return $this->serve($servant, $scope, $array);
+        return $this->directServe($servant, $scope, $array);
     }
 
 }

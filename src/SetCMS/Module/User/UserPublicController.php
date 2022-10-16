@@ -19,14 +19,14 @@ class UserPublicController
 
     public function profile(ServerRequestInterface $request, UserProfileScope $scope, UserEntityRetrieveByAccessTokenServant $servant): UserProfileScope
     {
-        return $this->protectedServe($request, $servant, $scope, [
+        return $this->serve($request, $servant, $scope, [
             'token' => $request->getAttribute(ServerRequestAttribute::ACCESS_TOKEN),
         ]);
     }
 
     public function userinfo(ServerRequestInterface $request, UserInfoScope $scope, UserEntityRetrieveByAccessTokenServant $servant): UserInfoScope
     {
-        return $this->protectedServe($request, $servant, $scope, [
+        return $this->serve($request, $servant, $scope, [
             'token' => $request->getAttribute(ServerRequestAttribute::ACCESS_TOKEN),
         ]);
     }
@@ -40,7 +40,7 @@ class UserPublicController
 
     public function doRegistration(ServerRequestInterface $request, UserDoRegistrationScope $scope, UserRegistrationServant $servant): UserDoRegistrationScope
     {
-        return $this->protectedServe($request, $servant, $scope, $request->getParsedBody());
+        return $this->serve($request, $servant, $scope, $request->getParsedBody());
     }
 
 }

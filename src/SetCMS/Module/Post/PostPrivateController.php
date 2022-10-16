@@ -12,7 +12,6 @@ use SetCMS\Module\Post\Scope\PostPrivateReadScope;
 use SetCMS\Module\Post\Scope\PostPrivateSaveScope;
 use SetCMS\Module\Post\Scope\PostPrivateEditScope;
 use SetCMS\Module\Post\Scope\PostPrivateIndexScope;
-use SetCMS\UUID;
 
 class PostPrivateController
 {
@@ -22,12 +21,12 @@ class PostPrivateController
 
     public function index(ServerRequestInterface $request, PostPrivateIndexScope $scope, PostEntityRetrieveManyDAO $servant): PostPrivateIndexScope
     {
-        return $this->protectedServe($request, $servant, $scope, []);
+        return $this->serve($request, $servant, $scope, []);
     }
 
     public function read(ServerRequestInterface $request, PostPrivateReadScope $scope, PostEntityRetrieveByIdDAO $servant): PostPrivateReadScope
     {
-        return $this->protectedServe($request, $servant, $scope, [
+        return $this->serve($request, $servant, $scope, [
             'id' => $request->getAttribute('id'),
         ]);
     }
@@ -41,19 +40,19 @@ class PostPrivateController
 
     public function edit(ServerRequestInterface $request, PostPrivateEditScope $scope, PostEntityRetrieveByIdDAO $servant): PostPrivateEditScope
     {
-        return $this->protectedServe($request, $servant, $scope, [
+        return $this->serve($request, $servant, $scope, [
             'id' => $request->getAttribute('id'),
         ]);
     }
 
     public function save(ServerRequestInterface $request, PostPrivateSaveScope $scope, PostEntitySaveServant $servant): PostPrivateSaveScope
     {
-        return $this->protectedServe($request, $servant, $scope, $request->getParsedBody());
+        return $this->serve($request, $servant, $scope, $request->getParsedBody());
     }
 
     public function delete(ServerRequestInterface $request, PostDeleteForm $scope, PostEntitySaveServant $servant): PostDeleteForm
     {
-        return $this->protectedServe($request, $servant, $scope, []);
+        return $this->serve($request, $servant, $scope, []);
     }
 
 }

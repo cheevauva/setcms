@@ -19,7 +19,7 @@ class PagePrivateController
 
     public function index(ServerRequestInterface $request, PagePrivateIndexScope $scope, PageEntityDbRetrieveManyDAO $servant): PagePrivateIndexScope
     {
-        return $this->protectedServe($request, $servant, $scope, []);
+        return $this->serve($request, $servant, $scope, []);
     }
 
     public function new(ServerRequestInterface $request, PagePrivateEditScope $scope): PagePrivateEditScope
@@ -31,7 +31,7 @@ class PagePrivateController
 
     public function read(ServerRequestInterface $request, PagePrivateReadScope $scope, PageEntityDbRetrieveByIdDAO $servant): PagePrivateReadScope
     {
-        return $this->protectedServe($request, $servant, $scope, [
+        return $this->serve($request, $servant, $scope, [
             'id' => $request->getAttribute('id'),
         ]);
     }
@@ -40,19 +40,19 @@ class PagePrivateController
     {
         $servant->id = $request->getAttribute('id');
 
-        return $this->protectedServe($request, $servant, $form, $request->getParsedBody());
+        return $this->serve($request, $servant, $form, $request->getParsedBody());
     }
 
     public function edit(ServerRequestInterface $request, PagePrivateEditScope $scope, PageEntityDbRetrieveByIdDAO $servant): PagePrivateEditScope
     {
-        return $this->protectedServe($request, $servant, $scope, [
+        return $this->serve($request, $servant, $scope, [
             'id' => $request->getAttribute('id'),
         ]);
     }
 
     public function delete(ServerRequestInterface $request, PageDeleteForm $form, PageEntitySaveServant $servant): PageDeleteForm
     {
-        return $this->protectedServe($request, $servant, $form, [
+        return $this->serve($request, $servant, $form, [
             'id' => $request->getAttribute('id'),
         ]);
     }

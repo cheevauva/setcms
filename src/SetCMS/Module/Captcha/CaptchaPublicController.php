@@ -17,12 +17,12 @@ class CaptchaPublicController
 
     public function solve(ServerRequestInterface $request, CaptchaSolveScope $scope, CaptchaResolveServant $servant): CaptchaSolveScope
     {
-        return $this->protectedServe($request, $servant, $scope, $request->getQueryParams());
+        return $this->serve($request, $servant, $scope, $request->getQueryParams());
     }
 
     public function generate(ServerRequestInterface $request, CaptchaGenerateScope $scope, CaptchaCreateAsPngAndStoreServant $servant): CaptchaGenerateScope
     {
-        return $this->protectedServe($request, $servant, $scope, []);
+        return $this->serve($request, $servant, $scope, []);
     }
 
 }
