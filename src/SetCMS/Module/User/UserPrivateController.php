@@ -32,7 +32,7 @@ class UserPrivateController
 
     public function new(ServerRequestInterface $request, UserPrivateEditScope $scope): UserPrivateEditScope
     {
-        $this->protectScopeByRequest($scope, $request);
+        $this->secureByScope($scope, $request);
         
         return $scope;
     }

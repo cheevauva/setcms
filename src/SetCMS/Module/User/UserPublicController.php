@@ -33,7 +33,7 @@ class UserPublicController
 
     public function registration(ServerRequestInterface $request, UserRegistrationScope $scope): UserRegistrationScope
     {
-        $this->protectScopeByRequest($scope, $request);
+        $this->secureByScope($scope, $request);
 
         return $scope;
     }

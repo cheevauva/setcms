@@ -8,16 +8,7 @@ use SetCMS\Module\OAuth\OAuthClient\OAuthClientEntity;
 class OAuthClientSaveForm extends \SetCMS\Scope implements \SetCMS\Contract\Twigable
 {
 
-    public string $id;
-    public string $name;
-    public string $clientId;
-    public string $clientSecret;
-    public string $redirectURI;
-    public string $loginUrl;
-    public ?string $autorizationCodeUrl = null;
-    public bool $isAuthorizable = false;
-    public ?string $userInfoParserRule = null;
-    public ?string $userInfoUrl = null;
+
 
     public function apply(object $object): void
     {

@@ -59,7 +59,7 @@ final class OAuthPublicController
     {
         $params = $request->getQueryParams();
         $params['cms_token'] = $request->getAttribute(ServerRequestAttribute::ACCESS_TOKEN);
-        $params['client_id'] = $params['client_id'] ?? $request->getAttribute('id');
+        $params['id'] =  $request->getAttribute('id');
 
         return $this->serve($request, $servant, $scope, $params);
     }

@@ -14,7 +14,6 @@ abstract class EntityDbDAO implements \SetCMS\ServantInterface
 
     protected ?int $limit = null;
     protected int $offset = 0;
-    public bool $throwExceptions = false;
 
     abstract protected function db(): Connection;
 

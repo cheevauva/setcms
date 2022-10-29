@@ -6,5 +6,12 @@ namespace SetCMS\Entity\Scope;
 
 abstract class EntityEditScope extends EntityReadScope
 {
-    
+
+    public function toArray(): array
+    {
+        return [
+            'entity' => $this->entity,
+        ];
+    }
+
 }

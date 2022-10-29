@@ -25,10 +25,8 @@ class OAuthClientEntityDbMapper extends \SetCMS\Entity\Mapper\EntityDbMapper
         $this->row['client_secret'] = $this->entity()->clientSecret;
         $this->row['redirect_uri'] = $this->entity()->redirectURI;
         $this->row['login_url'] = $this->entity()->loginUrl;
-        $this->row['autorization_code_url'] = $this->entity()->autorizationCodeUrl;
-        $this->row['userinfo_url'] = $this->entity()->userInfoUrl;
         $this->row['is_authorizable'] = (int) $this->entity()->isAuthorizable;
-        $this->row['userinfo_parser_rule'] = $this->entity()->userInfoParserRule;
+        $this->row['autorization_code_url'] = $this->entity()->autorizationCodeUrl;
     }
 
     protected function entity4row(): void
@@ -40,10 +38,8 @@ class OAuthClientEntityDbMapper extends \SetCMS\Entity\Mapper\EntityDbMapper
         $this->entity()->clientSecret = $this->row['client_secret'];
         $this->entity()->redirectURI = $this->row['redirect_uri'] ?? '';
         $this->entity()->loginUrl = $this->row['login_url'] ?? '';
-        $this->entity()->autorizationCodeUrl = $this->row['autorization_code_url'];
         $this->entity()->isAuthorizable = !empty($this->row['is_authorizable']);
-        $this->entity()->userInfoUrl = $this->row['userinfo_url'] ?? '';
-        $this->entity()->userInfoParserRule = $this->row['userinfo_parser_rule'] ?? '';
+        $this->entity()->autorizationCodeUrl = $this->row['autorization_code_url'];
     }
 
 }

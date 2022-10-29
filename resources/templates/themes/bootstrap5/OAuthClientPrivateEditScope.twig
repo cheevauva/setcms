@@ -8,20 +8,19 @@
 {% block content %}
     <form class="setcms-form g-3" 
           setcms-method="POST"
-          setcms-action="{{ setcms.link('action_oauthclients_admin', { action: 'save', id: entity.id}) }}"
-          setcms-redirect="{{ setcms.link('action_admin', {module: setcms.toModule(entity), action: 'index'}) }}"
+          setcms-action="{{ setcms.link('action_oauthclients_admin', { action: entity ? 'update' : 'create', id: entity.id}) }}"
+          setcms-redirect="{{ setcms.link('action_oauthclients_admin', {action: 'index'}) }}"
           >
-        {{ forms.hidden({name: 'id', value: entity.id }) }}
+        {{ forms.hidden({name: 'id', value: entity ? entity.id : UUID() }) }}
         {{ forms.select({name: 'preset', label: 'Пресет' }) }}
         {{ forms.input({value: entity.name, name: 'name', type: 'text', label: 'Название'}) }}
         {{ forms.input({entity: entity, name: 'clientId', type: 'text', label: 'Client ID'}) }}
         {{ forms.input({entity: entity, name: 'clientSecret', type: 'text', label: 'Client Secret'}) }}
         {{ forms.checkbox({entity: entity, name: 'isAuthorizable', label: 'Доступен для авторизации пользователей'}) }}
+        {{ forms.input({entity: entity, name: 'callbackId', type: 'text', label: 'Идентификатор возврата'}) }}
         {{ forms.input({entity: entity, name: 'redirectURI', type: 'text', label: 'Redirect URI'}) }}
         {{ forms.input({entity: entity, name: 'loginUrl', type: 'text', label: 'Ссылка на форму авторизации'}) }}
         {{ forms.input({entity: entity, name: 'autorizationCodeUrl', type: 'text', label: 'Ссылка для получения токена по коду авторизации'}) }}
-        {{ forms.input({entity: entity, name: 'userInfoUrl', type: 'text', label: 'Ссылка для получения информации пользователя по токену'}) }}
-        {{ forms.textarea({entity: entity, name: 'userInfoParserRule', type: 'text', label: 'Правила извлечения из информации пользователя'}) }}
         {{ forms.input({name: 'dateCreated', value: entity.dateCreated.format('Y-m-d H:i:s'), type: 'text', label: 'Дата создания', disabled: true}) }}
         {{ forms.input({name: 'dateModified', value: entity.dateModified.format('Y-m-d H:i:s'), type: 'text', label: 'Дата изменения', disabled: true}) }}
         {{ forms.submit({label: 'Сохранить'}) }}

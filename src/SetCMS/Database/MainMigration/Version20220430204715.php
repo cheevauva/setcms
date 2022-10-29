@@ -51,9 +51,6 @@ final class Version20220430204715 extends AbstractMigration
         $oauthClients->addColumn('redirect_uri', 'string')->setLength(255)->setNotnull(false);
         $oauthClients->addColumn('is_authorizable', 'integer')->setLength(1)->setDefault(0);
         $oauthClients->addColumn('login_url', 'string')->setLength(255)->setNotnull(false);
-        $oauthClients->addColumn('autorization_code_url', 'string')->setLength(255)->setNotnull(false);
-        $oauthClients->addColumn('userinfo_url', 'string')->setLength(255)->setNotnull(false);
-        $oauthClients->addColumn('userinfo_parser_rule', 'text')->setNotnull(false);
 
         $this->addDefaultColumns($oauthClients);
 

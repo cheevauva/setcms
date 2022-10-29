@@ -26,7 +26,7 @@ class UUID
 
     private function generate(): string
     {
-        return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', ...[
+        $uuid = sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', ...[
             mt_rand(0, 65535),
             mt_rand(0, 65535),
             mt_rand(0, 65535),
@@ -36,6 +36,8 @@ class UUID
             mt_rand(0, 65535),
             mt_rand(0, 65535)
         ]);
+        
+        return strtolower($uuid);
     }
 
     public function isValid(): bool

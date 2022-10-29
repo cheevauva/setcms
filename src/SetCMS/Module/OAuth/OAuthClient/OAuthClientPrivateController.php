@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace SetCMS\Module\OAuth\OAuthClient;
 
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Module\OAuth\OAuthClient\Form\OAuthClientIndexForm;
+use SetCMS\Module\OAuth\OAuthClient\Scope\OAuthClientPrivateIndexScope;
 use SetCMS\Module\OAuth\OAuthClient\Scope\OAuthClientPrivateEditScope;
-use SetCMS\Module\OAuth\OAuthClient\Form\OAuthClientSaveForm;
+use SetCMS\Module\OAuth\OAuthClient\Scope\OAuthClientPrivateReadScope;
+use SetCMS\Module\OAuth\OAuthClient\Scope\OAuthClientPrivateCreateScope;
+use SetCMS\Module\OAuth\OAuthClient\Scope\OAuthClientPrivateUpdateScope;
 use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityRetrieveByIdDAO;
 use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityRetrieveManyDAO;
-use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntitySaveDAO;
-use SetCMS\Module\OAuth\OAuthClient\OAuthClientEntity;
-use SetCMS\UUID;
+use SetCMS\Module\OAuth\OAuthClient\Servant\OAuthClientEntityCreateServant;
+use SetCMS\Module\OAuth\OAuthClient\Servant\OAuthClientEntityUpdateServant;
 
 class OAuthClientPrivateController
 {
@@ -21,52 +22,40 @@ class OAuthClientPrivateController
     use \SetCMS\Controller\DynamicControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
-    public function index(OAuthClientIndexForm $form, OAuthClientEntityRetrieveManyDAO $servant): OAuthClientIndexForm
+    public function index(ServerRequestInterface $request, OAuthClientPrivateIndexScope $form, OAuthClientEntityRetrieveManyDAO $servant): OAuthClientPrivateIndexScope
     {
-        return $this->serve($servant, $form, []);
+        return $this->serve($request, $servant, $form, []);
     }
-
-//    public function new(OAuthClientEntitySaveDAO $servant)
-//    {
-//        $oauthClient = new OAuthClientEntity;
-//        $oauthClient->name = 'test';
-//        $oauthClient->redirectURI = '';
-//        $oauthClient->loginUrl = '';
-//        $oauthClient->autorizationCodeUrl = '';
-//        $oauthClient->userInfoUrl = '';
-//        $oauthClient->userInfoParserRule = '';
-//        $oauthClient->clientId = new UUID;
-//
-//        $servant->entity = $oauthClient;
-//        $servant->serve();
-//    }
 
     public function new(ServerRequestInterface $request, OAuthClientPrivateEditScope $scope): OAuthClientPrivateEditScope
     {
-        $this->protectScopeByRequest($scope, $request);
+        $this->secureByScope($scope, $request);
 
         return $scope;
     }
 
-    public function read(ServerRequestInterface $request, PagePrivateReadScope $scope, PageEntityDbRetrieveByIdDAO $servant): PagePrivateReadScope
+    public function read(ServerRequestInterface $request, OAuthClientPrivateReadScope $scope, OAuthClientEntityRetrieveByIdDAO $servant): OAuthClientPrivateReadScope
     {
         return $this->serve($request, $servant, $scope, [
             'id' => $request->getAttribute('id'),
         ]);
     }
 
-    public function save(ServerRequestInterface $request, PagePrivateSaveScope $form, PageEntitySaveServant $servant): PagePrivateSaveScope
+    public function edit(ServerRequestInterface $request, OAuthClientPrivateEditScope $scope, OAuthClientEntityRetrieveByIdDAO $servant): OAuthClientPrivateEditScope
     {
-        $servant->id = $request->getAttribute('id');
+        return $this->serve($request, $servant, $scope, [
+            'id' => $request->getAttribute('id'),
+        ]);
+    }
 
+    public function create(ServerRequestInterface $request, OAuthClientPrivateCreateScope $form, OAuthClientEntityCreateServant $servant): OAuthClientPrivateCreateScope
+    {
         return $this->serve($request, $servant, $form, $request->getParsedBody());
     }
 
-    public function edit(ServerRequestInterface $request, PagePrivateEditScope $scope, PageEntityDbRetrieveByIdDAO $servant): PagePrivateEditScope
+    public function update(ServerRequestInterface $request, OAuthClientPrivateUpdateScope $form, OAuthClientEntityRetrieveByIdDAO $readById, OAuthClientEntityUpdateServant $update): OAuthClientPrivateUpdateScope
     {
-        return $this->serve($request, $servant, $scope, [
-            'id' => $request->getAttribute('id'),
-        ]);
+        return $this->multiserve($request, [$readById, $update], $form, $request->getParsedBody());
     }
 
 }

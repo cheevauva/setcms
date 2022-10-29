@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post;
 
 use \Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Module\Post\Servant\PostEntitySaveServant;
+use SetCMS\Module\Post\Servant\PostEntityCreateServant;
 use SetCMS\Module\Post\DAO\PostEntityRetrieveManyDAO;
 use SetCMS\Module\Post\DAO\PostEntityRetrieveByIdDAO;
 use SetCMS\Module\Post\Scope\PostPrivateReadScope;
-use SetCMS\Module\Post\Scope\PostPrivateSaveScope;
+use SetCMS\Module\Post\Servant\PostEntityUpdateServant;
 use SetCMS\Module\Post\Scope\PostPrivateEditScope;
 use SetCMS\Module\Post\Scope\PostPrivateIndexScope;
+use SetCMS\Module\Post\Scope\PostPrivateCreateScope;
+use SetCMS\Module\Post\Scope\PostPrivateUpdateScope;
 
 class PostPrivateController
 {
@@ -33,7 +35,7 @@ class PostPrivateController
 
     public function new(ServerRequestInterface $request, PostPrivateEditScope $scope): PostPrivateEditScope
     {
-        $this->protectScopeByRequest($scope, $request);
+        $this->secureByScope($scope, $request);
 
         return $scope;
     }
@@ -45,14 +47,14 @@ class PostPrivateController
         ]);
     }
 
-    public function save(ServerRequestInterface $request, PostPrivateSaveScope $scope, PostEntitySaveServant $servant): PostPrivateSaveScope
+    public function create(ServerRequestInterface $request, PostPrivateCreateScope $scope, PostEntityCreateServant $servant): PostPrivateCreateScope
     {
         return $this->serve($request, $servant, $scope, $request->getParsedBody());
     }
 
-    public function delete(ServerRequestInterface $request, PostDeleteForm $scope, PostEntitySaveServant $servant): PostDeleteForm
+    public function update(ServerRequestInterface $request, PostPrivateUpdateScope $scope, PostEntityUpdateServant $update, PostEntityRetrieveByIdDAO $readById): PostPrivateUpdateScope
     {
-        return $this->serve($request, $servant, $scope, []);
+        return $this->multiserve($request, [$readById, $update], $scope, $request->getParsedBody());
     }
 
 }

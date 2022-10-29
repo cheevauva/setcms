@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace SetCMS\Module\OAuth\Servant;
 
 use SetCMS\Module\OAuth\OAuthToken\OAuthTokenEntity;
-use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityRetrieveByClientIdDAO;
-use SetCMS\Module\OAuth\Servant\OAuthRetrieveTokenByAuthorizationCodeAndClientServant;
+use SetCMS\Module\OAuth\OAuthClient\DAO\OAuthClientEntityRetrieveByIdDAO;
+use SetCMS\Module\OAuth\Servant\OAuthRetrieveTokenByCodeAndClientServant;
+use SetCMS\UUID;
 
 class OAuthCallbackServant implements \SetCMS\ServantInterface
 {
@@ -14,23 +15,23 @@ class OAuthCallbackServant implements \SetCMS\ServantInterface
     use \SetCMS\DITrait;
     use \SetCMS\FactoryTrait;
 
-    public string $clientId;
+    public UUID $oauthClientId;
     public string $code;
     public ?string $cmsToken;
     public ?OAuthTokenEntity $oauthToken = null;
 
     public function serve(): void
     {
-        $retrieveClientById = OAuthClientEntityRetrieveByClientIdDAO::make($this->factory());
-        $retrieveClientById->clientId = $this->clientId;
-        $retrieveClientById->serve();
+        $retrieveById = OAuthClientEntityRetrieveByIdDAO::make($this->factory());
+        $retrieveById->id = $this->oauthClientId;
+        $retrieveById->serve();
 
-        if (!$retrieveClientById->oauthClient->isAuthorizable) {
+        if (!$retrieveById->oauthClient->isAuthorizable) {
             throw new \Exception('Приложение недоступно для авторизации');
         }
 
-        $retriveTokenByCodeAndClient = OAuthRetrieveTokenByAuthorizationCodeAndClientServant::make($this->factory());
-        $retriveTokenByCodeAndClient->client = $retrieveClientById->oauthClient;
+        $retriveTokenByCodeAndClient = OAuthRetrieveTokenByCodeAndClientServant::make($this->factory());
+        $retriveTokenByCodeAndClient->client = $retrieveById->oauthClient;
         $retriveTokenByCodeAndClient->code = $this->code;
         $retriveTokenByCodeAndClient->serve();
 

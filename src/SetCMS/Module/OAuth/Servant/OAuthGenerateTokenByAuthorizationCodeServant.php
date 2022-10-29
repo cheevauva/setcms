@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\OAuth\Servant;
 
-use SetCMS\Module\OAuth\Servant\OAuthGenerateTokenServant;
+
+
 use SetCMS\Module\OAuth\OAuthToken\OAuthTokenEntity;
 use SetCMS\Module\OAuth\OAuthClient\OAuthClientEntity;
-use SetCMS\Module\OAuth\OAuthCode\DAO\OAuthCodeEntityRetrieveByCodeAndClientIdDAO;
-use SetCMS\Module\User\DAO\UserEntityDbRetrieveByIdDAO;
 
 class OAuthGenerateTokenByAuthorizationCodeServant implements \SetCMS\ServantInterface
 {
@@ -27,16 +26,7 @@ class OAuthGenerateTokenByAuthorizationCodeServant implements \SetCMS\ServantInt
         $retrieveOAuthCodeByCodeAndClientId->code = $this->code;
         $retrieveOAuthCodeByCodeAndClientId->serve();
         
-        $retrieveUserById = UserEntityDbRetrieveByIdDAO::make($this->factory());
-        $retrieveUserById->id = $retrieveOAuthCodeByCodeAndClientId->oauthCode->userId;
-        $retrieveUserById->serve();
-        
-        $generateToken = OAuthGenerateTokenServant::make($this->factory());
-        $generateToken->user = $retrieveUserById->entity;
-        $generateToken->client = $this->client;
-        $generateToken->serve();
 
-        $this->token = $generateToken->token;
     }
 
 }

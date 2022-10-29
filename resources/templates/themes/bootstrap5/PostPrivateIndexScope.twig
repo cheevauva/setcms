@@ -1,7 +1,7 @@
 {% extends setcms.path('layout_admin.twig') %}
 
 {% block content_toolbar %}
-    <a href="{{ setcms.link('action_admin', {module: 'Post', action:'new'}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
+    <a href="{{ setcms.link('action_record_admin', {module: 'Post', action: 'new', 'id': UUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
 {% endblock %}
 
 {% block content_title %}Посты{% endblock %}

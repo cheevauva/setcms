@@ -27,7 +27,7 @@ trait ControllerTrait
         $this->eventDispatcher = $container->get(EventDispatcherInterface::class);
     }
 
-    private function protectScopeByRequest(Scope $scope, ServerRequestInterface $request): void
+    private function secureByScope(Scope $scope, ServerRequestInterface $request): void
     {
         (new ScopeProtectionEvent($scope, $request))->dispatch($this->eventDispatcher);
     }
@@ -45,9 +45,23 @@ trait ControllerTrait
 
     private function serve(ServerRequestInterface $request, ServantInterface $servant, Scope $scope, array $array): Scope
     {
-        $this->protectScopeByRequest($scope, $request);
+        $this->secureByScope($scope, $request);
+        $this->directServe($servant, $scope, $array);
+        
+        return $scope;
+    }
 
-        return $this->directServe($servant, $scope, $array);
+    private function multiserve(ServerRequestInterface $request, array $servants, Scope $scope, array $array): Scope
+    {
+        foreach ($servants as $servant) {
+            $this->serve($request, $servant, $scope, $array);
+
+            if (!empty($scope->messages)) {
+                return $scope;
+            }
+        }
+
+        return $scope;
     }
 
 }

@@ -51,13 +51,18 @@ return [
                 \SetCMS\Module\Post\Scope\PostPrivateSaveScope::class => true,
                 \SetCMS\Module\Post\Scope\PostPrivateEditScope::class => true,
                 \SetCMS\Module\Post\Scope\PostPrivateReadScope::class => true,
+                \SetCMS\Module\Post\Scope\PostPrivateUpdateScope::class => true,
+                \SetCMS\Module\Post\Scope\PostPrivateCreateScope::class => true,
                 // user
                 \SetCMS\Module\User\Scope\UserPrivateIndexScope::class => true,
                 \SetCMS\Module\User\Scope\UserPrivateEditScope::class => true,
                 \SetCMS\Module\User\Scope\UserPrivateSaveScope::class => true,
                 \SetCMS\Module\User\Scope\UserPrivateReadScope::class => true,
                 // oauth
+                \SetCMS\Module\OAuth\OAuthClient\Scope\OAuthClientPrivateIndexScope::class => true,
                 \SetCMS\Module\OAuth\OAuthClient\Scope\OAuthClientPrivateEditScope::class => true,
+                \SetCMS\Module\OAuth\OAuthClient\Scope\OAuthClientPrivateCreateScope::class => true,
+                \SetCMS\Module\OAuth\OAuthClient\Scope\OAuthClientPrivateUpdateScope::class => true,
             ],
         ],
     ],

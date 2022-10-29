@@ -27,7 +27,7 @@ class ServeScopeServant implements ServantInterface
                 $this->servent->serve();
                 $this->scope->from($this->servent);
             }
-        } catch (\Exception $ex) {
+        } catch (\Throwable $ex) {
             $messages[] = [$ex->getMessage(), null];
         }
 
@@ -36,6 +36,7 @@ class ServeScopeServant implements ServantInterface
 
     protected function messages(): \Iterator
     {
+        
         $hydrator = new ArrayPropertyHydratorSevant;
         $hydrator->array = $this->array;
         $hydrator->object = $this->scope;

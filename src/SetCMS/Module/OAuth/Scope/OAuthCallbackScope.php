@@ -4,11 +4,12 @@ namespace SetCMS\Module\OAuth\Scope;
 
 use SetCMS\Module\OAuth\Servant\OAuthCallbackServant;
 use SetCMS\Module\OAuth\OAuthToken\OAuthTokenEntity;
+use SetCMS\UUID;
 
 class OAuthCallbackScope extends \SetCMS\Scope
 {
 
-    public string $client_id;
+    public UUID $id;
     public string $code;
     public ?string $cms_token = null;
     private ?OAuthTokenEntity $token = null;
@@ -18,7 +19,7 @@ class OAuthCallbackScope extends \SetCMS\Scope
         parent::to($object);
 
         if ($object instanceof OAuthCallbackServant) {
-            $object->clientId = $this->client_id;
+            $object->oauthClientId = $this->id;
             $object->code = $this->code;
             $object->cmsToken = $this->cms_token;
         }
