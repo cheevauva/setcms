@@ -14,7 +14,6 @@ trait OAuthClientPrivateSaveScopeTrait
     public string $clientSecret;
     public string $redirectURI;
     public string $loginUrl;
-    public string $autorizationCodeUrl;
     public bool $isAuthorizable = false;
 
     public function satisfy(): \Iterator
@@ -35,7 +34,6 @@ trait OAuthClientPrivateSaveScopeTrait
             $object->clientId = $this->clientId;
             $object->clientSecret = $this->clientSecret;
             $object->isAuthorizable = $this->isAuthorizable;
-            $object->autorizationCodeUrl = $this->autorizationCodeUrl;
         }
     }
 

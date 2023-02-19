@@ -1,0 +1,14 @@
+{% extends setcms.path('layout.twig') %}
+{% import setcms.path('macros/forms.twig') as forms %}
+
+{% block content %}
+    <form class="setcms-form row g-1" 
+          setcms-action="{{ setcms.link('do_action', {module: 'User', action: 'doLogin'}) }}"
+          setcms-redirect="{{ setcms.link('action', {module: 'User', action: 'profile'}) }}"
+          >
+        {{ forms.input({name: 'username', placeholder: 'Пользователь'}) }}
+        {{ forms.input({name: 'password', placeholder: 'Пароль', type: 'password'}) }}
+        {{ forms.captcha({name: 'captcha', label: 'Код с картинки'}) }}
+        {{ forms.submit({label: 'Отправить'}) }}
+    </form>
+{% endblock %}

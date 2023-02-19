@@ -9,7 +9,7 @@ use SetCMS\Module\OAuth\OAuthModel\OAuthModelTokenAuthorizationCode;
 use SetCMS\HttpStatusCode\NotFound;
 use SetCMS\Module\Users\User;
 use SetCMS\Module\OAuth\OAuthClient;
-use SetCMS\Module\OAuth\OAuthCode;
+use SetCMS\Module\OAuth\OAuthAppCode;
 use SetCMS\Module\OAuth\OAuthClientException;
 
 class OAuthService
@@ -52,7 +52,7 @@ class OAuthService
     public function tokenByAuthorizationCode(OAuthModelTokenAuthorizationCode $model): void
     {
 
-        //$this->oauthCodeDAO->remove($oauthCode->id);
+        //$this->OAuthAppCodeDAO->remove($OAuthAppCode->id);
     }
 
     public function removeToken(string $token)
@@ -63,15 +63,15 @@ class OAuthService
     }
 
 
-    public function generateAuthorizationCode(User $user, OAuthClient $oauthClient): OAuthCode
+    public function generateAuthorizationCode(User $user, OAuthClient $oauthClient): OAuthAppCode
     {
-        $oauthCode = new OAuthCode;
-        $oauthCode->oauthClientId = $oauthClient->id;
-        $oauthCode->userId = $user->id;
+        $OAuthAppCode = new OAuthAppCode;
+        $OAuthAppCode->oauthClientId = $oauthClient->id;
+        $OAuthAppCode->userId = $user->id;
 
-        $this->oauthCodeDAO->save($oauthCode);
+        $this->OAuthAppCodeDAO->save($OAuthAppCode);
 
-        return $oauthCode;
+        return $OAuthAppCode;
     }
 
     private function getValueFromNestedArrayByPath(array $array, string $path)

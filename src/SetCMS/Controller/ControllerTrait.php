@@ -43,7 +43,7 @@ trait ControllerTrait
         return $serveScope->scope;
     }
 
-    private function serve(ServerRequestInterface $request, ServantInterface $servant, Scope $scope, array $array): Scope
+    private function serve(ServerRequestInterface $request, ServantInterface $servant, Scope $scope, array $array = []): Scope
     {
         $this->secureByScope($scope, $request);
         $this->directServe($servant, $scope, $array);

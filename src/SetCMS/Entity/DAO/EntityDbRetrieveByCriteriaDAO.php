@@ -6,7 +6,6 @@ namespace SetCMS\Entity\DAO;
 
 use Doctrine\DBAL\Query\QueryBuilder;
 use SetCMS\Entity;
-use SetCMS\Entity\Exception\EntityNotFoundException;
 
 abstract class EntityDbRetrieveByCriteriaDAO extends EntityDbDAO
 {
@@ -20,11 +19,6 @@ abstract class EntityDbRetrieveByCriteriaDAO extends EntityDbDAO
     {
         $qb = $this->createQuery();
         $this->row = $qb->fetchAssociative() ?: null;
-
-        if (empty($this->row)) {
-            throw new EntityNotFoundException();
-        }
-        
         $this->entity = $this->row ? $this->entity4row($this->row) : null;
     }
 

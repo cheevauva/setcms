@@ -13,9 +13,12 @@ class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherI
 {
 
     private FactoryInterface $factory;
+    private static EventDispatcher $instance;
 
     public function __construct(ContainerInterface $container, FactoryInterface $factory)
     {
+        static::$instance = $this;
+
         $this->factory = $factory;
 
         foreach ($container->get('events') as $event => $eventListeners) {
@@ -46,6 +49,11 @@ class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherI
                 $this->factory->make($listener)($event, $eventName, $this);
             }
         }
+    }
+
+    public static function instance(): self
+    {
+        return static::$instance;
     }
 
 }

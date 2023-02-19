@@ -4,18 +4,19 @@ namespace SetCMS\Module\OAuth\Scope;
 
 use SetCMS\UUID;
 use SetCMS\Module\OAuth\Servant\OAuthAuthorizeWithCaptchaServant;
-use SetCMS\Module\OAuth\OAuthCode\OAuthCodeEntity;
+use SetCMS\Module\OAuth\OAuthAppCode\OAuthAppCodeEntity;
 
 class OAuthDoAuthorizeScope extends \SetCMS\Scope
 {
 
-    private ?OAuthCodeEntity $oauthCode = null;
+    private ?OAuthAppCodeEntity $OAuthAppCode = null;
     public string $client_id;
     public string $response_type;
     public string $redirect_uri;
     public string $username;
     public string $password;
-    public UUID $captcha;
+
+    //public UUID $captcha;
 
     public function to(object $object): void
     {
@@ -24,7 +25,7 @@ class OAuthDoAuthorizeScope extends \SetCMS\Scope
         if ($object instanceof OAuthAuthorizeWithCaptchaServant) {
             $object->username = $this->username;
             $object->password = $this->password;
-            $object->captcha = $this->captcha;
+            //$object->captcha = $this->captcha;
             $object->clientId = $this->client_id;
         }
     }
@@ -34,14 +35,14 @@ class OAuthDoAuthorizeScope extends \SetCMS\Scope
         parent::from($object);
 
         if ($object instanceof OAuthAuthorizeWithCaptchaServant) {
-            $this->oauthCode = $object->oauthCode;
+            $this->OAuthAppCode = $object->oauthAppCode;
         }
     }
 
     public function toArray(): array
     {
         return [
-            'code' => $this->oauthCode->code,
+            'code' => $this->OAuthAppCode->code ?? null,
             'clientId' => $this->client_id,
         ];
     }

@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\Servant;
 
-use SetCMS\Entity\Exception\EntityNotFoundException;
 use SetCMS\Module\User\UserEntity;
 use SetCMS\Module\User\DAO\UserEntitySaveDAO;
 use SetCMS\Module\User\DAO\UserEntityRetrieveByUsernameDAO;
 use SetCMS\Module\User\Event\UserRegistrationEvent;
 use SetCMS\Module\User\UserRoleEnum;
+use SetCMS\Module\User\Exception\UserAlreadyExistsException;
 
 class UserRegistrationServant implements \SetCMS\ServantInterface
 {
 
     use \SetCMS\DITrait;
-    use \SetCMS\EventDispatcherTrait;
 
     public string $username;
     public string $password;
@@ -23,29 +22,26 @@ class UserRegistrationServant implements \SetCMS\ServantInterface
 
     public function serve(): void
     {
-        try {
-            $retrieveByUsername = UserEntityRetrieveByUsernameDAO::make($this->factory());
-            $retrieveByUsername->username = $this->username;
-            $retrieveByUsername->throwExceptions = true;
-            $retrieveByUsername->serve();
+        $retrieveByUsername = UserEntityRetrieveByUsernameDAO::make($this->factory());
+        $retrieveByUsername->username = $this->username;
+        $retrieveByUsername->serve();
 
-            throw new \DomainException('Такой пользователь уже существует');
-        } catch (EntityNotFoundException $ex) {
-            $user = new UserEntity;
-            $user->username = $this->username;
-            $user->password = $this->password;
-            $user->role = UserRoleEnum::USER;
-
-            $saveUser = UserEntitySaveDAO::make($this->factory());
-            $saveUser->entity = $user;
-            $saveUser->serve();
-
-            $event = new UserRegistrationEvent;
-            $event->user = $user;
-            $event->dispatch($this->eventDispatcher());
-
-            $this->user = $user;
+        if ($retrieveByUsername->entity) {
+            throw UserAlreadyExistsException::withUser($retrieveByUsername->entity);
         }
+
+        $user = new UserEntity;
+        $user->username = $this->username;
+        $user->password = password_hash($this->password, PASSWORD_DEFAULT);
+        $user->role = UserRoleEnum::USER;
+
+        $saveUser = UserEntitySaveDAO::make($this->factory());
+        $saveUser->entity = $user;
+        $saveUser->serve();
+
+        (new UserRegistrationEvent($user))();
+
+        $this->user = $user;
     }
 
 }

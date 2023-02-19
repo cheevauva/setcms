@@ -44,6 +44,13 @@ final class Version20220430204715 extends AbstractMigration
 
         $this->addDefaultColumns($pages);
 
+        $oauthApps = $schema->createTable('oauth_apps');
+        $oauthApps->addColumn('name', 'string')->setLength(255);
+        $oauthApps->addColumn('client_id', 'string')->setLength(255)->setNotnull(false);
+        $oauthApps->addColumn('client_secret', 'string')->setLength(255)->setNotnull(false);
+
+        $this->addDefaultColumns($oauthApps);
+
         $oauthClients = $schema->createTable('oauth_clients');
         $oauthClients->addColumn('name', 'string')->setLength(255);
         $oauthClients->addColumn('client_id', 'string')->setLength(255)->setNotnull(false);

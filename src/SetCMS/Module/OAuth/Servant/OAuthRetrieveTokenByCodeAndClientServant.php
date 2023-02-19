@@ -11,7 +11,7 @@ use SetCMS\Module\OAuth\DAO\OAuthRetrieveTokenByCodeAndOAuthClientDAO;
 use SetCMS\Module\OAuth\OAuthToken\OAuthTokenEntity;
 use SetCMS\Module\OAuth\Servant\OAuthGenerateTokenServant;
 use SetCMS\Module\User\DAO\UserEntityDbRetrieveByIdDAO;
-use SetCMS\Module\OAuth\OAuthCode\DAO\OAuthCodeEntityRetrieveByCodeAndClientIdDAO;
+use SetCMS\Module\OAuth\OAuthAppCode\DAO\OAuthAppCodeEntityRetrieveByCodeAndAppDAO;
 
 class OAuthRetrieveTokenByCodeAndClientServant implements \SetCMS\ServantInterface
 {
@@ -25,12 +25,7 @@ class OAuthRetrieveTokenByCodeAndClientServant implements \SetCMS\ServantInterfa
 
     public function serve(): void
     {
-        if ($this->client instanceof OAuthClientSetCMSEntity) {
-            $generateToken = OAuthCodeEntityRetrieveByCodeAndClientIdDAO::make($this->factory());
-        } else {
-            $generateToken = OAuthRetrieveTokenByCodeAndOAuthClientDAO::make($this->factory());
-        }
-
+        $generateToken = OAuthRetrieveTokenByCodeAndOAuthClientDAO::make($this->factory());
         $generateToken->code = $this->code;
         $generateToken->oauthClient = $this->client;
         $generateToken->serve();
@@ -41,7 +36,7 @@ class OAuthRetrieveTokenByCodeAndClientServant implements \SetCMS\ServantInterfa
     public function serve2(): void
     {
         $retrieveUserById = UserEntityDbRetrieveByIdDAO::make($this->factory());
-        $retrieveUserById->id = $retrieveOAuthCodeByCodeAndClientId->oauthCode->userId;
+        $retrieveUserById->id = $retrieveOAuthAppCodeByCodeAndClientId->oauthAppCode->userId;
         $retrieveUserById->serve();
 
         $generateToken = OAuthGenerateTokenServant::make($this->factory());

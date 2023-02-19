@@ -10,7 +10,6 @@ class OAuthTokenEntityDbRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityDbRetri
 {
 
     use OAuthTokenEntityDbDAOTrait;
-    use \SetCMS\FactoryTrait;
 
     public ?OAuthTokenEntity $oauthToken = null;
     

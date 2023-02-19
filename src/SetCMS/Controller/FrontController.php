@@ -4,6 +4,7 @@ namespace SetCMS\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Container\ContainerInterface;
 use SetCMS\FactoryInterface;
 use SetCMS\Servant\ParseBodyRequestServant;
 use SetCMS\Servant\BuildResponseByMixedValueServant;
@@ -16,15 +17,15 @@ use SetCMS\Controller\Event\FrontControllerResolveEvent;
 class FrontController
 {
 
-    public function resolve(ServerRequestInterface $request, ResponseInterface $response, $container): ResponseInterface
+    public function resolve(ServerRequestInterface $request, ResponseInterface $response, ContainerInterface $container): ResponseInterface
     {
         $factory = $container->get(FactoryInterface::class);
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
-        
+
         $resolveEvent = new FrontControllerResolveEvent;
         $resolveEvent->request = $request;
         $resolveEvent->dispatch($eventDispatcher);
-        
+
         $request = $resolveEvent->request;
 
         try {

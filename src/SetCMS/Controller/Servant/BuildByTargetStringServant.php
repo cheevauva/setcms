@@ -27,11 +27,11 @@ class BuildByTargetStringServant implements ServantInterface
         list($controllerClassName, $methodName) = explode('::', $this->target, 2);
 
         if (!class_exists($controllerClassName, true)) {
-            throw new ControllerNotFound($controllerClassName);
+            throw new \Exception($controllerClassName);
         }
 
         if (!method_exists($controllerClassName, $methodName)) {
-            throw new MethodNotFound($methodName);
+            throw new \Exception($methodName);
         }
 
         $this->controller = $this->factory->make($controllerClassName);

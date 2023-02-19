@@ -7,8 +7,11 @@ use SetCMS\Module\User\UserEntity;
 class UserRegistrationEvent
 {
 
+    use \SetCMS\AsTrait;
     use \SetCMS\EventTrait;
 
-    public UserEntity $user;
+    public function __construct(public UserEntity $user)
+    {
+    }
 
 }

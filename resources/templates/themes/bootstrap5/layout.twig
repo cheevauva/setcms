@@ -48,12 +48,12 @@
                                     <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('home_admin') }}">Администрирование</a>
                                 {% endif %}
                                 {% if currentUser.hasRoleAsString('guest') %}
-                                    <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('action', {module: 'OAuth', action: 'login'}) }}">Вход</a> 
+                                    <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('action', {module: 'User', action: 'login'}) }}">Вход</a> 
                                     <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('action', {module: 'User', action: 'registration'}) }}">Регистрация</a>
                                 {% endif %}
                                 {% if currentUser.hasRoleAsString('user') %}
                                     <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('action', {module: 'User', action: 'profile'}) }}">Профиль</a>
-                                    <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('action', {module: 'OAuth', action: 'logout'}) }}">Выйти</a>
+                                    <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('action', {module: 'User', action: 'logout'}) }}">Выйти</a>
                                 {% endif %}
                             </span>
                         </div>

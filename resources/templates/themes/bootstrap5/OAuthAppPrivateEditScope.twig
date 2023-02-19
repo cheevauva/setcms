@@ -1,0 +1,18 @@
+{% extends setcms.path('layout_admin.twig') %}
+{% import setcms.path('macros/forms.twig') as forms %}
+
+{% block content_title %}
+    Создать пост
+{% endblock %}
+
+{% block content %}
+    <form class="setcms-form g-3" 
+          setcms-method="POST"
+          setcms-action="{{ setcms.link('action_oauthapps_admin', { action: entity ? 'update' : 'create', id: entity.id}) }}"
+          setcms-redirect="{{ setcms.link('action_oauthapps_admin', {action: 'index'}) }}"
+          >
+        {{ forms.hidden({name: 'id', value: entity ? entity.id : UUID() }) }}
+        {{ forms.input({value: entity.name, name: 'name', type: 'text', label: 'Название'}) }}
+        {{ forms.submit({label: 'Сохранить'}) }}
+    </form>
+{% endblock %}

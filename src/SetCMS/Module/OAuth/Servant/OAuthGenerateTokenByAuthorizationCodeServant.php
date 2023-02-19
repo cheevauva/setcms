@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\OAuth\Servant;
 
-
-
 use SetCMS\Module\OAuth\OAuthToken\OAuthTokenEntity;
 use SetCMS\Module\OAuth\OAuthClient\OAuthClientEntity;
 
@@ -21,12 +19,10 @@ class OAuthGenerateTokenByAuthorizationCodeServant implements \SetCMS\ServantInt
 
     public function serve(): void
     {
-        $retrieveOAuthCodeByCodeAndClientId = OAuthCodeEntityRetrieveByCodeAndClientIdDAO::make($this->factory());
-        $retrieveOAuthCodeByCodeAndClientId->oauthClient = $this->client;
-        $retrieveOAuthCodeByCodeAndClientId->code = $this->code;
-        $retrieveOAuthCodeByCodeAndClientId->serve();
-        
-
+        $retrieveOAuthAppCodeByCodeAndClientId = OAuthAppCodeEntityRetrieveByCodeAndClientIdDAO::make($this->factory());
+        $retrieveOAuthAppCodeByCodeAndClientId->oauthApp = $this->client;
+        $retrieveOAuthAppCodeByCodeAndClientId->code = $this->code;
+        $retrieveOAuthAppCodeByCodeAndClientId->serve();
     }
 
 }

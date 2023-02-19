@@ -15,9 +15,9 @@ class OAuthAuthorizeWithCaptchaServant extends OAuthAuthorizeServant
 
     public function serve(): void
     {
-        $useCaptcha = CaptchaUseResolvedCaptchaServant::make($this->factory());
-        $useCaptcha->captcha = $this->captcha;
-        $useCaptcha->serve();
+//        $useCaptcha = CaptchaUseResolvedCaptchaServant::make($this->factory());
+//        $useCaptcha->captcha = $this->captcha;
+//        $useCaptcha->serve();
 
         parent::serve();
     }

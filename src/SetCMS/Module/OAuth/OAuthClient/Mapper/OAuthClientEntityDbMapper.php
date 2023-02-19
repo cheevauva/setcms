@@ -26,7 +26,7 @@ class OAuthClientEntityDbMapper extends \SetCMS\Entity\Mapper\EntityDbMapper
         $this->row['redirect_uri'] = $this->entity()->redirectURI;
         $this->row['login_url'] = $this->entity()->loginUrl;
         $this->row['is_authorizable'] = (int) $this->entity()->isAuthorizable;
-        $this->row['autorization_code_url'] = $this->entity()->autorizationCodeUrl;
+        //$this->row['autorization_code_url'] = $this->entity()->autorizationCodeUrl;
     }
 
     protected function entity4row(): void
@@ -39,7 +39,7 @@ class OAuthClientEntityDbMapper extends \SetCMS\Entity\Mapper\EntityDbMapper
         $this->entity()->redirectURI = $this->row['redirect_uri'] ?? '';
         $this->entity()->loginUrl = $this->row['login_url'] ?? '';
         $this->entity()->isAuthorizable = !empty($this->row['is_authorizable']);
-        $this->entity()->autorizationCodeUrl = $this->row['autorization_code_url'];
+        //$this->entity()->autorizationCodeUrl = $this->row['autorization_code_url'];
     }
 
 }
