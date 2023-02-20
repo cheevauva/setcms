@@ -21,7 +21,7 @@ abstract class EntityCommonDAO implements ServantInterface
     abstract protected function mapper(): EntityMapper;
 
     abstract protected function table(): string;
-
+    
     protected function createQuery(): QueryBuilder
     {
         $qb = $this->db()->createQueryBuilder();

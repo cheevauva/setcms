@@ -17,7 +17,7 @@ class PostEntityUpdateServant extends \SetCMS\Entity\Servant\EntityUpdateServant
         return PostRetrieveByIdDAO::make($this->factory());
     }
 
-    protected function saveEntity(): PostSaveDAO
+    protected function save(): PostSaveDAO
     {
         return PostSaveDAO::make($this->factory());
     }

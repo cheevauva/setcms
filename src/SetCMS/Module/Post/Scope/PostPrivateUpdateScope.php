@@ -7,5 +7,5 @@ namespace SetCMS\Module\Post\Scope;
 class PostPrivateUpdateScope extends \SetCMS\Entity\Scope\EntityUpdateScope
 {
 
-    use PostPrivateEntityScopeTrait;
+    use PostPrivateGenericScope;
 }

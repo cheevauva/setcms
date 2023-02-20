@@ -9,7 +9,7 @@ use SetCMS\Module\Post\PostEntity;
 class PostPrivateCreateScope extends \SetCMS\Entity\Scope\EntityCreateScope
 {
 
-    use PostPrivateEntityScopeTrait;
+    use PostPrivateGenericScope;
 
     protected function entity(): PostEntity
     {

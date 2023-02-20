@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Servant;
 
+use SetCMS\Entity\Servant\EntityCreateServant;
 use SetCMS\Module\Post\DAO\PostHasByIdDAO;
 use SetCMS\Module\Post\DAO\PostSaveDAO;
+use SetCMS\Module\Post\Exception\PostAlreadyExistsException;
 
-class PostEntityCreateServant extends \SetCMS\Entity\Servant\EntityCreateServant
+class PostEntityCreateServant extends EntityCreateServant
 {
 
     use \SetCMS\DITrait;
@@ -22,4 +24,8 @@ class PostEntityCreateServant extends \SetCMS\Entity\Servant\EntityCreateServant
         return PostSaveDAO::make($this->factory());
     }
 
+    protected function alreadyExistsException(): PostAlreadyExistsException
+    {
+        return new PostAlreadyExistsException;
+    }
 }

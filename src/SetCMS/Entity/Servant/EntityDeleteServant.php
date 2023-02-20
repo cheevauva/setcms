@@ -13,22 +13,32 @@ use SetCMS\UUID;
 abstract class EntityDeleteServant implements ServantInterface
 {
 
-    protected EntityRetrieveByIdDAO $retrieveById;
-    protected EntitySaveDAO $save;
+    public ?Entity $entity = null;
     public ?UUID $id = null;
-    public Entity $entity;
 
     public function serve(): void
     {
-        $this->retrieveById->id = $this->id ?? $this->entity->id;
-        $this->retrieveById->throwExceptions = true;
-        $this->retrieveById->serve();
+        $retrieveById = $this->retrieveById();
+        $retrieveById->id = $this->id ?? $this->entity->id;
+        $retrieveById->serve();
 
-        $this->entity = $this->retrieveById->entity;
-        $this->entity->deleted = true;
+        if (!$retrieveById->entity) {
+            throw $this->notFoundException();
+        }
 
-        $this->save->entity = $this->entity;
-        $this->save->serve();
+        $entity = $retrieveById->entity;
+        $entity->deleted = true;
+
+        $save = $this->save();
+        $save->entity = $entity;
+        $save->serve();
+
+        $this->entity = $entity;
     }
 
+    abstract protected function retrieveById(): EntityRetrieveByIdDAO;
+
+    abstract protected function save(): EntitySaveDAO;
+
+    abstract protected function notFoundException(): \Exception;
 }

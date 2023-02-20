@@ -6,7 +6,7 @@ namespace SetCMS\Module\Module01\Scope;
 
 use SetCMS\Module\Module01\Entity01Entity;
 
-trait Module01PrivateEntityScopeTrait
+trait Module01PrivateGenericScope
 {
 
     public $field01;

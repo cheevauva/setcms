@@ -49,6 +49,7 @@ foreach ($files as $file) {
     $targetContent = strtr(file_get_contents($source), [
         'Module01' => $module,
         'Entity01' => $entity,
+        'Entity01LC' => lcfirst($entity),
         'Table01' => $table,
     ]);
 

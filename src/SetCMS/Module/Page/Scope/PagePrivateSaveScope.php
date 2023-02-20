@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace SetCMS\Module\Page\Scope;
 
 use SetCMS\Module\Page\PageEntity;
-use SetCMS\Module\Page\Servant\PageEntitySaveServant;
-use SetCMS\Module\Page\DAO\PageEntityDbRetrieveByIdDAO;
 
 class PagePrivateSaveScope extends \SetCMS\Entity\Scope\EntitySaveScope
 {

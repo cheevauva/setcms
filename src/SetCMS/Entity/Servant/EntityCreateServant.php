@@ -21,13 +21,15 @@ abstract class EntityCreateServant implements ServantInterface
         $hasEntityById->serve();
 
         if ($hasEntityById->isExists) {
-            throw new \Exception('Запись уже существует, необходимо использовать обновление');
+            throw $this->alreadyExistsException();
         }
 
         $saveEntity = $this->saveEntity();
         $saveEntity->entity = $this->entity;
         $saveEntity->serve();
     }
+
+    abstract protected function alreadyExistsException(): \Exception;
 
     abstract protected function saveEntity(): EntitySaveDAO;
 

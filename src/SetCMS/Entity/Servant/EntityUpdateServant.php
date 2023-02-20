@@ -16,20 +16,22 @@ abstract class EntityUpdateServant implements ServantInterface
 
     public function serve(): void
     {
-        $hasById = $this->hasEntityById();
+        $hasById = $this->hasById();
         $hasById->id = $this->entity->id;
         $hasById->serve();
 
         if (empty($hasById->isExists)) {
-            throw new \Exception('Запись для обновления не найдена');
+            throw $this->notFoundException();
         }
 
-        $saveEntity = $this->saveEntity();
+        $saveEntity = $this->save();
         $saveEntity->entity = $this->entity;
         $saveEntity->serve();
     }
 
-    abstract protected function hasEntityById(): EntityHasByIdDAO;
+    abstract protected function hasById(): EntityHasByIdDAO;
 
-    abstract protected function saveEntity(): EntitySaveDAO;
+    abstract protected function save(): EntitySaveDAO;
+
+    abstract protected function notFoundException(): \Exception;
 }

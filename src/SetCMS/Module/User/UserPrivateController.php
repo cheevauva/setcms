@@ -7,7 +7,6 @@ namespace SetCMS\Module\User;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\User\DAO\UserEntityDbRetrieveManyDAO;
 use SetCMS\Module\User\DAO\UserEntityDbRetrieveByIdDAO;
-use SetCMS\Module\User\Servant\UserEntitySaveServant;
 use SetCMS\Module\User\Scope\UserPrivateEditScope;
 use SetCMS\Module\User\Scope\UserPrivateIndexScope;
 use SetCMS\Module\User\Scope\UserPrivateSaveScope;
@@ -33,7 +32,7 @@ class UserPrivateController
     public function new(ServerRequestInterface $request, UserPrivateEditScope $scope): UserPrivateEditScope
     {
         $this->secureByScope($scope, $request);
-        
+
         return $scope;
     }
 
@@ -44,7 +43,7 @@ class UserPrivateController
         ]);
     }
 
-    public function save(ServerRequestInterface $request, UserPrivateSaveScope $scope, UserEntitySaveServant $servant): UserPrivateSaveScope
+    public function save(ServerRequestInterface $request, UserPrivateSaveScope $scope, $servant): UserPrivateSaveScope
     {
         $servant->id = $request->getAttribute('id');
 

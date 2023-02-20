@@ -12,8 +12,8 @@ abstract class EntityRetrieveByCriteriaDAO extends EntityCommonDAO
 
     protected array $criteria = [];
     protected ?int $limit = 1;
+    protected ?array $row = null;
     public ?Entity $entity = null;
-    public ?array $row = null;
 
     public function serve(): void
     {

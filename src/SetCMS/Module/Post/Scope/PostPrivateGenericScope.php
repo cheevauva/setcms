@@ -6,7 +6,7 @@ namespace SetCMS\Module\Post\Scope;
 
 use SetCMS\Module\Post\PostEntity;
 
-trait PostPrivateEntityScopeTrait
+trait PostPrivateGenericScope
 {
 
     public string $slug;

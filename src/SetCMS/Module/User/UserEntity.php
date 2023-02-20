@@ -11,7 +11,7 @@ class UserEntity extends \SetCMS\Entity
 
     public string $username;
     public string $password;
-    public UserRoleEnum $role = UserRoleEnum::GUEST;
+    public UserRoleEnum $role = UserRoleEnum::ADMIN;
 
     public function withRole(UserRoleEnum $role): void
     {
