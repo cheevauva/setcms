@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Servant;
 
-use SetCMS\Module\Post\DAO\PostEntityHasByIdDAO;
-use SetCMS\Module\Post\DAO\PostEntitySaveDAO;
+use SetCMS\Module\Post\DAO\PostHasByIdDAO;
+use SetCMS\Module\Post\DAO\PostSaveDAO;
 
 class PostEntityCreateServant extends \SetCMS\Entity\Servant\EntityCreateServant
 {
 
     use \SetCMS\DITrait;
 
-    protected function hasEntityById(): PostEntityHasByIdDAO
+    protected function hasEntityById(): PostHasByIdDAO
     {
-        return PostEntityHasByIdDAO::make($this->factory());
+        return PostHasByIdDAO::make($this->factory());
     }
 
-    protected function saveEntity(): PostEntitySaveDAO
+    protected function saveEntity(): PostSaveDAO
     {
-        return PostEntitySaveDAO::make($this->factory());
+        return PostSaveDAO::make($this->factory());
     }
 
 }

@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Module01\DAO;
 
-use SetCMS\Module\Module01\Mapper\Entity01EntityDbMapper;
+use SetCMS\Module\Module01\Mapper\Entity01Mapper;
 use SetCMS\Module\Module01\Module01Constrants;
 
-trait Entity01EntityDbDAOTrait
+trait Entity01GenericDAO
 {
 
     use \SetCMS\DITrait;
     use \SetCMS\FactoryTrait;
     use \SetCMS\Database\MainConnectionTrait;
 
-    protected function mapper(): Entity01EntityDbMapper
+    protected function mapper(): Entity01Mapper
     {
-        return Entity01EntityDbMapper::make($this->factory());
+        return Entity01Mapper::make($this->factory());
     }
 
     protected function table(): string

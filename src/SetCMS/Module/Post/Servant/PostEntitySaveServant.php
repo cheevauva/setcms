@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post\Servant;
 
 use SetCMS\FactoryInterface;
-use SetCMS\Module\Post\DAO\PostEntityRetrieveByIdDAO;
-use SetCMS\Module\Post\DAO\PostEntitySaveDAO;
+use SetCMS\Module\Post\DAO\PostRetrieveByIdDAO;
+use SetCMS\Module\Post\DAO\PostSaveDAO;
 use SetCMS\Module\Post\PostEntity;
 
 class PostEntitySaveServant extends \SetCMS\Entity\Servant\EntitySaveServant
@@ -19,14 +19,14 @@ class PostEntitySaveServant extends \SetCMS\Entity\Servant\EntitySaveServant
         return new PostEntity;
     }
 
-    protected function retrieveEntityById(): PostEntityRetrieveByIdDAO
+    protected function retrieveEntityById(): PostRetrieveByIdDAO
     {
-        return PostEntityRetrieveByIdDAO::make($this->factory());
+        return PostRetrieveByIdDAO::make($this->factory());
     }
 
-    protected function saveEntity(): PostEntitySaveDAO
+    protected function saveEntity(): PostSaveDAO
     {
-        return PostEntitySaveDAO::make($this->factory());
+        return PostSaveDAO::make($this->factory());
     }
 
 }

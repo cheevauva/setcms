@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\OAuth\OAuthApp\Mapper;
 
-use SetCMS\Entity\Mapper\EntityDbMapper;
+use SetCMS\Entity\Mapper\EntityMapper;
 use SetCMS\Module\OAuth\OAuthApp\OAuthAppEntity;
 
-class OAuthAppEntityDbMapper extends EntityDbMapper
+class OAuthAppEntityDbMapper extends EntityMapper
 {
 
     use \SetCMS\FactoryTrait;

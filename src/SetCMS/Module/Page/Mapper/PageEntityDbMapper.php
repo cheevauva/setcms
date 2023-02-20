@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page\Mapper;
 
-use SetCMS\Entity\Mapper\EntityDbMapper;
+use SetCMS\Entity\Mapper\EntityMapper;
 use SetCMS\Module\Page\PageEntity;
 
-class PageEntityDbMapper extends EntityDbMapper
+class PageEntityDbMapper extends EntityMapper
 {
 
     use \SetCMS\FactoryTrait;

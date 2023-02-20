@@ -6,7 +6,7 @@ namespace SetCMS\Entity\DAO;
 
 use SetCMS\UUID;
 
-abstract class EntityDbHasByIdDAO extends EntityDbDAO
+abstract class EntityHasByIdDAO extends EntityCommonDAO
 {
 
     public UUID $id;

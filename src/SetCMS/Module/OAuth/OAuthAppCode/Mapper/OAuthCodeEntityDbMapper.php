@@ -7,7 +7,7 @@ namespace SetCMS\Module\OAuth\OAuthAppCode\Mapper;
 use SetCMS\Module\OAuth\OAuthAppCode\OAuthAppCodeEntity;
 use SetCMS\UUID;
 
-class OAuthAppCodeEntityDbMapper extends \SetCMS\Entity\Mapper\EntityDbMapper
+class OAuthAppCodeEntityDbMapper extends \SetCMS\Entity\Mapper\EntityMapper
 {
 
     use \SetCMS\FactoryTrait;

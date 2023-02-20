@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace SetCMS\Entity\Servant;
 
 use SetCMS\ServantInterface;
-use SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO;
-use SetCMS\Entity\DAO\EntityDbSaveDAO;
+use SetCMS\Entity\DAO\EntityRetrieveByIdDAO;
+use SetCMS\Entity\DAO\EntitySaveDAO;
 use SetCMS\Entity;
 use SetCMS\UUID;
 
 abstract class EntityDeleteServant implements ServantInterface
 {
 
-    protected EntityDbRetrieveByIdDAO $retrieveById;
-    protected EntityDbSaveDAO $save;
+    protected EntityRetrieveByIdDAO $retrieveById;
+    protected EntitySaveDAO $save;
     public ?UUID $id = null;
     public Entity $entity;
 

@@ -9,7 +9,6 @@ use SetCMS\FactoryInterface;
 use SetCMS\Servant\ParseBodyRequestServant;
 use SetCMS\Servant\BuildResponseByMixedValueServant;
 use SetCMS\Servant\MatchRouteByRequestServant;
-use Psr\EventDispatcher\EventDispatcherInterface;
 use SetCMS\Controller\Servant\BuildByTargetStringServant;
 use SetCMS\Servant\RetrieveArgumentsByMethodServant;
 use SetCMS\Controller\Event\FrontControllerResolveEvent;
@@ -20,25 +19,19 @@ class FrontController
     public function resolve(ServerRequestInterface $request, ResponseInterface $response, ContainerInterface $container): ResponseInterface
     {
         $factory = $container->get(FactoryInterface::class);
-        $eventDispatcher = $container->get(EventDispatcherInterface::class);
-
-        $resolveEvent = new FrontControllerResolveEvent;
-        $resolveEvent->request = $request;
-        $resolveEvent->dispatch($eventDispatcher);
-
-        $request = $resolveEvent->request;
+        $newRequest = (new FrontControllerResolveEvent($request))->dispatch()->request;
 
         try {
             $matchRequest = MatchRouteByRequestServant::make($factory);
-            $matchRequest->apply($request);
+            $matchRequest->apply($newRequest);
             $matchRequest->serve();
 
             foreach ($matchRequest->routerMatch->params as $pName => $pValue) {
-                $request = $request->withAttribute($pName, $pValue);
+                $newRequest = $newRequest->withAttribute($pName, $pValue);
             }
 
             $parseBody = ParseBodyRequestServant::make($factory);
-            $parseBody->request = $request;
+            $parseBody->request = $newRequest;
             $parseBody->serve();
 
             $controllerBuilder = BuildByTargetStringServant::make($factory);
@@ -57,7 +50,7 @@ class FrontController
         }
 
         $prepareResponse = BuildResponseByMixedValueServant::make($factory);
-        $prepareResponse->request = $parseBody->request ?? $request;
+        $prepareResponse->request = $parseBody->request ?? $newRequest;
         $prepareResponse->mixedValue = $output;
         $prepareResponse->serve();
 

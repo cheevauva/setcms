@@ -6,7 +6,7 @@ namespace SetCMS\Entity\DAO;
 
 use SetCMS\UUID;
 
-abstract class EntityDbRetrieveByIdDAO extends EntityDbRetrieveByCriteriaDAO
+abstract class EntityRetrieveByIdDAO extends EntityRetrieveByCriteriaDAO
 {
 
     public UUID $id;

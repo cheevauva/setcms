@@ -6,7 +6,7 @@ namespace SetCMS\Module\OAuth\OAuthClient\DAO;
 
 use SetCMS\Module\OAuth\OAuthClient\OAuthClientEntity;
 
-class OAuthClientEntityRetrieveByClientIdDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByCriteriaDAO
+class OAuthClientEntityRetrieveByClientIdDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
 {
     
     public ?OAuthClientEntity $oauthClient = null;

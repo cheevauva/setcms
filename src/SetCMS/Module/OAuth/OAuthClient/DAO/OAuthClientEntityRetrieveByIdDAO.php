@@ -6,7 +6,7 @@ namespace SetCMS\Module\OAuth\OAuthClient\DAO;
 
 use SetCMS\Module\OAuth\OAuthClient\OAuthClientEntity;
 
-class OAuthClientEntityRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO
+class OAuthClientEntityRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityRetrieveByIdDAO
 {
 
     use OAuthClientEntityDbDAOTrait;

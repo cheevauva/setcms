@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\DAO;
 
-use SetCMS\Module\Post\Mapper\PostEntityDbMapper;
+use SetCMS\Module\Post\Mapper\PostMapper;
 use SetCMS\Module\Post\PostConstants;
 
-trait PostEntityDbDAOTrait
+trait PostGenericDAO
 {   
     use \SetCMS\DITrait;
     use \SetCMS\FactoryTrait;
     use \SetCMS\Database\MainConnectionTrait;
 
-    protected function mapper(): PostEntityDbMapper
+    protected function mapper(): PostMapper
     {
-        return PostEntityDbMapper::make($this->factory());
+        return PostMapper::make($this->factory());
     }
     
     protected function table(): string

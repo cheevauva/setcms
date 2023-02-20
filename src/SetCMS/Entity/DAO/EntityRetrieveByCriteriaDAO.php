@@ -7,7 +7,7 @@ namespace SetCMS\Entity\DAO;
 use Doctrine\DBAL\Query\QueryBuilder;
 use SetCMS\Entity;
 
-abstract class EntityDbRetrieveByCriteriaDAO extends EntityDbDAO
+abstract class EntityRetrieveByCriteriaDAO extends EntityCommonDAO
 {
 
     protected array $criteria = [];

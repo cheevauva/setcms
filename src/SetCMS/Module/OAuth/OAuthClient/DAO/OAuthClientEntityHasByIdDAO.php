@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\OAuth\OAuthClient\DAO;
 
-class OAuthClientEntityHasByIdDAO extends \SetCMS\Entity\DAO\EntityDbHasByIdDAO
+class OAuthClientEntityHasByIdDAO extends \SetCMS\Entity\DAO\EntityHasByIdDAO
 {
 
     use OAuthClientEntityDbDAOTrait;

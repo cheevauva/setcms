@@ -7,7 +7,7 @@ namespace SetCMS\Entity\DAO;
 use SetCMS\Entity;
 use SetCMS\UUID;
 
-abstract class EntityDbSaveDAO extends EntityDbDAO
+abstract class EntitySaveDAO extends EntityCommonDAO
 {
 
     public Entity $entity;

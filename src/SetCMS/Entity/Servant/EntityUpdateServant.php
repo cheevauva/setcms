@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace SetCMS\Entity\Servant;
 
 use SetCMS\ServantInterface;
-use SetCMS\Entity\DAO\EntityDbHasByIdDAO;
-use SetCMS\Entity\DAO\EntityDbSaveDAO;
+use SetCMS\Entity\DAO\EntityHasByIdDAO;
+use SetCMS\Entity\DAO\EntitySaveDAO;
 use SetCMS\Entity;
 
 abstract class EntityUpdateServant implements ServantInterface
@@ -29,7 +29,7 @@ abstract class EntityUpdateServant implements ServantInterface
         $saveEntity->serve();
     }
 
-    abstract protected function hasEntityById(): EntityDbHasByIdDAO;
+    abstract protected function hasEntityById(): EntityHasByIdDAO;
 
-    abstract protected function saveEntity(): EntityDbSaveDAO;
+    abstract protected function saveEntity(): EntitySaveDAO;
 }

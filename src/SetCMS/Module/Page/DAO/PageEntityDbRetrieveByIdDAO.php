@@ -6,7 +6,7 @@ namespace SetCMS\Module\Page\DAO;
 
 use SetCMS\Module\Page\PageEntity;
 
-class PageEntityDbRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO
+class PageEntityDbRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityRetrieveByIdDAO
 {
 
     public ?PageEntity $page = null;

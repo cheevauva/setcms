@@ -6,10 +6,11 @@ namespace SetCMS\Entity\DAO;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
+use SetCMS\ServantInterface;
 use SetCMS\Entity;
-use SetCMS\Entity\Mapper\EntityDbMapper;
+use SetCMS\Entity\Mapper\EntityMapper;
 
-abstract class EntityDbDAO implements \SetCMS\ServantInterface
+abstract class EntityCommonDAO implements ServantInterface
 {
 
     protected ?int $limit = null;
@@ -17,7 +18,7 @@ abstract class EntityDbDAO implements \SetCMS\ServantInterface
 
     abstract protected function db(): Connection;
 
-    abstract protected function mapper(): EntityDbMapper;
+    abstract protected function mapper(): EntityMapper;
 
     abstract protected function table(): string;
 

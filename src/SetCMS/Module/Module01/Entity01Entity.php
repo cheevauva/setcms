@@ -9,6 +9,8 @@ use SetCMS\Entity;
 class Entity01Entity extends Entity
 {
 
+    use \SetCMS\AsTrait;
+
     public $field01;
 
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\OAuth\OAuthClient\DAO;
 
-class OAuthClientEntityRetrieveByEntityTypeDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByCriteriaDAO
+class OAuthClientEntityRetrieveByEntityTypeDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
 {
 
     use OAuthClientEntityDbDAOTrait;

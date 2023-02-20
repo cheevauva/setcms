@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace SetCMS\Entity\Servant;
 
 use SetCMS\ServantInterface;
-use SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO;
-use SetCMS\Entity\DAO\EntityDbSaveDAO;
+use SetCMS\Entity\DAO\EntityRetrieveByIdDAO;
+use SetCMS\Entity\DAO\EntitySaveDAO;
 use SetCMS\Contract\Applicable;
 use SetCMS\Entity;
 use SetCMS\UUID;
@@ -40,7 +40,7 @@ abstract class EntitySaveServant implements ServantInterface
 
     abstract protected function entity(): Entity;
 
-    abstract protected function saveEntity(): EntityDbSaveDAO;
+    abstract protected function saveEntity(): EntitySaveDAO;
 
-    abstract protected function retrieveEntityById(): EntityDbRetrieveByIdDAO;
+    abstract protected function retrieveEntityById(): EntityRetrieveByIdDAO;
 }

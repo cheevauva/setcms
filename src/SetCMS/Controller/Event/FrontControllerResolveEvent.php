@@ -11,6 +11,9 @@ class FrontControllerResolveEvent
 
     use \SetCMS\EventTrait;
 
-    public ServerRequestInterface $request;
+    public function __construct(public ServerRequestInterface $request)
+    {
+        
+    }
 
 }

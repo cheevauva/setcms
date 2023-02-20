@@ -23,7 +23,7 @@ class OAuthClientEntitySaveServant extends \SetCMS\Entity\Servant\EntitySaveServ
         return OAuthClientEntityRetrieveByIdDAO::make($this->factory());
     }
 
-    protected function saveEntity(): \SetCMS\Entity\DAO\EntityDbSaveDAO
+    protected function saveEntity(): \SetCMS\Entity\DAO\EntitySaveDAO
     {
         return OAuthClientEntitySaveDAO::make($this->factory());
     }

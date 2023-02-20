@@ -6,7 +6,7 @@ namespace SetCMS\Module\User\DAO;
 
 use SetCMS\Module\User\UserEntity;
 
-class UserEntityRetrieveByUsernameDAO extends \SetCMS\Entity\DAO\EntityDbRetrieveByCriteriaDAO
+class UserEntityRetrieveByUsernameDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
 {
     public ?UserEntity $user = null;
     public string $username;

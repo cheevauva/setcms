@@ -8,7 +8,7 @@ use SetCMS\ServantInterface;
 use SetCMS\Entity;
 use SetCMS\UUID;
 
-abstract class EntityDbMapper implements ServantInterface
+abstract class EntityMapper implements ServantInterface
 {
 
     public ?Entity $entity = null;

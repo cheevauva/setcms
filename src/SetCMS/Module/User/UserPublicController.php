@@ -32,18 +32,14 @@ class UserPublicController
         return $this->serve($request, $servant, $scope, $request->getParsedBody());
     }
 
-    public function profile(ServerRequestInterface $request, UserProfileScope $scope, UserEntityRetrieveByOAuthAccessTokenServant $servant): UserProfileScope
+    public function profile(ServerRequestInterface $request, UserProfileScope $scope): UserProfileScope
     {
-        return $this->serve($request, $servant, $scope, [
-            'token' => $request->getAttribute(ServerRequestAttribute::ACCESS_TOKEN),
-        ]);
+        return $this->secureByScope($scope, $request);
     }
 
-    public function userinfo(ServerRequestInterface $request, UserInfoScope $scope, UserEntityRetrieveByOAuthAccessTokenServant $servant): UserInfoScope
+    public function userinfo(ServerRequestInterface $request, UserInfoScope $scope): UserInfoScope
     {
-        return $this->serve($request, $servant, $scope, [
-            'token' => $request->getAttribute(ServerRequestAttribute::ACCESS_TOKEN),
-        ]);
+        return $this->secureByScope($scope, $request);
     }
 
     public function registration(ServerRequestInterface $request, UserRegistrationScope $scope): UserRegistrationScope

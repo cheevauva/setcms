@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Entity\DAO;
 
-abstract class EntityDbRetrieveManyByCriteriaDAO extends EntityDbRetrieveManyDAO 
+abstract class EntityRetrieveManyByCriteriaDAO extends EntityRetrieveManyDAO 
 {
 
     protected array $criteria = [];

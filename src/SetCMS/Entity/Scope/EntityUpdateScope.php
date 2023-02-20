@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Entity\Scope;
 
-use SetCMS\Entity\DAO\EntityDbRetrieveByIdDAO;
+use SetCMS\Entity\DAO\EntityRetrieveByIdDAO;
 use SetCMS\Entity\Servant\EntityUpdateServant;
 
 abstract class EntityUpdateScope extends EntitySaveScope
@@ -14,7 +14,7 @@ abstract class EntityUpdateScope extends EntitySaveScope
     {
         parent::from($object);
 
-        if ($object instanceof EntityDbRetrieveByIdDAO) {
+        if ($object instanceof EntityRetrieveByIdDAO) {
             $this->entity = $object->entity;
         }
     }
@@ -28,7 +28,7 @@ abstract class EntityUpdateScope extends EntitySaveScope
             $object->entity = $this->entity;
         }
         
-        if ($object instanceof EntityDbRetrieveByIdDAO) {
+        if ($object instanceof EntityRetrieveByIdDAO) {
             $object->id = $this->id;
         }
     }
