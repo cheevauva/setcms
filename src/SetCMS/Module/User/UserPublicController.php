@@ -3,8 +3,6 @@
 namespace SetCMS\Module\User;
 
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\ServerRequestAttribute;
-use SetCMS\Module\User\Servant\UserEntityRetrieveByOAuthAccessTokenServant;
 use SetCMS\Module\User\Servant\UserRegistrationServant;
 use SetCMS\Module\User\Servant\UserLoginServant;
 use SetCMS\Module\User\Scope\UserProfileScope;

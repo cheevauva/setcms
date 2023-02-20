@@ -44,47 +44,6 @@ final class Version20220430204715 extends AbstractMigration
 
         $this->addDefaultColumns($pages);
 
-        $oauthApps = $schema->createTable('oauth_apps');
-        $oauthApps->addColumn('name', 'string')->setLength(255);
-        $oauthApps->addColumn('client_id', 'string')->setLength(255)->setNotnull(false);
-        $oauthApps->addColumn('client_secret', 'string')->setLength(255)->setNotnull(false);
-
-        $this->addDefaultColumns($oauthApps);
-
-        $oauthClients = $schema->createTable('oauth_clients');
-        $oauthClients->addColumn('name', 'string')->setLength(255);
-        $oauthClients->addColumn('client_id', 'string')->setLength(255)->setNotnull(false);
-        $oauthClients->addColumn('client_secret', 'string')->setLength(255)->setNotnull(false);
-        $oauthClients->addColumn('redirect_uri', 'string')->setLength(255)->setNotnull(false);
-        $oauthClients->addColumn('is_authorizable', 'integer')->setLength(1)->setDefault(0);
-        $oauthClients->addColumn('login_url', 'string')->setLength(255)->setNotnull(false);
-
-        $this->addDefaultColumns($oauthClients);
-
-        $oauthTokens = $schema->createTable('oauth_tokens');
-        $oauthTokens->addColumn('token', 'string')->setLength(255);
-        $oauthTokens->addColumn('refresh_token', 'string')->setLength(255);
-        $oauthTokens->addColumn('client_id', 'string')->setLength(36);
-        $oauthTokens->addColumn('user_id', Types::GUID);
-        $oauthTokens->addColumn('date_expired', 'datetime')->setNotnull(true);
-
-        $this->addDefaultColumns($oauthTokens);
-
-        $oauthCodes = $schema->createTable('oauth_codes');
-        $oauthCodes->addColumn('code', 'string')->setLength(255);
-        $oauthCodes->addColumn('client_id', 'string')->setLength(36);
-        $oauthCodes->addColumn('user_id', Types::GUID);
-
-        $this->addDefaultColumns($oauthCodes);
-
-        $oauthUsers = $schema->createTable('oauth_users');
-        $oauthUsers->addColumn('client_id', 'string')->setLength(36);
-        $oauthUsers->addColumn('user_id', Types::GUID);
-        $oauthUsers->addColumn('external_id', 'text');
-        $oauthUsers->addColumn('refresh_token', 'string')->setLength(255);
-
-        $this->addDefaultColumns($oauthUsers);
-
         $captcha = $schema->createTable('captcha');
         $captcha->addColumn('is_used', 'integer')->setLength(1);
         $captcha->addColumn('is_solved', 'integer')->setLength(1);

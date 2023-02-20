@@ -23,12 +23,6 @@ return [
                 // Post
                 \SetCMS\Module\Post\Scope\PostIndexScope::class => true,
                 \SetCMS\Module\Post\Scope\PostReadBySlugScope::class => true,
-                // OAuth
-                \SetCMS\Module\OAuth\Scope\OAuthLoginScope::class => true,
-                \SetCMS\Module\OAuth\Scope\OAuthAuthorizeScope::class => true,
-                \SetCMS\Module\OAuth\Scope\OAuthDoAuthorizeScope::class => true,
-                \SetCMS\Module\OAuth\Scope\OAuthCallbackScope::class => true,
-                \SetCMS\Module\OAuth\Scope\OAuthLogoutScope::class => false,
             ],
         ],
         'user' => [
@@ -37,8 +31,6 @@ return [
                 \SetCMS\Module\User\Scope\UserRegistrationScope::class => false,
                 \SetCMS\Module\User\Scope\UserInfoScope::class => true,
                 \SetCMS\Module\User\Scope\UserDoRegistrationScope::class => false,
-                // OAuth
-                \SetCMS\Module\OAuth\Scope\OAuthLogoutScope::class => true,
             ],
         ],
         'admin' => [
@@ -60,15 +52,6 @@ return [
                 \SetCMS\Module\User\Scope\UserPrivateEditScope::class => true,
                 \SetCMS\Module\User\Scope\UserPrivateSaveScope::class => true,
                 \SetCMS\Module\User\Scope\UserPrivateReadScope::class => true,
-                // oauth
-                \SetCMS\Module\OAuth\OAuthClient\Scope\OAuthClientPrivateIndexScope::class => true,
-                \SetCMS\Module\OAuth\OAuthClient\Scope\OAuthClientPrivateEditScope::class => true,
-                \SetCMS\Module\OAuth\OAuthClient\Scope\OAuthClientPrivateCreateScope::class => true,
-                \SetCMS\Module\OAuth\OAuthClient\Scope\OAuthClientPrivateUpdateScope::class => true,
-                \SetCMS\Module\OAuth\OAuthApp\Scope\OAuthAppPrivateIndexScope::class => true,
-                \SetCMS\Module\OAuth\OAuthApp\Scope\OAuthAppPrivateEditScope::class => true,
-                \SetCMS\Module\OAuth\OAuthApp\Scope\OAuthAppPrivateCreateScope::class => true,
-                \SetCMS\Module\OAuth\OAuthApp\Scope\OAuthAppPrivateUpdateScope::class => true,
             ],
         ],
     ],
