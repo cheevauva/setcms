@@ -1,13 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SetCMS\Module\Page;
 
-use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Module\Page\DAO\PageEntityDbRetrieveByIdDAO;
-use SetCMS\Module\Page\DAO\PageEntityDbRetrieveManyDAO;
-use SetCMS\Module\Page\Scope\PagePrivateIndexScope;
-use SetCMS\Module\Page\Scope\PagePrivateEditScope;
+use \Psr\Http\Message\ServerRequestInterface;
+use SetCMS\Module\Page\DAO\PageRetrieveManyDAO;
+use SetCMS\Module\Page\DAO\PageRetrieveByIdDAO;
 use SetCMS\Module\Page\Scope\PagePrivateReadScope;
+use SetCMS\Module\Page\Scope\PagePrivateEditScope;
+use SetCMS\Module\Page\Scope\PagePrivateIndexScope;
+use SetCMS\Module\Page\Scope\PagePrivateCreateScope;
+use SetCMS\Module\Page\Scope\PagePrivateUpdateScope;
+use SetCMS\Module\Page\Servant\PageCreateServant;
+use SetCMS\Module\Page\Servant\PageUpdateServant;
 
 class PagePrivateController
 {
@@ -15,9 +21,16 @@ class PagePrivateController
     use \SetCMS\Controller\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
-    public function index(ServerRequestInterface $request, PagePrivateIndexScope $scope, PageEntityDbRetrieveManyDAO $servant): PagePrivateIndexScope
+    public function index(ServerRequestInterface $request, PagePrivateIndexScope $scope, PageRetrieveManyDAO $servant): PagePrivateIndexScope
     {
         return $this->serve($request, $servant, $scope, []);
+    }
+
+    public function read(ServerRequestInterface $request, PagePrivateReadScope $scope, PageRetrieveByIdDAO $servant): PagePrivateReadScope
+    {
+        return $this->serve($request, $servant, $scope, [
+            'id' => $request->getAttribute('id'),
+        ]);
     }
 
     public function new(ServerRequestInterface $request, PagePrivateEditScope $scope): PagePrivateEditScope
@@ -27,20 +40,24 @@ class PagePrivateController
         return $scope;
     }
 
-    public function read(ServerRequestInterface $request, PagePrivateReadScope $scope, PageEntityDbRetrieveByIdDAO $servant): PagePrivateReadScope
+    public function edit(ServerRequestInterface $request, PagePrivateEditScope $scope, PageRetrieveByIdDAO $servant): PagePrivateEditScope
     {
         return $this->serve($request, $servant, $scope, [
             'id' => $request->getAttribute('id'),
         ]);
     }
 
-
-    public function edit(ServerRequestInterface $request, PagePrivateEditScope $scope, PageEntityDbRetrieveByIdDAO $servant): PagePrivateEditScope
+    public function create(ServerRequestInterface $request, PagePrivateCreateScope $scope, PageCreateServant $servant): PagePrivateCreateScope
     {
-        return $this->serve($request, $servant, $scope, [
-            'id' => $request->getAttribute('id'),
-        ]);
+        return $this->serve($request, $servant, $scope, $request->getParsedBody());
     }
 
+    public function update(ServerRequestInterface $request, PagePrivateUpdateScope $scope, PageUpdateServant $update, PageRetrieveByIdDAO $readById): PagePrivateUpdateScope
+    {
+        return $this->multiserve($request, [
+            $readById,
+            $update
+        ], $scope, $request->getParsedBody());
+    }
 
 }

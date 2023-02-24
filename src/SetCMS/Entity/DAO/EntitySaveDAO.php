@@ -10,7 +10,7 @@ use SetCMS\UUID;
 abstract class EntitySaveDAO extends EntityCommonDAO
 {
 
-    public Entity $entity;
+    protected Entity $entity;
 
     private function has(UUID $id): bool
     {

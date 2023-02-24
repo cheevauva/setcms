@@ -21,7 +21,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for page in pages %}
+                    {% for page in entities %}
                         <tr>
                             <td>{{ controls.checkbox({name: 'id[]', value: page.id}) }}</td>
                             <td>{{ page.title }}</td>

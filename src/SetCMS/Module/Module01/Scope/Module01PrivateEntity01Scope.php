@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace SetCMS\Module\Module01\Scope;
 
 use SetCMS\Module\Module01\Entity01Entity;
+use SetCMS\UUID;
 
-trait Module01PrivateGenericScope
+class Module01PrivateEntity01Scope extends Module01PrivateScope
 {
 
-    public $field01;
+    public UUID $id;
+    public string $field01;
 
     public function satisfy(): \Iterator
     {
@@ -25,6 +27,7 @@ trait Module01PrivateGenericScope
         parent::to($object);
 
         if ($object instanceof Entity01Entity) {
+            $object->id = $this->id;
             $object->field01 = $this->field01;
         }
     }

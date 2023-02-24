@@ -4,39 +4,38 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Module01\Servant;
 
-use SetCMS\Entity\Servant\EntityDeleteServant;
+use SetCMS\ServantInterface;
 use SetCMS\Module\Module01\Entity01Entity;
 use SetCMS\Module\Module01\DAO\Entity01RetrieveByIdDAO;
 use SetCMS\Module\Module01\DAO\Entity01SaveDAO;
 use SetCMS\Module\Module01\Exception\Entity01NotFoundException;
 
-class Entity01DeleteServant extends EntityDeleteServant
+class Entity01DeleteServant implements ServantInterface
 {
 
     use \SetCMS\DITrait;
 
     public ?Entity01Entity $Entity01LC = null;
+    public ?UUID $id = null;
 
     public function serve(): void
     {
-        $this->entity = $this->Entity01LC;
+        $retrieveById = Entity01RetrieveByIdDAO::make($this->factory());
+        $retrieveById->id = $this->id ?? $this->Entity01LC->id;
+        $retrieveById->serve();
 
-        parent::serve();
-    }
+        if (!$retrieveById->entity) {
+            throw new Entity01NotFoundException;
+        }
 
-    protected function retrieveById(): Entity01RetrieveByIdDAO
-    {
-        return Entity01RetrieveByIdDAO::make($this->factory());
-    }
+        $entity = $retrieveById->Entity01LC;
+        $entity->deleted = true;
 
-    protected function save(): Entity01SaveDAO
-    {
-        return Entity01SaveDAO::make($this->factory());
-    }
+        $save = Entity01SaveDAO::make($this->factory());
+        $save->entity = $entity;
+        $save->serve();
 
-    protected function notFoundException(): \Exception
-    {
-        return new Entity01NotFoundException;
+        $this->entity = $entity;
     }
 
 }

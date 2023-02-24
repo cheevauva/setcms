@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page;
 
-class PageConstants
+interface PageConstrants
 {
+
     public const TABLE_NAME = 'pages';
+
 }

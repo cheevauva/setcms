@@ -7,7 +7,6 @@ namespace SetCMS;
 use SetCMS\Contract\Arrayable;
 use SetCMS\Contract\Satisfiable;
 use SetCMS\Contract\Hydratable;
-use SetCMS\Scope\ScopeMessageStorage;
 
 abstract class Scope implements Hydratable, Satisfiable, Arrayable
 {

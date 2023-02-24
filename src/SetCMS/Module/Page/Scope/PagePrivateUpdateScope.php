@@ -4,26 +4,36 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page\Scope;
 
-use SetCMS\Contract\Twigable;
-use SetCMS\UUID;
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\DAO\PageRetrieveByIdDAO;
+use SetCMS\Module\Page\Servant\PageUpdateServant;
 
-class PagePrivateReadScope extends PagePrivateScope implements Twigable
+class PagePrivateUpdateScope extends PagePrivateScope
 {
 
     protected ?PageEntity $entity = null;
-    public UUID $id;
+    public PagePrivatePageScope $page;
 
     public function to(object $object): void
     {
+        parent::to($object);
+
         if ($object instanceof PageRetrieveByIdDAO) {
-            $object->id = $this->id;
+            $this->entity = new PageEntity;
+            $this->page->to($this->entity);
+            $object->id = $this->entity->id;
+        }
+
+        if ($object instanceof PageUpdateServant) {
+            $this->page->to($this->entity);
+            $object->page = $this->entity;
         }
     }
 
     public function from(object $object): void
     {
+        parent::from($object);
+
         if ($object instanceof PageRetrieveByIdDAO) {
             $this->entity = $object->page;
         }

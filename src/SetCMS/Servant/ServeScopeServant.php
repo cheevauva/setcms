@@ -28,7 +28,7 @@ class ServeScopeServant implements ServantInterface
                 $this->scope->from($this->servent);
             }
         } catch (\Throwable $ex) {
-            $messages[] = [$ex->getMessage(), null];
+            $messages[] = [$ex->getMessage(), $ex->getTraceAsString()];
         }
 
         $this->scope->messages = $messages;

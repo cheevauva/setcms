@@ -23,11 +23,14 @@ class ArrayPropertyHydratorSevant implements ServantInterface
 
     private function processProperty(\ReflectionProperty $property): void
     {
-
         $rawValue = $this->array[$property->getName()] ?? null;
         $rawValueType = gettype($rawValue);
-        $propertyType = $property->getType()->getName() ?? null;
+        $propertyType = $property->getType() ? $property->getType()->getName() : null;
         $value = $rawValue;
+
+        if (empty($propertyType)) {
+            return;
+        }
 
         if (!$property->isInitialized($this->object) && !is_array($rawValue) && empty($rawValue)) {
             $this->messages[] = ['Обязательно для заполнения', $property->getName()];

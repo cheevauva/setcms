@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Module01\Servant;
 
-use SetCMS\Entity\Servant\EntityCreateServant;
+use SetCMS\ServantInterface;
 use SetCMS\Module\Module01\Entity01Entity;
 use SetCMS\Module\Module01\DAO\Entity01HasByIdDAO;
 use SetCMS\Module\Module01\DAO\Entity01SaveDAO;
 use SetCMS\Module\Module01\Exception\Entity01AlreadyExistsException;
 
-class Entity01CreateServant extends EntityCreateServant
+class Entity01CreateServant implements ServantInterface
 {
 
     use \SetCMS\DITrait;
@@ -19,24 +19,17 @@ class Entity01CreateServant extends EntityCreateServant
 
     public function serve(): void
     {
-        $this->entity = $this->Entity01LC;
+        $hasEntityById = Entity01HasByIdDAO::make($this->factory());
+        $hasEntityById->id = $this->Entity01LC->id;
+        $hasEntityById->serve();
 
-        parent::serve();
-    }
+        if ($hasEntityById->isExists) {
+            throw new Entity01AlreadyExistsException;
+        }
 
-    protected function hasEntityById(): Entity01EntityHasByIdDAO
-    {
-        return Entity01HasByIdDAO::make($this->factory());
-    }
-
-    protected function saveEntity(): Entity01EntitySaveDAO
-    {
-        return Entity01SaveDAO::make($this->factory());
-    }
-
-    protected function alreadyExistsException(): Entity01AlreadyExistsException
-    {
-        return new Entity01AlreadyExistsException;
+        $saveEntity = Entity01SaveDAO::make($this->factory());
+        $saveEntity->Entity01LC = $this->Entity01LC;
+        $saveEntity->serve();
     }
 
 }

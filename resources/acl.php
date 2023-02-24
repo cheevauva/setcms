@@ -37,7 +37,8 @@ return [
             'scope' => [
                 // page
                 \SetCMS\Module\Page\Scope\PagePrivateIndexScope::class => true,
-                \SetCMS\Module\Page\Scope\PagePrivateSaveScope::class => true,
+                \SetCMS\Module\Page\Scope\PagePrivateCreateScope::class => true,
+                \SetCMS\Module\Page\Scope\PagePrivateUpdateScope::class => true,
                 \SetCMS\Module\Page\Scope\PagePrivateEditScope::class => true,
                 \SetCMS\Module\Page\Scope\PagePrivateReadScope::class => true,
                 // post

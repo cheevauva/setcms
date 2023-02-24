@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Scope;
 
-class PostPrivateEditScope extends \SetCMS\Entity\Scope\EntityEditScope implements \SetCMS\Contract\Twigable
+use SetCMS\Contract\Twigable;
+use SetCMS\Entity\Scope\EntityEditScope;
+
+class PostPrivateEditScope extends EntityEditScope implements Twigable
 {
-    
+
 }

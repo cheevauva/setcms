@@ -4,22 +4,28 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Servant;
 
-use SetCMS\Module\Post\DAO\PostRetrieveByIdDAO;
+use SetCMS\Entity\Servant\EntityUpdateServant;
+use SetCMS\Module\Post\DAO\PostHasByIdDAO;
 use SetCMS\Module\Post\DAO\PostSaveDAO;
 
-class PostEntityUpdateServant extends \SetCMS\Entity\Servant\EntityUpdateServant
+class PostEntityUpdateServant extends EntityUpdateServant
 {
 
     use \SetCMS\DITrait;
 
-    protected function retrieveEntityById(): PostRetrieveByIdDAO
-    {
-        return PostRetrieveByIdDAO::make($this->factory());
-    }
-
     protected function save(): PostSaveDAO
     {
         return PostSaveDAO::make($this->factory());
+    }
+
+    protected function hasById(): PostHasByIdDAO
+    {
+        return PostHasByIdDAO::make($this->factory());
+    }
+
+    protected function notFoundException(): \Exception
+    {
+        return new \Exception;
     }
 
 }

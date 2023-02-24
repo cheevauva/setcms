@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Module01\Scope;
 
-class Module01PrivateEditScope extends Module01PrivateReadScope
-{
+use SetCMS\Scope;
 
+class Module01PrivateScope extends Scope
+{
+    
 }

@@ -26,6 +26,17 @@ jQuery().ready(function () {
             return parts.pop().split(';').shift();
     }
 
+    function setObjectProperty(object, path, value) {
+        const parts = path.split('.');
+        const limit = parts.length - 1;
+        for (let i = 0; i < limit; ++i) {
+            const key = parts[i];
+            object = object[key] ?? (object[key] = {});
+        }
+        const key = parts[limit];
+        object[key] = value;
+    }
+
 
     $('.setcms-captcha').each(function (index, el) {
         var $captcha = $(el);
@@ -71,10 +82,10 @@ jQuery().ready(function () {
         $form = $(this).closest('form');
         $form.find('.invalid-feedback').text('');
         $form.find('.is-invalid').removeClass('is-invalid');
-        var formData = new FormData($form.get(0))
+        var formData = new FormData($form.get(0));
         var object = {};
         formData.forEach(function (value, key) {
-            object[key] = value;
+            setObjectProperty(object, key, value);
         });
         $.ajax({
             url: $form.attr('setcms-action'),
@@ -131,7 +142,7 @@ jQuery().ready(function () {
                 $.each(data.messages, function (index, msg) {
                     var message = msg[0] || null;
                     var field = msg[1] || null;
-                    
+
                     if (field) {
                         var $field;
 

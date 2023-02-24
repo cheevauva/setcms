@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page\DAO;
 
+use SetCMS\Entity\DAO\EntityRetrieveByIdDAO;
 use SetCMS\Module\Page\PageEntity;
 
-class PageEntityDbRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityRetrieveByIdDAO
+class PageRetrieveByIdDAO extends EntityRetrieveByIdDAO
 {
 
-    public ?PageEntity $page = null;
+    use PageGenericDAO;
 
-    use PageEntityDbDAOTrait;
+    public PageEntity $page;
 
     public function serve(): void
     {

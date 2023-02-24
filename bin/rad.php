@@ -24,9 +24,10 @@ $files = getFiles(sprintf('%s/src/SetCMS/Module/Module01/', ROOT_PATH));
 $module = $argv[1] ?? null;
 $entity = $argv[2] ?? null;
 $table = $argv[3] ?? null;
+$fields = array_filter(explode(',', $argv[4] ?? ''));
 
-if (empty($module) || empty($entity) || empty($table)) {
-    echo $argv[0] . ' modulename entityname tablename' . PHP_EOL;
+if (empty($module) || empty($entity) || empty($table) || empty($fields)) {
+    echo $argv[0] . ' modulename entityname tablename fields' . PHP_EOL;
     exit(1);
 }
 
@@ -48,10 +49,24 @@ foreach ($files as $file) {
 
     $targetContent = strtr(file_get_contents($source), [
         'Module01' => $module,
-        'Entity01' => $entity,
         'Entity01LC' => lcfirst($entity),
+        'Entity01' => $entity,
         'Table01' => $table,
     ]);
 
-    file_put_contents($target, $targetContent);
+    $lines = [];
+
+    foreach (explode("\n", $targetContent) as $index => $line) {
+        if (strpos($line, 'field01') !== false) {
+            foreach ($fields as $field) {
+                $lines[] = str_replace('field01', $field, $line);
+            }
+            continue;
+        }
+
+        $lines[] = $line;
+    }
+
+    file_put_contents($target, implode("\n", $lines));
+    chmod($target, 0777);
 }

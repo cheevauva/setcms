@@ -7,7 +7,7 @@ namespace SetCMS\Module\Page\Mapper;
 use SetCMS\Entity\Mapper\EntityMapper;
 use SetCMS\Module\Page\PageEntity;
 
-class PageEntityDbMapper extends EntityMapper
+class PageMapper extends EntityMapper
 {
 
     use \SetCMS\FactoryTrait;
@@ -21,18 +21,18 @@ class PageEntityDbMapper extends EntityMapper
     {
         parent::entity2row();
 
-        $this->row['content'] = $this->entity()->content;
         $this->row['slug'] = $this->entity()->slug;
         $this->row['title'] = $this->entity()->title;
+        $this->row['content'] = $this->entity()->content;
     }
 
     protected function entity4row(): void
     {
         parent::entity4row();
 
-        $this->entity()->content = $this->row['content'];
-        $this->entity()->title = $this->row['title'];
         $this->entity()->slug = $this->row['slug'];
+        $this->entity()->title = $this->row['title'];
+        $this->entity()->content = $this->row['content'];
     }
 
 }

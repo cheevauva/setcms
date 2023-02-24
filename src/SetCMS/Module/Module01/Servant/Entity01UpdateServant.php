@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Module01\Servant;
 
-use SetCMS\Entity\Servant\EntityUpdateServant;
+use SetCMS\ServantInterface;
 use SetCMS\Module\Module01\Entity01Entity;
 use SetCMS\Module\Module01\DAO\Entity01HasByIdDAO;
 use SetCMS\Module\Module01\DAO\Entity01SaveDAO;
 use SetCMS\Module\Module01\Exception\Entity01NotFoundException;
 
-class Entity01UpdateServant extends EntityUpdateServant
+class Entity01UpdateServant implements ServantInterface
 {
 
     use \SetCMS\DITrait;
@@ -19,24 +19,17 @@ class Entity01UpdateServant extends EntityUpdateServant
 
     public function serve(): void
     {
-        $this->entity = $this->Entity01LC;
+        $hasById = Entity01HasByIdDAO::make($this->factory());
+        $hasById->id = $this->Entity01LC->id;
+        $hasById->serve();
 
-        parent::serve();
-    }
+        if (empty($hasById->isExists)) {
+            throw new Entity01NotFoundException;
+        }
 
-    protected function hasById(): Entity01HasByIdDAO
-    {
-        return Entity01HasByIdDAO::make($this->factory());
-    }
-
-    protected function save(): Entity01SaveDAO
-    {
-        return Entity01SaveDAO::make($this->factory());
-    }
-
-    protected function notFoundException(): Entity01NotFoundException
-    {
-        return new Entity01NotFoundException;
+        $saveEntity = Entity01SaveDAO::make($this->factory());
+        $saveEntity->Entity01LC = $this->Entity01LC;
+        $saveEntity->serve();
     }
 
 }

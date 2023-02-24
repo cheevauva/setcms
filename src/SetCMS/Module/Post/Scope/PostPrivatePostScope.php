@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post\Scope;
 
 use SetCMS\Module\Post\PostEntity;
+use SetCMS\Scope;
 
-trait PostPrivateGenericScope
+class PostPrivatePostScope extends Scope
 {
 
     public string $slug;
@@ -30,5 +31,6 @@ trait PostPrivateGenericScope
             $object->title = $this->title;
         }
     }
+
 
 }
