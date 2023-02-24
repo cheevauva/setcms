@@ -9,7 +9,7 @@ use SetCMS\Module\Post\DAO\PostRetrieveBySlugDAO;
 use SetCMS\Contract\Twigable;
 use SetCMS\Module\Post\PostEntity;
 
-class PostReadBySlugScope extends Scope implements Twigable
+class PostPublicReadBySlugScope extends Scope implements Twigable
 {
 
     public string $slug;
@@ -25,7 +25,7 @@ class PostReadBySlugScope extends Scope implements Twigable
     public function from(object $object): void
     {
         if ($object instanceof PostRetrieveBySlugDAO) {
-            $this->post = $object->entity;
+            $this->post = $object->post;
         }
     }
 

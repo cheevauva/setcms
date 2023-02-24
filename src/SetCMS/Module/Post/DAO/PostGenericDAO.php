@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post\DAO;
 
 use SetCMS\Module\Post\Mapper\PostMapper;
-use SetCMS\Module\Post\PostConstants;
+use SetCMS\Module\Post\PostConstrants;
 
 trait PostGenericDAO
-{   
+{
+
     use \SetCMS\DITrait;
     use \SetCMS\FactoryTrait;
     use \SetCMS\Database\MainConnectionTrait;
@@ -17,10 +18,10 @@ trait PostGenericDAO
     {
         return PostMapper::make($this->factory());
     }
-    
+
     protected function table(): string
     {
-        return PostConstants::TABLE_NAME;
+        return PostConstrants::TABLE_NAME;
     }
 
 }

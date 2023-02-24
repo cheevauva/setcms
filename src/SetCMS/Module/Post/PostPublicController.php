@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post;
 
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Module\Post\Scope\PostIndexScope;
-use SetCMS\Module\Post\Scope\PostReadBySlugScope;
+use SetCMS\Module\Post\Scope\PostPublicIndexScope;
+use SetCMS\Module\Post\Scope\PostPublicReadBySlugScope;
 use SetCMS\Module\Post\DAO\PostRetrieveBySlugDAO;
 use SetCMS\Module\Post\DAO\PostRetrieveManyDAO;
 
@@ -16,12 +16,12 @@ class PostPublicController
     use \SetCMS\Controller\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
-    public function index(ServerRequestInterface $request, PostIndexScope $scope, PostRetrieveManyDAO $servant): PostIndexScope
+    public function index(ServerRequestInterface $request, PostPublicIndexScope $scope, PostRetrieveManyDAO $servant): PostPublicIndexScope
     {
         return $this->serve($request, $servant, $scope, []);
     }
 
-    public function readBySlug(ServerRequestInterface $request, PostReadBySlugScope $scope, PostRetrieveBySlugDAO $servant): PostReadBySlugScope
+    public function readBySlug(ServerRequestInterface $request, PostPublicReadBySlugScope $scope, PostRetrieveBySlugDAO $servant): PostPublicReadBySlugScope
     {
         return $this->serve($request, $servant, $scope, [
             'slug' => $request->getAttribute('slug'),

@@ -18,19 +18,20 @@ return [
                 \SetCMS\Module\User\Scope\UserPublicDoLoginScope::class => true,
                 \SetCMS\Module\User\Scope\UserRegistrationScope::class => true,
                 \SetCMS\Module\User\Scope\UserDoRegistrationScope::class => true,
-                \SetCMS\Module\User\Scope\UserProfileScope::class => false,
+                \SetCMS\Module\User\Scope\UserPublicProfileScope::class => false,
                 \SetCMS\Module\User\Scope\UserInfoScope::class => false,
                 // Post
-                \SetCMS\Module\Post\Scope\PostIndexScope::class => true,
-                \SetCMS\Module\Post\Scope\PostReadBySlugScope::class => true,
+                \SetCMS\Module\Post\Scope\PostPublicIndexScope::class => true,
+                \SetCMS\Module\Post\Scope\PostPublicReadBySlugScope::class => true,
             ],
         ],
         'user' => [
             'scope' => [
-                \SetCMS\Module\User\Scope\UserProfileScope::class => true,
+                \SetCMS\Module\User\Scope\UserPublicProfileScope::class => true,
                 \SetCMS\Module\User\Scope\UserRegistrationScope::class => false,
                 \SetCMS\Module\User\Scope\UserInfoScope::class => true,
                 \SetCMS\Module\User\Scope\UserDoRegistrationScope::class => false,
+                \SetCMS\Module\User\Scope\UserPublicLogoutScope::class => true,
             ],
         ],
         'admin' => [
@@ -48,6 +49,7 @@ return [
                 \SetCMS\Module\Post\Scope\PostPrivateReadScope::class => true,
                 \SetCMS\Module\Post\Scope\PostPrivateUpdateScope::class => true,
                 \SetCMS\Module\Post\Scope\PostPrivateCreateScope::class => true,
+                \SetCMS\Module\Post\Scope\PostPublicIndexScope::class => true,
                 // user
                 \SetCMS\Module\User\Scope\UserPrivateIndexScope::class => true,
                 \SetCMS\Module\User\Scope\UserPrivateEditScope::class => true,

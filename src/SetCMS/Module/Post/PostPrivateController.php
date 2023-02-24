@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post;
 
 use \Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Module\Post\Servant\PostEntityCreateServant;
 use SetCMS\Module\Post\DAO\PostRetrieveManyDAO;
 use SetCMS\Module\Post\DAO\PostRetrieveByIdDAO;
 use SetCMS\Module\Post\Scope\PostPrivateReadScope;
-use SetCMS\Module\Post\Servant\PostEntityUpdateServant;
 use SetCMS\Module\Post\Scope\PostPrivateEditScope;
 use SetCMS\Module\Post\Scope\PostPrivateIndexScope;
 use SetCMS\Module\Post\Scope\PostPrivateCreateScope;
 use SetCMS\Module\Post\Scope\PostPrivateUpdateScope;
+use SetCMS\Module\Post\Servant\PostCreateServant;
+use SetCMS\Module\Post\Servant\PostUpdateServant;
 
 class PostPrivateController
 {
@@ -47,14 +47,17 @@ class PostPrivateController
         ]);
     }
 
-    public function create(ServerRequestInterface $request, PostPrivateCreateScope $scope, PostEntityCreateServant $servant): PostPrivateCreateScope
+    public function create(ServerRequestInterface $request, PostPrivateCreateScope $scope, PostCreateServant $servant): PostPrivateCreateScope
     {
         return $this->serve($request, $servant, $scope, $request->getParsedBody());
     }
 
-    public function update(ServerRequestInterface $request, PostPrivateUpdateScope $scope, PostEntityUpdateServant $update, PostRetrieveByIdDAO $readById): PostPrivateUpdateScope
+    public function update(ServerRequestInterface $request, PostPrivateUpdateScope $scope, PostUpdateServant $update, PostRetrieveByIdDAO $readById): PostPrivateUpdateScope
     {
-        return $this->multiserve($request, [$readById, $update], $scope, $request->getParsedBody());
+        return $this->multiserve($request, [
+            $readById,
+            $update
+        ], $scope, $request->getParsedBody());
     }
 
 }

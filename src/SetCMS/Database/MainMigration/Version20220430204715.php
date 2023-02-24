@@ -8,9 +8,10 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\DBAL\Schema\Table;
-use SetCMS\Module\Post\PostConstants;
-use SetCMS\Module\Page\PageConstants;
+use SetCMS\Module\Post\PostConstrants;
+use SetCMS\Module\Page\PageConstrants;
 use SetCMS\Module\User\UserContstants;
+use SetCMS\Module\Session\SessionConstrants;
 
 final class Version20220430204715 extends AbstractMigration
 {
@@ -22,7 +23,7 @@ final class Version20220430204715 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $posts = $schema->createTable(PostConstants::TABLE_NAME);
+        $posts = $schema->createTable(PostConstrants::TABLE_NAME);
         $posts->addColumn('slug', 'string')->setLength(255);
         $posts->addColumn('title', 'string')->setLength(255);
         $posts->addColumn('message', 'text');
@@ -37,7 +38,7 @@ final class Version20220430204715 extends AbstractMigration
 
         $this->addDefaultColumns($users);
 
-        $pages = $schema->createTable(PageConstants::TABLE_NAME);
+        $pages = $schema->createTable(PageConstrants::TABLE_NAME);
         $pages->addColumn('slug', 'string')->setLength(255);
         $pages->addColumn('title', 'string')->setLength(255);
         $pages->addColumn('content', 'text');
@@ -52,6 +53,13 @@ final class Version20220430204715 extends AbstractMigration
         $captcha->addColumn('date_expiried', 'datetime');
 
         $this->addDefaultColumns($captcha);
+
+        $sessions = $schema->createTable(SessionConstrants::TABLE_NAME);
+        $sessions->addColumn('device', 'string')->setLength(50);
+        $sessions->addColumn('user_id', Types::GUID)->setNotnull(false);
+        $sessions->addColumn('date_expiries', 'datetime');
+
+        $this->addDefaultColumns($sessions);
     }
 
     private function addDefaultColumns(Table $table)

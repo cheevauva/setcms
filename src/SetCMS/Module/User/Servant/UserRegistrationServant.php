@@ -26,8 +26,8 @@ class UserRegistrationServant implements \SetCMS\ServantInterface
         $retrieveByUsername->username = $this->username;
         $retrieveByUsername->serve();
 
-        if ($retrieveByUsername->entity) {
-            throw UserAlreadyExistsException::withUser($retrieveByUsername->entity);
+        if ($retrieveByUsername->user) {
+            throw UserAlreadyExistsException::withUser($retrieveByUsername->user);
         }
 
         $user = new UserEntity;
@@ -36,7 +36,7 @@ class UserRegistrationServant implements \SetCMS\ServantInterface
         $user->role = UserRoleEnum::USER;
 
         $saveUser = UserEntitySaveDAO::make($this->factory());
-        $saveUser->entity = $user;
+        $saveUser->user = $user;
         $saveUser->serve();
 
         (new UserRegistrationEvent($user))();

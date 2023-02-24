@@ -6,16 +6,16 @@
 {% block content %}
     <form class="setcms-form g-3" 
           setcms-method="POST"
-          setcms-action="{{ setcms.link(entity.id ? 'action_record_admin' : 'action_admin', {module: 'Post', action: entity ? 'update': 'create', id: entity.id}) }}"
-          setcms-redirect="{{ setcms.link('action_record_admin', {module: 'Post', action: 'read', 'id': '${entity.id.uuid}'}) }}"
+          setcms-action="{{ setcms.link(post.id ? 'action_record_admin' : 'action_admin', {module: 'Post', action: post ? 'update': 'create', id: post.id}) }}"
+          setcms-redirect="{{ setcms.link('action_record_admin', {module: 'Post', action: 'read', 'id': '${post.id.uuid}'}) }}"
           >
 
-        {{ forms.hidden({name: 'post.id', value: entity ? entity.id : UUID() }) }}
-        {{ forms.input({name: 'post.slug', value: entity.slug, type: 'text', label: 'Псевдоним'}) }}
-        {{ forms.input({name: 'post.title', value: entity.title, type: 'text', label: 'Заголовок'}) }}
-        {{ forms.textarea({name: 'post.message', value: entity.message, label: 'Сообщение'}) }}
-        {{ forms.input({name: 'post.dateCreated', value: entity.dateCreated.format('Y-m-d H:i:s'), type: 'text', label: 'Дата создания', disabled: true}) }}
-        {{ forms.input({name: 'post.dateModified', value: entity.dateModified.format('Y-m-d H:i:s'), type: 'text', label: 'Дата изменения', disabled: true}) }}
+        {{ forms.hidden({name: 'post.id', value: post ? post.id : UUID() }) }}
+        {{ forms.input({name: 'post.slug', value: post.slug, type: 'text', label: 'Псевдоним'}) }}
+        {{ forms.input({name: 'post.title', value: post.title, type: 'text', label: 'Заголовок'}) }}
+        {{ forms.textarea({name: 'post.message', value: post.message, label: 'Сообщение'}) }}
+        {{ forms.input({name: 'post.dateCreated', value: post.dateCreated.format('Y-m-d H:i:s'), type: 'text', label: 'Дата создания', disabled: true}) }}
+        {{ forms.input({name: 'post.dateModified', value: post.dateModified.format('Y-m-d H:i:s'), type: 'text', label: 'Дата изменения', disabled: true}) }}
         {{ forms.submit({label: 'Сохранить'}) }}
     </form>
 {% endblock %}

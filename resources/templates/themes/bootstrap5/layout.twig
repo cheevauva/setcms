@@ -44,14 +44,14 @@
                                 </li>
                             </ul>
                             <span class="navbar-text">
-                                {% if currentUser.hasRoleAsString('admin') %}
+                                {% if currentUser.role.isAdmin() %}
                                     <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('home_admin') }}">Администрирование</a>
                                 {% endif %}
-                                {% if currentUser.hasRoleAsString('guest') %}
+                                {% if currentUser.role.isGuest() %}
                                     <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('action', {module: 'User', action: 'login'}) }}">Вход</a> 
                                     <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('action', {module: 'User', action: 'registration'}) }}">Регистрация</a>
                                 {% endif %}
-                                {% if currentUser.hasRoleAsString('user') %}
+                                {% if currentUser.role.isUser() %}
                                     <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('action', {module: 'User', action: 'profile'}) }}">Профиль</a>
                                     <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('action', {module: 'User', action: 'logout'}) }}">Выйти</a>
                                 {% endif %}

@@ -10,5 +10,20 @@ enum UserRoleEnum: string
     case GUEST = 'guest';
     case USER = 'user';
     case ADMIN = 'admin';
-    
+
+    public function isGuest(): bool
+    {
+        return $this === UserRoleEnum::GUEST;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this === UserRoleEnum::ADMIN;
+    }
+
+    public function isUser(): bool
+    {
+        return $this === UserRoleEnum::USER;
+    }
+
 }

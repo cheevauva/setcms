@@ -9,6 +9,7 @@ use SetCMS\Module\Post\PostEntity;
 
 class PostMapper extends EntityMapper
 {
+
     use \SetCMS\FactoryTrait;
 
     protected function entity(): PostEntity

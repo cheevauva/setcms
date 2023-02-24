@@ -9,6 +9,8 @@ use SetCMS\Entity;
 class PostEntity extends Entity
 {
 
+    use \SetCMS\AsTrait;
+
     public string $slug;
     public string $title;
     public string $message;

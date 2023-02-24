@@ -13,15 +13,17 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Тема</th>
+                    <th scope="col">Псевдоним</th>
                     <th scope="col">Действия</th>
 
                 </tr>
             </thead>
             <tbody>
-                {% for post in posts %}
+                {% for post in entities %}
                     <tr>
                         <td>{{ post.id }}</td>
                         <td>{{ post.title }}</td>
+                        <td>{{ post.slug}}</td>
                         <td>
                             <a href="{{ setcms.link('action_record_admin', {'module': 'Post', action: 'edit', 'id': post.id}) }}">Редактировать</a>
                             <a href="{{ setcms.link('action_record_admin', {'module': 'Post', action: 'read', 'id': post.id}) }}">Просмотр</a>

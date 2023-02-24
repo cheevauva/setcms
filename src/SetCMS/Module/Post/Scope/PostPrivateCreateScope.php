@@ -5,16 +5,30 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post\Scope;
 
 use SetCMS\Module\Post\PostEntity;
-use SetCMS\Entity\Scope\EntityCreateScope;
+use SetCMS\Module\Post\Servant\PostCreateServant;
 
-class PostPrivateCreateScope extends EntityCreateScope
+class PostPrivateCreateScope extends PostPrivateScope
 {
 
-    public PostPrivatePostScope $entity;
+    protected ?PostEntity $entity = null;
+    public PostPrivatePostScope $post;
 
-    protected function entity(): PostEntity
+    public function to(object $object): void
     {
-        return new PostEntity;
+        parent::to($object);
+
+        if ($object instanceof PostCreateServant) {
+            $this->entity = new PostEntity;
+            $this->post->to($this->entity);
+            $object->post = $this->entity;
+        }
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'post' => $this->entity,
+        ];
     }
 
 }

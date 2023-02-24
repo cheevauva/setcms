@@ -34,7 +34,7 @@ class UserLoginServant implements \SetCMS\ServantInterface
         if (!password_verify($this->password, $user->password)) {
             throw UserIncorrectPasswordException::withUser($user);
         }
-
+        
         $this->user = $user;
     }
 

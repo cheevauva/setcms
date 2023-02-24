@@ -1,7 +1,7 @@
 {% extends setcms.path('layout.twig') %}
 
 {% block content %}
-    {% for post in posts %}
+    {% for post in entities %}
         <article class="blog-post">
             <h2 class="blog-post-title">{{ post.title|e }}</h2>
             <p class="blog-post-meta">{{ post.dateCreated.format('d.m.Y H:i:s') }} by <a href="#">Admin</a></p>
