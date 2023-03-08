@@ -6,14 +6,13 @@ namespace SetCMS\Controller\Servant;
 
 use SetCMS\Contract\Servant;
 use SetCMS\Controller\ControllerException;
-use SetCMS\Contract\Factory;
 
 class BuildByDynamicAttributeServant implements Servant
 {
 
+    use \SetCMS\DITrait;
     use \SetCMS\FactoryTrait;
 
-    private Factory $factory;
     public string $className;
     public string $module;
     public string $section;
@@ -21,11 +20,6 @@ class BuildByDynamicAttributeServant implements Servant
     public object $controller;
     public \ReflectionMethod $method;
 
-    public function __construct(Factory $factory)
-    {
-        $this->factory = $factory;
-    }
-    
     public function serve(): void
     {
         $controllerClassName = strtr($this->className, [
@@ -42,7 +36,7 @@ class BuildByDynamicAttributeServant implements Servant
             throw ControllerException::methodNotFound(sprintf('%s::%s', $controllerShortName, $this->action));
         }
 
-        $this->controller = $this->factory->make($controllerClassName);
+        $this->controller = $this->factory()->make($controllerClassName);
         $this->method = (new \ReflectionClass($controllerClassName))->getMethod($this->action);
     }
 

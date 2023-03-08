@@ -8,8 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Contract\Factory;
 use SetCMS\Contract\Servant;
 use SetCMS\Contract\Applicable;
-use SetCMS\Router\RouterInterface;
-use SetCMS\Router\RouterException;
+use SetCMS\Contract\Router;
 use SetCMS\Router\RouterMatchDTO;
 
 class MatchRouteByRequestServant implements Servant, Applicable
@@ -17,7 +16,7 @@ class MatchRouteByRequestServant implements Servant, Applicable
 
     use \SetCMS\FactoryTrait;
 
-    private RouterInterface $router;
+    private Router $router;
     public string $requestUri;
     public ?string $scriptName = null;
     public string $requestMethod = 'GET';
@@ -25,7 +24,7 @@ class MatchRouteByRequestServant implements Servant, Applicable
 
     public function __construct(Factory $factory)
     {
-        $this->router = $factory->make(RouterInterface::class);
+        $this->router = $factory->make(Router::class);
     }
 
     public function serve(): void
@@ -41,23 +40,11 @@ class MatchRouteByRequestServant implements Servant, Applicable
             $requestUri = '/';
         }
 
-        if (strpos($requestUri, 'index.php') !== false) {
+        if (str_contains($requestUri, 'index.php')) {
             $this->router->setBasePath($scriptName);
         }
 
-
-        $result = $this->router->match($requestUri, $this->requestMethod) ?: null;
-
-        if (!$result) {
-            throw RouterException::notFound();
-        }
-
-        $routerMatch = new RouterMatchDTO;
-        $routerMatch->params = $result['params'];
-        $routerMatch->target = $result['target'];
-        $routerMatch->name = $result['name'];
-        
-        $this->routerMatch = $routerMatch;
+        $this->routerMatch = $this->router->match($requestUri, $this->requestMethod);
         
     }
 

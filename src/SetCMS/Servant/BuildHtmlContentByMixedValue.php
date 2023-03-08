@@ -17,7 +17,7 @@ use SetCMS\Throwable\NotFound;
 use SetCMS\Servant\BuildMixedValueByRouteServant;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\Contract\Factory;
-use SetCMS\Router\RouterInterface;
+use SetCMS\Contract\Router;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\UUID;
 use SetCMS\RequestAttribute;
@@ -34,12 +34,12 @@ class BuildHtmlContentByMixedValue implements Servant
     public string $htmlContent;
     public ServerRequestInterface $request;
     private Factory $factory;
-    private RouterInterface $router;
+    private Router $router;
 
     public function __construct(ContainerInterface $container)
     {
         $this->factory = $container->get(Factory::class);
-        $this->router = $container->get(RouterInterface::class);
+        $this->router = $container->get(Router::class);
         $this->basePath = $container->get('basePath');
         $this->config = $container->get('config');
         $this->theme = $this->config['theme'];
@@ -135,11 +135,11 @@ class BuildHtmlContentByMixedValue implements Servant
     {
         return new class($this->router, $this->request) {
 
-            private RouterInterface $router;
+            private Router $router;
             private string $self;
             private string $baseUrl;
 
-            public function __construct(RouterInterface $router, ServerRequestInterface $request)
+            public function __construct(Router $router, ServerRequestInterface $request)
             {
                 $this->router = clone $router;
                 $this->router->setBasePath(rtrim($request->getServerParams()['SCRIPT_NAME'], '/'));

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SetCMS\Controller\Servant;
 
-use SetCMS\Contract\Factory;
 use SetCMS\Contract\Servant;
 use SetCMS\Contract\Applicable;
 use SetCMS\Controller\Servant\BuildByDynamicAttributeServant;
@@ -14,8 +13,8 @@ class ExecuteDynamicControllerServant implements Servant, Applicable
 {
 
     use \SetCMS\FactoryTrait;
+    use \SetCMS\DITrait;
 
-    private Factory $factory;
     public string $className;
     public ?string $section = null;
     public ?string $module = null;
@@ -23,15 +22,12 @@ class ExecuteDynamicControllerServant implements Servant, Applicable
     public \SplObjectStorage $storage;
     public mixed $mixedValue;
 
-    public function __construct(Factory $factory)
-    {
-        $this->factory = $factory;
-        $this->storage = new \SplObjectStorage();
-    }
 
     public function serve(): void
     {
-        $controllerBuilder = BuildByDynamicAttributeServant::make($this->factory);
+        $this->storage = new \SplObjectStorage();
+        
+        $controllerBuilder = BuildByDynamicAttributeServant::make($this->factory());
         $controllerBuilder->className = $this->className;
         $controllerBuilder->section = $this->section ?? '';
         $controllerBuilder->module = $this->module ?? '';
@@ -44,7 +40,7 @@ class ExecuteDynamicControllerServant implements Servant, Applicable
             throw new \RuntimeException('Oh my sweet summer child - you know noting');
         }
 
-        $methodArgumentsBuilder = RetrieveArgumentsByMethodServant::make($this->factory);
+        $methodArgumentsBuilder = RetrieveArgumentsByMethodServant::make($this->factory());
         $methodArgumentsBuilder->apply($controllerBuilder->method);
         $methodArgumentsBuilder->apply($this->storage);
         $methodArgumentsBuilder->serve();
