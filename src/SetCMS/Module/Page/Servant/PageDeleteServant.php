@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page\Servant;
 
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\DAO\PageRetrieveByIdDAO;
 use SetCMS\Module\Page\DAO\PageSaveDAO;
 use SetCMS\Module\Page\Exception\PageNotFoundException;
 
-class PageDeleteServant implements ServantInterface
+class PageDeleteServant implements Servant
 {
 
     use \SetCMS\DITrait;

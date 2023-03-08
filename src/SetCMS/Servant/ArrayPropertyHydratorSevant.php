@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 use SetCMS\Contract\Hydratable;
 
-class ArrayPropertyHydratorSevant implements ServantInterface
+class ArrayPropertyHydratorSevant implements Servant
 {
 
     private const TYPES = [

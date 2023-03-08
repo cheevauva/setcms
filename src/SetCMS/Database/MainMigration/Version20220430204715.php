@@ -11,7 +11,7 @@ use Doctrine\DBAL\Schema\Table;
 use SetCMS\Module\Post\PostConstrants;
 use SetCMS\Module\Page\PageConstrants;
 use SetCMS\Module\User\UserContstants;
-use SetCMS\Module\Session\SessionConstrants;
+use SetCMS\Module\UserSession\UserSessionConstrants;
 
 final class Version20220430204715 extends AbstractMigration
 {
@@ -54,7 +54,7 @@ final class Version20220430204715 extends AbstractMigration
 
         $this->addDefaultColumns($captcha);
 
-        $sessions = $schema->createTable(SessionConstrants::TABLE_NAME);
+        $sessions = $schema->createTable(UserSessionConstrants::TABLE_NAME);
         $sessions->addColumn('device', 'string')->setLength(50);
         $sessions->addColumn('user_id', Types::GUID)->setNotnull(false);
         $sessions->addColumn('date_expiries', 'datetime');

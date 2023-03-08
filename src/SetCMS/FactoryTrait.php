@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS;
 
-use SetCMS\FactoryInterface;
+use SetCMS\Contract\Factory;
 use Psr\Container\ContainerInterface;
 
 trait FactoryTrait
@@ -16,7 +16,7 @@ trait FactoryTrait
      */
     public static function make(?object $builder = null)
     {
-        if ($builder instanceof FactoryInterface) {
+        if ($builder instanceof Factory) {
             return $builder->make(static::class);
         }
         

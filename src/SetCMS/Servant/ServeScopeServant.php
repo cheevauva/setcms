@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace SetCMS\Servant;
 
 use SetCMS\Servant\ArrayPropertyHydratorSevant;
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 use SetCMS\Scope;
 
-class ServeScopeServant implements ServantInterface
+class ServeScopeServant implements Servant
 {
 
     use \SetCMS\FactoryTrait;
 
-    public ServantInterface $servent;
+    public Servant $servent;
     public Scope $scope;
     public array $array = [];
 

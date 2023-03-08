@@ -3,7 +3,7 @@
 namespace SetCMS\Module\User;
 
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\FactoryInterface;
+use SetCMS\Contract\Factory;
 use SetCMS\Module\User\Servant\UserRegistrationServant;
 use SetCMS\Module\User\Servant\UserLoginServant;
 use SetCMS\Module\User\Scope\UserPublicProfileScope;
@@ -13,9 +13,9 @@ use SetCMS\Module\User\Scope\UserDoRegistrationScope;
 use SetCMS\Module\User\Scope\UserPublicLoginScope;
 use SetCMS\Module\User\Scope\UserPublicDoLoginScope;
 use SetCMS\Module\User\Scope\UserPublicLogoutScope;
-use SetCMS\Module\Session\Servant\SessionCreateByUserServant;
-use SetCMS\Module\Session\DAO\SessionDeleteByIdDAO;
-use SetCMS\ServerRequestAttribute;
+use SetCMS\Module\UserSession\Servant\UserSessionCreateByUserServant;
+use SetCMS\Module\UserSession\DAO\UserSessionDeleteByIdDAO;
+use SetCMS\RequestAttribute;
 
 class UserPublicController
 {
@@ -30,22 +30,22 @@ class UserPublicController
         return $scope;
     }
 
-    public function logout(ServerRequestInterface $request, UserPublicLogoutScope $scope, SessionDeleteByIdDAO $servant): UserPublicLogoutScope
+    public function logout(ServerRequestInterface $request, UserPublicLogoutScope $scope, UserSessionDeleteByIdDAO $servant): UserPublicLogoutScope
     {
         $this->serve($request, $servant, $scope, [
-            'token' => $request->getCookieParams()[ServerRequestAttribute::ACCESS_TOKEN],
+            'token' => $request->getCookieParams()[RequestAttribute::accessToken->toString()],
         ]);
         
         return $scope;
     }
 
-    public function doLogin(ServerRequestInterface $request, UserPublicDoLoginScope $scope, FactoryInterface $factory): UserPublicDoLoginScope
+    public function doLogin(ServerRequestInterface $request, UserPublicDoLoginScope $scope, Factory $factory): UserPublicDoLoginScope
     {
         $scope->device = strval($request->getHeaderLine('user-agent'));
 
         return $this->multiserve($request, [
             UserLoginServant::make($factory),
-            SessionCreateByUserServant::make($factory),
+            UserSessionCreateByUserServant::make($factory),
         ], $scope, $request->getParsedBody());
     }
 
@@ -53,7 +53,7 @@ class UserPublicController
     {
         $this->secureByScope($scope, $request);
 
-        $scope->from($request->getAttribute(ServerRequestAttribute::CURRENT_USER));
+        $scope->from(RequestAttribute::currentUser->fromRequest($request));
 
         return $scope;
     }

@@ -4,18 +4,19 @@ namespace SetCMS;
 
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use SetCMS\FactoryInterface;
+use SetCMS\Contract\Factory;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 use SetCMS\Contract\Applicable;
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 
 class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherInterface
 {
+    use AsTrait;
 
-    private FactoryInterface $factory;
+    private Factory $factory;
     private static EventDispatcher $instance;
 
-    public function __construct(ContainerInterface $container, FactoryInterface $factory)
+    public function __construct(ContainerInterface $container, Factory $factory)
     {
         static::$instance = $this;
 
@@ -43,7 +44,7 @@ class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherI
                 $listenerObject->apply($event);
             }
 
-            if ($listenerObject instanceof ServantInterface) {
+            if ($listenerObject instanceof Servant) {
                 $listenerObject->serve();
             } else {
                 $this->factory->make($listener)($event, $eventName, $this);

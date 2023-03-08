@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace SetCMS\Controller\Servant;
 
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 use SetCMS\Controller\ControllerException;
-use SetCMS\FactoryInterface;
+use SetCMS\Contract\Factory;
 
-class BuildByDynamicAttributeServant implements ServantInterface
+class BuildByDynamicAttributeServant implements Servant
 {
 
     use \SetCMS\FactoryTrait;
 
-    private FactoryInterface $factory;
+    private Factory $factory;
     public string $className;
     public string $module;
     public string $section;
@@ -21,7 +21,7 @@ class BuildByDynamicAttributeServant implements ServantInterface
     public object $controller;
     public \ReflectionMethod $method;
 
-    public function __construct(FactoryInterface $factory)
+    public function __construct(Factory $factory)
     {
         $this->factory = $factory;
     }

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 use Psr\Http\Message\ServerRequestInterface;
 
-class ParseBodyRequestServant implements ServantInterface
+class ParseBodyRequestServant implements Servant
 {
 
     use \SetCMS\FactoryTrait;

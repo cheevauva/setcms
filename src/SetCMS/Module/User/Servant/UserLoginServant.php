@@ -9,7 +9,7 @@ use SetCMS\Module\User\Exception\UserNotFoundException;
 use SetCMS\Module\User\Exception\UserIncorrectPasswordException;
 use SetCMS\Module\User\UserEntity;
 
-class UserLoginServant implements \SetCMS\ServantInterface
+class UserLoginServant implements \SetCMS\Contract\Servant
 {
 
     use \SetCMS\DITrait;

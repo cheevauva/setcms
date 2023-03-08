@@ -5,7 +5,8 @@ require_once __DIR__ . '/vendor/autoload.php';
 use DI\ContainerBuilder;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use SetCMS\FactoryInterface;
+use SetCMS\EventDispatcher;
+use SetCMS\Factory;
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable(__DIR__, [
@@ -28,8 +29,7 @@ $containerBuilder->addDefinitions([
 ]);
 
 $container = $containerBuilder->build();
-$factory = $container->get(FactoryInterface::class);
-$eventDispatcher = $container->get(EventDispatcherInterface::class);
+$factory = Factory::as($container->get(Factory::class));
+$eventDispatcher = EventDispatcher::as($container->get(EventDispatcherInterface::class));
 
-assert($factory instanceof FactoryInterface);
 assert($container instanceof ContainerInterface);

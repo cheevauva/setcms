@@ -5,7 +5,7 @@ namespace SetCMS\Controller;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Container\ContainerInterface;
-use SetCMS\FactoryInterface;
+use SetCMS\Contract\Factory;
 use SetCMS\Servant\ParseBodyRequestServant;
 use SetCMS\Servant\BuildResponseByMixedValueServant;
 use SetCMS\Servant\MatchRouteByRequestServant;
@@ -18,7 +18,7 @@ class FrontController
 
     public function resolve(ServerRequestInterface $request, ResponseInterface $response, ContainerInterface $container): ResponseInterface
     {
-        $factory = $container->get(FactoryInterface::class);
+        $factory = $container->get(Factory::class);
         $newRequest = (new FrontControllerResolveEvent($request))->dispatch()->request;
 
         try {

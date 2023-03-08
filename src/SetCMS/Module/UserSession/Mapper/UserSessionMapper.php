@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Session\Mapper;
+namespace SetCMS\Module\UserSession\Mapper;
 
 use SetCMS\Entity\Mapper\EntityMapper;
-use SetCMS\Module\Session\SessionEntity;
+use SetCMS\Module\UserSession\UserSessionEntity;
 use SetCMS\UUID;
 
-class SessionMapper extends EntityMapper
+class UserSessionMapper extends EntityMapper
 {
 
     use \SetCMS\FactoryTrait;
 
-    protected function entity(): SessionEntity
+    protected function entity(): UserSessionEntity
     {
         return parent::entity();
     }

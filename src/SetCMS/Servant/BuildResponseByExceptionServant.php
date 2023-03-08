@@ -6,14 +6,14 @@ namespace SetCMS\Servant;
 
 use Psr\Container\ContainerInterface;
 use SetCMS\Servant\BuildHtmlContentByMixedValue;
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
 use Throwable;
 use SetCMS\Throwable\NotFound;
 
-class BuildResponseByExceptionServant implements ServantInterface
+class BuildResponseByExceptionServant implements Servant
 {
 
     use \SetCMS\FactoryTrait;

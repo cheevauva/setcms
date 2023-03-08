@@ -9,20 +9,20 @@ use Twig\Loader\FilesystemLoader;
 use Twig\Environment;
 use Twig\TwigFunction;
 use Twig\Markup;
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 use SetCMS\Scope;
 use Throwable;
 use SetCMS\Module\Themes\Theme;
 use SetCMS\Throwable\NotFound;
 use SetCMS\Servant\BuildMixedValueByRouteServant;
 use Psr\Http\Message\ResponseInterface;
-use SetCMS\FactoryInterface;
+use SetCMS\Contract\Factory;
 use SetCMS\Router\RouterInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\UUID;
-use SetCMS\ServerRequestAttribute;
+use SetCMS\RequestAttribute;
 
-class BuildHtmlContentByMixedValue implements ServantInterface
+class BuildHtmlContentByMixedValue implements Servant
 {
 
     use \SetCMS\FactoryTrait;
@@ -33,12 +33,12 @@ class BuildHtmlContentByMixedValue implements ServantInterface
     public object $mixedValue;
     public string $htmlContent;
     public ServerRequestInterface $request;
-    private FactoryInterface $factory;
+    private Factory $factory;
     private RouterInterface $router;
 
     public function __construct(ContainerInterface $container)
     {
-        $this->factory = $container->get(FactoryInterface::class);
+        $this->factory = $container->get(Factory::class);
         $this->router = $container->get(RouterInterface::class);
         $this->basePath = $container->get('basePath');
         $this->config = $container->get('config');
@@ -53,7 +53,7 @@ class BuildHtmlContentByMixedValue implements ServantInterface
             $template = explode('@', (new \ReflectionObject($object))->getShortName())[0];
 
             $context = $object->toArray();
-            $context['currentUser'] = $this->request->getAttribute(ServerRequestAttribute::CURRENT_USER);
+            $context['currentUser'] = RequestAttribute::currentUser->fromRequest($this->request);
 
             if ($object->messages) {
                 $this->htmlContent = $this->getTwig()->render('themes/bootstrap5/errors.twig', [

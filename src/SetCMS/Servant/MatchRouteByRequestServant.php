@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace SetCMS\Servant;
 
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\FactoryInterface;
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Factory;
+use SetCMS\Contract\Servant;
 use SetCMS\Contract\Applicable;
 use SetCMS\Router\RouterInterface;
 use SetCMS\Router\RouterException;
 use SetCMS\Router\RouterMatchDTO;
 
-class MatchRouteByRequestServant implements ServantInterface, Applicable
+class MatchRouteByRequestServant implements Servant, Applicable
 {
 
     use \SetCMS\FactoryTrait;
@@ -23,7 +23,7 @@ class MatchRouteByRequestServant implements ServantInterface, Applicable
     public string $requestMethod = 'GET';
     public ?RouterMatchDTO $routerMatch = null;
 
-    public function __construct(FactoryInterface $factory)
+    public function __construct(Factory $factory)
     {
         $this->router = $factory->make(RouterInterface::class);
     }

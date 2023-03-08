@@ -7,9 +7,9 @@ namespace SetCMS\Controller;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\FactoryInterface;
+use SetCMS\Contract\Factory;
 use SetCMS\Scope;
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 use SetCMS\Servant\ServeScopeServant;
 use SetCMS\Controller\Event\ScopeProtectionEvent;
 
@@ -17,13 +17,13 @@ trait ControllerTrait
 {
 
     private ContainerInterface $container;
-    private FactoryInterface $factory;
+    private Factory $factory;
     private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->factory = $container->get(FactoryInterface::class);
+        $this->factory = $container->get(Factory::class);
         $this->eventDispatcher = $container->get(EventDispatcherInterface::class);
     }
 
@@ -32,7 +32,7 @@ trait ControllerTrait
         (new ScopeProtectionEvent($scope, $request))->dispatch($this->eventDispatcher);
     }
 
-    private function directServe(ServantInterface $servant, Scope $scope, array $array): Scope
+    private function directServe(Servant $servant, Scope $scope, array $array): Scope
     {
         $serveScope = ServeScopeServant::make($this->factory);
         $serveScope->servent = $servant;
@@ -43,7 +43,7 @@ trait ControllerTrait
         return $serveScope->scope;
     }
 
-    private function serve(ServerRequestInterface $request, ServantInterface $servant, Scope $scope, array $array = []): Scope
+    private function serve(ServerRequestInterface $request, Servant $servant, Scope $scope, array $array = []): Scope
     {
         $this->secureByScope($scope, $request);
         $this->directServe($servant, $scope, $array);

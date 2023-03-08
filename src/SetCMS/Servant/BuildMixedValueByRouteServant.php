@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace SetCMS\Servant;
 
 use Psr\Container\ContainerInterface;
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 
-class BuildMixedValueByRouteServant implements ServantInterface
+class BuildMixedValueByRouteServant implements Servant
 {
 
     private ContainerInterface $container;

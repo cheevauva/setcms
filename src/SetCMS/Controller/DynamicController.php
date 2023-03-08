@@ -6,7 +6,7 @@ namespace SetCMS\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use SetCMS\FactoryInterface;
+use SetCMS\Contract\Factory;
 use SetCMS\Controller\Servant\ExecuteDynamicControllerServant;
 
 abstract class DynamicController
@@ -14,7 +14,7 @@ abstract class DynamicController
 
     abstract protected function getSection(): string;
 
-    public function dynamicAction(ServerRequestInterface $request, ResponseInterface $response, FactoryInterface $factory)
+    public function dynamicAction(ServerRequestInterface $request, ResponseInterface $response, Factory $factory)
     {
         $executor = ExecuteDynamicControllerServant::make($factory);
         $executor->className = 'SetCMS\Module\{module}\{module}{section}Controller';

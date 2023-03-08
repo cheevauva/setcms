@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Entity\DAO;
 
-abstract class EntityRetrieveManyDAO extends EntityCommonDAO implements \SetCMS\ServantInterface
+abstract class EntityRetrieveManyDAO extends EntityCommonDAO implements \SetCMS\Contract\Servant
 {
 
     public ?\Iterator $rows = null;

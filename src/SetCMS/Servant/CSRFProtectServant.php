@@ -6,10 +6,10 @@ namespace SetCMS\Servant;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 use SetCMS\Module\Modules\ModuleException;
 
-class CSRFProtectServant implements ServantInterface
+class CSRFProtectServant implements Servant
 {
 
     public ServerRequestInterface $request;

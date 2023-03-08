@@ -6,11 +6,11 @@ namespace SetCMS\Entity\DAO;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 use SetCMS\Entity;
 use SetCMS\Entity\Mapper\EntityMapper;
 
-abstract class EntityCommonDAO implements ServantInterface
+abstract class EntityCommonDAO implements Servant
 {
 
     protected ?int $limit = null;

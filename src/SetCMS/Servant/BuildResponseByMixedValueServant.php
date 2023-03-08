@@ -4,27 +4,27 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-use SetCMS\FactoryInterface;
+use SetCMS\Contract\Factory;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
 use SetCMS\Scope;
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 use SetCMS\Servant\BuildResponseByExceptionServant;
 use SetCMS\Servant\BuildHtmlContentByMixedValue;
 use SetCMS\Contract\Twigable;
 
-class BuildResponseByMixedValueServant implements ServantInterface
+class BuildResponseByMixedValueServant implements Servant
 {
 
     use \SetCMS\FactoryTrait;
 
-    private FactoryInterface $factory;
+    private Factory $factory;
     public ?object $mixedValue = null;
     public ServerRequestInterface $request;
     public ResponseInterface $response;
 
-    public function __construct(FactoryInterface $container)
+    public function __construct(Factory $container)
     {
         $this->factory = $container;
     }

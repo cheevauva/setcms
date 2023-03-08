@@ -6,7 +6,7 @@ namespace SetCMS\Module\User\Scope;
 
 use SetCMS\Scope;
 use SetCMS\Contract\Twigable;
-use SetCMS\Module\Session\DAO\SessionDeleteByIdDAO;
+use SetCMS\Module\UserSession\DAO\UserSessionDeleteByIdDAO;
 use SetCMS\UUID;
 
 class UserPublicLogoutScope extends Scope implements Twigable
@@ -16,7 +16,7 @@ class UserPublicLogoutScope extends Scope implements Twigable
 
     public function to(object $object): void
     {
-        if ($object instanceof SessionDeleteByIdDAO) {
+        if ($object instanceof UserSessionDeleteByIdDAO) {
             $object->id = $this->token;
         }
     }

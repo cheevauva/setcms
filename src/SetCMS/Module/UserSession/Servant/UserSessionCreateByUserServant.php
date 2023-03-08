@@ -2,31 +2,31 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Session\Servant;
+namespace SetCMS\Module\UserSession\Servant;
 
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 use SetCMS\Module\User\UserEntity;
-use SetCMS\Module\Session\SessionEntity;
-use SetCMS\Module\Session\DAO\SessionSaveDAO;
+use SetCMS\Module\UserSession\UserSessionEntity;
+use SetCMS\Module\UserSession\DAO\UserSessionSaveDAO;
 
-class SessionCreateByUserServant implements ServantInterface
+class UserSessionCreateByUserServant implements Servant
 {
 
     use \SetCMS\FactoryTrait;
     use \SetCMS\DITrait;
 
     public UserEntity $user;
-    public ?SessionEntity $session;
+    public ?UserSessionEntity $session;
     public string $device;
 
     public function serve(): void
     {
-        $session = new SessionEntity;
+        $session = new UserSessionEntity;
         $session->userId = $this->user->id;
         $session->device = '';
         $session->dateExpiries = new \DateTime('+1 year');
 
-        $save = SessionSaveDAO::make($this->factory());
+        $save = UserSessionSaveDAO::make($this->factory());
         $save->session = $session;
         $save->serve();
 

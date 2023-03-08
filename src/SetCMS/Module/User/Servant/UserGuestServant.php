@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\Servant;
 
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 use SetCMS\Contract\Applicable;
 use SetCMS\Controller\Event\FrontControllerResolveEvent as Event;
 use SetCMS\Module\User\UserEntity;
 
-class UserGuestServant implements ServantInterface, Applicable
+class UserGuestServant implements Servant, Applicable
 {
 
     private ?Event $event;

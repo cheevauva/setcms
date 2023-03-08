@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page\Servant;
 
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\DAO\PageHasByIdDAO;
 use SetCMS\Module\Page\DAO\PageSaveDAO;
 use SetCMS\Module\Page\Exception\PageAlreadyExistsException;
 
-class PageCreateServant implements ServantInterface
+class PageCreateServant implements Servant
 {
 
     use \SetCMS\DITrait;

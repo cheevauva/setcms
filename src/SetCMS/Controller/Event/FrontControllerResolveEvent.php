@@ -6,7 +6,7 @@ namespace SetCMS\Controller\Event;
 
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\User\UserEntity;
-use SetCMS\ServerRequestAttribute;
+use SetCMS\RequestAttribute;
 
 class FrontControllerResolveEvent
 {
@@ -17,12 +17,12 @@ class FrontControllerResolveEvent
 
     public function __construct(public ServerRequestInterface $request)
     {
-        $this->token = $request->getCookieParams()[ServerRequestAttribute::ACCESS_TOKEN] ?? null;
+        $this->token = $request->getCookieParams()[RequestAttribute::accessToken->toString()] ?? null;
     }
 
     public function withUser(UserEntity $user): void
     {
-        $this->request = $this->request->withAttribute(ServerRequestAttribute::CURRENT_USER, $user);
+        $this->request = RequestAttribute::currentUser->toRequest($this->request, $user);
     }
 
 }

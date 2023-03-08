@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Servant;
 
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\Module\Post\DAO\PostHasByIdDAO;
 use SetCMS\Module\Post\DAO\PostSaveDAO;
 use SetCMS\Module\Post\Exception\PostNotFoundException;
 
-class PostUpdateServant implements ServantInterface
+class PostUpdateServant implements Servant
 {
 
     use \SetCMS\DITrait;

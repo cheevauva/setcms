@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\Scope;
 
+use SetCMS\Scope;
 use SetCMS\Module\User\Servant\UserLoginServant;
 use SetCMS\Module\User\UserEntity;
-use SetCMS\Module\Session\SessionEntity;
-use SetCMS\Module\Session\Servant\SessionCreateByUserServant;
+use SetCMS\Module\UserSession\UserSessionEntity;
+use SetCMS\Module\UserSession\Servant\UserSessionCreateByUserServant;
 
-class UserPublicDoLoginScope extends \SetCMS\Scope
+class UserPublicDoLoginScope extends Scope
 {
 
     public string $username;
@@ -17,7 +18,7 @@ class UserPublicDoLoginScope extends \SetCMS\Scope
     public string $device = '';
     // public string $captcha;
     protected ?UserEntity $user = null;
-    protected ?SessionEntity $session = null;
+    protected ?UserSessionEntity $session = null;
 
     public function to(object $object): void
     {
@@ -28,7 +29,7 @@ class UserPublicDoLoginScope extends \SetCMS\Scope
             $object->username = $this->username;
         }
 
-        if ($object instanceof SessionCreateByUserServant) {
+        if ($object instanceof UserSessionCreateByUserServant) {
             $object->user = $this->user;
             $object->device = $this->device;
         }
@@ -42,7 +43,7 @@ class UserPublicDoLoginScope extends \SetCMS\Scope
             $this->user = $object->user;
         }
 
-        if ($object instanceof SessionCreateByUserServant) {
+        if ($object instanceof UserSessionCreateByUserServant) {
             $this->session = $object->session;
         }
     }

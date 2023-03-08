@@ -7,11 +7,11 @@ namespace SetCMS\Servant;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 use SetCMS\Contract\Applicable;
-use SetCMS\FactoryInterface;
+use SetCMS\Contract\Factory;
 
-class RetrieveArgumentsByMethodServant implements ServantInterface, Applicable
+class RetrieveArgumentsByMethodServant implements Servant, Applicable
 {
 
     use \SetCMS\FactoryTrait;
@@ -48,8 +48,8 @@ class RetrieveArgumentsByMethodServant implements ServantInterface, Applicable
                 case ResponseInterface::class;
                     $value = $this->response ?? $this->container->get(ResponseInterface::class);
                     break;
-                case FactoryInterface::class:
-                    $value = $this->container->get(FactoryInterface::class);
+                case Factory::class:
+                    $value = $this->container->get(Factory::class);
                     break;
                 case ContainerInterface::class:
                     $value = $this->container;

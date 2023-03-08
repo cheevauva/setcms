@@ -8,7 +8,7 @@ use SetCMS\UUID;
 use SetCMS\Module\Captcha\DAO\CaptchaEntityDbRetrieveByIdDAO;
 use SetCMS\Module\Captcha\DAO\CaptchaEntityDbSaveDAO;
 
-class CaptchaUseResolvedCaptchaServant implements \SetCMS\ServantInterface
+class CaptchaUseResolvedCaptchaServant implements \SetCMS\Contract\Servant
 {
 
     use \SetCMS\DITrait;

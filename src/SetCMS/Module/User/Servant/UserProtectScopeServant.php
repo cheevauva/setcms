@@ -2,13 +2,15 @@
 
 namespace SetCMS\Module\User\Servant;
 
+use SetCMS\Contract\Servant;
+use SetCMS\Contract\Applicable;
 use SetCMS\Controller\Event\ScopeProtectionEvent;
 use SetCMS\Module\User\UserEntity;
 use SetCMS\Scope;
 use SetCMS\ACL;
-use SetCMS\ServerRequestAttribute;
+use SetCMS\RequestAttribute;
 
-class UserProtectScopeServant implements \SetCMS\ServantInterface, \SetCMS\Contract\Applicable
+class UserProtectScopeServant implements \SetCMS\Contract\Servant, \SetCMS\Contract\Applicable
 {
 
     use \SetCMS\DITrait;
@@ -38,7 +40,7 @@ class UserProtectScopeServant implements \SetCMS\ServantInterface, \SetCMS\Contr
     public function apply(object $object): void
     {
         if ($object instanceof ScopeProtectionEvent) {
-            $this->user = $object->request->getAttribute(ServerRequestAttribute::CURRENT_USER) ?? new UserEntity;
+            $this->user = RequestAttribute::currentUser->fromRequest($object->request) ?? new UserEntity;
             $this->scope = $object->scope;
         }
     }

@@ -6,13 +6,13 @@ namespace SetCMS\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use SetCMS\FactoryInterface;
+use SetCMS\Contract\Factory;
 use SetCMS\Controller\Servant\ExecuteDynamicControllerServant;
 
 trait DynamicControllerTrait
 {
 
-    public function dynamicAction(ServerRequestInterface $request, ResponseInterface $response, FactoryInterface $factory)
+    public function dynamicAction(ServerRequestInterface $request, ResponseInterface $response, Factory $factory)
     {
         $executor = ExecuteDynamicControllerServant::make($factory);
         $executor->className = static::class;

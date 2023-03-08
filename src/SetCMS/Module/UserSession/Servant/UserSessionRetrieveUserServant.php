@@ -2,24 +2,24 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Session\Servant;
+namespace SetCMS\Module\UserSession\Servant;
 
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Servant;
 use SetCMS\Contract\Applicable;
 use SetCMS\UUID;
-use SetCMS\Module\Session\DAO\SessionRetrieveByIdDAO;
+use SetCMS\Module\UserSession\DAO\UserSessionRetrieveByIdDAO;
 use SetCMS\Module\User\DAO\UserEntityDbRetrieveByIdDAO;
 use SetCMS\Controller\Event\FrontControllerResolveEvent as Event;
-use SetCMS\Module\Session\SessionEntity;
+use SetCMS\Module\UserSession\UserSessionEntity;
 use SetCMS\Module\User\UserEntity;
 
-class SessionRetrieveUserServant implements ServantInterface, Applicable
+class UserSessionRetrieveUserServant implements Servant, Applicable
 {
 
     use \SetCMS\DITrait;
 
     public string $token;
-    public ?SessionEntity $session = null;
+    public ?UserSessionEntity $session = null;
     public ?UserEntity $user = null;
     private ?Event $event = null;
 
@@ -30,8 +30,8 @@ class SessionRetrieveUserServant implements ServantInterface, Applicable
         } catch (\Exception $ex) {
             return;
         }
-        
-        $retrieveSession = SessionRetrieveByIdDAO::make($this->factory());
+
+        $retrieveSession = UserSessionRetrieveByIdDAO::make($this->factory());
         $retrieveSession->id = $sessionId;
         $retrieveSession->serve();
 
@@ -59,7 +59,7 @@ class SessionRetrieveUserServant implements ServantInterface, Applicable
     {
         if ($object instanceof Event) {
             $this->event = $object;
-            $this->token = $object->token;
+            $this->token = strval($object->token);
         }
     }
 

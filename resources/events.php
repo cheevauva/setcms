@@ -8,6 +8,6 @@ return [
     ],
     \SetCMS\Controller\Event\FrontControllerResolveEvent::class => [
         \SetCMS\Module\User\Servant\UserGuestServant::class,
-        \SetCMS\Module\Session\Servant\SessionRetrieveUserServant::class,
+        \SetCMS\Module\UserSession\Servant\UserSessionRetrieveUserServant::class,
     ],
 ];

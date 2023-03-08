@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace SetCMS\Controller\Servant;
 
-use SetCMS\FactoryInterface;
-use SetCMS\ServantInterface;
+use SetCMS\Contract\Factory;
+use SetCMS\Contract\Servant;
 use SetCMS\Contract\Applicable;
 use SetCMS\Controller\Servant\BuildByDynamicAttributeServant;
 use SetCMS\Servant\RetrieveArgumentsByMethodServant;
 
-class ExecuteDynamicControllerServant implements ServantInterface, Applicable
+class ExecuteDynamicControllerServant implements Servant, Applicable
 {
 
     use \SetCMS\FactoryTrait;
 
-    private FactoryInterface $factory;
+    private Factory $factory;
     public string $className;
     public ?string $section = null;
     public ?string $module = null;
@@ -23,7 +23,7 @@ class ExecuteDynamicControllerServant implements ServantInterface, Applicable
     public \SplObjectStorage $storage;
     public mixed $mixedValue;
 
-    public function __construct(FactoryInterface $factory)
+    public function __construct(Factory $factory)
     {
         $this->factory = $factory;
         $this->storage = new \SplObjectStorage();

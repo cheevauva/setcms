@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Session;
+namespace SetCMS\Module\UserSession;
 
 use SetCMS\Entity;
 use SetCMS\UUID;
 
-class SessionEntity extends Entity
+class UserSessionEntity extends Entity
 {
 
     use \SetCMS\AsTrait;
