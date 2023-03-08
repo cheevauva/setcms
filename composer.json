@@ -10,7 +10,7 @@
         "symfony/event-dispatcher": "^5.3",
         "twig/twig": "v3.3.3",
         "altorouter/altorouter": "1.1.0",
-        "erusev/parsedown": "1.7.4",
+        "league/commonmark": "2.3.9",
         "guzzlehttp/guzzle": "7.3.0",
         "laminas/laminas-diactoros": "2.9.2",
         "laminas/laminas-permissions-acl": "2.9.0",

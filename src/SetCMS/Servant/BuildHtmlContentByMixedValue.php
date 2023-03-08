@@ -23,6 +23,7 @@ use SetCMS\UUID;
 use SetCMS\RequestAttribute;
 use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Uri;
+use League\CommonMark\CommonMarkConverter;
 
 class BuildHtmlContentByMixedValue implements Servant
 {
@@ -161,11 +162,12 @@ class BuildHtmlContentByMixedValue implements Servant
 
             public function markdown(?string $string = null): string
             {
-                $pd = new \Parsedown;
-                $pd->setSafeMode(true);
-                $pd->setBreaksEnabled(true);
+                $converter = new CommonMarkConverter([
+                    'html_input' => 'strip',
+                    'allow_unsafe_links' => false,
+                ]);
 
-                return $pd->text($string);
+                return (string) $converter->convert(trim($string));
             }
 
             public function link2(string $route, $params = [], $query = ''): string
