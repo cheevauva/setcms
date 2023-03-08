@@ -65,10 +65,10 @@
                 <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
                     <div class="position-sticky pt-3">
                         <ul class="nav flex-column">
-                            {% for module in setcms.modules %}
+                            {% for module in ['Page', 'Post'] %}
                                 <li class="nav-item">
-                                    <a class="nav-link {% if module.name == setcms.currentModule %}active{% endif %}" href="{{ setcms.link('do_action_admin', {module: module.name, action: 'index'}) }}">
-                                        {{ module.label }}
+                                    <a class="nav-link {% if module == setcms.currentModule %}active{% endif %}" href="{{ setcms.link('do_action_admin', {module: module, action: 'index'}) }}">
+                                        {{ module }}
                                     </a>
                                 </li>
                             {% endfor %}

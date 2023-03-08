@@ -22,11 +22,15 @@ class ExecuteDynamicControllerServant implements Servant, Applicable
     public \SplObjectStorage $storage;
     public mixed $mixedValue;
 
+    private function storage(): \SplObjectStorage
+    {
+        $this->storage = $this->storage ?? new \SplObjectStorage();
+
+        return $this->storage;
+    }
 
     public function serve(): void
     {
-        $this->storage = new \SplObjectStorage();
-        
         $controllerBuilder = BuildByDynamicAttributeServant::make($this->factory());
         $controllerBuilder->className = $this->className;
         $controllerBuilder->section = $this->section ?? '';
@@ -42,7 +46,7 @@ class ExecuteDynamicControllerServant implements Servant, Applicable
 
         $methodArgumentsBuilder = RetrieveArgumentsByMethodServant::make($this->factory());
         $methodArgumentsBuilder->apply($controllerBuilder->method);
-        $methodArgumentsBuilder->apply($this->storage);
+        $methodArgumentsBuilder->apply($this->storage());
         $methodArgumentsBuilder->serve();
 
         $this->mixedValue = $controllerBuilder->method->invokeArgs($controllerBuilder->controller, $methodArgumentsBuilder->arguments);
@@ -50,7 +54,7 @@ class ExecuteDynamicControllerServant implements Servant, Applicable
 
     public function apply(object $object): void
     {
-        $this->storage->attach($object);
+        $this->storage()->attach($object);
     }
 
 }

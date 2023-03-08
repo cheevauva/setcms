@@ -4,12 +4,16 @@ use SetCMS\Module\User\UserRoleEnum;
 
 return [
     'roles' => [
-        'guest' => [],
-        'user' => ['guest'],
-        'admin' => ['user'],
+        UserRoleEnum::GUEST->toString() => [],
+        UserRoleEnum::USER->toString() => [
+            UserRoleEnum::GUEST->toString()
+        ],
+        UserRoleEnum::ADMIN->toString() => [
+            UserRoleEnum::USER->toString()
+        ],
     ],
     'rules' => [
-        'guest' => [
+        UserRoleEnum::GUEST->toString() => [
             'scope' => [
                 \SetCMS\Module\Captcha\Scope\CaptchaGenerateScope::class => true,
                 \SetCMS\Module\Captcha\Scope\CaptchaSolveScope::class => true,
@@ -23,9 +27,12 @@ return [
                 // Post
                 \SetCMS\Module\Post\Scope\PostPublicIndexScope::class => true,
                 \SetCMS\Module\Post\Scope\PostPublicReadBySlugScope::class => true,
+                // Page
+                \SetCMS\Module\Page\Scope\PagePublicReadScope::class => true,
+                \SetCMS\Module\Page\Scope\PagePublicReadBlockScope::class => true,
             ],
         ],
-        'user' => [
+        UserRoleEnum::USER->toString() => [
             'scope' => [
                 \SetCMS\Module\User\Scope\UserPublicProfileScope::class => true,
                 \SetCMS\Module\User\Scope\UserRegistrationScope::class => false,
@@ -34,7 +41,7 @@ return [
                 \SetCMS\Module\User\Scope\UserPublicLogoutScope::class => true,
             ],
         ],
-        'admin' => [
+        UserRoleEnum::ADMIN->toString() => [
             'scope' => [
                 // page
                 \SetCMS\Module\Page\Scope\PagePrivateIndexScope::class => true,

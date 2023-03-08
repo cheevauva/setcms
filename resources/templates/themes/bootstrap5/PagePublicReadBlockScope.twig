@@ -1,0 +1,8 @@
+<h4 class="fst-italic">{{ page.title }}</h4>
+<p class="mb-0">
+    {% if page %}
+        {{ setcms.markdown(page.content)|raw }}
+    {% else %}
+        page not found
+    {% endif %}
+</p>

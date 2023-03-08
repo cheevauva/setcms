@@ -25,5 +25,10 @@ enum UserRoleEnum: string
     {
         return $this === UserRoleEnum::USER;
     }
+    
+    public function toString(): string
+    {
+        return $this->value;
+    }
 
 }

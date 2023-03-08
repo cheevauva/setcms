@@ -6,12 +6,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Container\ContainerInterface;
 use SetCMS\Contract\Factory;
-use SetCMS\Servant\ParseBodyRequestServant;
-use SetCMS\Servant\BuildResponseByMixedValueServant;
-use SetCMS\Servant\MatchRouteByRequestServant;
-use SetCMS\Controller\Servant\BuildByTargetStringServant;
-use SetCMS\Servant\RetrieveArgumentsByMethodServant;
 use SetCMS\Controller\Event\FrontControllerResolveEvent;
+use SetCMS\Servant\BuildResponseByMixedValueServant;
+use SetCMS\Servant\BuildMixedValueByRequestServant;
 
 class FrontController
 {
@@ -22,35 +19,17 @@ class FrontController
         $newRequest = (new FrontControllerResolveEvent($request))->dispatch()->request;
 
         try {
-            $matchRequest = MatchRouteByRequestServant::make($factory);
-            $matchRequest->apply($newRequest);
-            $matchRequest->serve();
-
-            foreach ($matchRequest->routerMatch->params as $pName => $pValue) {
-                $newRequest = $newRequest->withAttribute($pName, $pValue);
-            }
-
-            $parseBody = ParseBodyRequestServant::make($factory);
-            $parseBody->request = $newRequest;
-            $parseBody->serve();
-
-            $controllerBuilder = BuildByTargetStringServant::make($factory);
-            $controllerBuilder->target = $matchRequest->routerMatch->target;
-            $controllerBuilder->serve();
-
-            $methodArgumentsBuilder = RetrieveArgumentsByMethodServant::make($factory);
-            $methodArgumentsBuilder->apply($controllerBuilder->method);
-            $methodArgumentsBuilder->apply($parseBody->request);
-            $methodArgumentsBuilder->apply($response);
-            $methodArgumentsBuilder->serve();
-
-            $output = $controllerBuilder->method->invokeArgs($controllerBuilder->controller, $methodArgumentsBuilder->arguments);
+            $builder = BuildMixedValueByRequestServant::make($factory);
+            $builder->response = $response;
+            $builder->request = $newRequest;
+            $builder->serve();
+            $output = $builder->mixedValue;
         } catch (\Exception $ex) {
             $output = $ex;
         }
 
         $prepareResponse = BuildResponseByMixedValueServant::make($factory);
-        $prepareResponse->request = $parseBody->request ?? $newRequest;
+        $prepareResponse->request = $newRequest;
         $prepareResponse->mixedValue = $output;
         $prepareResponse->serve();
 

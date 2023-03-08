@@ -14,13 +14,15 @@ use SetCMS\Scope;
 use Throwable;
 use SetCMS\Module\Themes\Theme;
 use SetCMS\Throwable\NotFound;
-use SetCMS\Servant\BuildMixedValueByRouteServant;
+use SetCMS\Servant\BuildMixedValueByRequestServant;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\Contract\Factory;
 use SetCMS\Contract\Router;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\UUID;
 use SetCMS\RequestAttribute;
+use Laminas\Diactoros\ServerRequest;
+use Laminas\Diactoros\Uri;
 
 class BuildHtmlContentByMixedValue implements Servant
 {
@@ -50,8 +52,6 @@ class BuildHtmlContentByMixedValue implements Servant
         $object = $this->mixedValue;
 
         if ($object instanceof Scope) {
-            $template = explode('@', (new \ReflectionObject($object))->getShortName())[0];
-
             $context = $object->toArray();
             $context['currentUser'] = RequestAttribute::currentUser->fromRequest($this->request);
 
@@ -60,7 +60,7 @@ class BuildHtmlContentByMixedValue implements Servant
                     'messages' => $object->messages,
                 ]);
             } else {
-                $this->htmlContent = $this->getTwig()->render(sprintf('themes/%s/%s', $this->theme, sprintf('%s.twig', $template)), $context);
+                $this->htmlContent = $this->getTwig()->render($this->prepareTemplateByScope($object), $context);
             }
         }
 
@@ -70,6 +70,13 @@ class BuildHtmlContentByMixedValue implements Servant
                 'trace' => $object->getTraceAsString(),
             ]);
         }
+    }
+
+    protected function prepareTemplateByScope(Scope $scope): string
+    {
+        $template = explode('@', (new \ReflectionObject($scope))->getShortName())[0];
+
+        return sprintf('themes/%s/%s', $this->theme, sprintf('%s.twig', $template));
     }
 
     protected function prepareTemplateByException(Throwable $ex): string
@@ -98,7 +105,7 @@ class BuildHtmlContentByMixedValue implements Servant
         $twig->addFunction(new TwigFunction('UUID', function () {
             return new Markup(strval(new UUID), 'UTF-8');
         }));
-        $twig->addFunction(new TwigFunction('render', function ($route, $template, $params = []) {
+        $twig->addFunction(new TwigFunction('render', function ($route, ?string $template = null, array $params = []) {
             try {
                 $content = $this->render($route, $template, $params);
             } catch (\Exception $ex) {
@@ -111,17 +118,19 @@ class BuildHtmlContentByMixedValue implements Servant
         return $twig;
     }
 
-    protected function render(string $route, string $template, array $params = [])
+    protected function render(string $path, ?string $template = null, array $parsedData = [])
     {
-        $buildMixedValueByRout = new BuildMixedValueByRouteServant($this->container);
-        $buildMixedValueByRout->route = $route;
-        $buildMixedValueByRout->params = $params;
+        $request = (new ServerRequest)->withUri((new Uri)->withPath($path))->withMethod('GET')->withParsedBody($parsedData);
+        $request = RequestAttribute::currentUser->toRequest($request, RequestAttribute::currentUser->fromRequest($this->request));
+
+        $buildMixedValueByRout = BuildMixedValueByRequestServant::make($this->factory);
+        $buildMixedValueByRout->request = $request;
         $buildMixedValueByRout->serve();
 
         $object = $buildMixedValueByRout->mixedValue;
 
         if ($object instanceof Scope) {
-            return $this->getTwig()->render($template, $object->toArray());
+            return $this->getTwig()->render($template ?? $this->prepareTemplateByScope($object), $object->toArray());
         }
 
         if ($object instanceof ResponseInterface) {
@@ -142,7 +151,6 @@ class BuildHtmlContentByMixedValue implements Servant
             public function __construct(Router $router, ServerRequestInterface $request)
             {
                 $this->router = clone $router;
-                $this->router->setBasePath(rtrim($request->getServerParams()['SCRIPT_NAME'], '/'));
                 $this->self = $request->getServerParams()['REQUEST_SCHEME'] . '://' . $request->getServerParams()['HTTP_HOST'];
                 $this->baseUrl = dirname($request->getServerParams()['SCRIPT_NAME']);
 
@@ -155,6 +163,7 @@ class BuildHtmlContentByMixedValue implements Servant
             {
                 $pd = new \Parsedown;
                 $pd->setSafeMode(true);
+                $pd->setBreaksEnabled(true);
 
                 return $pd->text($string);
             }
