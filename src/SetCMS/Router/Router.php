@@ -4,7 +4,7 @@ namespace SetCMS\Router;
 
 use SetCMS\Contract\Router as RouterInterface;
 use SetCMS\Router\RouterMatchDTO;
-use SetCMS\Router\RouterException;
+use SetCMS\Router\Exception\RouterNotFoundException;
 use Psr\Container\ContainerInterface;
 use AltoRouter;
 use SetCMS\UUID;
@@ -12,10 +12,15 @@ use SetCMS\UUID;
 class Router implements RouterInterface
 {
 
+    use \SetCMS\DITrait;
+    use \SetCMS\FactoryTrait;
+
     private AltoRouter $altoRouter;
 
     public function __construct(ContainerInterface $container)
     {
+        $this->container = $container;
+
         $this->altoRouter = new AltoRouter;
         $this->altoRouter->setBasePath($container->get('env')['BASE_PATH'] ?? '');
         $this->altoRouter->addMatchTypes([
@@ -37,7 +42,7 @@ class Router implements RouterInterface
         $result = $this->altoRouter->match($requestUrl, $requestMethod);
 
         if (!$result) {
-            throw RouterException::notFound();
+            throw new RouterNotFoundException;
         }
 
         $routerMatch = new RouterMatchDTO;
@@ -46,11 +51,6 @@ class Router implements RouterInterface
         $routerMatch->name = $result['name'];
 
         return $routerMatch;
-    }
-
-    public function setBasePath(string $basePath): void
-    {
-        $this->altoRouter->setBasePath($basePath);
     }
 
 }

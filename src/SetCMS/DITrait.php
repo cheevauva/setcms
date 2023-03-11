@@ -10,7 +10,7 @@ use SetCMS\Contract\Factory;
 trait DITrait
 {
 
-    private ContainerInterface $container;
+    protected ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
     {

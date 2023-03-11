@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Exception;
 
-class PostNotFoundException extends PostException
+use SetCMS\Contract\NotFound;
+
+class PostNotFoundException extends PostException implements NotFound
 {
-    //put your code here
+
+    public function label(): string
+    {
+        return 'setcms.post.notfound';
+    }
+
 }

@@ -13,7 +13,7 @@ use SetCMS\Module\Post\DAO\PostRetrieveManyDAO;
 class PostPublicController
 {
 
-    use \SetCMS\Controller\ControllerTrait;
+    use \SetCMS\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
     public function index(ServerRequestInterface $request, PostPublicIndexScope $scope, PostRetrieveManyDAO $servant): PostPublicIndexScope
@@ -23,6 +23,8 @@ class PostPublicController
 
     public function readBySlug(ServerRequestInterface $request, PostPublicReadBySlugScope $scope, PostRetrieveBySlugDAO $servant): PostPublicReadBySlugScope
     {
+        $servant->throwExceptionIfNotFound = true;
+        
         return $this->serve($request, $servant, $scope, [
             'slug' => $request->getAttribute('slug'),
         ]);

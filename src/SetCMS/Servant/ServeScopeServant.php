@@ -19,16 +19,12 @@ class ServeScopeServant implements Servant
 
     public function serve(): void
     {
-        try {
-            $messages = iterator_to_array($this->messages());
+        $messages = iterator_to_array($this->messages());
 
-            if (empty($messages)) {
-                $this->scope->to($this->servent);
-                $this->servent->serve();
-                $this->scope->from($this->servent);
-            }
-        } catch (\Throwable $ex) {
-            $messages[] = [$ex->getMessage(), $ex->getTraceAsString()];
+        if (empty($messages)) {
+            $this->scope->to($this->servent);
+            $this->servent->serve();
+            $this->scope->from($this->servent);
         }
 
         $this->scope->messages = $messages;
@@ -36,7 +32,6 @@ class ServeScopeServant implements Servant
 
     protected function messages(): \Iterator
     {
-        
         $hydrator = new ArrayPropertyHydratorSevant;
         $hydrator->array = $this->array;
         $hydrator->object = $this->scope;

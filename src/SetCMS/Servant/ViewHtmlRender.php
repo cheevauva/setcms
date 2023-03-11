@@ -12,9 +12,8 @@ use Twig\Markup;
 use SetCMS\Contract\Servant;
 use SetCMS\Scope;
 use Throwable;
-use SetCMS\Module\Themes\Theme;
 use SetCMS\Throwable\NotFound;
-use SetCMS\Servant\BuildMixedValueByRequestServant;
+use SetCMS\Core\DAO\CoreReflectionMethodRetrieveByServerRequestDAO;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\Contract\Factory;
 use SetCMS\Contract\Router;
@@ -25,27 +24,33 @@ use Laminas\Diactoros\ServerRequest;
 use Laminas\Diactoros\Uri;
 use League\CommonMark\CommonMarkConverter;
 
-class BuildHtmlContentByMixedValue implements Servant
+class ViewHtmlRender implements Servant
 {
 
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\QuickTrait;
 
-    private string $basePath;
-    private string $theme;
-    private array $config;
     public object $mixedValue;
-    public string $htmlContent;
+    public ?string $html = null;
     public ServerRequestInterface $request;
-    private Factory $factory;
-    private Router $router;
 
-    public function __construct(ContainerInterface $container)
+    private function router(): Router
     {
-        $this->factory = $container->get(Factory::class);
-        $this->router = $container->get(Router::class);
-        $this->basePath = $container->get('basePath');
-        $this->config = $container->get('config');
-        $this->theme = $this->config['theme'];
+        return $this->container->get(Router::class);
+    }
+
+    private function basePath(): string
+    {
+        return $this->container->get('basePath');
+    }
+
+    private function config(): array
+    {
+        return $this->container->get('config');
+    }
+
+    private function themeName(): string
+    {
+        return $this->config()['theme'];
     }
 
     public function serve(): void
@@ -56,20 +61,7 @@ class BuildHtmlContentByMixedValue implements Servant
             $context = $object->toArray();
             $context['currentUser'] = RequestAttribute::currentUser->fromRequest($this->request);
 
-            if ($object->messages) {
-                $this->htmlContent = $this->getTwig()->render('themes/bootstrap5/errors.twig', [
-                    'messages' => $object->messages,
-                ]);
-            } else {
-                $this->htmlContent = $this->getTwig()->render($this->prepareTemplateByScope($object), $context);
-            }
-        }
-
-        if ($object instanceof Throwable) {
-            $this->htmlContent = $this->getTwig()->render($this->prepareTemplateByException($object), [
-                'message' => $object->getMessage(),
-                'trace' => $object->getTraceAsString(),
-            ]);
+            $this->html = $this->getTwig()->render($this->prepareTemplateByScope($object), $context);
         }
     }
 
@@ -77,31 +69,19 @@ class BuildHtmlContentByMixedValue implements Servant
     {
         $template = explode('@', (new \ReflectionObject($scope))->getShortName())[0];
 
-        return sprintf('themes/%s/%s', $this->theme, sprintf('%s.twig', $template));
-    }
-
-    protected function prepareTemplateByException(Throwable $ex): string
-    {
-        $template = 'themes/bootstrap5/error.twig';
-
-        if ($ex instanceof NotFound) {
-            $template = 'themes/bootstrap5/404.twig';
-        }
-
-        return $template;
+        return sprintf('themes/%s/%s', $this->themeName(), sprintf('%s.twig', $template));
     }
 
     protected function getTwig(): Environment
     {
-        $loader = new FilesystemLoader($this->basePath . '/resources/templates');
+        $loader = new FilesystemLoader($this->basePath() . '/resources/templates');
         $twig = new Environment($loader, [
-            'cache' => $this->basePath . '/cache/twig',
+            'cache' => $this->basePath() . '/cache/twig',
             'auto_reload' => true,
         ]);
 
         $theme = $this->theme();
-        $theme->theme = $this->theme;
-        $theme->config = $this->config;
+        $theme->config = $this->config();
         $twig->addGlobal('setcms', $theme);
         $twig->addFunction(new TwigFunction('UUID', function () {
             return new Markup(strval(new UUID), 'UTF-8');
@@ -124,18 +104,18 @@ class BuildHtmlContentByMixedValue implements Servant
         $request = (new ServerRequest)->withUri((new Uri)->withPath($path))->withMethod('GET')->withParsedBody($parsedData);
         $request = RequestAttribute::currentUser->toRequest($request, RequestAttribute::currentUser->fromRequest($this->request));
 
-        $buildMixedValueByRout = BuildMixedValueByRequestServant::make($this->factory);
-        $buildMixedValueByRout->request = $request;
-        $buildMixedValueByRout->serve();
+        $retrieveReflectionMethod = CoreReflectionMethodRetrieveByServerRequestDAO::make($this->factory());
+        $retrieveReflectionMethod->request = $request;
+        $retrieveReflectionMethod->serve();
 
-        $object = $buildMixedValueByRout->mixedValue;
+        $object = $retrieveReflectionMethod->reflectionMethod->invokeArgs($retrieveReflectionMethod->reflectionObject, $retrieveReflectionMethod->reflectionArguments);
 
         if ($object instanceof Scope) {
             return $this->getTwig()->render($template ?? $this->prepareTemplateByScope($object), $object->toArray());
         }
 
         if ($object instanceof ResponseInterface) {
-            return $this->getTwig()->render($template, ['content' => $object->getBody()->getContents()]);
+            return $object->getBody()->getContents();
         }
 
         throw new \RuntimeException('Unsupport object');
@@ -143,14 +123,16 @@ class BuildHtmlContentByMixedValue implements Servant
 
     private function theme()
     {
-        return new class($this->router, $this->request) {
+        return new class($this->router(), $this->themeName(), $this->request) {
 
+            private string $theme;
             private Router $router;
             private string $self;
             private string $baseUrl;
 
-            public function __construct(Router $router, ServerRequestInterface $request)
+            public function __construct(Router $router, $theme, ServerRequestInterface $request)
             {
+                $this->theme = $theme;
                 $this->router = clone $router;
                 $this->self = $request->getServerParams()['REQUEST_SCHEME'] . '://' . $request->getServerParams()['HTTP_HOST'];
                 $this->baseUrl = dirname($request->getServerParams()['SCRIPT_NAME']);

@@ -18,7 +18,7 @@ use SetCMS\Module\Post\Servant\PostUpdateServant;
 class PostPrivateController
 {
 
-    use \SetCMS\Controller\ControllerTrait;
+    use \SetCMS\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
     public function index(ServerRequestInterface $request, PostPrivateIndexScope $scope, PostRetrieveManyDAO $servant): PostPrivateIndexScope

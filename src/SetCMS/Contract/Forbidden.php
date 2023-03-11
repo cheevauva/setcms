@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Contract;
 
-interface Twigable
+interface Forbidden
 {
     
 }

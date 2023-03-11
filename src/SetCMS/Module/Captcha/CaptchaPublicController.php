@@ -13,7 +13,7 @@ use SetCMS\Module\Captcha\Servant\CaptchaResolveServant;
 class CaptchaPublicController
 {
 
-    use \SetCMS\Controller\ControllerTrait;
+    use \SetCMS\ControllerTrait;
 
     public function solve(ServerRequestInterface $request, CaptchaSolveScope $scope, CaptchaResolveServant $servant): CaptchaSolveScope
     {

@@ -6,6 +6,7 @@ namespace SetCMS\Module\Post\DAO;
 
 use SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO;
 use SetCMS\Module\Post\PostEntity;
+use SetCMS\Module\Post\Exception\PostNotFoundException;
 
 class PostRetrieveBySlugDAO extends EntityRetrieveByCriteriaDAO
 {
@@ -14,6 +15,7 @@ class PostRetrieveBySlugDAO extends EntityRetrieveByCriteriaDAO
 
     public string $slug;
     public ?PostEntity $post;
+    public bool $throwExceptionIfNotFound = false;
 
     public function serve(): void
     {
@@ -23,6 +25,10 @@ class PostRetrieveBySlugDAO extends EntityRetrieveByCriteriaDAO
         ];
 
         parent::serve();
+        
+        if (empty($this->entity) && $this->throwExceptionIfNotFound) {
+            throw new PostNotFoundException;
+        }
 
         $this->post = $this->entity;
     }

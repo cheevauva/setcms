@@ -13,5 +13,4 @@ interface Router
 
     public function generate($routeName, array $params = []): string;
 
-    public function setBasePath(string $basePath): void;
 }

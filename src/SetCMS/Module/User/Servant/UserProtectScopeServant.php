@@ -6,19 +6,18 @@ use SetCMS\Contract\Servant;
 use SetCMS\Contract\Applicable;
 use SetCMS\Controller\Event\ScopeProtectionEvent;
 use SetCMS\Module\User\UserEntity;
+use SetCMS\Module\User\Exception\UserForbiddenException;
 use SetCMS\Scope;
 use SetCMS\ACL;
-use SetCMS\RequestAttribute;
 
-class UserProtectScopeServant implements \SetCMS\Contract\Servant, \SetCMS\Contract\Applicable
+class UserProtectScopeServant implements Servant, Applicable
 {
 
     use \SetCMS\DITrait;
+    use \SetCMS\FactoryTrait;
 
     public UserEntity $user;
     public Scope $scope;
-
-    use \SetCMS\FactoryTrait;
 
     public function serve(): void
     {
@@ -31,18 +30,23 @@ class UserProtectScopeServant implements \SetCMS\Contract\Servant, \SetCMS\Contr
         if (!$acl->hasResource('scope')) {
             throw ModuleException::serverError(sprintf('Не найден ресурс %s', 'scope'));
         }
-        
+
         if (!$acl->isAllowed($this->user->role->value, 'scope', get_class($this->scope))) {
-            throw new \RuntimeException('Доступ запрещён');
+            throw new UserForbiddenException;
         }
     }
 
-    public function apply(object $object): void
+    public function from(object $object): void
     {
         if ($object instanceof ScopeProtectionEvent) {
-            $this->user = RequestAttribute::currentUser->fromRequest($object->request) ?? new UserEntity;
+            $this->user = $object->user ?? new UserEntity;
             $this->scope = $object->scope;
         }
+    }
+
+    public function to(object $object): void
+    {
+        
     }
 
 }

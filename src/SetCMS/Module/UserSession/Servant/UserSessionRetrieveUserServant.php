@@ -9,7 +9,7 @@ use SetCMS\Contract\Applicable;
 use SetCMS\UUID;
 use SetCMS\Module\UserSession\DAO\UserSessionRetrieveByIdDAO;
 use SetCMS\Module\User\DAO\UserEntityDbRetrieveByIdDAO;
-use SetCMS\Controller\Event\FrontControllerResolveEvent as Event;
+use SetCMS\Controller\Event\FrontControllerResolveEvent;
 use SetCMS\Module\UserSession\UserSessionEntity;
 use SetCMS\Module\User\UserEntity;
 
@@ -21,7 +21,6 @@ class UserSessionRetrieveUserServant implements Servant, Applicable
     public string $token;
     public ?UserSessionEntity $session = null;
     public ?UserEntity $user = null;
-    private ?Event $event = null;
 
     public function serve(): void
     {
@@ -49,17 +48,19 @@ class UserSessionRetrieveUserServant implements Servant, Applicable
 
         $this->user = $retrieveUser->user;
         $this->session = $retrieveSession->session;
+    }
 
-        if ($this->event) {
-            $this->event->withUser($this->user);
+    public function from(object $object): void
+    {
+        if ($object instanceof FrontControllerResolveEvent) {
+            $this->token = strval($object->token);
         }
     }
 
-    public function apply(object $object): void
+    public function to(object $object): void
     {
-        if ($object instanceof Event) {
-            $this->event = $object;
-            $this->token = strval($object->token);
+        if ($object instanceof FrontControllerResolveEvent) {
+            $object->withUser($this->user);
         }
     }
 

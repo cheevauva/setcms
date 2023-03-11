@@ -15,7 +15,7 @@ use SetCMS\Module\User\Scope\UserPrivateReadScope;
 class UserPrivateController
 {
 
-    use \SetCMS\Controller\ControllerTrait;
+    use \SetCMS\ControllerTrait;
 
     public function index(ServerRequestInterface $request, UserPrivateIndexScope $scope, UserEntityDbRetrieveManyDAO $servant): UserPrivateIndexScope
     {

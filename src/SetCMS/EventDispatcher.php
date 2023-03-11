@@ -11,6 +11,7 @@ use SetCMS\Contract\Servant;
 
 class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherInterface
 {
+
     use AsTrait;
 
     private Factory $factory;
@@ -41,13 +42,17 @@ class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherI
             $listenerObject = $this->factory->make($listener);
 
             if ($listenerObject instanceof Applicable) {
-                $listenerObject->apply($event);
+                $listenerObject->from($event);
             }
 
             if ($listenerObject instanceof Servant) {
                 $listenerObject->serve();
             } else {
                 $this->factory->make($listener)($event, $eventName, $this);
+            }
+
+            if ($listenerObject instanceof Applicable) {
+                $listenerObject->to($event);
             }
         }
     }

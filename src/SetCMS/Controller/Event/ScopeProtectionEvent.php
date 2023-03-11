@@ -2,8 +2,8 @@
 
 namespace SetCMS\Controller\Event;
 
-use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Scope;
+use SetCMS\Module\User\UserEntity;
 
 class ScopeProtectionEvent
 {
@@ -11,12 +11,7 @@ class ScopeProtectionEvent
     use \SetCMS\EventTrait;
 
     public Scope $scope;
-    public ServerRequestInterface $request;
+    public ?UserEntity $user = null;
 
-    public function __construct(Scope $scope, ServerRequestInterface $request)
-    {
-        $this->scope = $scope;
-        $this->request = $request;
-    }
 
 }

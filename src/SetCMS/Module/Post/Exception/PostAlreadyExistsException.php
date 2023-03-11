@@ -6,5 +6,8 @@ namespace SetCMS\Module\Post\Exception;
 
 class PostAlreadyExistsException extends PostException
 {
-    //put your code here
+    public function label(): string
+    {
+        return 'setcms.post.alreadyexists';
+    }
 }

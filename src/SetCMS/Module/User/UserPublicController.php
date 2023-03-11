@@ -20,7 +20,7 @@ use SetCMS\RequestAttribute;
 class UserPublicController
 {
 
-    use \SetCMS\Controller\ControllerTrait;
+    use \SetCMS\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
     public function login(ServerRequestInterface $request, UserPublicLoginScope $scope): UserPublicLoginScope

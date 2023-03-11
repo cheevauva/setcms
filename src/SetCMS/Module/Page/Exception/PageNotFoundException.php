@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page\Exception;
 
-class PageNotFoundException extends PageException
+use SetCMS\Contract\NotFound;
+
+class PageNotFoundException extends PageException implements NotFound
 {
-    //put your code here
+
+    public function label(): string
+    {
+        return 'setcms.page.notfound';
+    }
+
 }

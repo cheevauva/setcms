@@ -15,7 +15,7 @@ class ACL extends LaminasAcl
         $this->setup($container->get('acl'));
     }
 
-    public function setup(array $setup)
+    private function setup(array $setup)
     {
         foreach ($setup['roles'] as $role => $parents) {
             $this->addRole($role, $parents);

@@ -18,7 +18,7 @@ use SetCMS\Module\Page\Servant\PageUpdateServant;
 class PagePrivateController
 {
 
-    use \SetCMS\Controller\ControllerTrait;
+    use \SetCMS\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
     public function index(ServerRequestInterface $request, PagePrivateIndexScope $scope, PageRetrieveManyDAO $servant): PagePrivateIndexScope

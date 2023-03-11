@@ -20,8 +20,12 @@ class FrontControllerResolveEvent
         $this->token = $request->getCookieParams()[RequestAttribute::accessToken->toString()] ?? null;
     }
 
-    public function withUser(UserEntity $user): void
+    public function withUser(?UserEntity $user = null): void
     {
+        if (empty($user)) {
+            return;
+        }
+        
         $this->request = RequestAttribute::currentUser->toRequest($this->request, $user);
     }
 

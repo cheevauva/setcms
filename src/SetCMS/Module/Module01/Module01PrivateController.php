@@ -18,7 +18,7 @@ use SetCMS\Module\Module01\Servant\Entity01UpdateServant;
 class Module01PrivateController
 {
 
-    use \SetCMS\Controller\ControllerTrait;
+    use \SetCMS\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
     public function index(ServerRequestInterface $request, Module01PrivateIndexScope $scope, Entity01RetrieveManyDAO $servant): Module01PrivateIndexScope

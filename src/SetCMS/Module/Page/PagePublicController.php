@@ -14,13 +14,15 @@ use SetCMS\Module\Page\Scope\PagePublicReadBlockScope;
 class PagePublicController
 {
 
-    use \SetCMS\Controller\ControllerTrait;
+    use \SetCMS\ControllerTrait;
 
-    use \SetCMS\Controller\ControllerTrait;
+    use \SetCMS\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
     public function read(ServerRequestInterface $request, PagePublicReadScope $scope, PageRetrieveByIdDAO $servant): PagePublicReadScope
     {
+        $servant->throwExceptionIfNotFound = true;
+        
         return $this->serve($request, $servant, $scope, [
             'id' => $request->getAttribute('id'),
         ]);

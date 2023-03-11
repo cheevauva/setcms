@@ -1,7 +1,7 @@
 <?php
 
-use SetCMS\Controller\PublicController;
-use SetCMS\Controller\PrivateController;
+use SetCMS\Core\PublicController;
+use SetCMS\Core\PrivateController;
 use SetCMS\Module\Post\PostPublicController;
 use SetCMS\Module\Post\PostPrivateController;
 

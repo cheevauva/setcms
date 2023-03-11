@@ -1,0 +1,8 @@
+{% extends setcms.path('layout_popup.twig') %}
+
+{% block content %}
+{{ label }}
+<pre>
+{{ placeholders|json_encode() }}
+</pre>
+{% endblock %}

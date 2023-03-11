@@ -7,5 +7,6 @@ namespace SetCMS\Contract;
 interface Applicable
 {
 
-    public function apply(object $object): void;
+    public function to(object $object): void;
+    public function from(object $object): void;
 }

@@ -5,21 +5,39 @@ declare(strict_types=1);
 namespace SetCMS\Servant;
 
 use SetCMS\Contract\Servant;
+use SetCMS\Contract\Applicable;
 use Psr\Http\Message\ServerRequestInterface;
+use SetCMS\Controller\Event\ParseBodyEvent;
 
-class ParseBodyRequestServant implements Servant
+class ParseBodyRequestServant implements Servant, Applicable
 {
 
     use \SetCMS\FactoryTrait;
 
     public ServerRequestInterface $request;
+    public mixed $parsedBody = null;
 
     public function serve(): void
     {
+        $contentType = $this->request->getHeaderLine('Content-type') ?? '';
         $content = $this->request->getBody()->getContents();
 
-        if (strpos($this->request->getHeaderLine('Content-type'), 'application/json') !== false && $content) {
-            $this->request = $this->request->withParsedBody(json_decode($content, true));
+        if (str_contains($contentType, 'application/json') && $content) {
+            $this->parsedBody = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+        }
+    }
+
+    public function from(object $object): void
+    {
+        if ($object instanceof ParseBodyEvent) {
+            $object->withParsedBody($this->parsedBody);
+        }
+    }
+
+    public function to(object $object): void
+    {
+        if ($object instanceof ServerRequestInterface) {
+            $this->request = $object;
         }
     }
 
