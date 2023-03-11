@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Controller\Exception;
+namespace SetCMS\Core\Exception;
 
 use SetCMS\Contract\NotFound;
 
-class ControllerNotFoundException extends ControllerException implements NotFound
+class CoreClassNotFoundException extends CoreException implements NotFound
 {
 
     public function __construct(protected string $controller)
@@ -16,7 +16,7 @@ class ControllerNotFoundException extends ControllerException implements NotFoun
 
     public function label(): string
     {
-        return 'setcms.controller.notfound';
+        return 'setcms.class.notfound';
     }
 
     public function placeholders(): array

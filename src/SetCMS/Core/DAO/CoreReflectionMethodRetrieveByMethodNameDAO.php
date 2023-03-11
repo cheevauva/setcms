@@ -8,6 +8,8 @@ use SetCMS\Contract\Servant;
 use ReflectionParameter;
 use ReflectionMethod;
 use SplObjectStorage;
+use SetCMS\Core\Exception\CoreClassNotFoundException;
+use SetCMS\Core\Exception\CoreMethodNotFoundException;
 
 class CoreReflectionMethodRetrieveByMethodNameDAO implements Servant
 {
@@ -29,11 +31,11 @@ class CoreReflectionMethodRetrieveByMethodNameDAO implements Servant
         $this->context = $this->context ?? new SplObjectStorage;
 
         if (!class_exists($this->className, true)) {
-            throw new ControllerNotFoundException($this->className);
+            throw new CoreClassNotFoundException($this->className);
         }
 
         if (!method_exists($this->className, $this->methodName)) {
-            throw new ControllerMethodNotFoundException((new \ReflectionClass($this->className))->getShortName(), $this->methodName);
+            throw new CoreMethodNotFoundException((new \ReflectionClass($this->className))->getShortName(), $this->methodName);
         }
 
         $this->contextEntities = [];

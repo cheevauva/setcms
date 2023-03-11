@@ -2,18 +2,19 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Controller\Exception;
+namespace SetCMS\Core\Exception;
 
-class ControllerMethodNotFoundException extends ControllerNotFoundException
+class CoreMethodNotFoundException extends CoreClassNotFoundException
 {
 
     public function __construct(protected string $controller, protected string $method)
     {
         
     }
+
     public function label(): string
     {
-        return 'setcms.controller.method.notfound';
+        return 'setcms.class.method.notfound';
     }
 
     public function placeholders(): array
