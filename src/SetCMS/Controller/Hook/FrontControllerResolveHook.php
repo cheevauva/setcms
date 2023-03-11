@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Controller\Event;
+namespace SetCMS\Controller\Hook;
 
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\User\UserEntity;
 use SetCMS\RequestAttribute;
 
-class FrontControllerResolveEvent
+class FrontControllerResolveHook
 {
 
     use \SetCMS\EventTrait;

@@ -22,7 +22,7 @@ class Router implements RouterInterface
         $this->container = $container;
 
         $this->altoRouter = new AltoRouter;
-        $this->altoRouter->setBasePath($container->get('env')['BASE_PATH'] ?? '');
+        $this->altoRouter->setBasePath($container->get('env')['BASE_URL'] ?? '');
         $this->altoRouter->addMatchTypes([
             'g' => sprintf('(%s)++', UUID::REGEX),
         ]);

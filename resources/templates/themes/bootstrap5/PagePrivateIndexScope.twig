@@ -1,8 +1,8 @@
-{% extends setcms.path('layout_admin.twig') %}
-{% import setcms.path('macros/controls.twig') as controls %}
+{% extends scPath('layout_admin.twig') %}
+{% import scPath('macros/controls.twig') as controls %}
 
 {% block content_toolbar %}
-    <a href="{{ setcms.link('action_admin', {module: 'Page', action:'new'}) }}" class="btn btn-sm btn-outline-secondary">Создать страницу</a>
+    <a href="{{ scLink('action_admin', {module: 'Page', action:'new'}) }}" class="btn btn-sm btn-outline-secondary">Создать страницу</a>
 {% endblock %}
 
 {% block content_title %}Страницы{% endblock %}
@@ -28,8 +28,8 @@
                             <td>{{ page.dateCreated.format('d.m.Y H:i:s') }}</td>
                             <td>{{ page.dateModified.format('d.m.Y H:i:s') }}</td>
                             <td>
-                                <a href="{{ setcms.link('action_record_admin', {'module': 'Page', action: 'edit', 'id': page.id}) }}">Редактировать</a>
-                                <a href="{{ setcms.link('action_record_admin', {'module': 'Page', action: 'read', 'id': page.id}) }}">Просмотр</a>
+                                <a href="{{ scLink('action_record_admin', {'module': 'Page', action: 'edit', 'id': page.id}) }}">Редактировать</a>
+                                <a href="{{ scLink('action_record_admin', {'module': 'Page', action: 'read', 'id': page.id}) }}">Просмотр</a>
                             </td>
                         </tr>
                     {%  endfor %}

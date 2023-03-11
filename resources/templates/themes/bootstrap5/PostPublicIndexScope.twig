@@ -1,4 +1,4 @@
-{% extends setcms.path('layout.twig') %}
+{% extends scPath('layout.twig') %}
 
 {% block content %}
     {% for post in entities %}
@@ -6,16 +6,17 @@
             <h2 class="blog-post-title">{{ post.title|e }}</h2>
             <p class="blog-post-meta">{{ post.dateCreated.format('d.m.Y H:i:s') }} by <a href="#">Admin</a></p>
             <p>
-                {{ setcms.markdown(post.message)|raw }}
-                <a href="{{ setcms.link('post_read_by_slug', {slug: post.slug}) }}">Читать</a>
-                {% if setcms.currentUser.isAdmin %}
-                    | <a href="{{ setcms.link('action_record_admin', {module: setcms.toModule(post), action: 'save', id: post.id}) }}">Редактировать</a>
+                {{ scMarkdown(post.message)|raw }}
+                <a href="{{ scLink('post_read_by_slug', {slug: post.slug}) }}">Читать</a>
+                {% if scUser.isAdmin %}
+                    | <a href="{{ scLink('action_record_admin', {module: 'Post', action: 'edit', id: post.id}) }}">Редактировать</a>
                 {% endif %}
             </p>
         </article>
 
     {%  endfor %}
-    {% if setcms.currentUser.isAdmin %}
-        <a href="{{ setcms.link('action_admin', {module: setcms.currentModule, action: 'save'}) }}">Создать запись</a>
+    {% if scUser.isAdmin %}
+        <hr/>
+        <a href="{{ scLink('action_admin', {module: 'Post', action: 'edit'}) }}">Создать запись</a>
     {% endif %}
 {% endblock %}

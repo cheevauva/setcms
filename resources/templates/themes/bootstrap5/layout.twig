@@ -3,7 +3,7 @@
     <head>
         <title>{% block title %}{{ setcms.title()}}{% endblock %}</title>
         <meta name="keywords" content="{% block keywords %}{{ setcms.getDefaultKeywords() }}{% endblock %}"/>
-        <base href="{{ setcms.baseUrl }}"/>
+        <base href="{{ scBaseUrl() }}"/>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
@@ -27,7 +27,7 @@
             <header class="blog-header py-3">
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="{{ setcms.link('home') }}">SetCMS</a>
+                        <a class="navbar-brand" href="{{ scLink('home') }}">SetCMS</a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
@@ -40,27 +40,27 @@
                                     <a class="nav-link" href="#">Features</a>
                                 </li-->
                                 <li class="nav-item">
-                                    {{ render('/page/block/demo', 'themes/bootstrap5/PagePublicReadBlockWithoutHeaderScope.twig') }}
+                                    {{ scRender('/page/block/demo', 'PagePublicReadBlockWithoutHeaderScope.twig') }}
                                 </li>
                             </ul>
                             <span class="navbar-text">
-                                {% if currentUser.role.isAdmin() %}
-                                    <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('home_admin') }}">Администрирование</a>
+                                {% if scUser.role.isAdmin() %}
+                                    <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('home_admin') }}">Администрирование</a>
                                 {% endif %}
-                                {% if currentUser.role.isGuest() %}
-                                    <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('action', {module: 'User', action: 'login'}) }}">Вход</a> 
-                                    <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('action', {module: 'User', action: 'registration'}) }}">Регистрация</a>
+                                {% if scUser.role.isGuest() %}
+                                    <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'login'}) }}">Вход</a> 
+                                    <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'registration'}) }}">Регистрация</a>
                                 {% endif %}
-                                {% if currentUser.role.isUser() %}
-                                    <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('action', {module: 'User', action: 'profile'}) }}">Профиль</a>
-                                    <a class="btn btn-sm btn-outline-secondary" href="{{ setcms.link('action', {module: 'User', action: 'logout'}) }}">Выйти</a>
+                                {% if scUser.role.isUser() %}
+                                    <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'profile'}) }}">Профиль</a>
+                                    <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'logout'}) }}">Выйти</a>
                                 {% endif %}
                             </span>
                         </div>
                     </div>
                 </nav>
             </header>
-            {% include setcms.path('toasts.twig') %}
+            {% include scPath('toasts.twig') %}
             <!--div class="nav-scroller py-1 mb-2">
                 <nav class="nav d-flex justify-content-between">
                     <a class="p-2 link-secondary" href="#">World</a>
@@ -138,12 +138,14 @@
                 <div class="col-md-4">
                     <div class="position-sticky">
                         <div class="p-4 mb-3 bg-light rounded">
-                            {{ render('/page/block/warning') }}
+                            {{ scRender('/page/block/warning') }}
                         </div>
                         <div class="p-4 mb-3 bg-light rounded">
-                            {{ render('/page/block/downloads') }}
+                            {{ scRender('/page/block/downloads') }}
                         </div>
-
+                     <div class="p-4 mb-3 bg-light rounded">
+                            {{ scRender('/block/actions') }}
+                        </div>
 
                         <!--div class="p-4">
                             <h4 class="fst-italic">Archives</h4>
@@ -177,7 +179,7 @@
 
         </main>
     </body>
-    {% include setcms.path('assets.twig') %}
+    {% include scPath('assets.twig') %}
     {% block styles %}{% endblock %}
     {% block javascript %}{% endblock %}
 

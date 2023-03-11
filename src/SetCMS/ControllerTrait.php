@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Scope;
 use SetCMS\Contract\Servant;
 use SetCMS\Servant\ServeScopeServant;
-use SetCMS\Controller\Event\ScopeProtectionEvent;
+use SetCMS\Controller\Hook\ScopeProtectionHook;
 use SetCMS\RequestAttribute;
 
 trait ControllerTrait
@@ -18,7 +18,7 @@ trait ControllerTrait
 
     private function secureByScope(Scope $scope, ServerRequestInterface $request): void
     {
-        $event = new ScopeProtectionEvent;
+        $event = new ScopeProtectionHook;
         $event->scope = $scope;
         $event->user = RequestAttribute::currentUser->fromRequest($request);
         $event->dispatch();

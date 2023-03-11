@@ -78,13 +78,13 @@
         <div class="setcms-captcha row ml-0 pl-0">
             <div class="col-md-8 ml-0 pl-0">
                 <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
-                <input name="{{ params.name }}" type="hidden" value="" class="setcms-captcha-captcha-id" setcms-action="{{ setcms.link('do_action', {module: 'Captcha', action: 'solve'}) }}">
+                <input name="{{ params.name }}" type="hidden" value="" class="setcms-captcha-captcha-id" setcms-action="{{ scLink('do_action', {module: 'Captcha', action: 'solve'}) }}">
                 <input class="form-control setcms-captcha-solvedtext" type="text">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="col-md-4 mb-2">
                 <label  class="form-label">Нажми на картинку чтобы обновить</label>
-                <img class="setcms-captcha-image" setcms-action="{{ setcms.link('do_action', {module: 'Captcha', action: 'generate'}) }}">
+                <img class="setcms-captcha-image" setcms-action="{{ scLink('do_action', {module: 'Captcha', action: 'generate'}) }}">
             </div>
         </div>
     </div>

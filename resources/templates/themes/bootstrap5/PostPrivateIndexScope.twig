@@ -1,7 +1,7 @@
-{% extends setcms.path('layout_admin.twig') %}
+{% extends scPath('layout_admin.twig') %}
 
 {% block content_toolbar %}
-    <a href="{{ setcms.link('action_record_admin', {module: 'Post', action: 'new', 'id': UUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
+    <a href="{{ scLink('action_record_admin', {module: 'Post', action: 'new', 'id': scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
 {% endblock %}
 
 {% block content_title %}Посты{% endblock %}
@@ -25,8 +25,8 @@
                         <td>{{ post.title }}</td>
                         <td>{{ post.slug}}</td>
                         <td>
-                            <a href="{{ setcms.link('action_record_admin', {'module': 'Post', action: 'edit', 'id': post.id}) }}">Редактировать</a>
-                            <a href="{{ setcms.link('action_record_admin', {'module': 'Post', action: 'read', 'id': post.id}) }}">Просмотр</a>
+                            <a href="{{ scLink('action_record_admin', {'module': 'Post', action: 'edit', 'id': post.id}) }}">Редактировать</a>
+                            <a href="{{ scLink('action_record_admin', {'module': 'Post', action: 'read', 'id': post.id}) }}">Просмотр</a>
                         </td>
                     </tr>
                 {%  endfor %}

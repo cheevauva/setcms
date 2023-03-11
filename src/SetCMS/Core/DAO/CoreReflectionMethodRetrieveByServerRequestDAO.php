@@ -27,7 +27,7 @@ class CoreReflectionMethodRetrieveByServerRequestDAO implements Servant
     public function serve(): void
     {
         $request = $this->request;
-
+        
         $routerMatch = Router::make($this->container)->match(...[
             $request->getUri()->getPath(),
             $request->getMethod()

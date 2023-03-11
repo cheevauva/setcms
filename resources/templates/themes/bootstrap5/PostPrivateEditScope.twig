@@ -1,16 +1,16 @@
-{% extends setcms.path('layout_admin.twig') %}
-{% import setcms.path('macros/forms.twig') as forms %}
+{% extends scPath('layout_admin.twig') %}
+{% import scPath('macros/forms.twig') as forms %}
 
 {% block content_title %}Создать пост{% endblock %}
 
 {% block content %}
     <form class="setcms-form g-3" 
           setcms-method="POST"
-          setcms-action="{{ setcms.link(post.id ? 'action_record_admin' : 'action_admin', {module: 'Post', action: post ? 'update': 'create', id: post.id}) }}"
-          setcms-redirect="{{ setcms.link('action_record_admin', {module: 'Post', action: 'read', 'id': '${post.id.uuid}'}) }}"
+          setcms-action="{{ scLink(post.id ? 'action_record_admin' : 'action_admin', {module: 'Post', action: post ? 'update': 'create', id: post.id}) }}"
+          setcms-redirect="{{ scLink('action_record_admin', {module: 'Post', action: 'read', 'id': '${post.id.uuid}'}) }}"
           >
 
-        {{ forms.hidden({name: 'post.id', value: post ? post.id : UUID() }) }}
+        {{ forms.hidden({name: 'post.id', value: post ? post.id : scUUID() }) }}
         {{ forms.input({name: 'post.slug', value: post.slug, type: 'text', label: 'Псевдоним'}) }}
         {{ forms.input({name: 'post.title', value: post.title, type: 'text', label: 'Заголовок'}) }}
         {{ forms.textarea({name: 'post.message', value: post.message, label: 'Сообщение'}) }}

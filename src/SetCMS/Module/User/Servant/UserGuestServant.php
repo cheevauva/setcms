@@ -6,7 +6,7 @@ namespace SetCMS\Module\User\Servant;
 
 use SetCMS\Contract\Servant;
 use SetCMS\Contract\Applicable;
-use SetCMS\Controller\Event\FrontControllerResolveEvent;
+use SetCMS\Controller\Hook\FrontControllerResolveHook;
 use SetCMS\Module\User\UserEntity;
 
 class UserGuestServant implements Servant, Applicable
@@ -21,14 +21,14 @@ class UserGuestServant implements Servant, Applicable
 
     public function from(object $object): void
     {
-        if ($object instanceof FrontControllerResolveEvent) {
+        if ($object instanceof FrontControllerResolveHook) {
             //
         }
     }
 
     public function to(object $object): void
     {
-        if ($object instanceof FrontControllerResolveEvent) {
+        if ($object instanceof FrontControllerResolveHook) {
             $object->withUser($this->user);
         }
     }

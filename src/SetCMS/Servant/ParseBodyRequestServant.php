@@ -7,7 +7,7 @@ namespace SetCMS\Servant;
 use SetCMS\Contract\Servant;
 use SetCMS\Contract\Applicable;
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Controller\Event\ParseBodyEvent;
+use SetCMS\Controller\Hook\ParseBodyHook;
 
 class ParseBodyRequestServant implements Servant, Applicable
 {
@@ -29,15 +29,15 @@ class ParseBodyRequestServant implements Servant, Applicable
 
     public function from(object $object): void
     {
-        if ($object instanceof ParseBodyEvent) {
-            $object->withParsedBody($this->parsedBody);
+        if ($object instanceof ParseBodyHook) {
+            $this->request = $object->request;
         }
     }
 
     public function to(object $object): void
     {
-        if ($object instanceof ServerRequestInterface) {
-            $this->request = $object;
+        if ($object instanceof ParseBodyHook) {
+            $object->withParsedBody($this->parsedBody);
         }
     }
 

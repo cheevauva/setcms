@@ -10,8 +10,8 @@ use SetCMS\Servant\ViewRender;
 use SetCMS\Core\DAO\CoreReflectionMethodRetrieveByServerRequestDAO;
 use SetCMS\Contract\NotFound;
 use SetCMS\Contract\Forbidden;
-use SetCMS\Controller\Event\ParseBodyEvent;
-use SetCMS\Controller\Event\FrontControllerResolveEvent;
+use SetCMS\Controller\Hook\ParseBodyHook;
+use SetCMS\Controller\Hook\FrontControllerResolveHook;
 
 class FrontController
 {
@@ -20,8 +20,8 @@ class FrontController
 
     public function resolve(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $request = (new ParseBodyEvent($request))->dispatch()->request;
-        $request = (new FrontControllerResolveEvent($request))->dispatch()->request;
+        $request = (new ParseBodyHook($request))->dispatch()->request;
+        $request = (new FrontControllerResolveHook($request))->dispatch()->request;
 
         try {
             $retrieveMethod = CoreReflectionMethodRetrieveByServerRequestDAO::make($this->factory());

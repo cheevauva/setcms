@@ -1,9 +1,9 @@
-{% extends setcms.path('layout_popup.twig') %}
-{% import setcms.path('macros/forms.twig') as forms %}
+{% extends scPath('layout_popup.twig') %}
+{% import scPath('macros/forms.twig') as forms %}
 
 {% block content %}
     <form class="setcms-form row g-1" 
-          setcms-action="{{ setcms.link('do_action', {module: 'OAuth', action: 'doAuthorize'}) }}"
+          setcms-action="{{ scLink('do_action', {module: 'OAuth', action: 'doAuthorize'}) }}"
           setcms-redirect="{{ model.redirect_uri }}?code=${code}&client_id=${clientId}">
         {{ forms.hidden({model: oauthClient, name: 'client_id', value: model.client_id }) }}
         {{ forms.hidden({model: model, name: 'response_type', value: model.response_type }) }}

@@ -1,10 +1,10 @@
-{% extends setcms.path('layout.twig') %}
-{% import setcms.path('macros/forms.twig') as forms %}
+{% extends scPath('layout.twig') %}
+{% import scPath('macros/forms.twig') as forms %}
 
 {% block content %}
     <form class="setcms-form row g-1" 
-          setcms-action="{{ setcms.link('do_action', {module: 'User', action: 'doLogin'}) }}"
-          setcms-redirect="{{ setcms.link('action', {module: 'User', action: 'profile'}) }}"
+          setcms-action="{{ scLink('do_action', {module: 'User', action: 'doLogin'}) }}"
+          setcms-redirect="{{ scLink('action', {module: 'User', action: 'profile'}) }}"
           setcms-handler="login"
           >
         {{ forms.input({name: 'username', placeholder: 'Пользователь'}) }}

@@ -1,7 +1,7 @@
-{% extends setcms.path('layout_admin.twig') %}
+{% extends scPath('layout_admin.twig') %}
 
 {% block content_toolbar %}
-    <a href="{{ setcms.link('action_oauthclients_admin', {action:'new'}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
+    <a href="{{ scLink('action_oauthclients_admin', {action:'new'}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
 {% endblock %}
 
 {% block content_title %}OAuth{% endblock %}
@@ -23,7 +23,7 @@
                         <td>{{ entity.id }}</td>
                         <td>{{ entity.name }}</td>
                         <td>
-                            <a href="{{ setcms.link('action_oauthclients_record_admin', {action: 'save', 'id': entity.id}) }}">Редактировать</a>
+                            <a href="{{ scLink('action_oauthclients_record_admin', {action: 'save', 'id': entity.id}) }}">Редактировать</a>
                         </td>
                     </tr>
                 {%  endfor %}

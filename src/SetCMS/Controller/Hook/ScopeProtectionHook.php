@@ -1,11 +1,11 @@
 <?php
 
-namespace SetCMS\Controller\Event;
+namespace SetCMS\Controller\Hook;
 
 use SetCMS\Scope;
 use SetCMS\Module\User\UserEntity;
 
-class ScopeProtectionEvent
+class ScopeProtectionHook
 {
 
     use \SetCMS\EventTrait;

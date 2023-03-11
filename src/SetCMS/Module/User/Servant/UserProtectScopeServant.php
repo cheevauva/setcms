@@ -4,7 +4,7 @@ namespace SetCMS\Module\User\Servant;
 
 use SetCMS\Contract\Servant;
 use SetCMS\Contract\Applicable;
-use SetCMS\Controller\Event\ScopeProtectionEvent;
+use SetCMS\Controller\Hook\ScopeProtectionHook;
 use SetCMS\Module\User\UserEntity;
 use SetCMS\Module\User\Exception\UserForbiddenException;
 use SetCMS\Scope;
@@ -38,7 +38,7 @@ class UserProtectScopeServant implements Servant, Applicable
 
     public function from(object $object): void
     {
-        if ($object instanceof ScopeProtectionEvent) {
+        if ($object instanceof ScopeProtectionHook) {
             $this->user = $object->user ?? new UserEntity;
             $this->scope = $object->scope;
         }

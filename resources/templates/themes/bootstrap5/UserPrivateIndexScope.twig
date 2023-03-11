@@ -1,4 +1,4 @@
-{% extends setcms.path('layout_admin.twig') %}
+{% extends scPath('layout_admin.twig') %}
 
 {% block content_toolbar %}
 
@@ -26,7 +26,7 @@
                         <td>{{ entity.role }}</td>
                         <td>{{ entity.dateCreated.format('d.m.Y H:i:s') }}</td>
                         <td>
-                            <a href="{{ setcms.link('action_record_admin', {'module': 'User', action: 'edit', 'id': entity.id}) }}">Редактировать</a>
+                            <a href="{{ scLink('action_record_admin', {'module': 'User', action: 'edit', 'id': entity.id}) }}">Редактировать</a>
                         </td>
                     </tr>
                 {%  endfor %}

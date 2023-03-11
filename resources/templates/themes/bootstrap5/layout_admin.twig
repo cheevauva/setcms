@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <base href="{{ setcms.baseUrl }}"/>
+        <base href="{{ scBaseUrl() }}"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
         <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
@@ -48,18 +48,18 @@
     </head>
     <body>
         <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="{{ setcms.link('home_admin') }}">SetCMS</a>
+            <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="{{ scLink('home_admin') }}">SetCMS</a>
             <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
             <div class="navbar-nav">
                 <div class="nav-item text-nowrap">
-                    <a class="nav-link px-3" href="{{ setcms.link('action', {module: 'OAuth', action: 'logout'}) }}">Выйти</a>
+                    <a class="nav-link px-3" href="{{ scLink('action', {module: 'OAuth', action: 'logout'}) }}">Выйти</a>
                 </div>
             </div>
         </header>
-        {% include setcms.path('toasts.twig') %}
+        {% include scPath('toasts.twig') %}
         <div class="container-fluid">
             <div class="row">
                 <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
@@ -67,7 +67,7 @@
                         <ul class="nav flex-column">
                             {% for module in ['Page', 'Post'] %}
                                 <li class="nav-item">
-                                    <a class="nav-link {% if module == setcms.currentModule %}active{% endif %}" href="{{ setcms.link('do_action_admin', {module: module, action: 'index'}) }}">
+                                    <a class="nav-link {% if module == setcms.currentModule %}active{% endif %}" href="{{ scLink('do_action_admin', {module: module, action: 'index'}) }}">
                                         {{ module }}
                                     </a>
                                 </li>
@@ -93,7 +93,7 @@
                 </main>
             </div>
         </div>
-        {% include setcms.path('assets.twig') %}
+        {% include scPath('assets.twig') %}
         {% block styles %}{% endblock %}
         {% block javascript %}{% endblock %}
 

@@ -1,4 +1,4 @@
-{% extends setcms.path('layout.twig') %}
+{% extends scPath('layout.twig') %}
 
 {% block title %}{{ post.title }}{% endblock %}
 
@@ -6,13 +6,13 @@
     {% if post %}
         <h1>{{ post.title }}</h1>
         <p>
-            {{ setcms.markdown(post.message)|raw }}
+            {{ scMarkdown(post.message)|raw }}
         </p>
 
         <p>
             Дата создания: {{ post.dateCreated.format('d.m.Y H:i:s') }}
-            {% if setcms.currentUser.isAdmin %}
-                | <a href="{{ setcms.link('action_record_admin', {module: setcms.toModule(post), action: 'save', id: post.id}) }}">Редактировать</a>
+            {% if scUser.isAdmin %}
+                | <a href="{{ scLink('action_record_admin', {module: 'Post', action: 'edit', id: post.id}) }}">Редактировать</a>
             {% endif %}
         </p>
     {% endif %}

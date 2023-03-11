@@ -1,7 +1,7 @@
-{% extends setcms.path('layout_admin.twig') %}
+{% extends scPath('layout_admin.twig') %}
 
 {% block content_toolbar %}
-    <a href="{{ setcms.link('action_oauthapps_admin', {module: 'OAuthClient', action: 'new', 'id': UUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
+    <a href="{{ scLink('action_oauthapps_admin', {module: 'OAuthClient', action: 'new', 'id': scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
 {% endblock %}
 
 {% block content_title %}OAuth приложения{% endblock %}
@@ -26,8 +26,8 @@
                         <td>{{ entity.clientId }}</td>
                         <td>{{ entity.clientSecret }}</td>
                         <td>
-                            <a href="{{ setcms.link('action_oauthapps_record_admin', {action: 'edit', 'id': entity.id}) }}">Редактировать</a>
-                            <a href="{{ setcms.link('action_oauthapps_record_admin', {action: 'read', 'id': entity.id}) }}">Просмотр</a>
+                            <a href="{{ scLink('action_oauthapps_record_admin', {action: 'edit', 'id': entity.id}) }}">Редактировать</a>
+                            <a href="{{ scLink('action_oauthapps_record_admin', {action: 'read', 'id': entity.id}) }}">Просмотр</a>
                         </td>
                     </tr>
                 {%  endfor %}
