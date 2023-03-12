@@ -67,6 +67,10 @@ class TemplateTwig implements Template
 
     protected function scRender($path, ?string $template = null, array $parsedData = [])
     {
+        if (empty($template)) {
+            $template = null;
+        }
+        
         try {
             $request = (new ServerRequest)->withUri((new Uri)->withPath($path))->withMethod('GET')->withParsedBody($parsedData);
             $request = RequestAttribute::currentUser->toRequest($request, RequestAttribute::currentUser->fromRequest($this->request));
