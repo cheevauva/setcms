@@ -7,10 +7,9 @@ namespace SetCMS\Servant;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Scope;
 use SetCMS\Contract\Servant;
-use SetCMS\Servant\ViewHtmlRender;
-use SetCMS\Contract\Twigable;
 use SetCMS\View\Scope\ViewJsonExceptionScope;
 use SetCMS\View\Scope\ViewHtmlExceptionScope;
+use SetCMS\View\Hook\ViewRenderHook;
 
 class ViewRender implements Servant
 {
@@ -32,11 +31,13 @@ class ViewRender implements Servant
         }
 
         if ($object instanceof Scope) {
-            if ($object instanceof Twigable) {
-                $this->makeBodyAsHtml($object);
-            } else {
-                $this->makeBodyAsJson($object);
-            }
+            $hook = new ViewRenderHook;
+            $hook->data = $object;
+            $hook->request = $this->request;
+            $hook->dispatch();
+
+            $this->content = $hook->content ?? '';
+            $this->contentType = $hook->contentType ?? '';
         }
     }
 
@@ -55,28 +56,6 @@ class ViewRender implements Servant
         }
 
         return $scope;
-    }
-
-    protected function makeBodyAsHtml(object $object): void
-    {
-        $htmlRender = ViewHtmlRender::make($this->factory());
-        $htmlRender->request = $this->request;
-        $htmlRender->mixedValue = $object;
-        $htmlRender->serve();
-
-        $this->contentType = 'text/html';
-        $this->content = $htmlRender->html;
-    }
-
-    protected function makeBodyAsJson(Scope $object): void
-    {
-        $jsonRender = ViewJsonRender::make($this->factory());
-        $jsonRender->request = $this->request;
-        $jsonRender->mixedValue = $object;
-        $jsonRender->serve();
-
-        $this->contentType = 'application/json';
-        $this->content = $jsonRender->json;
     }
 
 }

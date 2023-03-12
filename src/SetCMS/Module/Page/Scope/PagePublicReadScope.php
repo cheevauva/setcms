@@ -8,9 +8,8 @@ use SetCMS\Scope;
 use SetCMS\UUID;
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\DAO\PageRetrieveByIdDAO;
-use SetCMS\Contract\Twigable;
 
-class PagePublicReadScope extends Scope implements Twigable
+class PagePublicReadScope extends Scope
 {
 
     protected ?PageEntity $entity = null;

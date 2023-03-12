@@ -8,5 +8,6 @@ interface Applicable
 {
 
     public function to(object $object): void;
+
     public function from(object $object): void;
 }

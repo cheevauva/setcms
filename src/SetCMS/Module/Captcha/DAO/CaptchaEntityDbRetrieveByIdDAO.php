@@ -10,13 +10,13 @@ class CaptchaEntityDbRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityRetrieveBy
 {
 
     use CaptchaEntityDbDAOTrait;
-    
+
     public ?CaptchaEntity $captcha = null;
 
     public function serve(): void
     {
         parent::serve();
-        
+
         $this->captcha = $this->entity;
     }
 

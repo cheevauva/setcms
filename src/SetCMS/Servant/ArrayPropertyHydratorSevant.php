@@ -9,7 +9,7 @@ use SetCMS\Contract\Hydratable;
 
 class ArrayPropertyHydratorSevant implements Servant
 {
-    
+
     private const TYPES = [
         'int',
         'string',

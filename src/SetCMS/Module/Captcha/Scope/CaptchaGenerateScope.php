@@ -24,7 +24,7 @@ class CaptchaGenerateScope extends \SetCMS\Scope
     public function from(object $object): void
     {
         parent::from($object);
-        
+
         if ($object instanceof CaptchaCreateAsPngServant) {
             $this->content = base64_encode($object->png);
             $this->id = $object->captcha->id;

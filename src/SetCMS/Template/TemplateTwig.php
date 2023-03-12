@@ -79,13 +79,13 @@ class TemplateTwig implements Template
             $object = $retrieveReflectionMethod->reflectionMethod->invokeArgs($retrieveReflectionMethod->reflectionObject, $retrieveReflectionMethod->reflectionArguments);
 
             if ($object instanceof Scope) {
-                $content = $this->render($template ?? (new \ReflectionObject($object))->getShortName(), $object->toArray());
-            } else {
-                throw new \RuntimeException('Unsupport object');
+                return new Markup($this->render($template ?? (new \ReflectionObject($object))->getShortName(), $object->toArray()), 'UTF-8');
             }
+
+            throw new \RuntimeException('Unsupport object');
         } catch (\SetCMS\Exception $ex) {
             $content = sprintf('Error: %s', $ex->label());
-        } catch (\Throwable) {
+        } catch (\Throwable $ex) {
             $content = $ex->getMessage();
         }
 
@@ -135,6 +135,13 @@ class TemplateTwig implements Template
     public function to(object $object): void
     {
         
+    }
+
+    public function has(string $name): bool
+    {
+        $filename = sprintf('%s/resources/templates/%s.twig', $this->basePath, $this->scPath($name));
+
+        return file_exists($filename);
     }
 
 }

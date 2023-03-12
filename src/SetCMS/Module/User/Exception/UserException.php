@@ -11,7 +11,7 @@ class UserException extends Exception
 {
 
     public ?UserEntity $user = null;
-    
+
     public function label(): string
     {
         return 'setcms.user.label';

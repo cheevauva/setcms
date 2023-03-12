@@ -12,5 +12,4 @@ interface Router
     public function match($requestUrl = null, $requestMethod = null): RouterMatchDTO;
 
     public function generate($routeName, array $params = []): string;
-
 }

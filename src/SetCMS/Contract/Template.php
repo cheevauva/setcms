@@ -10,4 +10,6 @@ interface Template extends Applicable
 {
 
     public function render(string $name, array $context = []): string;
+
+    public function has(string $name): bool;
 }

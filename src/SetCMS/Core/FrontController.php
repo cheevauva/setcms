@@ -52,6 +52,7 @@ class FrontController
             $render->mixedValue = $output;
             $render->serve();
 
+            $response = $response->withHeader('Content-Type', $render->contentType);
             $response->getBody()->write($render->content);
         }
 

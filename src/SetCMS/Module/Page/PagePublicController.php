@@ -10,7 +10,6 @@ use SetCMS\Module\Page\DAO\PageRetrieveBySlugDAO;
 use SetCMS\Module\Page\Scope\PagePublicReadScope;
 use SetCMS\Module\Page\Scope\PagePublicReadBlockScope;
 
-
 class PagePublicController
 {
 
@@ -22,7 +21,7 @@ class PagePublicController
     public function read(ServerRequestInterface $request, PagePublicReadScope $scope, PageRetrieveByIdDAO $servant): PagePublicReadScope
     {
         $servant->throwExceptionIfNotFound = true;
-        
+
         return $this->serve($request, $servant, $scope, [
             'id' => $request->getAttribute('id'),
         ]);

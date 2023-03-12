@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace SetCMS\View\Scope;
 
-use SetCMS\Contract\Twigable;
 use SetCMS\Exception;
 
-class ViewHtmlExceptionScope extends ViewJsonExceptionScope implements Twigable
+class ViewHtmlExceptionScope extends ViewJsonExceptionScope
 {
 
     public function from(object $object): void

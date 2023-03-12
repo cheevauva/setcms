@@ -4,23 +4,15 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-use Psr\Container\ContainerInterface;
 use SetCMS\Contract\Servant;
+use SetCMS\Contract\Applicable;
 use SetCMS\Scope;
-use Throwable;
-use SetCMS\Throwable\NotFound;
-use SetCMS\Core\DAO\CoreReflectionMethodRetrieveByServerRequestDAO;
 use Psr\Http\Message\ResponseInterface;
-use SetCMS\Contract\Factory;
-use SetCMS\Contract\Router;
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\RequestAttribute;
-use Laminas\Diactoros\ServerRequest;
-use Laminas\Diactoros\Uri;
-use League\CommonMark\CommonMarkConverter;
 use SetCMS\Template\Template;
+use SetCMS\View\Hook\ViewRenderHook;
 
-class ViewHtmlRender implements Servant
+class ViewHtmlRender implements Servant, Applicable
 {
 
     use \SetCMS\QuickTrait;
@@ -32,11 +24,16 @@ class ViewHtmlRender implements Servant
     public function serve(): void
     {
         $object = $this->mixedValue;
-        
+
         if ($object instanceof Scope) {
             $templateName = (new \ReflectionObject($object))->getShortName();
 
             $template = Template::make($this->factory());
+
+            if (!$template->has($templateName)) {
+                return;
+            }
+
             $template->from($this->request);
 
             $this->html = $template->render($templateName, $object->toArray());
@@ -44,6 +41,22 @@ class ViewHtmlRender implements Servant
 
         if ($object instanceof ResponseInterface) {
             $this->html = $object->getBody()->getContents();
+        }
+    }
+
+    public function from(object $object): void
+    {
+        if ($object instanceof ViewRenderHook) {
+            $this->mixedValue = $object->data;
+            $this->request = $object->request;
+        }
+    }
+
+    public function to(object $object): void
+    {
+        if ($object instanceof ViewRenderHook) {
+            $object->content = $this->html;
+            $object->contentType = 'text/html';
         }
     }
 

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page\Scope;
 
-use SetCMS\Contract\Twigable;
 use SetCMS\UUID;
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\DAO\PageRetrieveByIdDAO;
 
-class PagePrivateReadScope extends PagePrivateScope implements Twigable
+class PagePrivateReadScope extends PagePrivateScope
 {
 
     protected ?PageEntity $entity = null;

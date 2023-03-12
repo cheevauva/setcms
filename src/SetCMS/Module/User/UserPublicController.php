@@ -35,7 +35,7 @@ class UserPublicController
         $this->serve($request, $servant, $scope, [
             'token' => $request->getCookieParams()[RequestAttribute::accessToken->toString()],
         ]);
-        
+
         return $scope;
     }
 

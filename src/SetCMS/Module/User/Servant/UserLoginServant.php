@@ -28,13 +28,13 @@ class UserLoginServant implements \SetCMS\Contract\Servant
         if (empty($retrieveByUsername->user)) {
             throw UserNotFoundException::withoutUser();
         }
-        
+
         $user = $retrieveByUsername->user;
 
         if (!password_verify($this->password, $user->password)) {
             throw UserIncorrectPasswordException::withUser($user);
         }
-        
+
         $this->user = $user;
     }
 

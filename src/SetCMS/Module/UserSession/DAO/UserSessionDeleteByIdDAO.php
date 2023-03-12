@@ -13,7 +13,7 @@ class UserSessionDeleteByIdDAO extends EntityCommonDAO
 {
 
     use UserSessionGenericDAO;
-    
+
     public ?UserSessionEntity $session;
     public ?UUID $id;
 

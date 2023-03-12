@@ -9,6 +9,7 @@ use SetCMS\Exception;
 
 class ViewJsonExceptionScope extends Scope
 {
+
     protected array $data = [];
 
     public function from(object $object): void
@@ -24,7 +25,7 @@ class ViewJsonExceptionScope extends Scope
             }
         }
     }
-    
+
     public function toArray(): array
     {
         return $this->data;

@@ -6,6 +6,7 @@ use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use SetCMS\Contract\Factory;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
+use Psr\EventDispatcher\StoppableEventInterface;
 use SetCMS\Contract\Applicable;
 use SetCMS\Contract\Servant;
 

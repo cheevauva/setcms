@@ -6,6 +6,7 @@ namespace SetCMS;
 
 trait EnvTrait
 {
+
     use DITrait;
 
     protected function env(): \ArrayObject

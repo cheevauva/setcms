@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Scope;
 
-use SetCMS\Contract\Twigable;
 use SetCMS\UUID;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\Module\Post\DAO\PostRetrieveByIdDAO;
 
-class PostPrivateReadScope extends PostPrivateScope implements Twigable
+class PostPrivateReadScope extends PostPrivateScope
 {
 
     protected ?PostEntity $entity = null;

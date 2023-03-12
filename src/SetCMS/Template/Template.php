@@ -35,15 +35,20 @@ class Template implements TemplateInterface
 
         return $this->engine()->render($name, $context);
     }
-    
+
     public function from(object $object): void
     {
         $this->engine()->from($object);
     }
 
-    
     public function to(object $object): void
     {
         $this->engine()->to($object);
     }
+
+    public function has(string $name): bool
+    {
+        return $this->engine()->has($name);
+    }
+
 }

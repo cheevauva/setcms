@@ -6,5 +6,5 @@ namespace SetCMS\Module\User\Exception;
 
 class UserNotFoundException extends UserException
 {
-
+    
 }

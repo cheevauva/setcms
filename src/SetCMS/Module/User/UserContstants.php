@@ -6,5 +6,7 @@ namespace SetCMS\Module\User;
 
 interface UserContstants
 {
+
     public const TABLE_NAME = 'users';
+
 }

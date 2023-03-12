@@ -1,0 +1,20 @@
+{% extends scPath('layout_admin.twig') %}
+{% import scPath('macros/forms.twig') as forms %}
+
+{% block content_title %}Создать пост{% endblock %}
+
+{% block content %}
+    <form class="setcms-form g-3" 
+          setcms-method="POST"
+          setcms-action="{{ scLink(block.id ? 'action_record_admin' : 'action_admin', {module: 'Block', action: post ? 'update': 'create', id: block.id}) }}"
+          setcms-redirect="{{ scLink('action_record_admin', {module: 'Block', action: 'read', 'id': '${block.id.uuid}'}) }}"
+          >
+
+        {{ forms.hidden({name: 'block.id', value: post ? block.id : scUUID() }) }}
+        {{ forms.input({name: 'block.path', value: block.path, type: 'text', label: 'Путь(Маршрут)'}) }}
+        {{ forms.textarea({name: 'block.params', value: block.params, type: 'text', label: 'Параметры(json)'}) }}
+        {{ forms.input({name: 'block.section', value: block.section, label: 'Секция'}) }}
+        {{ forms.input({name: 'block.template', value: block.template, label: 'Шаблон'}) }}
+        {{ forms.submit({label: 'Сохранить'}) }}
+    </form>
+{% endblock %}

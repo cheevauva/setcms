@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Module01\Scope;
 
-use SetCMS\Contract\Twigable;
 use SetCMS\Module\Module01\DAO\Entity01RetrieveManyDAO;
 
-class Module01PrivateIndexScope extends Module01PrivateScope implements Twigable
+class Module01PrivateIndexScope extends Module01PrivateScope
 {
 
     protected ?\Iterator $entities = null;

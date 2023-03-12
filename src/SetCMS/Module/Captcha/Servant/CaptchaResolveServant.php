@@ -29,7 +29,7 @@ class CaptchaResolveServant implements \SetCMS\Contract\Servant
         $retrieveById = CaptchaEntityDbRetrieveByIdDAO::make($this->factory);
         $retrieveById->id = $this->id;
         $retrieveById->serve();
-        
+
         $this->solve($retrieveById->entity);
 
         $saveCaptcha = CaptchaEntityDbSaveDAO::make($this->factory);

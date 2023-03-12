@@ -21,10 +21,12 @@ class CaptchaCreateServant implements \SetCMS\Contract\Servant
     private int $height = 50;
     protected ?\GdImage $image = null;
     protected Factory $factory;
+
     public function __construct(ContainerInterface $container)
     {
         $this->factory = $container->get(Factory::class);
     }
+
     public function serve(): void
     {
         $this->captcha = new CaptchaEntity();

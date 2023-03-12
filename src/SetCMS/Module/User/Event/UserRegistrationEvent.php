@@ -12,6 +12,7 @@ class UserRegistrationEvent
 
     public function __construct(public UserEntity $user)
     {
+        
     }
 
 }

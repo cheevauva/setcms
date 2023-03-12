@@ -7,7 +7,6 @@ namespace SetCMS\Database\MainMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\DBAL\Schema\Table;
 use SetCMS\Module\Post\PostConstrants;
 use SetCMS\Module\Page\PageConstrants;
 use SetCMS\Module\User\UserContstants;
@@ -15,6 +14,8 @@ use SetCMS\Module\UserSession\UserSessionConstrants;
 
 final class Version20220430204715 extends AbstractMigration
 {
+
+    use \SetCMS\Database\VersionTrait;
 
     public function getDescription(): string
     {
@@ -60,17 +61,6 @@ final class Version20220430204715 extends AbstractMigration
         $sessions->addColumn('date_expiries', 'datetime');
 
         $this->addDefaultColumns($sessions);
-    }
-
-    private function addDefaultColumns(Table $table)
-    {
-        $table->addColumn('id', Types::GUID);
-        $table->addColumn('entity_type', Types::STRING);
-        $table->addColumn('date_created', Types::DATETIME_MUTABLE);
-        $table->addColumn('date_modified', Types::DATETIME_MUTABLE);
-        $table->addColumn('deleted', Types::BOOLEAN);
-        $table->addUniqueIndex(['id']);
-        $table->setPrimaryKey(['id']);
     }
 
     public function down(Schema $schema): void

@@ -13,5 +13,4 @@ class ScopeProtectionHook
     public Scope $scope;
     public ?UserEntity $user = null;
 
-
 }

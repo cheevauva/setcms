@@ -8,6 +8,7 @@ use SetCMS\Module\User\UserEntity;
 
 class UserEntityRetrieveByUsernameDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
 {
+
     public ?UserEntity $user = null;
     public string $username;
 
@@ -22,7 +23,7 @@ class UserEntityRetrieveByUsernameDAO extends \SetCMS\Entity\DAO\EntityRetrieveB
         ];
 
         parent::serve();
-        
+
         $this->user = $this->entity;
     }
 

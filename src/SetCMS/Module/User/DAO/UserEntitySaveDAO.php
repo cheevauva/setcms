@@ -16,7 +16,7 @@ class UserEntitySaveDAO extends \SetCMS\Entity\DAO\EntitySaveDAO
     public function serve(): void
     {
         $this->entity = $this->user;
-        
+
         parent::serve();
     }
 

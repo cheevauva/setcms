@@ -36,7 +36,7 @@ class UUID
             mt_rand(0, 65535),
             mt_rand(0, 65535)
         ]);
-        
+
         return strtolower($uuid);
     }
 

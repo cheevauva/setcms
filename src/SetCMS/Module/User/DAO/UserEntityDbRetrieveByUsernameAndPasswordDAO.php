@@ -23,7 +23,7 @@ class UserEntityDbRetrieveByUsernameAndPasswordDAO extends \SetCMS\Entity\DAO\En
         ];
 
         parent::serve();
-        
+
         $this->user = $this->entity;
     }
 

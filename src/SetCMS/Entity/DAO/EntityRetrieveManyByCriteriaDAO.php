@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Entity\DAO;
 
-abstract class EntityRetrieveManyByCriteriaDAO extends EntityRetrieveManyDAO 
+abstract class EntityRetrieveManyByCriteriaDAO extends EntityRetrieveManyDAO
 {
 
     protected array $criteria = [];
@@ -14,7 +14,7 @@ abstract class EntityRetrieveManyByCriteriaDAO extends EntityRetrieveManyDAO
     public function serve(): void
     {
         $qb = $this->createQuery();
-        
+
         foreach ($this->criteria as $field => $value) {
             $qb->andWhere(sprintf('%s = :%s', $field, $field));
             $qb->setParameter($field, $value);

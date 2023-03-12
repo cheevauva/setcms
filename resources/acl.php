@@ -64,6 +64,11 @@ return [
                 \SetCMS\Module\User\Scope\UserPrivateEditScope::class => true,
                 \SetCMS\Module\User\Scope\UserPrivateSaveScope::class => true,
                 \SetCMS\Module\User\Scope\UserPrivateReadScope::class => true,
+                // block
+                \SetCMS\Module\Block\Scope\BlockPrivateIndexScope::class => true,
+                \SetCMS\Module\Block\Scope\BlockPrivateEditScope::class => true,
+                \SetCMS\Module\Block\Scope\BlockPrivateSaveScope::class => true,
+                \SetCMS\Module\Block\Scope\BlockPrivateReadScope::class => true,
             ],
         ],
     ],

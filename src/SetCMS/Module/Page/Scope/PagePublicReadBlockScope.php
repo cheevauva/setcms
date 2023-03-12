@@ -7,9 +7,8 @@ namespace SetCMS\Module\Page\Scope;
 use SetCMS\Scope;
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\DAO\PageRetrieveBySlugDAO;
-use SetCMS\Contract\Twigable;
 
-class PagePublicReadBlockScope extends Scope implements Twigable
+class PagePublicReadBlockScope extends Scope
 {
 
     protected ?PageEntity $entity = null;

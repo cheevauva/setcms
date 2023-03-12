@@ -25,7 +25,7 @@ class FrontControllerResolveHook
         if (empty($user)) {
             return;
         }
-        
+
         $this->request = RequestAttribute::currentUser->toRequest($this->request, $user);
     }
 

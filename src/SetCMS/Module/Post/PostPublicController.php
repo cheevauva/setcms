@@ -24,7 +24,7 @@ class PostPublicController
     public function readBySlug(ServerRequestInterface $request, PostPublicReadBySlugScope $scope, PostRetrieveBySlugDAO $servant): PostPublicReadBySlugScope
     {
         $servant->throwExceptionIfNotFound = true;
-        
+
         return $this->serve($request, $servant, $scope, [
             'slug' => $request->getAttribute('slug'),
         ]);

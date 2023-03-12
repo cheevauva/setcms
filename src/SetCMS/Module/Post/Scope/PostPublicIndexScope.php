@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post\Scope;
 
 use SetCMS\Scope;
-use SetCMS\Contract\Twigable;
 use SetCMS\Module\Post\DAO\PostRetrieveManyDAO;
 
-class PostPublicIndexScope extends Scope implements Twigable
+class PostPublicIndexScope extends Scope
 {
 
     protected ?\Iterator $entities = null;

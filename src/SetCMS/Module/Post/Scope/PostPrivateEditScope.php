@@ -6,5 +6,5 @@ namespace SetCMS\Module\Post\Scope;
 
 class PostPrivateEditScope extends PostPrivateReadScope
 {
-
+    
 }

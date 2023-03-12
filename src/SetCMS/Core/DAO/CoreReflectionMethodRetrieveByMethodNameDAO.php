@@ -77,7 +77,7 @@ class CoreReflectionMethodRetrieveByMethodNameDAO implements Servant
         if (isset($this->contextEntities[$type])) {
             return $this->contextEntities[$type];
         }
-        
+
         switch ($type) {
             case Factory::class:
                 return $this->factory();

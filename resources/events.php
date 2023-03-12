@@ -13,4 +13,8 @@ return [
         \SetCMS\Module\User\Servant\UserGuestServant::class,
         \SetCMS\Module\UserSession\Servant\UserSessionRetrieveUserServant::class,
     ],
+    SetCMS\View\Hook\ViewRenderHook::class => [
+        \SetCMS\Servant\ViewHtmlRender::class,
+        \SetCMS\Servant\ViewJsonRender::class,
+    ]
 ];

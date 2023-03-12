@@ -21,7 +21,7 @@ class PageRetrieveBySlugDAO extends EntityRetrieveByCriteriaDAO
             'slug' => $this->slug,
             'deleted' => 0,
         ];
-        
+
         parent::serve();
 
         $this->page = $this->entity;

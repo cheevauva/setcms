@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace SetCMS\Module\User\Scope;
 
 use SetCMS\Scope;
-use SetCMS\Contract\Twigable;
 use SetCMS\Module\UserSession\DAO\UserSessionDeleteByIdDAO;
 use SetCMS\UUID;
 
-class UserPublicLogoutScope extends Scope implements Twigable
+class UserPublicLogoutScope extends Scope
 {
 
     public UUID $token;

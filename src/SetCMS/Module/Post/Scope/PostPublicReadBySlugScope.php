@@ -6,10 +6,9 @@ namespace SetCMS\Module\Post\Scope;
 
 use SetCMS\Scope;
 use SetCMS\Module\Post\DAO\PostRetrieveBySlugDAO;
-use SetCMS\Contract\Twigable;
 use SetCMS\Module\Post\PostEntity;
 
-class PostPublicReadBySlugScope extends Scope implements Twigable
+class PostPublicReadBySlugScope extends Scope
 {
 
     public string $slug;

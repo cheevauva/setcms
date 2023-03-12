@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Module01\Scope;
 
-use SetCMS\Contract\Twigable;
 use SetCMS\UUID;
 use SetCMS\Module\Module01\Entity01Entity;
 use SetCMS\Module\Module01\DAO\Entity01RetrieveByIdDAO;
 
-class Module01PrivateReadScope extends Module01PrivateScope implements Twigable
+class Module01PrivateReadScope extends Module01PrivateScope
 {
 
     protected ?Entity01Entity $entity = null;

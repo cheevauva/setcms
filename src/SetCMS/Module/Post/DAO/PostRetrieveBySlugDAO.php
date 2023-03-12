@@ -25,7 +25,7 @@ class PostRetrieveBySlugDAO extends EntityRetrieveByCriteriaDAO
         ];
 
         parent::serve();
-        
+
         if (empty($this->entity) && $this->throwExceptionIfNotFound) {
             throw new PostNotFoundException;
         }

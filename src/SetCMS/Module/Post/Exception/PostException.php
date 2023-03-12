@@ -8,8 +8,10 @@ use SetCMS\Exception;
 
 class PostException extends Exception
 {
+
     public function label(): string
     {
         return 'setcms.post.label';
     }
+
 }

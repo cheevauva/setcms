@@ -19,7 +19,7 @@ trait FactoryTrait
         if ($builder instanceof Factory) {
             return $builder->make(static::class);
         }
-        
+
         if ($builder instanceof ContainerInterface) {
             return $builder->get(static::class);
         }

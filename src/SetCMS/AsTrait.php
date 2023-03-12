@@ -11,5 +11,5 @@ trait AsTrait
     {
         return $self;
     }
-    
+
 }
