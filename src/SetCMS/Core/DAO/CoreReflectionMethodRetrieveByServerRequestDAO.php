@@ -7,6 +7,7 @@ namespace SetCMS\Core\DAO;
 use SetCMS\Contract\Servant;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Laminas\Diactoros\Response;
 use SetCMS\Router\Router;
 use ReflectionMethod;
 use SetCMS\Core\DAO\CoreReflectionMethodRetrieveByMethodNameDAO;
@@ -27,7 +28,11 @@ class CoreReflectionMethodRetrieveByServerRequestDAO implements Servant
     public function serve(): void
     {
         $request = $this->request;
-
+        
+        if (empty($this->response)) {
+            $this->response = new Response;
+        }
+        
         $routerMatch = Router::make($this->container)->match(...[
             $request->getUri()->getPath(),
             $request->getMethod()
@@ -42,7 +47,7 @@ class CoreReflectionMethodRetrieveByServerRequestDAO implements Servant
         $retrieveMethod = CoreReflectionMethodRetrieveByMethodNameDAO::make($this->factory());
         $retrieveMethod->className = $className;
         $retrieveMethod->methodName = $methodName;
-        $retrieveMethod->context = $this->getContext($request);
+        $retrieveMethod->context = $this->getContext($request, $this->response);
         $retrieveMethod->serve();
 
         $this->reflectionMethod = $retrieveMethod->reflectionMethod;
@@ -50,14 +55,11 @@ class CoreReflectionMethodRetrieveByServerRequestDAO implements Servant
         $this->reflectionArguments = $retrieveMethod->reflectionArguments;
     }
 
-    private function getContext(ServerRequestInterface $request): SplObjectStorage
+    private function getContext(ServerRequestInterface $request, ResponseInterface $response): SplObjectStorage
     {
         $context = new SplObjectStorage;
         $context->attach($request, ServerRequestInterface::class);
-
-        if (!empty($this->response)) {
-            $context->attach($this->response, ResponseInterface::class);
-        }
+        $context->attach($response, ResponseInterface::class);
 
         return $context;
     }

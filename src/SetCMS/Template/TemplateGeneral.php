@@ -16,6 +16,7 @@ use SetCMS\Template\TemplateEnum;
 use SetCMS\Template\TemplateFactory;
 use SetCMS\RequestAttribute;
 use SetCMS\Core\DAO\CoreReflectionMethodRetrieveByServerRequestDAO;
+use SetCMS\Template\DTO\TemplateScCallDTO;
 
 abstract class TemplateGeneral implements \SetCMS\Contract\Template, Applicable
 {
@@ -61,21 +62,10 @@ abstract class TemplateGeneral implements \SetCMS\Contract\Template, Applicable
         }
 
         try {
-            $request = $this->request;
-
-            $uri = $request->getUri();
-            $uri = $uri->withPath($path);
-
-            $request = $request->withUri($uri)->withMethod('GET');
-
-            $retrieveByPath = CoreReflectionMethodRetrieveByServerRequestDAO::make($this->factory());
-            $retrieveByPath->request = $request;
-            $retrieveByPath->serve();
-
-            $object = $retrieveByPath->reflectionMethod->invokeArgs($retrieveByPath->reflectionObject, $retrieveByPath->reflectionArguments);
+            $object = $this->scCall($path);
 
             $templateEngine = TemplateFactory::make($this->container)->create($this->templateType);
-            $templateEngine->from($request);
+            $templateEngine->from($this->request->withUri($this->request->getUri()->withPath($path))->withMethod('GET'));
 
             if ($object instanceof Scope) {
                 return $templateEngine->render($template ?? (new \ReflectionObject($object))->getShortName(), $object->toArray());
@@ -93,6 +83,37 @@ abstract class TemplateGeneral implements \SetCMS\Contract\Template, Applicable
         }
 
         return $content;
+    }
+
+    protected function scUriPath(): string
+    {
+        return $this->request->getUri()->getPath();
+    }
+
+    protected function scFetch(string $path): mixed
+    {
+        $var = $this->scCall($path);
+        
+        if ($var instanceof Scope) {
+            return $var->toArray();
+        }
+        
+        return $var;
+    }
+
+    protected function scCall(string $path): mixed
+    {
+        $request = $this->request->withUri($this->request->getUri()->withPath($path))->withMethod('GET');
+
+        $retrieveByPath = CoreReflectionMethodRetrieveByServerRequestDAO::make($this->factory());
+        $retrieveByPath->request = $request;
+        $retrieveByPath->serve();
+
+        try {
+            return $retrieveByPath->reflectionMethod->invokeArgs($retrieveByPath->reflectionObject, $retrieveByPath->reflectionArguments);
+        } catch (\Throwable $ex) {
+            return null;
+        }
     }
 
     #[\ReturnTypeWillChange]

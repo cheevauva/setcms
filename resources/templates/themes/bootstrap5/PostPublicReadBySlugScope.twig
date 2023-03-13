@@ -1,6 +1,6 @@
 {% extends scShortPath('layout.twig') %}
 
-{% block title %}{{ post.title }}{% endblock %}
+{% block title %}{{ options.title }} - {{ post.title }}{% endblock %}
 
 {% block content %}
     {% if post %}

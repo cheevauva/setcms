@@ -17,10 +17,10 @@ class ViewRender implements Servant
     use \SetCMS\FactoryTrait;
     use \SetCMS\DITrait;
 
-    public ?object $mixedValue = null;
+    public mixed $mixedValue = null;
     public ServerRequestInterface $request;
-    public string $content;
-    public string $contentType;
+    public string $content = '';
+    public string $contentType = '';
 
     public function serve(): void
     {

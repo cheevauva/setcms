@@ -1,8 +1,10 @@
 <!doctype html>
 <html>
+    {% set options = scFetch('/sub/configurations/main')  %}
     <head>
-        <title>{% block title %}{{ setcms.title()}}{% endblock %}</title>
-        <meta name="keywords" content="{% block keywords %}{{ setcms.getDefaultKeywords() }}{% endblock %}"/>
+        <title>{% block title %}{{ options.title }}{% endblock %}</title>
+        <meta name="description" content="{{ options.description }}"/>
+        <meta name="keywords" content="{% block keywords %}{{ options.keywords }}{% endblock %}"/>
         <base href="{{ scBaseUrl() }}"/>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,14 +29,16 @@
             <header class="blog-header py-3">
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="{{ scLink('home') }}">SetCMS</a>
+                        {% if options.main_page_show %}
+                        <a class="navbar-brand" href="{{ scLink(options.main_page_path) }}">{{ options.main_page_label }}</a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
+                        {% endif %}
                         <div class="collapse navbar-collapse" id="navbarText">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                                 <!--li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                    <a class="nav-link active" aria-current="page" href=""></a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Features</a>
@@ -133,7 +137,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    {{  scRender('/block/section/rights', 'layout_block_rights.twig') }}
+                    {{ scRender('/block/section/rights', 'layout_block_rights.twig') }}
                 </div>
             </div>
         </main>
