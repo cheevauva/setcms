@@ -19,7 +19,6 @@ $containerBuilder->addDefinitions(require __DIR__ . '/resources/di.php');
 $containerBuilder->addDefinitions([
     'basePath' => __DIR__,
     'env' => $dotenv->load(),
-    'config' => require __DIR__ . '/config.php',
     'events' => require __DIR__ . '/resources/events.php',
     'acl' => require __DIR__ . '/resources/acl.php',
     'routes' => require __DIR__ . '/resources/routes.php',

@@ -1,5 +1,5 @@
-{% extends scPath('layout_admin.twig') %}
-{% import scPath('macros/controls.twig') as controls %}
+{% extends scShortPath('layout_admin.twig') %}
+{% import scShortPath('macros/controls.twig') as controls %}
 
 {% block content_toolbar %}
     <a href="{{ scLink('action_admin', {module: 'Page', action:'new'}) }}" class="btn btn-sm btn-outline-secondary">Создать страницу</a>

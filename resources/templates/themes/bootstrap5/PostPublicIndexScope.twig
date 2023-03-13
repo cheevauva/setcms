@@ -1,4 +1,4 @@
-{% extends scPath('layout.twig') %}
+{% extends scShortPath('layout.twig') %}
 
 {% block content %}
     {% for post in entities %}
@@ -8,14 +8,14 @@
             <p>
                 {{ scMarkdown(post.message)|raw }}
                 <a href="{{ scLink('post_read_by_slug', {slug: post.slug}) }}">Читать</a>
-                {% if scUser.isAdmin %}
+                {% if scUser().isAdmin %}
                     | <a href="{{ scLink('action_record_admin', {module: 'Post', action: 'edit', id: post.id}) }}">Редактировать</a>
                 {% endif %}
             </p>
         </article>
 
     {%  endfor %}
-    {% if scUser.isAdmin %}
+    {% if scUser().isAdmin %}
         <hr/>
         <a href="{{ scLink('action_admin', {module: 'Post', action: 'edit'}) }}">Создать запись</a>
     {% endif %}

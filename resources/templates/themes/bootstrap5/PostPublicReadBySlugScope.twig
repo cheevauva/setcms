@@ -1,4 +1,4 @@
-{% extends scPath('layout.twig') %}
+{% extends scShortPath('layout.twig') %}
 
 {% block title %}{{ post.title }}{% endblock %}
 
@@ -11,7 +11,7 @@
 
         <p>
             Дата создания: {{ post.dateCreated.format('d.m.Y H:i:s') }}
-            {% if scUser.isAdmin %}
+            {% if scUser().isAdmin %}
                 | <a href="{{ scLink('action_record_admin', {module: 'Post', action: 'edit', id: post.id}) }}">Редактировать</a>
             {% endif %}
         </p>

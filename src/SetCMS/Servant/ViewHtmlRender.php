@@ -9,13 +9,15 @@ use SetCMS\Contract\Applicable;
 use SetCMS\Scope;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Template\Template;
 use SetCMS\View\Hook\ViewRenderHook;
+use SetCMS\Template\TemplateFactory;
+use SetCMS\Template\TemplateEnum;
 
 class ViewHtmlRender implements Servant, Applicable
 {
 
     use \SetCMS\QuickTrait;
+    use \SetCMS\EnvTrait;
 
     public object $mixedValue;
     public ?string $html = null;
@@ -28,7 +30,7 @@ class ViewHtmlRender implements Servant, Applicable
         if ($object instanceof Scope) {
             $templateName = (new \ReflectionObject($object))->getShortName();
 
-            $template = Template::make($this->factory());
+            $template = TemplateFactory::make($this->container)->create(TemplateEnum::tryFrom($this->env()['TEMPLATE_ENGINE']));
 
             if (!$template->has($templateName)) {
                 return;

@@ -1,4 +1,4 @@
-{% extends scPath('layout_admin.twig') %}
+{% extends scShortPath('layout_admin.twig') %}
 
 {% block content_toolbar %}
     <a href="{{ scLink('action_record_admin', {module: 'Post', action: 'new', 'id': scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
