@@ -6,6 +6,7 @@ namespace SetCMS\View\Scope;
 
 use SetCMS\Scope;
 use SetCMS\Exception;
+use SetCMS\Core\VO\CorePropertyMessageVO;
 
 class ViewJsonExceptionScope extends Scope
 {
@@ -17,11 +18,9 @@ class ViewJsonExceptionScope extends Scope
         if ($object instanceof \Throwable) {
             if ($object instanceof Exception) {
                 $this->data = $object->placeholders();
-                $this->messages[] = $object->label();
+                $this->withMessage(CorePropertyMessageVO::fromArray([$object->label()]));
             } else {
-                $this->messages[] = [
-                    $object->getMessage(),
-                ];
+                $this->withMessage(CorePropertyMessageVO::fromArray([$object->getMessage()]));
             }
         }
     }

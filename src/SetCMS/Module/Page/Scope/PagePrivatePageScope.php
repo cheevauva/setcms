@@ -6,13 +6,20 @@ namespace SetCMS\Module\Page\Scope;
 
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\UUID;
+use SetCMS\Attribute;
 
 class PagePrivatePageScope extends PagePrivateScope
 {
 
     public UUID $id;
+
+    #[Attribute\NotBlank]
     public string $slug;
+
+    #[Attribute\NotBlank]
     public string $title;
+
+    #[Attribute\NotBlank]
     public string $content;
 
     public function satisfy(): \Iterator

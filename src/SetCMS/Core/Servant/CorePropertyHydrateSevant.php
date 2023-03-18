@@ -2,13 +2,16 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Servant;
+namespace SetCMS\Core\Servant;
 
 use SetCMS\Contract\Servant;
 use SetCMS\Contract\Hydratable;
+use SetCMS\Core\VO\CorePropertyMessageVO;
 
-class ArrayPropertyHydratorSevant implements Servant
+class CorePropertyHydrateSevant implements Servant
 {
+
+    use \SetCMS\QuickTrait;
 
     private const TYPES = [
         'int',
@@ -19,7 +22,7 @@ class ArrayPropertyHydratorSevant implements Servant
 
     public array $array;
     public object $object;
-    public ?array $messages = null;
+    public array $messages = [];
 
     private function processProperty(\ReflectionProperty $property): void
     {
@@ -32,28 +35,23 @@ class ArrayPropertyHydratorSevant implements Servant
             return;
         }
 
-        if (!$property->isInitialized($this->object) && !is_array($rawValue) && empty($rawValue)) {
-            $this->messages[] = ['Обязательно для заполнения', $property->getName()];
-            return;
-        }
-
         if (in_array($propertyType, self::TYPES, true) && !settype($value, $propertyType)) {
-            $this->messages[] = ['Неверный тип', $property->getName()];
+            $this->messages[] = new CorePropertyMessageVO('Неверный тип', $property->getName());
             return;
         }
 
         if ($rawValueType === 'array' && in_array($propertyType, static::TYPES, true)) {
-            $this->messages[] = ['Массив не может быть преобразован в скалярный тип данных', $property->getName()];
+            $this->messages[] = new CorePropertyMessageVO('Массив не может быть преобразован в скалярный тип данных', $property->getName());
             return;
         }
 
         if ($rawValueType === 'object' && interface_exists($propertyType, true) && !is_a($rawValue, $propertyType, true)) {
-            $this->messages[] = ['Объект не соответствует интерфейсу', $property->getName()];
+            $this->messages[] = new CorePropertyMessageVO('Объект не соответствует интерфейсу', $property->getName());
             return;
         }
 
         if (class_exists($propertyType, true) && is_subclass_of($propertyType, Hydratable::class, true) && $rawValueType !== 'array') {
-            $this->messages[] = ['Ожидается массив', $property->getName()];
+            $this->messages[] = new CorePropertyMessageVO('Ожидается массив', $property->getName());
             return;
         }
 
@@ -61,26 +59,27 @@ class ArrayPropertyHydratorSevant implements Servant
             try {
                 $value = new $propertyType($rawValue);
             } catch (\Throwable $ex) {
-                $this->messages[] = [$ex->getMessage(), $property->getName()];
+                $this->messages[] = new CorePropertyMessageVO($ex->getMessage(), $property->getName());
                 return;
             }
         }
 
         if (class_exists($propertyType, true) && is_subclass_of($propertyType, Hydratable::class, true)) {
-            $value = new $propertyType;
-            $hydrator = new ArrayPropertyHydratorSevant;
+            $value = $this->factory()->make($propertyType);
+            $hydrator = CorePropertyHydrateSevant::make($this->factory());
             $hydrator->object = $value;
             $hydrator->array = $this->array[$property->getName()];
             $hydrator->serve();
 
             foreach ($hydrator->messages as $message) {
-                $this->messages[] = [
-                    $message[0],
+                $message = CorePropertyMessageVO::as($message);
+                $this->messages[] = new CorePropertyMessageVO(...[
+                    $message->message,
                     implode('.', [
                         $property->getName(),
-                        $message[1]
+                        $message->field,
                     ])
-                ];
+                ]);
             }
         }
 
@@ -89,8 +88,6 @@ class ArrayPropertyHydratorSevant implements Servant
 
     public function serve(): void
     {
-        $this->messages = [];
-
         $class = new \ReflectionClass($this->object);
         $properties = $class->getProperties(\ReflectionProperty::IS_PUBLIC);
 

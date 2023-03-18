@@ -9,11 +9,15 @@ use SetCMS\Module\User\Servant\UserLoginServant;
 use SetCMS\Module\User\UserEntity;
 use SetCMS\Module\UserSession\UserSessionEntity;
 use SetCMS\Module\UserSession\Servant\UserSessionCreateByUserServant;
+use SetCMS\Attribute;
 
 class UserPublicDoLoginScope extends Scope
 {
 
+    #[Attribute\NotBlank]
     public string $username;
+
+    #[Attribute\NotBlank]
     public string $password;
     public string $device = '';
     // public string $captcha;

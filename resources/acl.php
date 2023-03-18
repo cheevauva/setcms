@@ -20,8 +20,8 @@ return [
                 // User
                 \SetCMS\Module\User\Scope\UserPublicLoginScope::class => true,
                 \SetCMS\Module\User\Scope\UserPublicDoLoginScope::class => true,
-                \SetCMS\Module\User\Scope\UserRegistrationScope::class => true,
-                \SetCMS\Module\User\Scope\UserDoRegistrationScope::class => true,
+                \SetCMS\Module\User\Scope\UserPublicRegistrationScope::class => true,
+                \SetCMS\Module\User\Scope\UserPublicDoRegistrationScope::class => true,
                 \SetCMS\Module\User\Scope\UserPublicProfileScope::class => false,
                 \SetCMS\Module\User\Scope\UserInfoScope::class => false,
                 // Post
@@ -35,9 +35,9 @@ return [
         UserRoleEnum::USER->toString() => [
             'scope' => [
                 \SetCMS\Module\User\Scope\UserPublicProfileScope::class => true,
-                \SetCMS\Module\User\Scope\UserRegistrationScope::class => false,
+                \SetCMS\Module\User\Scope\UserPublicRegistrationScope::class => false,
                 \SetCMS\Module\User\Scope\UserInfoScope::class => true,
-                \SetCMS\Module\User\Scope\UserDoRegistrationScope::class => false,
+                \SetCMS\Module\User\Scope\UserPublicDoRegistrationScope::class => false,
                 \SetCMS\Module\User\Scope\UserPublicLogoutScope::class => true,
                 \SetCMS\Module\User\Scope\UserPublicLoginScope::class => false,
                 \SetCMS\Module\User\Scope\UserPublicDoLoginScope::class => false,

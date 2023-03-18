@@ -11,7 +11,27 @@ use SetCMS\Contract\Hydratable;
 abstract class Scope implements Hydratable, Satisfiable, Arrayable
 {
 
-    public ?array $messages = null;
+    private array $messages = [];
+
+    public function getMessages(): array
+    {
+        return $this->messages;
+    }
+
+    public function withMessages(array $messages): void
+    {
+        $this->messages = $messages;
+    }
+
+    public function withMessage(mixed $message): void
+    {
+        $this->messages[] = $message;
+    }
+
+    public function hasMessages(): bool
+    {
+        return !empty($this->messages);
+    }
 
     public function satisfy(): \Iterator
     {

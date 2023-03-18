@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-use SetCMS\Servant\ArrayPropertyHydratorSevant;
+use SetCMS\Core\Servant\CorePropertyHydrateSevant;
+use SetCMS\Core\Servant\CorePropertySatisfyServant;
 use SetCMS\Contract\Servant;
 use SetCMS\Scope;
 
 class ServeScopeServant implements Servant
 {
 
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\QuickTrait;
 
-    public Servant $servent;
+    public Servant $servant;
     public Scope $scope;
     public array $array = [];
 
@@ -22,26 +23,30 @@ class ServeScopeServant implements Servant
         $messages = iterator_to_array($this->messages());
 
         if (empty($messages)) {
-            $this->scope->to($this->servent);
-            $this->servent->serve();
-            $this->scope->from($this->servent);
+            $this->scope->to($this->servant);
+            $this->servant->serve();
+            $this->scope->from($this->servant);
         }
 
-        $this->scope->messages = $messages;
+        $this->scope->withMessages($messages);
     }
 
     protected function messages(): \Iterator
     {
-        $hydrator = new ArrayPropertyHydratorSevant;
+        $hydrator = CorePropertyHydrateSevant::make($this->factory());
         $hydrator->array = $this->array;
         $hydrator->object = $this->scope;
         $hydrator->serve();
 
+        $satisfyer = CorePropertySatisfyServant::make($this->factory());
+        $satisfyer->object = $this->scope;
+        $satisfyer->serve();
+       
         foreach ($hydrator->messages as $message) {
             yield $message;
         }
-
-        foreach ($this->scope->satisfy() as $message) {
+        
+        foreach ($satisfyer->messages as $message) {
             yield $message;
         }
     }

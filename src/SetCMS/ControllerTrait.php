@@ -27,7 +27,7 @@ trait ControllerTrait
     private function directServe(Servant $servant, Scope $scope, array $array): Scope
     {
         $serveScope = ServeScopeServant::make($this->factory());
-        $serveScope->servent = $servant;
+        $serveScope->servant = $servant;
         $serveScope->scope = $scope;
         $serveScope->array = $array;
         $serveScope->serve();
@@ -48,7 +48,7 @@ trait ControllerTrait
         foreach ($servants as $servant) {
             $this->serve($request, $servant, $scope, $array);
 
-            if (!empty($scope->messages)) {
+            if ($scope->hasMessages()) {
                 return $scope;
             }
         }

@@ -25,9 +25,9 @@ class ViewJsonRender implements Servant, Applicable
 
         if ($object instanceof Scope) {
             $this->json = json_encode([
-                'result' => !$object->messages,
+                'result' => !$object->hasMessages(),
                 'data' => $object->toArray(),
-                'messages' => $object->messages,
+                'messages' => $object->getMessages(),
             ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
             return;
         }

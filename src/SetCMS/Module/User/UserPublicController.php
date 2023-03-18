@@ -8,8 +8,8 @@ use SetCMS\Module\User\Servant\UserRegistrationServant;
 use SetCMS\Module\User\Servant\UserLoginServant;
 use SetCMS\Module\User\Scope\UserPublicProfileScope;
 use SetCMS\Module\User\Scope\UserInfoScope;
-use SetCMS\Module\User\Scope\UserRegistrationScope;
-use SetCMS\Module\User\Scope\UserDoRegistrationScope;
+use SetCMS\Module\User\Scope\UserPublicRegistrationScope;
+use SetCMS\Module\User\Scope\UserPublicDoRegistrationScope;
 use SetCMS\Module\User\Scope\UserPublicLoginScope;
 use SetCMS\Module\User\Scope\UserPublicDoLoginScope;
 use SetCMS\Module\User\Scope\UserPublicLogoutScope;
@@ -63,14 +63,14 @@ class UserPublicController
         return $this->secureByScope($scope, $request);
     }
 
-    public function registration(ServerRequestInterface $request, UserRegistrationScope $scope): UserRegistrationScope
+    public function registration(ServerRequestInterface $request, UserPublicRegistrationScope $scope): UserPublicRegistrationScope
     {
         $this->secureByScope($scope, $request);
 
         return $scope;
     }
 
-    public function doRegistration(ServerRequestInterface $request, UserDoRegistrationScope $scope, UserRegistrationServant $servant): UserDoRegistrationScope
+    public function doRegistration(ServerRequestInterface $request, UserPublicDoRegistrationScope $scope, UserRegistrationServant $servant): UserPublicDoRegistrationScope
     {
         return $this->serve($request, $servant, $scope, $request->getParsedBody());
     }

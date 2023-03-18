@@ -1,12 +1,18 @@
 jQuery().ready(function () {
-    function altMessage(message, title) {
-        var $uncatchetMessage;
-
-        $uncatchetMessage = $('#setcms-uncatched-message');
-        $uncatchetMessage.find('.toast-body').text(message);
-        $uncatchetMessage.find('.toast-header .me-auto').text(title ? title : 'Сообщение');
-
-        return (new bootstrap.Toast($uncatchetMessage.get(0))).show();
+    function altMessage(message) {
+        if (!("Notification" in window)) {
+            alert("This browser does not support desktop notification");
+        } else if (Notification.permission === "granted") {
+            const notification = new Notification(message);
+            // …
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then((permission) => {
+                if (permission === "granted") {
+                    const notification = new Notification(message);
+                    // …
+                }
+            });
+        }
     }
 
     var handlers = {
@@ -166,15 +172,20 @@ jQuery().ready(function () {
 
 
                 $.each(data.messages, function (index, msg) {
-                    var message = msg[0] || null;
-                    var field = msg[1] || null;
+                    var message = msg.message || null;
+                    var field = msg.field || null;
 
                     if (field) {
                         var $field;
 
                         $field = $form.find('[name="' + field + '"]');
-                        $field.addClass('is-invalid');
-                        $field.parent().find('.invalid-feedback').text(!$field.is(':hidden') ? message : field + ': ' + message);
+
+                        if ($field.get(0)) {
+                            $field.addClass('is-invalid');
+                            $field.parent().find('.invalid-feedback').text(!$field.is(':hidden') ? message : field + ': ' + message);
+                        } else {
+                            altMessage(message);
+                        }
                     } else {
                         altMessage(message);
                     }

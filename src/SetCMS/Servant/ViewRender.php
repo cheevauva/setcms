@@ -45,13 +45,13 @@ class ViewRender implements Servant
     {
         $acceptType = $this->request->getHeaderLine('Accept') ?? 'application/json';
 
-        if (str_contains($acceptType, 'application/json')) {
-            $scope = new ViewJsonExceptionScope;
+        if (str_contains($acceptType, 'text/html')) {
+            $scope = new ViewHtmlExceptionScope;
             $scope->from($object);
         }
 
-        if (str_contains($acceptType, 'text/html')) {
-            $scope = new ViewHtmlExceptionScope;
+        if (str_contains($acceptType, 'application/json') || empty($scope)) {
+            $scope = new ViewJsonExceptionScope;
             $scope->from($object);
         }
 
