@@ -14,6 +14,7 @@ class PageUpdateServant implements Servant
 {
 
     use \SetCMS\DITrait;
+    use \SetCMS\FactoryTrait;
 
     public PageEntity $page;
 

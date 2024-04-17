@@ -7,7 +7,6 @@ namespace SetCMS;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Scope;
 use SetCMS\Contract\Servant;
-use SetCMS\Servant\ServeScopeServant;
 use SetCMS\Controller\Hook\ScopeProtectionHook;
 use SetCMS\RequestAttribute;
 
@@ -24,29 +23,40 @@ trait ControllerTrait
         $event->dispatch();
     }
 
-    private function directServe(Servant $servant, Scope $scope, array $array): Scope
+    protected function setupScope(Scope $scope): void
     {
-        $serveScope = ServeScopeServant::make($this->factory());
-        $serveScope->servant = $servant;
-        $serveScope->scope = $scope;
-        $serveScope->array = $array;
-        $serveScope->serve();
+        $hydrator = CorePropertyHydrateSevant::make($this->factory());
+        $satisfyer = CorePropertySatisfyServant::make($this->factory());
 
-        return $serveScope->scope;
+        $this->directServe($scope, $hydrator);
+        $this->directServe($scope, $satisfyer);
     }
 
-    private function serve(ServerRequestInterface $request, Servant $servant, Scope $scope, array $array = []): Scope
+    protected function directServe(Scope $scope, Servant $servant): void
     {
+        $scope->to($servant);
+        $servant->serve();
+        $scope->from($servant);
+    }
+
+    private function serve(ServerRequestInterface $request, Servant $servant, Scope $scope): Scope
+    {
+        $scope->from($request);
+
         $this->secureByScope($scope, $request);
-        $this->directServe($servant, $scope, $array);
+        $this->setupScope($scope);
+        $this->directServe($scope, $servant);
 
         return $scope;
     }
 
-    private function multiserve(ServerRequestInterface $request, array $servants, Scope $scope, array $array): Scope
+    private function multiserve(ServerRequestInterface $request, array $servants, Scope $scope): Scope
     {
+        $scope->from($request);
+        $this->setupScope($scope);
+
         foreach ($servants as $servant) {
-            $this->serve($request, $servant, $scope, $array);
+            $this->directServe($scope, $servant);
 
             if ($scope->hasMessages()) {
                 return $scope;

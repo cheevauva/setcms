@@ -23,14 +23,12 @@ class PagePrivateController
 
     public function index(ServerRequestInterface $request, PagePrivateIndexScope $scope, PageRetrieveManyDAO $servant): PagePrivateIndexScope
     {
-        return $this->serve($request, $servant, $scope, []);
+        return $this->serve($request, $servant, $scope);
     }
 
     public function read(ServerRequestInterface $request, PagePrivateReadScope $scope, PageRetrieveByIdDAO $servant): PagePrivateReadScope
     {
-        return $this->serve($request, $servant, $scope, [
-            'id' => $request->getAttribute('id'),
-        ]);
+        return $this->serve($request, $servant, $scope);
     }
 
     public function new(ServerRequestInterface $request, PagePrivateEditScope $scope): PagePrivateEditScope
@@ -42,22 +40,20 @@ class PagePrivateController
 
     public function edit(ServerRequestInterface $request, PagePrivateEditScope $scope, PageRetrieveByIdDAO $servant): PagePrivateEditScope
     {
-        return $this->serve($request, $servant, $scope, [
-            'id' => $request->getAttribute('id'),
-        ]);
+        return $this->serve($request, $servant, $scope);
     }
 
     public function create(ServerRequestInterface $request, PagePrivateCreateScope $scope, PageCreateServant $servant): PagePrivateCreateScope
     {
-        return $this->serve($request, $servant, $scope, $request->getParsedBody());
+        return $this->serve($request, $servant, $scope);
     }
 
-    public function update(ServerRequestInterface $request, PagePrivateUpdateScope $scope, PageUpdateServant $update, PageRetrieveByIdDAO $readById): PagePrivateUpdateScope
+    public function update(ServerRequestInterface $request, PagePrivateUpdateScope $scope): PagePrivateUpdateScope
     {
         return $this->multiserve($request, [
-            $readById,
-            $update
-        ], $scope, $request->getParsedBody());
+            PageRetrieveByIdDAO::make($this->factory()),
+            PageUpdateServant::make($this->factory())
+        ], $scope);
     }
 
 }

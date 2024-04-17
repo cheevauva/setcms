@@ -14,14 +14,10 @@ class PagePublicController
 {
 
     use \SetCMS\ControllerTrait;
-
-    use \SetCMS\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
     public function read(ServerRequestInterface $request, PagePublicReadScope $scope, PageRetrieveByIdDAO $servant): PagePublicReadScope
     {
-        $servant->throwExceptionIfNotFound = true;
-
         return $this->serve($request, $servant, $scope, [
             'id' => $request->getAttribute('id'),
         ]);

@@ -19,6 +19,7 @@ class PagePublicReadScope extends Scope
     {
         if ($object instanceof PageRetrieveByIdDAO) {
             $object->id = $this->id;
+            $object->throwExceptionIfNotFound = true;
         }
     }
 

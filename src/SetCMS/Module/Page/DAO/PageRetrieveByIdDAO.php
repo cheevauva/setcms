@@ -12,6 +12,7 @@ class PageRetrieveByIdDAO extends EntityRetrieveByIdDAO
 {
 
     use PageGenericDAO;
+    use \SetCMS\FactoryTrait;
 
     public PageEntity $page;
     public bool $throwExceptionIfNotFound = false;
