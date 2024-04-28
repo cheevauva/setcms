@@ -8,7 +8,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Scope;
 use SetCMS\Contract\Servant;
 use SetCMS\Controller\Hook\ScopeProtectionHook;
-use SetCMS\RequestAttribute;
+use SetCMS\Core\Servant\CorePropertySatisfyServant;
+use SetCMS\Core\Servant\CorePropertyHydrateSevant;
 
 trait ControllerTrait
 {
@@ -19,33 +20,47 @@ trait ControllerTrait
     {
         $event = new ScopeProtectionHook;
         $event->scope = $scope;
-        $event->user = RequestAttribute::currentUser->fromRequest($request);
-        $event->dispatch();
+        $event->from($request);
+        $event->dispatch($this->eventDispatcher());
     }
 
-    protected function setupScope(Scope $scope): void
+    protected function serveScope(Scope $scope): void
     {
-        $hydrator = CorePropertyHydrateSevant::make($this->factory());
-        $satisfyer = CorePropertySatisfyServant::make($this->factory());
-
-        $this->directServe($scope, $hydrator);
-        $this->directServe($scope, $satisfyer);
+        $this->multiserveServantWithScope([
+            CorePropertyHydrateSevant::make($this->factory()),
+            CorePropertySatisfyServant::make($this->factory()),
+        ], $scope);
     }
 
-    protected function directServe(Scope $scope, Servant $servant): void
+    protected function serveServantWithScope(Servant $servant, Scope $scope): void
     {
-        $scope->to($servant);
-        $servant->serve();
-        $scope->from($servant);
+        try {
+            $scope->to($servant);
+            $servant->serve();
+            $scope->from($servant);
+        } catch (\Throwable $ex) {
+            $scope->from($ex);
+        }
+    }
+
+    protected function multiserveServantWithScope(array $servants, Scope $scope): void
+    {
+        foreach ($servants as $servant) {
+            $this->serveServantWithScope($servant, $scope);
+
+            if ($scope->hasMessages()) {
+                return;
+            }
+        }
     }
 
     private function serve(ServerRequestInterface $request, Servant $servant, Scope $scope): Scope
     {
         $scope->from($request);
-
+        //
         $this->secureByScope($scope, $request);
-        $this->setupScope($scope);
-        $this->directServe($scope, $servant);
+        $this->serveScope($scope);
+        $this->serveServantWithScope($scope, $servant);
 
         return $scope;
     }
@@ -53,16 +68,10 @@ trait ControllerTrait
     private function multiserve(ServerRequestInterface $request, array $servants, Scope $scope): Scope
     {
         $scope->from($request);
-        $this->setupScope($scope);
-
-        foreach ($servants as $servant) {
-            $this->directServe($scope, $servant);
-
-            if ($scope->hasMessages()) {
-                return $scope;
-            }
-        }
-
+        //
+        $this->serveScope($scope);
+        $this->multiserveServantWithScope($servants, $scope);
+        
         return $scope;
     }
 

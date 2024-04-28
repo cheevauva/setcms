@@ -12,8 +12,7 @@ use SetCMS\Module\Page\Scope\PagePrivateEditScope;
 use SetCMS\Module\Page\Scope\PagePrivateIndexScope;
 use SetCMS\Module\Page\Scope\PagePrivateCreateScope;
 use SetCMS\Module\Page\Scope\PagePrivateUpdateScope;
-use SetCMS\Module\Page\Servant\PageCreateServant;
-use SetCMS\Module\Page\Servant\PageUpdateServant;
+use SetCMS\Module\Page\DAO\PageSaveDAO;
 
 class PagePrivateController
 {
@@ -43,7 +42,7 @@ class PagePrivateController
         return $this->serve($request, $servant, $scope);
     }
 
-    public function create(ServerRequestInterface $request, PagePrivateCreateScope $scope, PageCreateServant $servant): PagePrivateCreateScope
+    public function create(ServerRequestInterface $request, PagePrivateCreateScope $scope, PageSaveDAO $servant): PagePrivateCreateScope
     {
         return $this->serve($request, $servant, $scope);
     }
@@ -52,7 +51,7 @@ class PagePrivateController
     {
         return $this->multiserve($request, [
             PageRetrieveByIdDAO::make($this->factory()),
-            PageUpdateServant::make($this->factory())
+            PageSaveDAO::make($this->factory())
         ], $scope);
     }
 

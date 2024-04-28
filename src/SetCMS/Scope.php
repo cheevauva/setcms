@@ -60,6 +60,10 @@ abstract class Scope implements Hydratable, Satisfiable, Arrayable
         if ($object instanceof ServerRequestInterface) {
             $this->request = $object;
         }
+
+        if ($object instanceof \Throwable) {
+            $this->withMessage($object->getMessage());
+        }
     }
 
     public function to(object $object): void

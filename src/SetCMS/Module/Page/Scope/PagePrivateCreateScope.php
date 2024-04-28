@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Module\Page\Scope;
 
 use SetCMS\Module\Page\PageEntity;
-use SetCMS\Module\Page\Servant\PageCreateServant;
+use SetCMS\Module\Page\DAO\PageSaveDAO;
 
 class PagePrivateCreateScope extends PagePrivateScope
 {
@@ -17,7 +17,7 @@ class PagePrivateCreateScope extends PagePrivateScope
     {
         parent::to($object);
 
-        if ($object instanceof PageCreateServant) {
+        if ($object instanceof PageSaveDAO) {
             $this->entity = new PageEntity;
             $this->page->to($this->entity);
             $object->page = $this->entity;
