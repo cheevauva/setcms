@@ -11,6 +11,7 @@ class PostRetrieveByIdDAO extends EntityRetrieveByIdDAO
 {
 
     use PostGenericDAO;
+    use \SetCMS\FactoryTrait;
 
     public ?PostEntity $post;
 

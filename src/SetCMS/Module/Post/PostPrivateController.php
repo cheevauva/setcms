@@ -45,15 +45,15 @@ class PostPrivateController
 
     public function create(ServerRequestInterface $request, PostPrivateCreateScope $scope, PostCreateServant $servant): PostPrivateCreateScope
     {
-        return $this->serve($request, $servant, $scope, $request->getParsedBody());
+        return $this->serve($request, $servant, $scope);
     }
 
-    public function update(ServerRequestInterface $request, PostPrivateUpdateScope $scope, PostUpdateServant $update, PostRetrieveByIdDAO $readById): PostPrivateUpdateScope
+    public function update(ServerRequestInterface $request, PostPrivateUpdateScope $scope): PostPrivateUpdateScope
     {
         return $this->multiserve($request, [
-            $readById,
-            $update
-        ], $scope, $request->getParsedBody());
+            PostRetrieveByIdDAO::make($this->factory()),
+            PostUpdateServant::make($this->factory())
+        ], $scope);
     }
 
 }

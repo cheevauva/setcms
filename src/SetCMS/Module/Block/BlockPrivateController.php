@@ -45,15 +45,15 @@ class BlockPrivateController
 
     public function create(ServerRequestInterface $request, BlockPrivateCreateScope $scope, BlockCreateServant $servant): BlockPrivateCreateScope
     {
-        return $this->serve($request, $servant, $scope, $request->getParsedBody());
+        return $this->serve($request, $servant, $scope);
     }
 
-    public function update(ServerRequestInterface $request, BlockPrivateUpdateScope $scope, BlockUpdateServant $update, BlockRetrieveByIdDAO $readById): BlockPrivateUpdateScope
+    public function update(ServerRequestInterface $request, BlockPrivateUpdateScope $scope): BlockPrivateUpdateScope
     {
         return $this->multiserve($request, [
-            $readById,
-            $update
-        ], $scope, $request->getParsedBody());
+            BlockRetrieveByIdDAO::make($this->factory()),
+            BlockRetrieveByIdDAO::make($this->factory())
+        ], $scope);
     }
 
 }

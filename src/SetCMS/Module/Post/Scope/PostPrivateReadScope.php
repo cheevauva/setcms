@@ -23,6 +23,7 @@ class PostPrivateReadScope extends PostPrivateScope
         
         if ($object instanceof PostRetrieveByIdDAO) {
             $object->id = $this->id;
+            $object->throwExceptionIfNotFound = true;
         }
     }
 
