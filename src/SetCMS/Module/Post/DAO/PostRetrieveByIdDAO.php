@@ -12,7 +12,7 @@ class PostRetrieveByIdDAO extends EntityRetrieveByIdDAO
 
     use PostGenericDAO;
 
-    public PostEntity $post;
+    public ?PostEntity $post;
 
     public function serve(): void
     {

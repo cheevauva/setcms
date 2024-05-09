@@ -32,21 +32,15 @@ class UserPublicController
 
     public function logout(ServerRequestInterface $request, UserPublicLogoutScope $scope, UserSessionDeleteByIdDAO $servant): UserPublicLogoutScope
     {
-        $this->serve($request, $servant, $scope, [
-            'token' => $request->getCookieParams()[RequestAttribute::accessToken->toString()],
-        ]);
-
-        return $scope;
+        return $this->serve($request, $servant, $scope);
     }
 
     public function doLogin(ServerRequestInterface $request, UserPublicDoLoginScope $scope, Factory $factory): UserPublicDoLoginScope
     {
-        $scope->device = strval($request->getHeaderLine('user-agent'));
-
         return $this->multiserve($request, [
             UserLoginServant::make($factory),
             UserSessionCreateByUserServant::make($factory),
-        ], $scope, $request->getParsedBody());
+        ], $scope);
     }
 
     public function profile(ServerRequestInterface $request, UserPublicProfileScope $scope): UserPublicProfileScope
@@ -72,7 +66,7 @@ class UserPublicController
 
     public function doRegistration(ServerRequestInterface $request, UserPublicDoRegistrationScope $scope, UserRegistrationServant $servant): UserPublicDoRegistrationScope
     {
-        return $this->serve($request, $servant, $scope, $request->getParsedBody());
+        return $this->serve($request, $servant, $scope);
     }
 
 }

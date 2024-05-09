@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace SetCMS\Contract;
 
-interface Satisfiable
+interface ContractValidateInterface
 {
 
     /**
      * Return not satisfy messages
      * @return \Iterator
      */
-    public function satisfy(): \Iterator;
+    public function validate(): \Iterator;
 }

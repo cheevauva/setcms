@@ -13,15 +13,6 @@ class Module01PrivateEntity01Scope extends Module01PrivateScope
     public UUID $id;
     public string $field01;
 
-    public function satisfy(): \Iterator
-    {
-        parent::satisfy();
-
-        if (0) {
-            yield ['', ''];
-        }
-    }
-
     public function to(object $object): void
     {
         parent::to($object);

@@ -9,7 +9,8 @@ use SetCMS\Scope;
 use SetCMS\Contract\Servant;
 use SetCMS\Controller\Hook\ScopeProtectionHook;
 use SetCMS\Core\Servant\CorePropertySatisfyServant;
-use SetCMS\Core\Servant\CorePropertyHydrateSevant;
+use SetCMS\Core\Servant\CorePropertyHydrateServant;
+use SetCMS\Core\Servant\CorePropertyFetchDataFromRequestServant;
 
 trait ControllerTrait
 {
@@ -27,7 +28,8 @@ trait ControllerTrait
     protected function serveScope(Scope $scope): void
     {
         $this->multiserveServantWithScope([
-            CorePropertyHydrateSevant::make($this->factory()),
+            CorePropertyFetchDataFromRequestServant::make($this->factory()),
+            CorePropertyHydrateServant::make($this->factory()),
             CorePropertySatisfyServant::make($this->factory()),
         ], $scope);
     }
@@ -38,7 +40,7 @@ trait ControllerTrait
             $scope->to($servant);
             $servant->serve();
             $scope->from($servant);
-        } catch (\Throwable $ex) {
+        } catch (\Exception $ex) {
             $scope->from($ex);
         }
     }
@@ -60,7 +62,7 @@ trait ControllerTrait
         //
         $this->secureByScope($scope, $request);
         $this->serveScope($scope);
-        $this->serveServantWithScope($scope, $servant);
+        $this->serveServantWithScope($servant, $scope);
 
         return $scope;
     }

@@ -6,10 +6,12 @@ namespace SetCMS\Module\User\Scope;
 
 use SetCMS\Module\User\UserEntity;
 use SetCMS\Module\User\UserRoleEnum;
+use SetCMS\Attribute\Http\Parameter\Body;
 
 class UserPrivateSaveScope extends \SetCMS\Entity\Scope\EntitySaveScope
 {
 
+    #[Body('role')]
     public UserRoleEnum $role;
 
     public function __construct()

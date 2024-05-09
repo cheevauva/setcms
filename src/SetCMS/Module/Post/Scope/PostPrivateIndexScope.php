@@ -13,6 +13,8 @@ class PostPrivateIndexScope extends PostPrivateScope
 
     public function from(object $object): void
     {
+        parent::from($object);
+        
         if ($object instanceof PostRetrieveManyDAO) {
             $this->entities = $object->entities;
         }

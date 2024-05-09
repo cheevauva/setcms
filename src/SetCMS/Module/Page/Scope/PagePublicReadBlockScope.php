@@ -7,11 +7,14 @@ namespace SetCMS\Module\Page\Scope;
 use SetCMS\Scope;
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\DAO\PageRetrieveBySlugDAO;
+use SetCMS\Attribute\Http\Parameter\Attributes;
 
 class PagePublicReadBlockScope extends Scope
 {
 
     protected ?PageEntity $entity = null;
+
+    #[Attributes('slug')]
     public string $slug;
 
     public function to(object $object): void

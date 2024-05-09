@@ -8,11 +8,14 @@ use SetCMS\Scope;
 use SetCMS\UUID;
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\DAO\PageRetrieveByIdDAO;
+use SetCMS\Attribute\Http\Parameter\Attributes;
 
 class PagePublicReadScope extends Scope
 {
 
     protected ?PageEntity $entity = null;
+
+    #[Attributes('id')]
     public UUID $id;
 
     public function to(object $object): void

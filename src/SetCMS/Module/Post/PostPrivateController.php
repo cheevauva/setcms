@@ -28,9 +28,7 @@ class PostPrivateController
 
     public function read(ServerRequestInterface $request, PostPrivateReadScope $scope, PostRetrieveByIdDAO $servant): PostPrivateReadScope
     {
-        return $this->serve($request, $servant, $scope, [
-            'id' => $request->getAttribute('id'),
-        ]);
+        return $this->serve($request, $servant, $scope);
     }
 
     public function new(ServerRequestInterface $request, PostPrivateEditScope $scope): PostPrivateEditScope
@@ -42,9 +40,7 @@ class PostPrivateController
 
     public function edit(ServerRequestInterface $request, PostPrivateEditScope $scope, PostRetrieveByIdDAO $servant): PostPrivateEditScope
     {
-        return $this->serve($request, $servant, $scope, [
-            'id' => $request->getAttribute('id'),
-        ]);
+        return $this->serve($request, $servant, $scope);
     }
 
     public function create(ServerRequestInterface $request, PostPrivateCreateScope $scope, PostCreateServant $servant): PostPrivateCreateScope

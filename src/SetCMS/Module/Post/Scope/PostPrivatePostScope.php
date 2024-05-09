@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Scope;
 
-use SetCMS\Attribute;
+use SetCMS\Attribute\NotBlank;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\UUID;
 
@@ -13,23 +13,14 @@ class PostPrivatePostScope extends PostPrivateScope
 
     public UUID $id;
 
-    #[Attribute\NotBlank]
+    #[NotBlank]
     public string $slug;
 
-    #[Attribute\NotBlank]
+    #[NotBlank]
     public string $message;
 
-    #[Attribute\NotBlank]
+    #[NotBlank]
     public string $title;
-
-    public function satisfy(): \Iterator
-    {
-        parent::satisfy();
-
-        if (0) {
-            yield ['', ''];
-        }
-    }
 
     public function to(object $object): void
     {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Core\Servant;
 
 use SetCMS\Contract\Servant;
-use SetCMS\Contract\Satisfiable;
+use SetCMS\Contract\ContractValidateInterface;
 use SetCMS\Attribute;
 use SetCMS\Core\VO\CorePropertyMessageVO;
 use ReflectionProperty;
@@ -40,7 +40,7 @@ class CorePropertySatisfyServant implements Servant
                 $this->messages[] = new CorePropertyMessageVO('Обязательно для заполнения', $property->getName());
             }
 
-            if ($rawValue instanceof Satisfiable) {
+            if ($rawValue instanceof ContractValidateInterface) {
                 $satisfyer = CorePropertySatisfyServant::make($this->factory());
                 $satisfyer->object = $rawValue;
                 $satisfyer->serve();
@@ -58,8 +58,8 @@ class CorePropertySatisfyServant implements Servant
             }
         }
 
-        if ($object instanceof Satisfiable) {
-            foreach ($object->satisfy() as $message) {
+        if ($object instanceof ContractValidateInterface) {
+            foreach ($object->validate() as $message) {
                 $this->messages[] = CorePropertyMessageVO::fromArray($message);
             }
         }

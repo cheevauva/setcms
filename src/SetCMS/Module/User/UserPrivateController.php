@@ -24,9 +24,7 @@ class UserPrivateController
 
     public function read(ServerRequestInterface $request, UserPrivateReadScope $scope, UserEntityDbRetrieveByIdDAO $servant): UserPrivateReadScope
     {
-        return $this->serve($request, $servant, $scope, [
-            'id' => $request->getAttribute('id'),
-        ]);
+        return $this->serve($request, $servant, $scope);
     }
 
     public function new(ServerRequestInterface $request, UserPrivateEditScope $scope): UserPrivateEditScope
@@ -38,16 +36,12 @@ class UserPrivateController
 
     public function edit(ServerRequestInterface $request, UserPrivateEditScope $scope, UserEntityDbRetrieveByIdDAO $servant): UserPrivateEditScope
     {
-        return $this->serve($request, $servant, $scope, [
-            'id' => $request->getAttribute('id'),
-        ]);
+        return $this->serve($request, $servant, $scope);
     }
 
     public function save(ServerRequestInterface $request, UserPrivateSaveScope $scope, $servant): UserPrivateSaveScope
     {
-        $servant->id = $request->getAttribute('id');
-
-        return $this->serve($request, $servant, $scope, $request->getParsedBody());
+        return $this->serve($request, $servant, $scope);
     }
 
 }

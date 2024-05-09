@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace SetCMS;
 
 use SetCMS\Contract\Arrayable;
-use SetCMS\Contract\Satisfiable;
-use SetCMS\Contract\Hydratable;
-use SetCMS\Core\Servant\CorePropertyHydrateSevant;
+use SetCMS\Contract\ContractValidateInterface;
+use SetCMS\Contract\ContractScopeInterface;
+use SetCMS\Contract\ContractHydrateInterface;
+use SetCMS\Core\Servant\CorePropertyFetchDataFromRequestServant;
+use SetCMS\Core\Servant\CorePropertyHydrateServant;
 use SetCMS\Core\Servant\CorePropertySatisfyServant;
 use Psr\Http\Message\ServerRequestInterface;
 
-abstract class Scope implements Hydratable, Satisfiable, Arrayable
+abstract class Scope implements ContractHydrateInterface, ContractValidateInterface, Arrayable, ContractScopeInterface
 {
 
     private array $messages = [];
     private array $data = [];
-    //
-    protected ServerRequestInterface $request;
+    private ?ServerRequestInterface $request;
 
     public function getMessages(): array
     {
@@ -34,14 +35,14 @@ abstract class Scope implements Hydratable, Satisfiable, Arrayable
         return !empty($this->messages);
     }
 
-    public function satisfy(): \Iterator
+    public function validate(): \Iterator
     {
         yield from [];
     }
 
     public function from(object $object): void
     {
-        if ($object instanceof CorePropertyHydrateSevant) {
+        if ($object instanceof CorePropertyHydrateServant) {
             foreach ($object->messages as $message) {
                 $this->withMessage($message);
             }
@@ -53,12 +54,12 @@ abstract class Scope implements Hydratable, Satisfiable, Arrayable
             }
         }
 
-        if ($object instanceof CoreServerRequestAttributeServat) {
-            $this->data = $object->data;
-        }
-
         if ($object instanceof ServerRequestInterface) {
             $this->request = $object;
+        }
+
+        if ($object instanceof CorePropertyFetchDataFromRequestServant) {
+            $this->data = $object->data;
         }
 
         if ($object instanceof \Throwable) {
@@ -68,18 +69,17 @@ abstract class Scope implements Hydratable, Satisfiable, Arrayable
 
     public function to(object $object): void
     {
-        if ($object instanceof CoreServerRequestAttributeServat) {
+        if ($object instanceof CorePropertyHydrateServant) {
             $object->object = $this;
-            $object->request = $this->request;
-        }
-
-        if ($object instanceof CorePropertyHydrateSevant) {
-            $object->object = $this;
-            $object->array = $this->serverRequest->getParsedBody();
-            $object->serve();
+            $object->array = $this->data;
         }
 
         if ($object instanceof CorePropertySatisfyServant) {
+            $object->object = $this;
+        }
+
+        if ($object instanceof CorePropertyFetchDataFromRequestServant) {
+            $object->request = $this->request;           
             $object->object = $this;
         }
     }

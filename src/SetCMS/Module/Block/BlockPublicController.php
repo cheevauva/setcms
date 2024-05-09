@@ -16,9 +16,12 @@ class BlockPublicController
 
     public function blocksBySection(ServerRequestInterface $request, BlockPublicSectionScope $scope, BlockRetrieveManyBySectionDAO $servant): BlockPublicSectionScope
     {
-        return $this->serveServantWithScope($servant, $scope, [
-            'section' => $request->getAttribute('section') ?? '',
-        ]);
+        $scope->from($request);
+        
+        $this->serveScope($scope);
+        $this->serveServantWithScope($servant, $scope);
+        
+        return $scope;
     }
 
 }

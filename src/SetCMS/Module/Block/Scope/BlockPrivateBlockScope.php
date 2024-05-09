@@ -16,15 +16,6 @@ class BlockPrivateBlockScope extends BlockPrivateScope
     public string $template;
     public string $section;
 
-    public function satisfy(): \Iterator
-    {
-        parent::satisfy();
-
-        if (0) {
-            yield ['', ''];
-        }
-    }
-
     public function to(object $object): void
     {
         parent::to($object);

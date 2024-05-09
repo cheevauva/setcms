@@ -22,15 +22,6 @@ class PagePrivatePageScope extends PagePrivateScope
     #[Attribute\NotBlank]
     public string $content;
 
-    public function satisfy(): \Iterator
-    {
-        parent::satisfy();
-
-        if (0) {
-            yield ['', ''];
-        }
-    }
-
     public function to(object $object): void
     {
         parent::to($object);

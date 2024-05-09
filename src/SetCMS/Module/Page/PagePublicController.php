@@ -18,16 +18,12 @@ class PagePublicController
 
     public function read(ServerRequestInterface $request, PagePublicReadScope $scope, PageRetrieveByIdDAO $servant): PagePublicReadScope
     {
-        return $this->serve($request, $servant, $scope, [
-            'id' => $request->getAttribute('id'),
-        ]);
+        return $this->serve($request, $servant, $scope);
     }
 
     public function block(ServerRequestInterface $request, PagePublicReadBlockScope $scope, PageRetrieveBySlugDAO $servant): PagePublicReadBlockScope
     {
-        return $this->serve($request, $servant, $scope, [
-            'slug' => $request->getAttribute('slug'),
-        ]);
+        return $this->serve($request, $servant, $scope);
     }
 
 }

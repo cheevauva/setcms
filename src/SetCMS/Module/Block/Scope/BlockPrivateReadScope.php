@@ -12,6 +12,8 @@ class BlockPrivateReadScope extends BlockPrivateScope
 {
 
     protected ?BlockEntity $entity = null;
+
+    #[Attributes('id')]
     public UUID $id;
 
     public function to(object $object): void

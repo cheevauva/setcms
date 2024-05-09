@@ -28,9 +28,7 @@ class BlockPrivateController
 
     public function read(ServerRequestInterface $request, BlockPrivateReadScope $scope, BlockRetrieveByIdDAO $servant): BlockPrivateReadScope
     {
-        return $this->serve($request, $servant, $scope, [
-            'id' => $request->getAttribute('id'),
-        ]);
+        return $this->serve($request, $servant, $scope);
     }
 
     public function new(ServerRequestInterface $request, BlockPrivateEditScope $scope): BlockPrivateEditScope
@@ -42,9 +40,7 @@ class BlockPrivateController
 
     public function edit(ServerRequestInterface $request, BlockPrivateEditScope $scope, BlockRetrieveByIdDAO $servant): BlockPrivateEditScope
     {
-        return $this->serve($request, $servant, $scope, [
-            'id' => $request->getAttribute('id'),
-        ]);
+        return $this->serve($request, $servant, $scope);
     }
 
     public function create(ServerRequestInterface $request, BlockPrivateCreateScope $scope, BlockCreateServant $servant): BlockPrivateCreateScope
