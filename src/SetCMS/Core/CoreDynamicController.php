@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\Core\DAO\CoreReflectionMethodRetrieveByMethodNameDAO;
 
-abstract class DynamicController
+abstract class CoreDynamicController
 {
 
     use \SetCMS\Router\RouterTrait;

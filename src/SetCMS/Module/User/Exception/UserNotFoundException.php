@@ -6,5 +6,7 @@ namespace SetCMS\Module\User\Exception;
 
 class UserNotFoundException extends UserException
 {
-    
+
+    protected $message = "Пользователь не найден";
+
 }

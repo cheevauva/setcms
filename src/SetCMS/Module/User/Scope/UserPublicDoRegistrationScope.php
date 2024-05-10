@@ -22,8 +22,11 @@ class UserPublicDoRegistrationScope extends \SetCMS\Scope
     #[NotBlank]
     #[Body('password2')]
     public string $password2;
-    //public string $captcha;
-    protected ?UserEntity $user = null;
+
+    #[Captcha('password2')]
+    public string $captcha;
+    //
+    private ?UserEntity $user = null;
 
     public function validate(): \Iterator
     {

@@ -3,7 +3,6 @@
 namespace SetCMS\Module\User;
 
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Contract\Factory;
 use SetCMS\Module\User\Servant\UserRegistrationServant;
 use SetCMS\Module\User\Servant\UserLoginServant;
 use SetCMS\Module\User\Scope\UserPublicProfileScope;
@@ -15,7 +14,7 @@ use SetCMS\Module\User\Scope\UserPublicDoLoginScope;
 use SetCMS\Module\User\Scope\UserPublicLogoutScope;
 use SetCMS\Module\UserSession\Servant\UserSessionCreateByUserServant;
 use SetCMS\Module\UserSession\DAO\UserSessionDeleteByIdDAO;
-use SetCMS\RequestAttribute;
+use SetCMS\Module\Captcha\Servant\CaptchaUseResolvedCaptchaServant;
 
 class UserPublicController
 {
@@ -35,19 +34,18 @@ class UserPublicController
         return $this->serve($request, $servant, $scope);
     }
 
-    public function doLogin(ServerRequestInterface $request, UserPublicDoLoginScope $scope, Factory $factory): UserPublicDoLoginScope
+    public function doLogin(ServerRequestInterface $request, UserPublicDoLoginScope $scope): UserPublicDoLoginScope
     {
         return $this->multiserve($request, [
-            UserLoginServant::make($factory),
-            UserSessionCreateByUserServant::make($factory),
+            UserLoginServant::make($this->factory()),
+            CaptchaUseResolvedCaptchaServant::make($this->factory()),
+            UserSessionCreateByUserServant::make($this->factory()),
         ], $scope);
     }
 
     public function profile(ServerRequestInterface $request, UserPublicProfileScope $scope): UserPublicProfileScope
     {
         $this->secureByScope($scope, $request);
-
-        $scope->from(RequestAttribute::currentUser->fromRequest($request));
 
         return $scope;
     }

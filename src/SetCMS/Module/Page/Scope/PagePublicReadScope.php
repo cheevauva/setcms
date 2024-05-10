@@ -20,6 +20,8 @@ class PagePublicReadScope extends Scope
 
     public function to(object $object): void
     {
+        parent::to($object);
+
         if ($object instanceof PageRetrieveByIdDAO) {
             $object->id = $this->id;
             $object->throwExceptionIfNotFound = true;
@@ -28,6 +30,8 @@ class PagePublicReadScope extends Scope
 
     public function from(object $object): void
     {
+        parent::from($object);
+
         if ($object instanceof PageRetrieveByIdDAO) {
             $this->entity = $object->page;
         }

@@ -8,23 +8,29 @@ use SetCMS\Scope;
 use SetCMS\Module\User\Servant\UserLoginServant;
 use SetCMS\Module\User\UserEntity;
 use SetCMS\Module\UserSession\UserSessionEntity;
+use SetCMS\Module\Captcha\Servant\CaptchaUseResolvedCaptchaServant;
 use SetCMS\Module\UserSession\Servant\UserSessionCreateByUserServant;
 use SetCMS\Attribute\Http\Parameter\Body;
+use SetCMS\Attribute\NotBlank;
+use SetCMS\UUID;
 
 class UserPublicDoLoginScope extends Scope
 {
 
-    #[Attribute\NotBlank]
+    #[NotBlank]
     #[Body('username')]
     public string $username;
 
-    #[Attribute\NotBlank]
+    #[NotBlank]
     #[Body('password')]
     public string $password;
 
     #[Headers('user-agent')]
-    public string $device = '';
-    // public string $captcha;
+    public string $device;
+
+    #[Body('captcha')]
+    public UUID $captcha;
+    //
     protected ?UserEntity $user = null;
     protected ?UserSessionEntity $session = null;
 
@@ -32,6 +38,10 @@ class UserPublicDoLoginScope extends Scope
     {
         parent::to($object);
 
+        if ($object instanceof CaptchaUseResolvedCaptchaServant) {
+            $object->captcha = $this->captcha;
+        }
+        
         if ($object instanceof UserLoginServant) {
             $object->password = $this->password;
             $object->username = $this->username;

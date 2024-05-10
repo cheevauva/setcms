@@ -13,7 +13,7 @@ use SetCMS\Contract\Forbidden;
 use SetCMS\Controller\Hook\ParseBodyHook;
 use SetCMS\Controller\Hook\FrontControllerResolveHook;
 
-class FrontController
+class CoreFrontController
 {
 
     use \SetCMS\QuickTrait;

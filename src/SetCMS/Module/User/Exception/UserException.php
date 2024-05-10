@@ -22,6 +22,11 @@ class UserException extends Exception
         return new static(get_called_class());
     }
 
+    public static function notFound(): self
+    {
+        return new static('Пользователь не найден');
+    }
+
     public static function withUser(UserEntity $user): self
     {
         $self = new static(get_called_class());

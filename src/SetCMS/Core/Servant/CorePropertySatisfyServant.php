@@ -32,12 +32,12 @@ class CorePropertySatisfyServant implements Servant
             $rawValueType = gettype($rawValue);
 
             if (!$property->isInitialized($object)) {
-                $this->messages[] = new CorePropertyMessageVO('Обязательно для заполнения', $property->getName());
+                $this->messages[] = new CorePropertyMessageVO($property->getName(), 'Обязательно для заполнения');
                 continue;
             }
 
             if (empty($rawValue) && !empty($property->getAttributes(Attribute\NotBlank::class))) {
-                $this->messages[] = new CorePropertyMessageVO('Обязательно для заполнения', $property->getName());
+                $this->messages[] = new CorePropertyMessageVO($property->getName(), 'Обязательно для заполнения');
             }
 
             if ($rawValue instanceof ContractValidateInterface) {

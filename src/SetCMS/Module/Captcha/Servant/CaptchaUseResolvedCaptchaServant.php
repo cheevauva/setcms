@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace SetCMS\Module\Captcha\Servant;
 
 use SetCMS\UUID;
-use SetCMS\Module\Captcha\DAO\CaptchaEntityDbRetrieveByIdDAO;
-use SetCMS\Module\Captcha\DAO\CaptchaEntityDbSaveDAO;
+use SetCMS\Module\Captcha\DAO\CaptchaRetrieveByIdDAO;
+use SetCMS\Module\Captcha\DAO\CaptchaSaveDAO;
 
 class CaptchaUseResolvedCaptchaServant implements \SetCMS\Contract\Servant
 {
@@ -18,19 +18,19 @@ class CaptchaUseResolvedCaptchaServant implements \SetCMS\Contract\Servant
 
     public function serve(): void
     {
-        $captchaRetrieveeById = CaptchaEntityDbRetrieveByIdDAO::make($this->factory());
-        $captchaRetrieveeById->id = $this->captcha;
-        $captchaRetrieveeById->serve();
+        $captchaRetrieveById = CaptchaRetrieveByIdDAO::make($this->factory());
+        $captchaRetrieveById->id = $this->captcha;
+        $captchaRetrieveById->serve();
 
-        if (!$captchaRetrieveeById->captcha) {
+        if (!$captchaRetrieveById->captcha) {
             throw new \Excepton('Не найдена каптча для распознания');
         }
 
-        $captcha = $captchaRetrieveeById->captcha;
+        $captcha = $captchaRetrieveById->captcha;
         $captcha->use();
 
-        $captchaSave = CaptchaEntityDbSaveDAO::make($this->factory());
-        $captchaSave->entity = $captcha;
+        $captchaSave = CaptchaSaveDAO::make($this->factory());
+        $captchaSave->captcha = $captcha;
         $captchaSave->serve();
     }
 

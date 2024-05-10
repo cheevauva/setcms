@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Captcha\Servant;
 
-use Psr\Container\ContainerInterface;
 use SetCMS\Module\Captcha\CaptchaEntity;
-use SetCMS\Contract\Factory;
 
 class CaptchaCreateServant implements \SetCMS\Contract\Servant
 {
+
+    use \SetCMS\DITrait;
+    use \SetCMS\FactoryTrait;
 
     public CaptchaEntity $captcha;
 
@@ -20,12 +21,6 @@ class CaptchaCreateServant implements \SetCMS\Contract\Servant
     private int $width = 100;
     private int $height = 50;
     protected ?\GdImage $image = null;
-    protected Factory $factory;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->factory = $container->get(Factory::class);
-    }
 
     public function serve(): void
     {
