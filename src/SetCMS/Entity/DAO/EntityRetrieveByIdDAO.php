@@ -23,8 +23,13 @@ abstract class EntityRetrieveByIdDAO extends EntityRetrieveByCriteriaDAO
         parent::serve();
 
         if (empty($this->entity) && $this->throwExceptionIfNotFound) {
-            throw new \Exception('not found');
+            throw $this->createNotFoundException();
         }
+    }
+    
+    protected function createNotFoundException(): \Throwable
+    {
+        return new \Exception('not found');
     }
 
 }

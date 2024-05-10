@@ -25,6 +25,14 @@ abstract class Scope implements ContractHydrateInterface, ContractValidateInterf
         return $this->messages;
     }
 
+    protected function addMessage($field, $message): void
+    {
+        $this->messages[] = [
+            'field' => $field,
+            'message'=> $message,
+        ];
+    }
+
     protected function withMessage(mixed $message): void
     {
         $this->messages[] = $message;
@@ -79,7 +87,7 @@ abstract class Scope implements ContractHydrateInterface, ContractValidateInterf
         }
 
         if ($object instanceof CorePropertyFetchDataFromRequestServant) {
-            $object->request = $this->request;           
+            $object->request = $this->request;
             $object->object = $this;
         }
     }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Module\Captcha\DAO;
 
 use SetCMS\Module\Captcha\CaptchaEntity;
+use SetCMS\Module\Captcha\Exception\CaptchaNotFoundException;
 
 class CaptchaRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityRetrieveByIdDAO
 {
@@ -18,6 +19,11 @@ class CaptchaRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityRetrieveByIdDAO
         parent::serve();
 
         $this->captcha = $this->entity;
+    }
+
+    protected function createNotFoundException(): \Throwable
+    {
+        return new CaptchaNotFoundException;
     }
 
 }

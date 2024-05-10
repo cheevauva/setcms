@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Captcha;
 
+use SetCMS\Module\Captcha\Exception\CaptchaAlreadyUsedException;
+use SetCMS\Module\Captcha\Exception\CaptchaExpiredException;
+use SetCMS\Module\Captcha\Exception\CaptchaUnsolvedException;
+use SetCMS\Module\Captcha\Exception\CaptchaAlreadySolvedException;
+use SetCMS\Module\Captcha\Exception\CaptchaTooMuchSolveAttemptsException;
+
 class CaptchaEntity extends \SetCMS\Entity
 {
 
@@ -24,7 +30,7 @@ class CaptchaEntity extends \SetCMS\Entity
     protected function verifyDateExpiried()
     {
         if ($this->isExpiried()) {
-            throw CaptchaException::alreadyExpired();
+            throw new CaptchaExpiredException;
         }
     }
 
@@ -38,11 +44,11 @@ class CaptchaEntity extends \SetCMS\Entity
         $this->verifyDateExpiried();
 
         if ($this->isUsed) {
-            throw CaptchaException::alreadyUsed();
+            throw new CaptchaAlreadyUsedException;
         }
 
         if (!$this->isSolved) {
-            throw CaptchaException::unsolved();
+            throw new CaptchaUnsolvedException;
         }
 
         $this->isUsed = true;
@@ -53,11 +59,11 @@ class CaptchaEntity extends \SetCMS\Entity
         $this->verifyDateExpiried();
 
         if ($this->isSolved) {
-            throw CaptchaException::alreadySolved();
+            throw new CaptchaAlreadySolvedException;
         }
 
         if ($this->solveAttempts > 5) {
-            throw CaptchaException::tooMuchSolveAttempts();
+            throw new CaptchaTooMuchSolveAttemptsException;
         }
 
         if ($this->text === $solvedText) {

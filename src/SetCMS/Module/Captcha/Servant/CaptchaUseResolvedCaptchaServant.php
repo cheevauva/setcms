@@ -20,6 +20,7 @@ class CaptchaUseResolvedCaptchaServant implements \SetCMS\Contract\Servant
     {
         $captchaRetrieveById = CaptchaRetrieveByIdDAO::make($this->factory());
         $captchaRetrieveById->id = $this->captcha;
+        $captchaRetrieveById->throwExceptionIfNotFound = true;
         $captchaRetrieveById->serve();
 
         if (!$captchaRetrieveById->captcha) {

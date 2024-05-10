@@ -10,6 +10,7 @@ use SetCMS\Module\User\UserEntity;
 use SetCMS\Module\UserSession\UserSessionEntity;
 use SetCMS\Module\Captcha\Servant\CaptchaUseResolvedCaptchaServant;
 use SetCMS\Module\UserSession\Servant\UserSessionCreateByUserServant;
+use SetCMS\Module\Captcha\Exception\CaptchaException;
 use SetCMS\Attribute\Http\Parameter\Body;
 use SetCMS\Attribute\NotBlank;
 use SetCMS\UUID;
@@ -57,6 +58,10 @@ class UserPublicDoLoginScope extends Scope
     {
         parent::from($object);
 
+        if ($object instanceof CaptchaException) {
+            $this->addMessage('captcha', $object->getMessage());
+        }
+        
         if ($object instanceof UserLoginServant) {
             $this->user = $object->user;
         }
