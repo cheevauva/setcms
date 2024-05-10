@@ -25,11 +25,11 @@ abstract class Scope implements ContractHydrateInterface, ContractValidateInterf
         return $this->messages;
     }
 
-    protected function addMessage($field, $message): void
+    protected function catchToMessage($field, \Throwable $throwable): void
     {
         $this->messages[] = [
             'field' => $field,
-            'message'=> $message,
+            'message'=> $throwable->getMessage(),
         ];
     }
 

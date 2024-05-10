@@ -11,6 +11,8 @@ use SetCMS\Module\UserSession\UserSessionEntity;
 use SetCMS\Module\Captcha\Servant\CaptchaUseResolvedCaptchaServant;
 use SetCMS\Module\UserSession\Servant\UserSessionCreateByUserServant;
 use SetCMS\Module\Captcha\Exception\CaptchaException;
+use SetCMS\Module\User\Exception\UserNotFoundException;
+use SetCMS\Module\User\Exception\UserIncorrectPasswordException;
 use SetCMS\Attribute\Http\Parameter\Body;
 use SetCMS\Attribute\NotBlank;
 use SetCMS\UUID;
@@ -42,7 +44,7 @@ class UserPublicDoLoginScope extends Scope
         if ($object instanceof CaptchaUseResolvedCaptchaServant) {
             $object->captcha = $this->captcha;
         }
-        
+
         if ($object instanceof UserLoginServant) {
             $object->password = $this->password;
             $object->username = $this->username;
@@ -58,10 +60,18 @@ class UserPublicDoLoginScope extends Scope
     {
         parent::from($object);
 
-        if ($object instanceof CaptchaException) {
-            $this->addMessage('captcha', $object->getMessage());
+        if ($object instanceof UserNotFoundException) {
+            $this->catchToMessage('username', $object);
         }
-        
+
+        if ($object instanceof UserIncorrectPasswordException) {
+            $this->catchToMessage('password', $object);
+        }
+
+        if ($object instanceof CaptchaException) {
+            $this->catchToMessage('captcha', $object);
+        }
+
         if ($object instanceof UserLoginServant) {
             $this->user = $object->user;
         }
