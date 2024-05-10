@@ -62,9 +62,12 @@ class UserPublicController
         return $scope;
     }
 
-    public function doRegistration(ServerRequestInterface $request, UserPublicDoRegistrationScope $scope, UserRegistrationServant $servant): UserPublicDoRegistrationScope
+    public function doRegistration(ServerRequestInterface $request, UserPublicDoRegistrationScope $scope): UserPublicDoRegistrationScope
     {
-        return $this->serve($request, $servant, $scope);
+        return $this->multiserve($request, [
+            CaptchaUseResolvedCaptchaServant::class,
+            UserRegistrationServant::class,
+        ], $scope);
     }
 
 }

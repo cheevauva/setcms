@@ -20,7 +20,7 @@ class CorePropertyMessageVO
 
     public static function fromArray(array $array): self
     {
-        return new static($array[1] ?? null, $array[0]);
+        return new static($array[0], $array[1]);
     }
 
 }

@@ -16,12 +16,7 @@ class ViewJsonExceptionScope extends Scope
     public function from(object $object): void
     {
         if ($object instanceof \Throwable) {
-            if ($object instanceof Exception) {
-                $this->data = $object->placeholders();
-                $this->withMessage(CorePropertyMessageVO::fromArray([$object->label()]));
-            } else {
-                $this->withMessage(CorePropertyMessageVO::fromArray([$object->getMessage()]));
-            }
+            $this->catchToMessage(null, $object);
         }
     }
 

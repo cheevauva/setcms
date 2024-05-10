@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\Scope;
 
-use SetCMS\Module\User\Servant\UserRegistrationServant;
 use SetCMS\Attribute\NotBlank;
 use SetCMS\Attribute\Http\Parameter\Body;
+use SetCMS\UUID;
+use SetCMS\Module\Captcha\Servant\CaptchaUseResolvedCaptchaServant;
+use SetCMS\Module\Captcha\Exception\CaptchaException;
+use SetCMS\Module\User\Exception\UserAlreadyExistsException;
+use SetCMS\Module\User\Servant\UserRegistrationServant;
 
 class UserPublicDoRegistrationScope extends \SetCMS\Scope
 {
@@ -23,8 +27,8 @@ class UserPublicDoRegistrationScope extends \SetCMS\Scope
     #[Body('password2')]
     public string $password2;
 
-    #[Captcha('password2')]
-    public string $captcha;
+    #[Body('captcha')]
+    public UUID $captcha;
     //
     private ?UserEntity $user = null;
 
@@ -44,9 +48,30 @@ class UserPublicDoRegistrationScope extends \SetCMS\Scope
     {
         parent::to($object);
 
+        if ($object instanceof CaptchaUseResolvedCaptchaServant) {
+            $object->captcha = $this->captcha;
+        }
+
         if ($object instanceof UserRegistrationServant) {
             $object->username = $this->username;
             $object->password = $this->password;
+        }
+    }
+
+    public function from(object $object): void
+    {
+        parent::from($object);
+
+        if ($object instanceof UserRegistrationServant) {
+            $this->user = $object->user;
+        }
+        
+        if ($object instanceof CaptchaException) {
+            $this->catchToMessage('captcha', $object);
+        }
+
+        if ($object instanceof UserAlreadyExistsException) {
+            $this->catchToMessage('username', $object);
         }
     }
 

@@ -40,18 +40,22 @@ trait ControllerTrait
             $scope->to($servant);
             $servant->serve();
             $scope->from($servant);
-        } catch (\Exception $ex) {
+        } catch (\SetCMS\Exception $ex) {
             $scope->from($ex);
         }
     }
 
     protected function multiserveServantWithScope(array $servants, Scope $scope): void
     {
+        if ($scope->hasMessages()) {
+            return;
+        }
+
         foreach ($servants as $servant) {
             if (is_string($servant)) {
                 $servant = $this->factory()->make($servant);
             }
-            
+
             $this->serveServantWithScope($servant, $scope);
 
             if ($scope->hasMessages()) {
@@ -66,6 +70,11 @@ trait ControllerTrait
         //
         $this->secureByScope($scope, $request);
         $this->serveScope($scope);
+
+        if ($scope->hasMessages()) {
+            return $scope;
+        }
+
         $this->serveServantWithScope($servant, $scope);
 
         return $scope;
@@ -77,7 +86,7 @@ trait ControllerTrait
         //
         $this->serveScope($scope);
         $this->multiserveServantWithScope($servants, $scope);
-        
+
         return $scope;
     }
 

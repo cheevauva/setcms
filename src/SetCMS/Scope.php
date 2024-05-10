@@ -69,10 +69,6 @@ abstract class Scope implements ContractHydrateInterface, ContractValidateInterf
         if ($object instanceof CorePropertyFetchDataFromRequestServant) {
             $this->data = $object->data;
         }
-
-        if ($object instanceof \Throwable) {
-            $this->withMessage($object->getMessage());
-        }
     }
 
     public function to(object $object): void

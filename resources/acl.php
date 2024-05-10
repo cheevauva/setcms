@@ -15,8 +15,8 @@ return [
     'rules' => [
         UserRoleEnum::GUEST->toString() => [
             'scope' => [
-                \SetCMS\Module\Captcha\Scope\CaptchaGenerateScope::class => true,
-                \SetCMS\Module\Captcha\Scope\CaptchaSolveScope::class => true,
+                \SetCMS\Module\Captcha\Scope\CaptchaPublicGenerateScope::class => true,
+                \SetCMS\Module\Captcha\Scope\CaptchaPublicSolveScope::class => true,
                 // User
                 \SetCMS\Module\User\Scope\UserPublicLoginScope::class => true,
                 \SetCMS\Module\User\Scope\UserPublicDoLoginScope::class => true,

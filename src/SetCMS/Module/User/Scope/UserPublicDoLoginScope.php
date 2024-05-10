@@ -14,6 +14,7 @@ use SetCMS\Module\Captcha\Exception\CaptchaException;
 use SetCMS\Module\User\Exception\UserNotFoundException;
 use SetCMS\Module\User\Exception\UserIncorrectPasswordException;
 use SetCMS\Attribute\Http\Parameter\Body;
+use SetCMS\Attribute\Http\Parameter\Headers;
 use SetCMS\Attribute\NotBlank;
 use SetCMS\UUID;
 

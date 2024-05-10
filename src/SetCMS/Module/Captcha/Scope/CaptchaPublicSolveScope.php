@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Captcha\Scope;
 
-use SetCMS\Module\Captcha\DAO\CaptchaRetrieveByIdDAO;
-use SetCMS\Module\Captcha\Servant\CaptchaResolveServant;
-use SetCMS\Module\Captcha\DAO\CaptchaSaveDAO;
-use SetCMS\Module\Captcha\CaptchaEntity;
 use SetCMS\UUID;
 use SetCMS\Attribute\Http\Parameter\Query;
+use SetCMS\Attribute\NotBlank;
+use SetCMS\Module\Captcha\Exception\CaptchaException;
+use SetCMS\Module\Captcha\Servant\CaptchaResolveServant;
+use SetCMS\Module\Captcha\DAO\CaptchaRetrieveByIdDAO;
+use SetCMS\Module\Captcha\DAO\CaptchaSaveDAO;
+use SetCMS\Module\Captcha\CaptchaEntity;
 
-class CaptchaSolveScope extends \SetCMS\Scope
+class CaptchaPublicSolveScope extends \SetCMS\Scope
 {
 
     #[Query('id')]
@@ -44,6 +46,10 @@ class CaptchaSolveScope extends \SetCMS\Scope
     public function from(object $object): void
     {
         parent::from($object);
+
+        if ($object instanceof CaptchaException) {
+            $this->catchToMessage('id', $object);
+        }
 
         if ($object instanceof CaptchaRetrieveByIdDAO) {
             $this->captcha = $object->captcha;

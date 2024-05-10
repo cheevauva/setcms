@@ -28,7 +28,7 @@ class CorePropertySatisfyServant implements Servant
         foreach ($properties as $property) {
             assert($property instanceof ReflectionProperty);
 
-            $rawValue = $property->getValue($object);
+            $rawValue = $property->isInitialized($object) ? $property->getValue($object) : null;
             $rawValueType = gettype($rawValue);
 
             if (!$property->isInitialized($object)) {
@@ -48,11 +48,11 @@ class CorePropertySatisfyServant implements Servant
                 foreach ($satisfyer->messages as $message) {
                     $message = CorePropertyMessageVO::as($message);
                     $this->messages[] = CorePropertyMessageVO::fromArray([
-                        $message->message,
                         implode('.', array_filter([
                             $property->getName(),
                             $message->field
                         ])),
+                        $message->message,
                     ]);
                 }
             }

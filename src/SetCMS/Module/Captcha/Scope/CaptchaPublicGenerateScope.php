@@ -9,7 +9,7 @@ use SetCMS\Module\Captcha\Servant\CaptchaCreateAsPngServant;
 use SetCMS\Module\Captcha\DAO\CaptchaSaveDAO;
 use SetCMS\UUID;
 
-class CaptchaGenerateScope extends \SetCMS\Scope
+class CaptchaPublicGenerateScope extends \SetCMS\Scope
 {
 
     private ?CaptchaEntity $captcha;

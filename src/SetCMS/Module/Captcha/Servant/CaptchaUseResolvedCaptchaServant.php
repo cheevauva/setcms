@@ -23,10 +23,6 @@ class CaptchaUseResolvedCaptchaServant implements \SetCMS\Contract\Servant
         $captchaRetrieveById->throwExceptionIfNotFound = true;
         $captchaRetrieveById->serve();
 
-        if (!$captchaRetrieveById->captcha) {
-            throw new \Excepton('Не найдена каптча для распознания');
-        }
-
         $captcha = $captchaRetrieveById->captcha;
         $captcha->use();
 
