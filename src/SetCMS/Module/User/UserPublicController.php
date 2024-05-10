@@ -37,9 +37,9 @@ class UserPublicController
     public function doLogin(ServerRequestInterface $request, UserPublicDoLoginScope $scope): UserPublicDoLoginScope
     {
         return $this->multiserve($request, [
-            CaptchaUseResolvedCaptchaServant::make($this->factory()),
-            UserLoginServant::make($this->factory()),
-            UserSessionCreateByUserServant::make($this->factory()),
+            CaptchaUseResolvedCaptchaServant::class,
+            UserLoginServant::class,
+            UserSessionCreateByUserServant::class,
         ], $scope);
     }
 

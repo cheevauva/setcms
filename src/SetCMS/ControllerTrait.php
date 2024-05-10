@@ -48,6 +48,10 @@ trait ControllerTrait
     protected function multiserveServantWithScope(array $servants, Scope $scope): void
     {
         foreach ($servants as $servant) {
+            if (is_string($servant)) {
+                $servant = $this->factory()->make($servant);
+            }
+            
             $this->serveServantWithScope($servant, $scope);
 
             if ($scope->hasMessages()) {

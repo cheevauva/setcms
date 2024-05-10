@@ -20,17 +20,17 @@ class CaptchaPublicController
     public function solve(ServerRequestInterface $request, CaptchaSolveScope $scope): CaptchaSolveScope
     {
         return $this->multiserve($request, [
-            CaptchaRetrieveByIdDAO::make($this->factory()),
-            CaptchaResolveServant::make($this->factory()),
-            CaptchaSaveDAO::make($this->factory()),
+            CaptchaRetrieveByIdDAO::class,
+            CaptchaResolveServant::class,
+            CaptchaSaveDAO::class,
         ], $scope);
     }
 
     public function generate(ServerRequestInterface $request, CaptchaGenerateScope $scope): CaptchaGenerateScope
     {
         return $this->multiserve($request, [
-            CaptchaCreateAsPngServant::make($this->factory()),
-            CaptchaSaveDAO::make($this->factory()),
+            CaptchaCreateAsPngServant::class,
+            CaptchaSaveDAO::class,
         ], $scope);
     }
 
