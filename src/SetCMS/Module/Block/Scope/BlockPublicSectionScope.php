@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Block\Scope;
 
+use SetCMS\Attribute\Http\Parameter\Attributes;
 use SetCMS\Scope;
 use SetCMS\Module\Block\DAO\BlockRetrieveManyBySectionDAO;
 
@@ -12,6 +13,7 @@ class BlockPublicSectionScope extends Scope
 
     #[Attributes('section')]
     public string $section;
+    //
     private array $blocks = [];
 
     public function from(object $object): void

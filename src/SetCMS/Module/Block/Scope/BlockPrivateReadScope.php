@@ -7,6 +7,7 @@ namespace SetCMS\Module\Block\Scope;
 use SetCMS\UUID;
 use SetCMS\Module\Block\BlockEntity;
 use SetCMS\Module\Block\DAO\BlockRetrieveByIdDAO;
+use SetCMS\Attribute\Http\Parameter\Attributes;
 
 class BlockPrivateReadScope extends BlockPrivateScope
 {
@@ -18,6 +19,8 @@ class BlockPrivateReadScope extends BlockPrivateScope
 
     public function to(object $object): void
     {
+        parent::to($object);
+        
         if ($object instanceof BlockRetrieveByIdDAO) {
             $object->id = $this->id;
         }
@@ -25,6 +28,8 @@ class BlockPrivateReadScope extends BlockPrivateScope
 
     public function from(object $object): void
     {
+        parent::from($object);
+        
         if ($object instanceof BlockRetrieveByIdDAO) {
             $this->entity = $object->block;
         }

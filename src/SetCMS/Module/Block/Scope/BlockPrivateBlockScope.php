@@ -23,7 +23,7 @@ class BlockPrivateBlockScope extends BlockPrivateScope
         if ($object instanceof BlockEntity) {
             $object->id = $this->id;
             $object->path = $this->path;
-            $object->params = $this->params;
+            $object->params = json_decode($this->params, true);
             $object->template = $this->template;
             $object->section = $this->section;
         }
