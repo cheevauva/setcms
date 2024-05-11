@@ -12,7 +12,7 @@ final class Query
 
     public string $name;
 
-    public function __construct(string|array|null $name = null)
+    public function __construct(string $name)
     {
         $this->name = $name;
     }

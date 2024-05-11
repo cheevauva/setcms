@@ -33,8 +33,6 @@ class BlockPrivateController
 
     public function new(ServerRequestInterface $request, BlockPrivateEditScope $scope): BlockPrivateEditScope
     {
-        $this->secureByScope($scope, $request);
-
         return $scope;
     }
 

@@ -2,7 +2,6 @@
 
 namespace SetCMS\Module\User;
 
-use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\User\Servant\UserRegistrationServant;
 use SetCMS\Module\User\Servant\UserLoginServant;
 use SetCMS\Module\User\Scope\UserPublicProfileScope;
@@ -22,49 +21,43 @@ class UserPublicController
     use \SetCMS\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
-    public function login(ServerRequestInterface $request, UserPublicLoginScope $scope): UserPublicLoginScope
+    public function login(UserPublicLoginScope $scope): UserPublicLoginScope
     {
-        $this->secureByScope($scope, $request);
-
         return $scope;
     }
 
-    public function logout(ServerRequestInterface $request, UserPublicLogoutScope $scope, UserSessionDeleteByIdDAO $servant): UserPublicLogoutScope
+    public function logout(UserPublicLogoutScope $scope, UserSessionDeleteByIdDAO $servant): UserPublicLogoutScope
     {
-        return $this->serve($request, $servant, $scope);
+        return $this->serve($servant, $scope);
     }
 
-    public function doLogin(ServerRequestInterface $request, UserPublicDoLoginScope $scope): UserPublicDoLoginScope
+    public function doLogin(UserPublicDoLoginScope $scope): UserPublicDoLoginScope
     {
-        return $this->multiserve($request, [
+        return $this->multiserve([
             CaptchaUseResolvedCaptchaServant::class,
             UserLoginServant::class,
             UserSessionCreateByUserServant::class,
         ], $scope);
     }
 
-    public function profile(ServerRequestInterface $request, UserPublicProfileScope $scope): UserPublicProfileScope
+    public function profile(UserPublicProfileScope $scope): UserPublicProfileScope
     {
-        $this->secureByScope($scope, $request);
-
         return $scope;
     }
 
-    public function userinfo(ServerRequestInterface $request, UserInfoScope $scope): UserInfoScope
+    public function userinfo(UserInfoScope $scope): UserInfoScope
     {
-        return $this->secureByScope($scope, $request);
-    }
-
-    public function registration(ServerRequestInterface $request, UserPublicRegistrationScope $scope): UserPublicRegistrationScope
-    {
-        $this->secureByScope($scope, $request);
-
         return $scope;
     }
 
-    public function doRegistration(ServerRequestInterface $request, UserPublicDoRegistrationScope $scope): UserPublicDoRegistrationScope
+    public function registration(UserPublicRegistrationScope $scope): UserPublicRegistrationScope
     {
-        return $this->multiserve($request, [
+        return $scope;
+    }
+
+    public function doRegistration(UserPublicDoRegistrationScope $scope): UserPublicDoRegistrationScope
+    {
+        return $this->multiserve([
             CaptchaUseResolvedCaptchaServant::class,
             UserRegistrationServant::class,
         ], $scope);

@@ -12,7 +12,7 @@ final class Cookies
 
     public string $name;
 
-    public function __construct(string $name = null)
+    public function __construct(string $name)
     {
         $this->name = $name;
     }

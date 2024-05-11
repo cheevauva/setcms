@@ -27,7 +27,6 @@ class ViewRender implements Servant
         $object = $this->mixedValue;
 
         if ($object instanceof \Throwable) {
-            throw $object;
             $object = $this->makeScopeByThrowable($object);
         }
 

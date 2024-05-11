@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace SetCMS;
 
-use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Scope;
 use SetCMS\Contract\Servant;
-use SetCMS\Controller\Hook\ScopeProtectionHook;
 use SetCMS\Core\Servant\CorePropertySatisfyServant;
 use SetCMS\Core\Servant\CorePropertyHydrateServant;
 use SetCMS\Core\Servant\CorePropertyFetchDataFromRequestServant;
@@ -17,20 +15,12 @@ trait ControllerTrait
 
     use \SetCMS\QuickTrait;
 
-    private function secureByScope(Scope $scope, ServerRequestInterface $request): void
-    {
-        $event = new ScopeProtectionHook;
-        $event->scope = $scope;
-        $event->from($request);
-        $event->dispatch($this->eventDispatcher());
-    }
-
     protected function serveScope(Scope $scope): void
     {
         $this->multiserveServantWithScope([
-            CorePropertyFetchDataFromRequestServant::make($this->factory()),
-            CorePropertyHydrateServant::make($this->factory()),
-            CorePropertySatisfyServant::make($this->factory()),
+            CorePropertyFetchDataFromRequestServant::class,
+            CorePropertyHydrateServant::class,
+            CorePropertySatisfyServant::class,
         ], $scope);
     }
 
@@ -64,11 +54,8 @@ trait ControllerTrait
         }
     }
 
-    private function serve(ServerRequestInterface $request, Servant $servant, Scope $scope): Scope
+    private function serve(Servant $servant, Scope $scope): Scope
     {
-        $scope->from($request);
-        //
-        $this->secureByScope($scope, $request);
         $this->serveScope($scope);
 
         if ($scope->hasMessages()) {
@@ -80,10 +67,8 @@ trait ControllerTrait
         return $scope;
     }
 
-    private function multiserve(ServerRequestInterface $request, array $servants, Scope $scope): Scope
+    private function multiserve(array $servants, Scope $scope): Scope
     {
-        $scope->from($request);
-        //
         $this->serveScope($scope);
         $this->multiserveServantWithScope($servants, $scope);
 

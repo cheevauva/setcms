@@ -32,8 +32,6 @@ class PagePrivateController
 
     public function new(ServerRequestInterface $request, PagePrivateEditScope $scope): PagePrivateEditScope
     {
-        $this->secureByScope($scope, $request);
-
         return $scope;
     }
 

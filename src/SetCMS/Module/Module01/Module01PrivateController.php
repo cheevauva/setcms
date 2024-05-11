@@ -20,38 +20,36 @@ class Module01PrivateController
     use \SetCMS\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
-    public function index(ServerRequestInterface $request, Module01PrivateIndexScope $scope, Entity01RetrieveManyDAO $servant): Module01PrivateIndexScope
+    public function index(Module01PrivateIndexScope $scope, Entity01RetrieveManyDAO $servant): Module01PrivateIndexScope
     {
-        return $this->serve($request, $servant, $scope);
+        return $this->serve($servant, $scope);
     }
 
-    public function read(ServerRequestInterface $request, Module01PrivateReadScope $scope, Entity01RetrieveByIdDAO $servant): Module01PrivateReadScope
+    public function read(Module01PrivateReadScope $scope, Entity01RetrieveByIdDAO $servant): Module01PrivateReadScope
     {
-        return $this->serve($request, $servant, $scope);
+        return $this->serve($servant, $scope);
     }
 
-    public function new(ServerRequestInterface $request, Module01PrivateEditScope $scope): Module01PrivateEditScope
+    public function new(Module01PrivateEditScope $scope): Module01PrivateEditScope
     {
-        $this->secureByScope($scope, $request);
-
         return $scope;
     }
 
-    public function edit(ServerRequestInterface $request, Module01PrivateEditScope $scope, Entity01RetrieveByIdDAO $servant): Module01PrivateEditScope
+    public function edit(Module01PrivateEditScope $scope, Entity01RetrieveByIdDAO $servant): Module01PrivateEditScope
     {
-        return $this->serve($request, $servant, $scope);
+        return $this->serve($servant, $scope);
     }
 
-    public function create(ServerRequestInterface $request, Module01PrivateCreateScope $scope): Module01PrivateCreateScope
+    public function create(Module01PrivateCreateScope $scope): Module01PrivateCreateScope
     {
-        return $this->multiserve($request, [
+        return $this->multiserve([
             Entity01SaveDAO::make($this->factory()),
         ], $scope);
     }
 
-    public function update(ServerRequestInterface $request, Module01PrivateUpdateScope $scope): Module01PrivateUpdateScope
+    public function update(Module01PrivateUpdateScope $scope): Module01PrivateUpdateScope
     {
-        return $this->multiserve($request, [
+        return $this->multiserve([
             Entity01RetrieveByIdDAO::make($this->factory()),
             Entity01SaveDAO::make($this->factory())
         ], $scope);

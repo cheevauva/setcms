@@ -11,6 +11,7 @@ use SetCMS\Attribute\Http\Parameter\Headers;
 use SetCMS\Attribute\Http\Parameter\Attributes;
 use SetCMS\Attribute\Http\Parameter\UploadedFiles;
 use SetCMS\Attribute\Http\Parameter\Cookies;
+use SetCMS\Attribute\Http\Parameter\Request;
 
 class CorePropertyFetchDataFromRequestServant implements \SetCMS\Contract\Servant
 {
@@ -67,6 +68,10 @@ class CorePropertyFetchDataFromRequestServant implements \SetCMS\Contract\Servan
 
         if (is_a($attrClass, Attributes::class, true)) {
             $this->data[$propertyName] = $this->request->getAttribute($argument0);
+        }
+
+        if (is_a($attrClass, Request::class, true)) {
+            $this->data[$propertyName] = $this->request;
         }
     }
 

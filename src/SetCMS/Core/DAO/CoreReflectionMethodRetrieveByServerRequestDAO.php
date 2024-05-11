@@ -8,7 +8,6 @@ use SetCMS\Contract\Servant;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
-use SetCMS\Router\Router;
 use ReflectionMethod;
 use SetCMS\Core\DAO\CoreReflectionMethodRetrieveByMethodNameDAO;
 use SplObjectStorage;
@@ -32,17 +31,8 @@ class CoreReflectionMethodRetrieveByServerRequestDAO implements Servant
         if (empty($this->response)) {
             $this->response = new Response;
         }
-        
-        $routerMatch = Router::make($this->container)->match(...[
-            $request->getUri()->getPath(),
-            $request->getMethod()
-        ]);
 
-        foreach ($routerMatch->params as $pName => $pValue) {
-            $request = $request->withAttribute($pName, $pValue);
-        }
-
-        list($className, $methodName) = explode('::', $routerMatch->target);
+        list($className, $methodName) = explode('::', $request->getAttribute('routeTarget'));
 
         $retrieveMethod = CoreReflectionMethodRetrieveByMethodNameDAO::make($this->factory());
         $retrieveMethod->className = $className;
