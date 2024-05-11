@@ -6,12 +6,15 @@ namespace SetCMS\Module\Page\Scope;
 
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\DAO\PageRetrieveByIdDAO;
-use SetCMS\Module\Page\Servant\PageUpdateServant;
+use SetCMS\Module\Page\DAO\PageSaveDAO;
+use SetCMS\Attribute\Http\Parameter\Body;
 
 class PagePrivateUpdateScope extends PagePrivateScope
 {
 
     protected ?PageEntity $entity = null;
+
+    #[Body('page')]
     public PagePrivatePageScope $page;
 
     public function to(object $object): void
@@ -19,12 +22,12 @@ class PagePrivateUpdateScope extends PagePrivateScope
         parent::to($object);
 
         if ($object instanceof PageRetrieveByIdDAO) {
-            $this->entity = new PageEntity;
-            $this->page->to($this->entity);
-            $object->id = $this->entity->id;
+            $object->id = $this->page->id;
+            $object->throwExceptionIfNotFound = true;
         }
 
-        if ($object instanceof PageUpdateServant) {
+        if ($object instanceof PageSaveDAO) {
+            $this->entity = new PageEntity;
             $this->page->to($this->entity);
             $object->page = $this->entity;
         }

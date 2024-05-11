@@ -8,25 +8,43 @@ use SetCMS\Scope;
 use SetCMS\Module\User\Servant\UserLoginServant;
 use SetCMS\Module\User\UserEntity;
 use SetCMS\Module\UserSession\UserSessionEntity;
+use SetCMS\Module\Captcha\Servant\CaptchaUseResolvedCaptchaServant;
 use SetCMS\Module\UserSession\Servant\UserSessionCreateByUserServant;
-use SetCMS\Attribute;
+use SetCMS\Module\Captcha\Exception\CaptchaException;
+use SetCMS\Module\User\Exception\UserNotFoundException;
+use SetCMS\Module\User\Exception\UserIncorrectPasswordException;
+use SetCMS\Attribute\Http\Parameter\Body;
+use SetCMS\Attribute\Http\Parameter\Headers;
+use SetCMS\Attribute\NotBlank;
+use SetCMS\UUID;
 
 class UserPublicDoLoginScope extends Scope
 {
 
-    #[Attribute\NotBlank]
+    #[NotBlank]
+    #[Body('username')]
     public string $username;
 
-    #[Attribute\NotBlank]
+    #[NotBlank]
+    #[Body('password')]
     public string $password;
-    public string $device = '';
-    // public string $captcha;
+
+    #[Headers('user-agent')]
+    public string $device;
+
+    #[Body('captcha')]
+    public UUID $captcha;
+    //
     protected ?UserEntity $user = null;
     protected ?UserSessionEntity $session = null;
 
     public function to(object $object): void
     {
         parent::to($object);
+
+        if ($object instanceof CaptchaUseResolvedCaptchaServant) {
+            $object->captcha = $this->captcha;
+        }
 
         if ($object instanceof UserLoginServant) {
             $object->password = $this->password;
@@ -42,6 +60,18 @@ class UserPublicDoLoginScope extends Scope
     public function from(object $object): void
     {
         parent::from($object);
+
+        if ($object instanceof UserNotFoundException) {
+            $this->catchToMessage('username', $object);
+        }
+
+        if ($object instanceof UserIncorrectPasswordException) {
+            $this->catchToMessage('password', $object);
+        }
+
+        if ($object instanceof CaptchaException) {
+            $this->catchToMessage('captcha', $object);
+        }
 
         if ($object instanceof UserLoginServant) {
             $this->user = $object->user;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Block\Scope;
 
+use SetCMS\Attribute\Http\Parameter\Body;
 use SetCMS\Module\Block\BlockEntity;
 use SetCMS\Module\Block\DAO\BlockRetrieveByIdDAO;
 use SetCMS\Module\Block\Servant\BlockUpdateServant;
@@ -11,7 +12,9 @@ use SetCMS\Module\Block\Servant\BlockUpdateServant;
 class BlockPrivateUpdateScope extends BlockPrivateScope
 {
 
-    protected ?BlockEntity $entity = null;
+    protected BlockEntity $entity;
+
+    #[Body('block')]
     public BlockPrivateBlockScope $block;
 
     public function to(object $object): void

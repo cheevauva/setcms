@@ -5,25 +5,35 @@ declare(strict_types=1);
 namespace SetCMS;
 
 use SetCMS\Contract\Arrayable;
-use SetCMS\Contract\Satisfiable;
-use SetCMS\Contract\Hydratable;
+use SetCMS\Contract\ContractValidateInterface;
+use SetCMS\Contract\ContractScopeInterface;
+use SetCMS\Contract\ContractHydrateInterface;
+use SetCMS\Core\Servant\CorePropertyFetchDataFromRequestServant;
+use SetCMS\Core\Servant\CorePropertyHydrateServant;
+use SetCMS\Core\Servant\CorePropertySatisfyServant;
+use Psr\Http\Message\ServerRequestInterface;
 
-abstract class Scope implements Hydratable, Satisfiable, Arrayable
+abstract class Scope implements ContractHydrateInterface, ContractValidateInterface, Arrayable, ContractScopeInterface
 {
 
     private array $messages = [];
+    private array $data = [];
+    private ?ServerRequestInterface $request;
 
     public function getMessages(): array
     {
         return $this->messages;
     }
 
-    public function withMessages(array $messages): void
+    protected function catchToMessage($field, \Throwable $throwable): void
     {
-        $this->messages = $messages;
+        $this->messages[] = [
+            'field' => $field,
+            'message' => $throwable->getMessage(),
+        ];
     }
 
-    public function withMessage(mixed $message): void
+    protected function withMessage(mixed $message): void
     {
         $this->messages[] = $message;
     }
@@ -33,19 +43,49 @@ abstract class Scope implements Hydratable, Satisfiable, Arrayable
         return !empty($this->messages);
     }
 
-    public function satisfy(): \Iterator
+    public function validate(): \Iterator
     {
         yield from [];
     }
 
     public function from(object $object): void
     {
-        
+        if ($object instanceof CorePropertyHydrateServant) {
+            foreach ($object->messages as $message) {
+                $this->withMessage($message);
+            }
+        }
+
+        if ($object instanceof CorePropertySatisfyServant) {
+            foreach ($object->messages as $message) {
+                $this->withMessage($message);
+            }
+        }
+
+        if ($object instanceof ServerRequestInterface) {
+            $this->request = $object;
+        }
+
+        if ($object instanceof CorePropertyFetchDataFromRequestServant) {
+            $this->data = $object->data;
+        }
     }
 
     public function to(object $object): void
     {
-        
+        if ($object instanceof CorePropertyHydrateServant) {
+            $object->object = $this;
+            $object->array = $this->data;
+        }
+
+        if ($object instanceof CorePropertySatisfyServant) {
+            $object->object = $this;
+        }
+
+        if ($object instanceof CorePropertyFetchDataFromRequestServant) {
+            $object->request = $this->request;
+            $object->object = $this;
+        }
     }
 
     public function toArray(): array

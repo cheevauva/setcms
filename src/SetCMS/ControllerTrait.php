@@ -4,54 +4,73 @@ declare(strict_types=1);
 
 namespace SetCMS;
 
-use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Scope;
 use SetCMS\Contract\Servant;
-use SetCMS\Servant\ServeScopeServant;
-use SetCMS\Controller\Hook\ScopeProtectionHook;
-use SetCMS\RequestAttribute;
+use SetCMS\Core\Servant\CorePropertySatisfyServant;
+use SetCMS\Core\Servant\CorePropertyHydrateServant;
+use SetCMS\Core\Servant\CorePropertyFetchDataFromRequestServant;
 
 trait ControllerTrait
 {
 
     use \SetCMS\QuickTrait;
 
-    private function secureByScope(Scope $scope, ServerRequestInterface $request): void
+    protected function serveScope(Scope $scope): void
     {
-        $event = new ScopeProtectionHook;
-        $event->scope = $scope;
-        $event->user = RequestAttribute::currentUser->fromRequest($request);
-        $event->dispatch();
+        $this->multiserveServantWithScope([
+            CorePropertyFetchDataFromRequestServant::class,
+            CorePropertyHydrateServant::class,
+            CorePropertySatisfyServant::class,
+        ], $scope);
     }
 
-    private function directServe(Servant $servant, Scope $scope, array $array): Scope
+    protected function serveServantWithScope(Servant $servant, Scope $scope): void
     {
-        $serveScope = ServeScopeServant::make($this->factory());
-        $serveScope->servant = $servant;
-        $serveScope->scope = $scope;
-        $serveScope->array = $array;
-        $serveScope->serve();
-
-        return $serveScope->scope;
+        try {
+            $scope->to($servant);
+            $servant->serve();
+            $scope->from($servant);
+        } catch (\SetCMS\Exception $ex) {
+            $scope->from($ex);
+        }
     }
 
-    private function serve(ServerRequestInterface $request, Servant $servant, Scope $scope, array $array = []): Scope
+    protected function multiserveServantWithScope(array $servants, Scope $scope): void
     {
-        $this->secureByScope($scope, $request);
-        $this->directServe($servant, $scope, $array);
+        if ($scope->hasMessages()) {
+            return;
+        }
+
+        foreach ($servants as $servant) {
+            if (is_string($servant)) {
+                $servant = $this->factory()->make($servant);
+            }
+
+            $this->serveServantWithScope($servant, $scope);
+
+            if ($scope->hasMessages()) {
+                return;
+            }
+        }
+    }
+
+    private function serve(Servant $servant, Scope $scope): Scope
+    {
+        $this->serveScope($scope);
+
+        if ($scope->hasMessages()) {
+            return $scope;
+        }
+
+        $this->serveServantWithScope($servant, $scope);
 
         return $scope;
     }
 
-    private function multiserve(ServerRequestInterface $request, array $servants, Scope $scope, array $array): Scope
+    private function multiserve(array $servants, Scope $scope): Scope
     {
-        foreach ($servants as $servant) {
-            $this->serve($request, $servant, $scope, $array);
-
-            if ($scope->hasMessages()) {
-                return $scope;
-            }
-        }
+        $this->serveScope($scope);
+        $this->multiserveServantWithScope($servants, $scope);
 
         return $scope;
     }

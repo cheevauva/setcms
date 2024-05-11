@@ -93,26 +93,42 @@ abstract class TemplateGeneral implements \SetCMS\Contract\Template, Applicable
     protected function scFetch(string $path): mixed
     {
         $var = $this->scCall($path);
-        
+
         if ($var instanceof Scope) {
             return $var->toArray();
         }
-        
+
         return $var;
     }
 
     protected function scCall(string $path): mixed
     {
-        $request = $this->request->withUri($this->request->getUri()->withPath($path))->withMethod('GET');
+        $routerMatch = $this->router->match(...[
+            $path,
+            'GET'
+        ]);
 
+        $request = $this->request->withUri($this->request->getUri()->withPath($path))->withMethod('GET');
+        $request = $request->withAttribute('routeTarget', $routerMatch->target);
+        
+        foreach ($routerMatch->params as $pName => $pValue) {
+            $request = $request->withAttribute($pName, $pValue);
+        }
+        
         $retrieveByPath = CoreReflectionMethodRetrieveByServerRequestDAO::make($this->factory());
         $retrieveByPath->request = $request;
         $retrieveByPath->serve();
 
         try {
+            foreach ($retrieveByPath->reflectionArguments as $argument) {
+                if ($argument instanceof Scope) {
+                    $argument->from($request);
+                }
+            }
+
             return $retrieveByPath->reflectionMethod->invokeArgs($retrieveByPath->reflectionObject, $retrieveByPath->reflectionArguments);
         } catch (\Throwable $ex) {
-            return null;
+            return $ex->getMessage();
         }
     }
 

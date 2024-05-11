@@ -23,7 +23,7 @@ class UserSessionCreateByUserServant implements Servant
     {
         $session = new UserSessionEntity;
         $session->userId = $this->user->id;
-        $session->device = '';
+        $session->device = $this->device;
         $session->dateExpiries = new \DateTime('+1 year');
 
         $save = UserSessionSaveDAO::make($this->factory());

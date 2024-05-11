@@ -6,11 +6,14 @@ namespace SetCMS\Module\Post\Scope;
 
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\Module\Post\Servant\PostCreateServant;
+use SetCMS\Attribute\Http\Parameter\Body;
 
 class PostPrivateCreateScope extends PostPrivateScope
 {
 
     protected ?PostEntity $entity = null;
+    
+    #[Body('post')]
     public PostPrivatePostScope $post;
 
     public function to(object $object): void

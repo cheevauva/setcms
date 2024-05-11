@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace SetCMS\Core\Servant;
 
 use SetCMS\Contract\Servant;
-use SetCMS\Contract\Hydratable;
+use SetCMS\Contract\ContractHydrateInterface;
 use SetCMS\Core\VO\CorePropertyMessageVO;
 
-class CorePropertyHydrateSevant implements Servant
+class CorePropertyHydrateServant implements Servant
 {
 
     use \SetCMS\QuickTrait;
@@ -35,9 +35,23 @@ class CorePropertyHydrateSevant implements Servant
             return;
         }
 
-        if (in_array($propertyType, self::TYPES, true) && !settype($value, $propertyType)) {
-            $this->messages[] = new CorePropertyMessageVO('Неверный тип', $property->getName());
-            return;
+        if (is_null($value)) {
+            try {
+                $this->object->{$property->getName()} = $value;
+                return;
+            } catch (\Throwable $ex) {
+                return;
+            }
+        }
+
+        if (in_array($propertyType, self::TYPES, true)) {
+            if (settype($value, $propertyType)) {
+                $this->object->{$property->getName()} = $value;
+                return;
+            } else {
+                $this->messages[] = new CorePropertyMessageVO('Неверный тип', $property->getName());
+                return;
+            }
         }
 
         if ($rawValueType === 'array' && in_array($propertyType, static::TYPES, true)) {
@@ -50,24 +64,27 @@ class CorePropertyHydrateSevant implements Servant
             return;
         }
 
-        if (class_exists($propertyType, true) && is_subclass_of($propertyType, Hydratable::class, true) && $rawValueType !== 'array') {
+        if (class_exists($propertyType, true) && is_subclass_of($propertyType, ContractHydrateInterface::class, true) && $rawValueType !== 'array') {
             $this->messages[] = new CorePropertyMessageVO('Ожидается массив', $property->getName());
             return;
         }
 
-        if (class_exists($propertyType, true) && !is_subclass_of($propertyType, Hydratable::class, true)) {
+        if (class_exists($propertyType, true) && !is_subclass_of($propertyType, ContractHydrateInterface::class, true)) {
+            if (empty($value) || !is_scalar($value)) {
+                return;
+            }
+
             try {
-                $value = new $propertyType($rawValue);
+                $this->object->{$property->getName()} = new $propertyType($rawValue);
             } catch (\Throwable $ex) {
                 $this->messages[] = new CorePropertyMessageVO($ex->getMessage(), $property->getName());
                 return;
             }
         }
 
-        if (class_exists($propertyType, true) && is_subclass_of($propertyType, Hydratable::class, true)) {
-            $value = $this->factory()->make($propertyType);
-            $hydrator = CorePropertyHydrateSevant::make($this->factory());
-            $hydrator->object = $value;
+        if (class_exists($propertyType, true) && is_subclass_of($propertyType, ContractHydrateInterface::class, true)) {
+            $hydrator = CorePropertyHydrateServant::make($this->factory());
+            $hydrator->object = $this->object->{$property->getName()} = new $propertyType;
             $hydrator->array = $this->array[$property->getName()];
             $hydrator->serve();
 
@@ -82,8 +99,6 @@ class CorePropertyHydrateSevant implements Servant
                 ]);
             }
         }
-
-        $this->object->{$property->getName()} = $value ?? $property->getDefaultValue();
     }
 
     public function serve(): void

@@ -4,25 +4,33 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Captcha;
 
-use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Module\Captcha\Scope\CaptchaGenerateScope;
-use SetCMS\Module\Captcha\Scope\CaptchaSolveScope;
-use SetCMS\Module\Captcha\Servant\CaptchaCreateAsPngAndStoreServant;
+use SetCMS\Module\Captcha\DAO\CaptchaRetrieveByIdDAO;
+use SetCMS\Module\Captcha\Scope\CaptchaPublicGenerateScope;
+use SetCMS\Module\Captcha\Scope\CaptchaPublicSolveScope;
+use SetCMS\Module\Captcha\Servant\CaptchaCreateAsPngServant;
 use SetCMS\Module\Captcha\Servant\CaptchaResolveServant;
+use SetCMS\Module\Captcha\DAO\CaptchaSaveDAO;
 
 class CaptchaPublicController
 {
 
     use \SetCMS\ControllerTrait;
 
-    public function solve(ServerRequestInterface $request, CaptchaSolveScope $scope, CaptchaResolveServant $servant): CaptchaSolveScope
+    public function solve(CaptchaPublicSolveScope $scope): CaptchaPublicSolveScope
     {
-        return $this->serve($request, $servant, $scope, $request->getQueryParams());
+        return $this->multiserve([
+            CaptchaRetrieveByIdDAO::class,
+            CaptchaResolveServant::class,
+            CaptchaSaveDAO::class,
+        ], $scope);
     }
 
-    public function generate(ServerRequestInterface $request, CaptchaGenerateScope $scope, CaptchaCreateAsPngAndStoreServant $servant): CaptchaGenerateScope
+    public function generate(CaptchaPublicGenerateScope $scope): CaptchaPublicGenerateScope
     {
-        return $this->serve($request, $servant, $scope, []);
+        return $this->multiserve([
+            CaptchaCreateAsPngServant::class,
+            CaptchaSaveDAO::class,
+        ], $scope);
     }
 
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post;
 
-use \Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\Post\DAO\PostRetrieveManyDAO;
 use SetCMS\Module\Post\DAO\PostRetrieveByIdDAO;
 use SetCMS\Module\Post\Scope\PostPrivateReadScope;
@@ -21,43 +20,37 @@ class PostPrivateController
     use \SetCMS\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
-    public function index(ServerRequestInterface $request, PostPrivateIndexScope $scope, PostRetrieveManyDAO $servant): PostPrivateIndexScope
+    public function index(PostPrivateIndexScope $scope, PostRetrieveManyDAO $servant): PostPrivateIndexScope
     {
-        return $this->serve($request, $servant, $scope, []);
+        return $this->serve($servant, $scope, []);
     }
 
-    public function read(ServerRequestInterface $request, PostPrivateReadScope $scope, PostRetrieveByIdDAO $servant): PostPrivateReadScope
+    public function read(PostPrivateReadScope $scope, PostRetrieveByIdDAO $servant): PostPrivateReadScope
     {
-        return $this->serve($request, $servant, $scope, [
-            'id' => $request->getAttribute('id'),
-        ]);
+        return $this->serve($servant, $scope);
     }
 
-    public function new(ServerRequestInterface $request, PostPrivateEditScope $scope): PostPrivateEditScope
+    public function new(PostPrivateEditScope $scope): PostPrivateEditScope
     {
-        $this->secureByScope($scope, $request);
-
         return $scope;
     }
 
-    public function edit(ServerRequestInterface $request, PostPrivateEditScope $scope, PostRetrieveByIdDAO $servant): PostPrivateEditScope
+    public function edit(PostPrivateEditScope $scope, PostRetrieveByIdDAO $servant): PostPrivateEditScope
     {
-        return $this->serve($request, $servant, $scope, [
-            'id' => $request->getAttribute('id'),
-        ]);
+        return $this->serve($servant, $scope);
     }
 
-    public function create(ServerRequestInterface $request, PostPrivateCreateScope $scope, PostCreateServant $servant): PostPrivateCreateScope
+    public function create(PostPrivateCreateScope $scope, PostCreateServant $servant): PostPrivateCreateScope
     {
-        return $this->serve($request, $servant, $scope, $request->getParsedBody());
+        return $this->serve($servant, $scope);
     }
 
-    public function update(ServerRequestInterface $request, PostPrivateUpdateScope $scope, PostUpdateServant $update, PostRetrieveByIdDAO $readById): PostPrivateUpdateScope
+    public function update(PostPrivateUpdateScope $scope): PostPrivateUpdateScope
     {
-        return $this->multiserve($request, [
-            $readById,
-            $update
-        ], $scope, $request->getParsedBody());
+        return $this->multiserve([
+            PostRetrieveByIdDAO::make($this->factory()),
+            PostUpdateServant::make($this->factory())
+        ], $scope);
     }
 
 }

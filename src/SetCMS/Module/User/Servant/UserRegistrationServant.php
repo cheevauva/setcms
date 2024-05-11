@@ -27,7 +27,7 @@ class UserRegistrationServant implements \SetCMS\Contract\Servant
         $retrieveByUsername->serve();
 
         if ($retrieveByUsername->user) {
-            throw UserAlreadyExistsException::withUser($retrieveByUsername->user);
+            throw new UserAlreadyExistsException;
         }
 
         $user = new UserEntity;

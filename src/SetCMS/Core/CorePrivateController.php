@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Core;
 
-class PrivateController extends DynamicController
+class CorePrivateController extends CoreDynamicController
 {
 
     protected function classNamePattern(): string

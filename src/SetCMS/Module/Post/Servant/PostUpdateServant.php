@@ -14,6 +14,7 @@ class PostUpdateServant implements Servant
 {
 
     use \SetCMS\DITrait;
+    use \SetCMS\FactoryTrait;
 
     public PostEntity $post;
 

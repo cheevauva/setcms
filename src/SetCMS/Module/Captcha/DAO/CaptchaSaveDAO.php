@@ -6,18 +6,19 @@ namespace SetCMS\Module\Captcha\DAO;
 
 use SetCMS\Module\Captcha\CaptchaEntity;
 
-class CaptchaEntityDbRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityRetrieveByIdDAO
+class CaptchaSaveDAO extends \SetCMS\Entity\DAO\EntitySaveDAO
 {
 
+    use \SetCMS\FactoryTrait;
     use CaptchaEntityDbDAOTrait;
-
-    public ?CaptchaEntity $captcha = null;
+    
+    public CaptchaEntity $captcha;
 
     public function serve(): void
     {
+        $this->entity = $this->captcha;
+        
         parent::serve();
-
-        $this->captcha = $this->entity;
     }
 
 }

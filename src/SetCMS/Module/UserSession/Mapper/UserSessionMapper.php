@@ -22,7 +22,7 @@ class UserSessionMapper extends EntityMapper
     {
         parent::entity2row();
 
-        $this->row['device'] = $this->entity()->device;
+        $this->row['device'] = mb_substr($this->entity()->device, 0, 50);
         $this->row['user_id'] = strval($this->entity()->userId);
         $this->row['date_expiries'] = $this->entity()->dateExpiries->format('Y-m-d H:i:s');
     }

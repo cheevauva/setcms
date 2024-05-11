@@ -6,11 +6,14 @@ namespace SetCMS\Module\Block\Scope;
 
 use SetCMS\Module\Block\BlockEntity;
 use SetCMS\Module\Block\Servant\BlockCreateServant;
+use SetCMS\Attribute\Http\Parameter\Body;
 
 class BlockPrivateCreateScope extends BlockPrivateScope
 {
 
-    protected ?BlockEntity $entity = null;
+    private BlockEntity $entity;
+
+    #[Body('block')]
     public BlockPrivateBlockScope $block;
 
     public function to(object $object): void

@@ -47,6 +47,7 @@
                             <span class="navbar-text">
                                 {% if scUser().role.isAdmin() %}
                                     <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('home_admin') }}">Администрирование</a>
+                                    <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'logout'}) }}">Выйти</a>
                                 {% endif %}
                                 {% if scUser().role.isGuest() %}
                                     <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'login'}) }}">Вход</a> 

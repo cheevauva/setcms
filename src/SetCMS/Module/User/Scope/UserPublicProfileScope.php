@@ -4,10 +4,12 @@ namespace SetCMS\Module\User\Scope;
 
 use SetCMS\Scope;
 use SetCMS\Module\User\UserEntity;
+use SetCMS\Attribute\Http\Parameter\Attributes;
 
 class UserPublicProfileScope extends Scope
 {
 
+    #[Attributes('currentUser')]
     private ?UserEntity $user = null;
 
     public function from(object $object): void

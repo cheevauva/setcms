@@ -4,12 +4,18 @@ $start = microtime(true);
 
 require_once '../bootstrap.php';
 
-use SetCMS\Core\FrontController;
 use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Response;
+use SetCMS\Core\Servant\CoreMiddlewareDispatcherServant;
 
-$response = FrontController::make($factory)->resolve(ServerRequestFactory::fromGlobals(), new Response, $container);
+$middlewareDispatcher = CoreMiddlewareDispatcherServant::make($factory);
+$middlewareDispatcher->middlewares = require_once '../resources/middlewares.php';
+$middlewareDispatcher->request = ServerRequestFactory::fromGlobals();
+$middlewareDispatcher->response = new Response;
+$middlewareDispatcher->serve();
+
+$response = $middlewareDispatcher->response;
 $response = $response->withHeader('X-SetCMS-Execution-Time', strval(microtime(true) - $start));
 $response = $response->withHeader('X-SetCMS-Memory-Peak-Usage', strval(memory_get_peak_usage() / (1024 * 1024)));
 

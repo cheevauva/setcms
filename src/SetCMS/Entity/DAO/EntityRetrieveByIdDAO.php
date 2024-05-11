@@ -11,6 +11,7 @@ abstract class EntityRetrieveByIdDAO extends EntityRetrieveByCriteriaDAO
 
     public UUID $id;
     public bool $deleted = false;
+    public bool $throwExceptionIfNotFound = false;
 
     public function serve(): void
     {
@@ -20,6 +21,15 @@ abstract class EntityRetrieveByIdDAO extends EntityRetrieveByCriteriaDAO
         ];
 
         parent::serve();
+
+        if (empty($this->entity) && $this->throwExceptionIfNotFound) {
+            throw $this->createNotFoundException();
+        }
+    }
+    
+    protected function createNotFoundException(): \Throwable
+    {
+        return new \Exception('not found');
     }
 
 }

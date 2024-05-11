@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User;
 
-use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\User\DAO\UserEntityDbRetrieveManyDAO;
 use SetCMS\Module\User\DAO\UserEntityDbRetrieveByIdDAO;
 use SetCMS\Module\User\Scope\UserPrivateEditScope;
@@ -17,37 +16,29 @@ class UserPrivateController
 
     use \SetCMS\ControllerTrait;
 
-    public function index(ServerRequestInterface $request, UserPrivateIndexScope $scope, UserEntityDbRetrieveManyDAO $servant): UserPrivateIndexScope
+    public function index(UserPrivateIndexScope $scope, UserEntityDbRetrieveManyDAO $servant): UserPrivateIndexScope
     {
-        return $this->serve($request, $servant, $scope, []);
+        return $this->serve($servant, $scope, []);
     }
 
-    public function read(ServerRequestInterface $request, UserPrivateReadScope $scope, UserEntityDbRetrieveByIdDAO $servant): UserPrivateReadScope
+    public function read(UserPrivateReadScope $scope, UserEntityDbRetrieveByIdDAO $servant): UserPrivateReadScope
     {
-        return $this->serve($request, $servant, $scope, [
-            'id' => $request->getAttribute('id'),
-        ]);
+        return $this->serve($servant, $scope);
     }
 
-    public function new(ServerRequestInterface $request, UserPrivateEditScope $scope): UserPrivateEditScope
+    public function new(UserPrivateEditScope $scope): UserPrivateEditScope
     {
-        $this->secureByScope($scope, $request);
-
         return $scope;
     }
 
-    public function edit(ServerRequestInterface $request, UserPrivateEditScope $scope, UserEntityDbRetrieveByIdDAO $servant): UserPrivateEditScope
+    public function edit(UserPrivateEditScope $scope, UserEntityDbRetrieveByIdDAO $servant): UserPrivateEditScope
     {
-        return $this->serve($request, $servant, $scope, [
-            'id' => $request->getAttribute('id'),
-        ]);
+        return $this->serve($servant, $scope);
     }
 
-    public function save(ServerRequestInterface $request, UserPrivateSaveScope $scope, $servant): UserPrivateSaveScope
+    public function save(UserPrivateSaveScope $scope, $servant): UserPrivateSaveScope
     {
-        $servant->id = $request->getAttribute('id');
-
-        return $this->serve($request, $servant, $scope, $request->getParsedBody());
+        return $this->serve($servant, $scope);
     }
 
 }

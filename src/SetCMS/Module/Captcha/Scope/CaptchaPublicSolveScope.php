@@ -4,24 +4,42 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Captcha\Scope;
 
-use SetCMS\Module\Captcha\Servant\CaptchaResolveServant;
-use SetCMS\Module\Captcha\CaptchaEntity;
 use SetCMS\UUID;
+use SetCMS\Attribute\Http\Parameter\Query;
+use SetCMS\Attribute\NotBlank;
+use SetCMS\Module\Captcha\Exception\CaptchaException;
+use SetCMS\Module\Captcha\Servant\CaptchaResolveServant;
+use SetCMS\Module\Captcha\DAO\CaptchaRetrieveByIdDAO;
+use SetCMS\Module\Captcha\DAO\CaptchaSaveDAO;
+use SetCMS\Module\Captcha\CaptchaEntity;
 
-class CaptchaSolveScope extends \SetCMS\Scope
+class CaptchaPublicSolveScope extends \SetCMS\Scope
 {
 
+    #[Query('id')]
     public UUID $id;
+
+    #[Query('solvedText')]
     public string $solvedText;
+    //
     private ?CaptchaEntity $captcha = null;
 
     public function to(object $object): void
     {
         parent::to($object);
 
-        if ($object instanceof CaptchaResolveServant) {
+        if ($object instanceof CaptchaRetrieveByIdDAO) {
             $object->id = $this->id;
+            $object->throwExceptionIfNotFound = true;
+        }
+
+        if ($object instanceof CaptchaResolveServant) {
+            $object->captcha = $this->captcha;
             $object->solvedText = $this->solvedText;
+        }
+
+        if ($object instanceof CaptchaSaveDAO) {
+            $object->captcha = $this->captcha;
         }
     }
 
@@ -29,7 +47,11 @@ class CaptchaSolveScope extends \SetCMS\Scope
     {
         parent::from($object);
 
-        if ($object instanceof CaptchaResolveServant) {
+        if ($object instanceof CaptchaException) {
+            $this->catchToMessage('id', $object);
+        }
+
+        if ($object instanceof CaptchaRetrieveByIdDAO) {
             $this->captcha = $object->captcha;
         }
     }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Core\Servant;
 
 use SetCMS\Contract\Servant;
-use SetCMS\Contract\Satisfiable;
+use SetCMS\Contract\ContractValidateInterface;
 use SetCMS\Attribute;
 use SetCMS\Core\VO\CorePropertyMessageVO;
 use ReflectionProperty;
@@ -28,19 +28,19 @@ class CorePropertySatisfyServant implements Servant
         foreach ($properties as $property) {
             assert($property instanceof ReflectionProperty);
 
-            $rawValue = $property->getValue($object);
+            $rawValue = $property->isInitialized($object) ? $property->getValue($object) : null;
             $rawValueType = gettype($rawValue);
 
             if (!$property->isInitialized($object)) {
-                $this->messages[] = new CorePropertyMessageVO('Обязательно для заполнения', $property->getName());
+                $this->messages[] = new CorePropertyMessageVO($property->getName(), 'Обязательно для заполнения');
                 continue;
             }
 
             if (empty($rawValue) && !empty($property->getAttributes(Attribute\NotBlank::class))) {
-                $this->messages[] = new CorePropertyMessageVO('Обязательно для заполнения', $property->getName());
+                $this->messages[] = new CorePropertyMessageVO($property->getName(), 'Обязательно для заполнения');
             }
 
-            if ($rawValue instanceof Satisfiable) {
+            if ($rawValue instanceof ContractValidateInterface) {
                 $satisfyer = CorePropertySatisfyServant::make($this->factory());
                 $satisfyer->object = $rawValue;
                 $satisfyer->serve();
@@ -48,18 +48,18 @@ class CorePropertySatisfyServant implements Servant
                 foreach ($satisfyer->messages as $message) {
                     $message = CorePropertyMessageVO::as($message);
                     $this->messages[] = CorePropertyMessageVO::fromArray([
-                        $message->message,
                         implode('.', array_filter([
                             $property->getName(),
                             $message->field
                         ])),
+                        $message->message,
                     ]);
                 }
             }
         }
 
-        if ($object instanceof Satisfiable) {
-            foreach ($object->satisfy() as $message) {
+        if ($object instanceof ContractValidateInterface) {
+            foreach ($object->validate() as $message) {
                 $this->messages[] = CorePropertyMessageVO::fromArray($message);
             }
         }
