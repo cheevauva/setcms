@@ -42,19 +42,19 @@ abstract class CoreDynamicController
             throw new \RuntimeException('Oh my sweet summer child - you know noting');
         }
 
-        $methodName = null;
+        $allowRequestMethods = null;
 
         foreach ($retrieveMethod->reflectionMethod->getAttributes() as $reflectionAttribute) {
             if (is_a($reflectionAttribute->getName(), RequestMethod::class, true)) {
-                $methodName = $reflectionAttribute->getArguments()[0] ?? null;
+                $allowRequestMethods = $reflectionAttribute->getArguments();
             }
         }
 
-        if (empty($methodName)) {
+        if (empty($allowRequestMethods)) {
             throw new RouterMethodRequestNotDefinedException;
         }
 
-        if ($request->getMethod() !== $methodName) {
+        if (!in_array($request->getMethod(), $allowRequestMethods, true)) {
             throw new RouterNotAllowRequestMethodException;
         }
 
