@@ -1,6 +1,6 @@
 <!doctype html>
 <html>
-    {% set options = scFetch('/sub/configurations/main')  %}
+    {% set options = scFetch('GET', '/sub/configurations/main')  %}
     <head>
         <title>{% block title %}{{ options.title }}{% endblock %}</title>
         <meta name="description" content="{{ options.description }}"/>
@@ -137,7 +137,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    {{ scRender('/block/section/rights', 'layout_block_rights.twig') }}
+                    {{ scRender('GET', '/block/section/rights', 'layout_block_rights.twig') }}
                 </div>
             </div>
         </main>

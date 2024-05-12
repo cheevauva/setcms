@@ -72,6 +72,9 @@ return [
                 \SetCMS\Module\Block\Scope\BlockPrivateCreateScope::class => true,
                 \SetCMS\Module\Block\Scope\BlockPrivateUpdateScope::class => true,
                 \SetCMS\Module\Block\Scope\BlockPublicSectionScope::class => true,
+                //
+                \SetCMS\Module\Configuration\Scope\ConfigurationPublicAdminMenuScope::class => true,
+                \SetCMS\Module\Configuration\Scope\ConfigurationPublicMainScope::class => true,
             ],
         ],
     ],

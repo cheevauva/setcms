@@ -1,0 +1,11 @@
+<div class="position-sticky pt-3">
+    <ul class="nav flex-column">
+        {% for module in modules %}
+            <li class="nav-item">
+                <a class="nav-link {% if module.name == setcms.currentModule %}active{% endif %}" href="{{ scLink('do_action_admin', {module: module.name, action: 'index'}) }}">
+                    {{ module.label }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

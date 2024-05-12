@@ -9,6 +9,8 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
+use SetCMS\Contract\NotFound;
+use SetCMS\Contract\Forbidden;
 
 class ThrowableMiddleware implements MiddlewareInterface
 {

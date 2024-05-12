@@ -9,9 +9,6 @@ use SetCMS\Contract\NotFound;
 class RouterNotFoundException extends RouterException implements NotFound
 {
 
-    public function label(): string
-    {
-        return 'setcms.router.notfound';
-    }
+    protected $message = "Маршрут не найден";
 
 }

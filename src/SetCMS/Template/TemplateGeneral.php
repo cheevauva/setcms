@@ -55,14 +55,14 @@ abstract class TemplateGeneral implements \SetCMS\Contract\Template, Applicable
     }
 
     #[\ReturnTypeWillChange]
-    protected function scRender($path, ?string $template = null)
+    protected function scRender(string $method, string $path, ?string $template = null)
     {
         if (empty($template)) {
             $template = null;
         }
 
         try {
-            $object = $this->scCall($path);
+            $object = $this->scCall($method, $path);
 
             $templateEngine = TemplateFactory::make($this->container)->create($this->templateType);
             $templateEngine->from($this->request->withUri($this->request->getUri()->withPath($path))->withMethod('GET'));
@@ -90,9 +90,9 @@ abstract class TemplateGeneral implements \SetCMS\Contract\Template, Applicable
         return $this->request->getUri()->getPath();
     }
 
-    protected function scFetch(string $path): mixed
+    protected function scFetch(string $method, string $path): mixed
     {
-        $var = $this->scCall($path);
+        $var = $this->scCall($method, $path);
 
         if ($var instanceof Scope) {
             return $var->toArray();
@@ -101,25 +101,25 @@ abstract class TemplateGeneral implements \SetCMS\Contract\Template, Applicable
         return $var;
     }
 
-    protected function scCall(string $path): mixed
+    protected function scCall(string $method, string $path): mixed
     {
-        $routerMatch = $this->router->match(...[
-            $path,
-            'GET'
-        ]);
-
-        $request = $this->request->withUri($this->request->getUri()->withPath($path))->withMethod('GET');
-        $request = $request->withAttribute('routeTarget', $routerMatch->target);
-        
-        foreach ($routerMatch->params as $pName => $pValue) {
-            $request = $request->withAttribute($pName, $pValue);
-        }
-        
-        $retrieveByPath = CoreReflectionMethodRetrieveByServerRequestDAO::make($this->factory());
-        $retrieveByPath->request = $request;
-        $retrieveByPath->serve();
-
         try {
+            $routerMatch = $this->router->match(...[
+                $path,
+                $method,
+            ]);
+
+            $request = $this->request->withUri($this->request->getUri()->withPath($path))->withMethod('GET');
+            $request = $request->withAttribute('routeTarget', $routerMatch->target);
+
+            foreach ($routerMatch->params as $pName => $pValue) {
+                $request = $request->withAttribute($pName, $pValue);
+            }
+
+            $retrieveByPath = CoreReflectionMethodRetrieveByServerRequestDAO::make($this->factory());
+            $retrieveByPath->request = $request;
+            $retrieveByPath->serve();
+
             foreach ($retrieveByPath->reflectionArguments as $argument) {
                 if ($argument instanceof Scope) {
                     $argument->from($request);

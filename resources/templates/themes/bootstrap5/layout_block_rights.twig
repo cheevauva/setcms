@@ -1,7 +1,7 @@
 <div class="position-sticky">
     {% for block in blocks %}
     <div class="p-4 mb-3 bg-light rounded">
-        {{ scRender(block.path, block.template, block.params) }}
+        {{ scRender('GET', block.path, block.template, block.params) }}
     </div>
     {% endfor %}
 </div>
