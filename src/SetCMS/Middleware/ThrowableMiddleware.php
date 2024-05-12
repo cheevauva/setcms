@@ -11,6 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
 use SetCMS\Contract\NotFound;
 use SetCMS\Contract\Forbidden;
+use SetCMS\Contract\NotAllow;
 
 class ThrowableMiddleware implements MiddlewareInterface
 {
@@ -23,19 +24,22 @@ class ThrowableMiddleware implements MiddlewareInterface
             return $handler->handle($request);
         } catch (\Throwable $ex) {
             $response = $response->withStatus(500);
+
+            if ($ex instanceof NotAllow) {
+                $response = $response->withStatus(405);
+            }
+            if ($ex instanceof NotFound) {
+                $response = $response->withStatus(404);
+            }
+
+            if ($ex instanceof Forbidden) {
+                $response = $response->withStatus(403);
+            }
+
             $response->getBody()->write($ex->getMessage());
-            $output = $ex;
-        }
 
-        if ($output instanceof NotFound) {
-            $response = $response->withStatus(404);
+            return $response;
         }
-
-        if ($output instanceof Forbidden) {
-            $response = $response->withStatus(403);
-        }
-
-        return $response;
     }
 
 }

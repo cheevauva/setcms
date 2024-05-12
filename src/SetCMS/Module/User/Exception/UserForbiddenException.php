@@ -11,9 +11,4 @@ class UserForbiddenException extends UserException implements Forbidden
 
     protected $message = "Доступ запрещён";
 
-    public function label(): string
-    {
-        return 'setcms.user.forbidden';
-    }
-
 }
