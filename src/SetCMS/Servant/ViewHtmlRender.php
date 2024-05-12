@@ -38,7 +38,10 @@ class ViewHtmlRender implements Servant, Applicable
 
             $template->from($this->request);
 
-            $this->html = $template->render($templateName, $object->toArray());
+            $vars = $object->toArray();
+            $vars['scope'] = $object;
+            
+            $this->html = $template->render($templateName, $vars);
         }
 
         if ($object instanceof ResponseInterface) {

@@ -8,7 +8,7 @@ use SetCMS\Contract\Servant;
 use SetCMS\Contract\Applicable;
 use SetCMS\UUID;
 use SetCMS\Module\UserSession\DAO\UserSessionRetrieveByIdDAO;
-use SetCMS\Module\User\DAO\UserEntityDbRetrieveByIdDAO;
+use SetCMS\Module\User\DAO\UserRetrieveByIdDAO;
 use SetCMS\Module\UserSession\UserSessionEntity;
 use SetCMS\Module\User\UserEntity;
 
@@ -38,7 +38,7 @@ class UserSessionRetrieveUserServant implements Servant
             return;
         }
 
-        $retrieveUser = UserEntityDbRetrieveByIdDAO::make($this->factory());
+        $retrieveUser = UserRetrieveByIdDAO::make($this->factory());
         $retrieveUser->id = $retrieveSession->session->userId;
         $retrieveUser->serve();
 

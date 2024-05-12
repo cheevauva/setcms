@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Captcha;
 
+use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Module\Captcha\DAO\CaptchaRetrieveByIdDAO;
 use SetCMS\Module\Captcha\Scope\CaptchaPublicGenerateScope;
 use SetCMS\Module\Captcha\Scope\CaptchaPublicSolveScope;
@@ -16,6 +17,7 @@ class CaptchaPublicController
 
     use \SetCMS\ControllerTrait;
 
+    #[RequestMethod('GET')]
     public function solve(CaptchaPublicSolveScope $scope): CaptchaPublicSolveScope
     {
         return $this->multiserve([
@@ -25,6 +27,7 @@ class CaptchaPublicController
         ], $scope);
     }
 
+    #[RequestMethod('GET')]
     public function generate(CaptchaPublicGenerateScope $scope): CaptchaPublicGenerateScope
     {
         return $this->multiserve([

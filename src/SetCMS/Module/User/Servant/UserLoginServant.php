@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\Servant;
 
-use SetCMS\Module\User\DAO\UserEntityRetrieveByUsernameDAO;
+use SetCMS\Module\User\DAO\UserRetrieveByUsernameDAO;
 use SetCMS\Module\User\Exception\UserNotFoundException;
 use SetCMS\Module\User\Exception\UserIncorrectPasswordException;
 use SetCMS\Module\User\UserEntity;
@@ -21,7 +21,7 @@ class UserLoginServant implements \SetCMS\Contract\Servant
 
     public function serve(): void
     {
-        $retrieveByUsername = UserEntityRetrieveByUsernameDAO::make($this->factory());
+        $retrieveByUsername = UserRetrieveByUsernameDAO::make($this->factory());
         $retrieveByUsername->username = $this->username;
         $retrieveByUsername->serve();
 

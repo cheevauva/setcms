@@ -75,7 +75,11 @@ class CorePropertyHydrateServant implements Servant
             }
 
             try {
-                $this->object->{$property->getName()} = new $propertyType($rawValue);
+                if (is_a($propertyType, \UnitEnum::class, true)) {
+                    $this->object->{$property->getName()} = $propertyType::from($rawValue);
+                } else {
+                    $this->object->{$property->getName()} = new $propertyType($rawValue);
+                }
             } catch (\Throwable $ex) {
                 $this->messages[] = new CorePropertyMessageVO($ex->getMessage(), $property->getName());
                 return;

@@ -87,6 +87,13 @@
                     </div>
 
                     <div class="g-3">
+                        {% if scope.hasMessages() %}
+                            {% for message in scope.getMessages() %}
+                                <div class="alert alert-danger" role="alert">
+                                {{ message.field }}: {{ message.message }} <br/>
+                                </div>
+                            {% endfor %} 
+                        {% endif %}
                         {% block content %}{% endblock %}
                     </div>
 

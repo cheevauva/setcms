@@ -10,7 +10,7 @@
 
 {% block content %}
     <form class="setcms-form g-3" >
-        {{ forms.input({entity: entity, name: 'username', label: 'Пользователь'}) }}
-        {{ forms.select({entity: entity, name: 'role', options: {'guest': 'Гость', 'entity': 'Пользователь', 'admin': 'Админ'}, label: 'Роль'}) }}
+        {{ forms.input({entity: user, name: 'username', label: 'Пользователь'}) }}
+        {{ forms.select({value: user.role.value, name: 'role', options: {'guest': 'Гость', 'entity': 'Пользователь', 'admin': 'Админ'}, label: 'Роль'}) }}
     </form>
 {% endblock %}

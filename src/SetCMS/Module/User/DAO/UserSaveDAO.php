@@ -6,7 +6,7 @@ namespace SetCMS\Module\User\DAO;
 
 use SetCMS\Module\User\UserEntity;
 
-class UserEntityDbRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityRetrieveByIdDAO
+class UserSaveDAO extends \SetCMS\Entity\DAO\EntitySaveDAO
 {
 
     use UserEntityDbDAOTrait;
@@ -15,9 +15,9 @@ class UserEntityDbRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityRetrieveByIdD
 
     public function serve(): void
     {
-        parent::serve();
+        $this->entity = $this->user;
 
-        $this->user = $this->entity;
+        parent::serve();
     }
 
 }

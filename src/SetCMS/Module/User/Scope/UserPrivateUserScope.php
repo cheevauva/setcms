@@ -4,23 +4,20 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\Scope;
 
+use SetCMS\UUID;
 use SetCMS\Module\User\UserEntity;
 use SetCMS\Module\User\UserRoleEnum;
-use SetCMS\Attribute\Http\Parameter\Body;
 
-class UserPrivateSaveScope extends \SetCMS\Entity\Scope\EntitySaveScope
+class UserPrivateUserScope extends UserPrivateScope
 {
 
-    #[Body('role')]
     public UserRoleEnum $role;
+    public UUID $id;
 
-    public function __construct()
+    public function to(object $object): void
     {
-        $this->entity = new UserEntity;
-    }
+        parent::to($object);
 
-    public function apply(object $object): void
-    {
         if ($object instanceof UserEntity) {
             $object->role = $this->role;
         }

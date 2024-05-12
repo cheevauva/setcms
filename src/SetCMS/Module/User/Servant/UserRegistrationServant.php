@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace SetCMS\Module\User\Servant;
 
 use SetCMS\Module\User\UserEntity;
-use SetCMS\Module\User\DAO\UserEntitySaveDAO;
-use SetCMS\Module\User\DAO\UserEntityRetrieveByUsernameDAO;
+use SetCMS\Module\User\DAO\UserSaveDAO;
+use SetCMS\Module\User\DAO\UserRetrieveByUsernameDAO;
 use SetCMS\Module\User\Event\UserRegistrationEvent;
 use SetCMS\Module\User\UserRoleEnum;
 use SetCMS\Module\User\Exception\UserAlreadyExistsException;
@@ -22,7 +22,7 @@ class UserRegistrationServant implements \SetCMS\Contract\Servant
 
     public function serve(): void
     {
-        $retrieveByUsername = UserEntityRetrieveByUsernameDAO::make($this->factory());
+        $retrieveByUsername = UserRetrieveByUsernameDAO::make($this->factory());
         $retrieveByUsername->username = $this->username;
         $retrieveByUsername->serve();
 
@@ -35,7 +35,7 @@ class UserRegistrationServant implements \SetCMS\Contract\Servant
         $user->password = password_hash($this->password, PASSWORD_DEFAULT);
         $user->role = UserRoleEnum::USER;
 
-        $saveUser = UserEntitySaveDAO::make($this->factory());
+        $saveUser = UserSaveDAO::make($this->factory());
         $saveUser->user = $user;
         $saveUser->serve();
 

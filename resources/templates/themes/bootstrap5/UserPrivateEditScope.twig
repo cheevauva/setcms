@@ -5,12 +5,12 @@
 
 {% block content %}
     <form class="setcms-form g-3" 
-        setcms-method="POST"
-          setcms-action="{{ scLink(entity.id ? 'action_record_admin' : 'action_admin', {module: 'User', action: 'save', id: entity.id}) }}"
-          setcms-redirect="{{ scLink('action_record_admin', {module: 'User', action: 'read', 'id': '${entity.id}'}) }}"
+          setcms-method="POST"
+          setcms-action="{{ scLink(user.id ? 'action_record_admin' : 'action_admin', {module: 'User', action: 'update', id: user.id}) }}"
+          setcms-redirect="{{ scLink('action_record_admin', {module: 'User', action: 'read', 'id': '${user.id.uuid}'}) }}"
           >
-
-        {{ forms.select({entity: entity, name: 'role', options: {'guest': 'Гость', 'entity': 'Пользователь', 'admin': 'Админ'}, label: 'Роль'}) }}
+        {{ forms.hidden({name: 'user.id', value: user ? user.id : scUUID() }) }}
+        {{ forms.select({value: user.role.value, name: 'user.role', options: {'guest': 'Гость', 'user': 'Пользователь', 'admin': 'Админ'}, label: 'Роль'}) }}
         {{ forms.submit({label: 'Сохранить'}) }}
     </form>
 {% endblock %}

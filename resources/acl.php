@@ -62,7 +62,7 @@ return [
                 // user
                 \SetCMS\Module\User\Scope\UserPrivateIndexScope::class => true,
                 \SetCMS\Module\User\Scope\UserPrivateEditScope::class => true,
-                \SetCMS\Module\User\Scope\UserPrivateSaveScope::class => true,
+                \SetCMS\Module\User\Scope\UserPrivateUpdateScope::class => true,
                 \SetCMS\Module\User\Scope\UserPrivateReadScope::class => true,
                 // block
                 \SetCMS\Module\Block\Scope\BlockPrivateIndexScope::class => true,

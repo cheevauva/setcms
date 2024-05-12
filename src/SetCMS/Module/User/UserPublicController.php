@@ -2,6 +2,7 @@
 
 namespace SetCMS\Module\User;
 
+use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Module\User\Servant\UserRegistrationServant;
 use SetCMS\Module\User\Servant\UserLoginServant;
 use SetCMS\Module\User\Scope\UserPublicProfileScope;
@@ -21,16 +22,19 @@ class UserPublicController
     use \SetCMS\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
+    #[RequestMethod('GET')]
     public function login(UserPublicLoginScope $scope): UserPublicLoginScope
     {
         return $scope;
     }
 
+    #[RequestMethod('GET')]
     public function logout(UserPublicLogoutScope $scope, UserSessionDeleteByIdDAO $servant): UserPublicLogoutScope
     {
         return $this->serve($servant, $scope);
     }
 
+    #[RequestMethod('POST')]
     public function doLogin(UserPublicDoLoginScope $scope): UserPublicDoLoginScope
     {
         return $this->multiserve([
@@ -40,21 +44,25 @@ class UserPublicController
         ], $scope);
     }
 
+    #[RequestMethod('GET')]
     public function profile(UserPublicProfileScope $scope): UserPublicProfileScope
     {
         return $scope;
     }
 
+    #[RequestMethod('GET')]
     public function userinfo(UserInfoScope $scope): UserInfoScope
     {
         return $scope;
     }
 
+    #[RequestMethod('GET')]
     public function registration(UserPublicRegistrationScope $scope): UserPublicRegistrationScope
     {
         return $scope;
     }
 
+    #[RequestMethod('POST')]
     public function doRegistration(UserPublicDoRegistrationScope $scope): UserPublicDoRegistrationScope
     {
         return $this->multiserve([

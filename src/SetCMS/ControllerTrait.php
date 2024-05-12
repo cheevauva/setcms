@@ -54,8 +54,12 @@ trait ControllerTrait
         }
     }
 
-    private function serve(Servant $servant, Scope $scope): Scope
+    private function serve(string|Servant $servant, Scope $scope): Scope
     {
+        if (is_string($servant)) {
+            $servant = $this->factory()->make($servant);
+        }
+
         $this->serveScope($scope);
 
         if ($scope->hasMessages()) {

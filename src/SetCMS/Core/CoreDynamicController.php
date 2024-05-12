@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Core;
 
+use SetCMS\Attribute\Http\RequestMethod;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\Core\DAO\CoreReflectionMethodRetrieveByMethodNameDAO;
@@ -38,6 +39,23 @@ abstract class CoreDynamicController
         if ($caller && $caller['class'] === get_class($retrieveMethod->reflectionObject) && $caller['function'] === $this->action) {
             throw new \RuntimeException('Oh my sweet summer child - you know noting');
         }
+
+        $methodName = null;
+
+        foreach ($retrieveMethod->reflectionMethod->getAttributes() as $reflectionAttribute) {
+            if (is_a($reflectionAttribute->getName(), RequestMethod::class, true)) {
+                $methodName = $reflectionAttribute->getArguments()[0] ?? null;
+            }
+        }
+
+        if (empty($methodName)) {
+            throw new \RuntimeException('request method not defined');
+        }
+
+        if ($request->getMethod() !== $methodName) {
+            throw new \RuntimeException('Not allow request method');
+        }
+
 
         foreach ($retrieveMethod->reflectionArguments as $argument) {
             if ($argument instanceof Scope) {

@@ -23,7 +23,7 @@
                     <tr>
                         <td>{{ entity.id }}</td>
                         <td>{{ entity.username }}</td>
-                        <td>{{ entity.role }}</td>
+                        <td>{{ entity.role.value }}</td>
                         <td>{{ entity.dateCreated.format('d.m.Y H:i:s') }}</td>
                         <td>
                             <a href="{{ scLink('action_record_admin', {'module': 'User', action: 'edit', 'id': entity.id}) }}">Редактировать</a>
