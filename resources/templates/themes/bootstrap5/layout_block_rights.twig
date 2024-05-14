@@ -1,7 +1,9 @@
 <div class="position-sticky">
     {% for block in blocks %}
-    <div class="p-4 mb-3 bg-light rounded">
-        {{ scRender('GET', block.path, block.template, block.params) }}
-    </div>
+        <div class="p-4 mb-3 bg-light rounded">
+            {{ scBindPathToVars(block.template, 'layoutScope', layoutScope) }}
+            {{ scBindPathToVars(block.template, 'parentScope', scope) }}
+            {{ scRender(block.path, block.template, block.params) }}
+        </div>
     {% endfor %}
 </div>

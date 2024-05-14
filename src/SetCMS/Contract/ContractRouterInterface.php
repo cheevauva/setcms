@@ -6,7 +6,7 @@ namespace SetCMS\Contract;
 
 use SetCMS\Router\RouterMatchDTO;
 
-interface Router
+interface ContractRouterInterface
 {
 
     public function match($requestUrl = null, $requestMethod = null): RouterMatchDTO;

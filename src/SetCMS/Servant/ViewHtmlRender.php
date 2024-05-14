@@ -20,33 +20,49 @@ class ViewHtmlRender implements Servant, Applicable
     use \SetCMS\EnvTrait;
 
     public object $mixedValue;
+    public array $vars = [];
     public ?string $html = null;
+    public ?string $templateName = null;
     public ServerRequestInterface $request;
 
     public function serve(): void
     {
-        $object = $this->mixedValue;
+        $value = $this->mixedValue;
 
-        if ($object instanceof Scope) {
-            $templateName = (new \ReflectionObject($object))->getShortName();
+        if ($value instanceof Scope) {
+            $templateName = $this->templateName ?? $this->templateNameByScope($value);
 
-            $template = TemplateFactory::make($this->container)->create(TemplateEnum::tryFrom($this->env()['TEMPLATE_ENGINE']));
+            $template = TemplateFactory::make($this->container)->create($this->templateEngine());
 
             if (!$template->has($templateName)) {
                 return;
             }
 
             $template->from($this->request);
+            $template->assign('scope', $value);
 
-            $vars = $object->toArray();
-            $vars['scope'] = $object;
-            
-            $this->html = $template->render($templateName, $vars);
+            foreach ($this->vars as $v => $vv) {
+                $template->assign($v, $vv);
+            }
+
+            $this->html = $template->render($templateName, $value->toArray());
         }
 
-        if ($object instanceof ResponseInterface) {
-            $this->html = $object->getBody()->getContents();
+        if ($value instanceof ResponseInterface) {
+            $this->html = $value->getBody()->getContents();
         }
+    }
+
+    private function templateNameByScope(Scope $scope): string
+    {
+        $templateName = (new \ReflectionObject($scope))->getShortName();
+
+        return $templateName;
+    }
+
+    private function templateEngine(): TemplateEnum
+    {
+        return TemplateEnum::from($this->env()['TEMPLATE_ENGINE']);
     }
 
     public function from(object $object): void

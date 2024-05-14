@@ -4,38 +4,26 @@ declare(strict_types=1);
 
 namespace SetCMS\Template;
 
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
 use League\CommonMark\CommonMarkConverter;
-use SetCMS\Contract\Router;
+use Laminas\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\Uri;
 use SetCMS\UUID;
-use SetCMS\Contract\Applicable;
 use SetCMS\Scope;
-use SetCMS\Template\TemplateEnum;
-use SetCMS\Template\TemplateFactory;
-use SetCMS\RequestAttribute;
+use SetCMS\Contract\ContractRouterInterface;
+use SetCMS\Contract\ContractTemplateEngineInterface;
+use SetCMS\Contract\Applicable;
 use SetCMS\Core\DAO\CoreReflectionMethodRetrieveByServerRequestDAO;
-use SetCMS\Template\DTO\TemplateScCallDTO;
+use SetCMS\Servant\ViewHtmlRender;
 
-abstract class TemplateGeneral implements \SetCMS\Contract\Template, Applicable
+abstract class TemplateGeneral implements ContractTemplateEngineInterface, Applicable
 {
 
     use \SetCMS\DITrait;
+    use \SetCMS\EnvTrait;
 
-    protected TemplateEnum $templateType;
-    protected string $basePath;
-    protected string $template;
-    protected Router $router;
     protected ServerRequestInterface $request;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-        $this->basePath = $container->get('basePath');
-        $this->template = $this->env()['TEMPLATE'];
-        $this->router = $container->get(Router::class);
-    }
+    protected array $path2vars = [];
 
     public function from(object $object): void
     {
@@ -46,7 +34,7 @@ abstract class TemplateGeneral implements \SetCMS\Contract\Template, Applicable
 
     public function to(object $object): void
     {
-        
+        // nothing
     }
 
     public function has(string $name): bool
@@ -54,30 +42,25 @@ abstract class TemplateGeneral implements \SetCMS\Contract\Template, Applicable
         return file_exists($this->scLongPath($name));
     }
 
-    #[\ReturnTypeWillChange]
-    protected function scRender(string $method, string $path, ?string $template = null)
+    protected function scBindPathToVars(string $path, string $var, mixed $value): void
     {
-        if (empty($template)) {
-            $template = null;
-        }
+        $this->path2vars[$path][$var] = $value;
+    }
 
+    #[\ReturnTypeWillChange]
+    protected function scRender(string $path, string $template): mixed
+    {
         try {
-            $object = $this->scCall($method, $path);
+            $value = $this->scCall($path);
 
-            $templateEngine = TemplateFactory::make($this->container)->create($this->templateType);
-            $templateEngine->from($this->request->withUri($this->request->getUri()->withPath($path))->withMethod('GET'));
+            $htmlRender = ViewHtmlRender::make($this->factory());
+            $htmlRender->request = $this->createRequestByPath($path);
+            $htmlRender->mixedValue = $value;
+            $htmlRender->templateName = $template;
+            $htmlRender->vars = $this->path2vars[$template] ?? [];
+            $htmlRender->serve();
 
-            if ($object instanceof Scope) {
-                return $templateEngine->render($template ?? (new \ReflectionObject($object))->getShortName(), $object->toArray());
-            }
-
-            if ($object instanceof ResponseInterface) {
-                return $object->getBody()->getContents();
-            }
-
-            return '';
-        } catch (\SetCMS\Exception $ex) {
-            $content = sprintf('Error: %s', $ex->label());
+            return $htmlRender->html;
         } catch (\Throwable $ex) {
             $content = $ex->getMessage();
         }
@@ -85,14 +68,26 @@ abstract class TemplateGeneral implements \SetCMS\Contract\Template, Applicable
         return $content;
     }
 
+    protected function createRequestByPath(string $path): ServerRequestInterface
+    {
+        $request = (new ServerRequestFactory)->createServerRequest('GET', new Uri($path));
+        $request = $request->withAttribute('currentUser', $this->request->getAttribute('currentUser'));
+
+        return $request;
+    }
+
     protected function scUriPath(): string
     {
         return $this->request->getUri()->getPath();
     }
 
-    protected function scFetch(string $method, string $path): mixed
+    protected function scFetch(string $path): mixed
     {
-        $var = $this->scCall($method, $path);
+        try {
+            $var = $this->scCall($path);
+        } catch (\Throwable $ex) {
+            $var = $ex->getMessage();
+        }
 
         if ($var instanceof Scope) {
             return $var->toArray();
@@ -101,35 +96,28 @@ abstract class TemplateGeneral implements \SetCMS\Contract\Template, Applicable
         return $var;
     }
 
-    protected function scCall(string $method, string $path): mixed
+    protected function scCall(string $path): mixed
     {
-        try {
-            $routerMatch = $this->router->match(...[
-                $path,
-                $method,
-            ]);
+        $routerMatch = $this->router()->match($path, 'GET');
 
-            $request = $this->request->withUri($this->request->getUri()->withPath($path))->withMethod('GET');
-            $request = $request->withAttribute('routeTarget', $routerMatch->target);
+        $request = (new ServerRequestFactory)->createServerRequest('GET', new Uri($path));
+        $request = $request->withAttribute('routeTarget', $routerMatch->target);
 
-            foreach ($routerMatch->params as $pName => $pValue) {
-                $request = $request->withAttribute($pName, $pValue);
-            }
-
-            $retrieveByPath = CoreReflectionMethodRetrieveByServerRequestDAO::make($this->factory());
-            $retrieveByPath->request = $request;
-            $retrieveByPath->serve();
-
-            foreach ($retrieveByPath->reflectionArguments as $argument) {
-                if ($argument instanceof Scope) {
-                    $argument->from($request);
-                }
-            }
-
-            return $retrieveByPath->reflectionMethod->invokeArgs($retrieveByPath->reflectionObject, $retrieveByPath->reflectionArguments);
-        } catch (\Throwable $ex) {
-            return $ex->getMessage();
+        foreach ($routerMatch->params as $pName => $pValue) {
+            $request = $request->withAttribute($pName, $pValue);
         }
+
+        $retrieveByPath = CoreReflectionMethodRetrieveByServerRequestDAO::make($this->factory());
+        $retrieveByPath->request = $request;
+        $retrieveByPath->serve();
+
+        foreach ($retrieveByPath->reflectionArguments as $argument) {
+            if ($argument instanceof Scope) {
+                $argument->from($request);
+            }
+        }
+
+        return $retrieveByPath->reflectionMethod->invokeArgs($retrieveByPath->reflectionObject, $retrieveByPath->reflectionArguments);
     }
 
     #[\ReturnTypeWillChange]
@@ -151,7 +139,7 @@ abstract class TemplateGeneral implements \SetCMS\Contract\Template, Applicable
 
     protected function scLink(string $route, $params = [], $query = ''): string
     {
-        $link = $this->router->generate($route, $params);
+        $link = $this->router()->generate($route, $params);
         $link .= $query ? ('?' . (is_array($query) ? http_build_query($query) : $query)) : '';
 
         return $link;
@@ -159,7 +147,7 @@ abstract class TemplateGeneral implements \SetCMS\Contract\Template, Applicable
 
     protected function scLongPath(string $name): string
     {
-        return sprintf('%s/resources/templates/%s', $this->basePath, $this->scShortPath($name));
+        return sprintf('%s/resources/templates/%s', $this->basePath(), $this->scShortPath($name));
     }
 
     protected function scShortPath(string $name): string
@@ -168,11 +156,22 @@ abstract class TemplateGeneral implements \SetCMS\Contract\Template, Applicable
             $name = explode('@', $name)[0];
         }
 
-        if (substr($name, -5) !== '.twig') {
-            $name .= '.twig';
-        }
+        return sprintf('themes/%s/%s', $this->theme(), $name);
+    }
 
-        return sprintf('themes/%s/%s', $this->template, $name);
+    protected function basePath(): string
+    {
+        return $this->container->get('basePath');
+    }
+
+    protected function theme(): string
+    {
+        return $this->env()['TEMPLATE'];
+    }
+
+    protected function router(): ContractRouterInterface
+    {
+        return $this->container->get(ContractRouterInterface::class);
     }
 
     protected function scBaseUrl(): string
@@ -182,7 +181,7 @@ abstract class TemplateGeneral implements \SetCMS\Contract\Template, Applicable
 
     protected function scUser()
     {
-        return RequestAttribute::currentUser->fromRequest($this->request);
+        return $this->request->getAttribute('currentUser');
     }
 
 }

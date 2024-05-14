@@ -1,6 +1,6 @@
 <!doctype html>
 <html>
-    {% set options = scFetch('GET', '/sub/configurations/main')  %}
+    {% set options = scFetch('/sub/configurations/main')  %}
     <head>
         <title>{% block title %}{{ options.title }}{% endblock %}</title>
         <meta name="description" content="{{ options.description }}"/>
@@ -30,10 +30,10 @@
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <div class="container-fluid">
                         {% if options.main_page_show %}
-                        <a class="navbar-brand" href="{{ scLink(options.main_page_path) }}">{{ options.main_page_label }}</a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
+                            <a class="navbar-brand" href="{{ scLink(options.main_page_path) }}">{{ options.main_page_label }}</a>
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
                         {% endif %}
                         <div class="collapse navbar-collapse" id="navbarText">
                             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -137,7 +137,8 @@
                 </div>
 
                 <div class="col-md-4">
-                    {{ scRender('GET', '/block/section/rights', 'layout_block_rights.twig') }}
+                    {{ scBindPathToVars('layout_block_rights.twig', 'layoutScope', scope) }}
+                    {{ scRender('/block/section/rights', 'layout_block_rights.twig') }}
                 </div>
             </div>
         </main>
