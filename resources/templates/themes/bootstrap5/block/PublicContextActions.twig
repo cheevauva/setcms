@@ -1,0 +1,6 @@
+{% if scUser().isAdmin %}
+    <a href="{{ scLink('action_admin', {module: 'Post', action: 'new'}) }}">Создать запись</a>
+{% endif %}        
+{% if scUser().isAdmin %}
+    | <a href="{{ scLink('action_record_admin', {module: 'Post', action: 'edit', id: post.id}) }}">Редактировать</a>
+{% endif %}

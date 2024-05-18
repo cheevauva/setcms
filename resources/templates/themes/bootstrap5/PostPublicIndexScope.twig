@@ -1,22 +1,29 @@
 {% extends scShortPath('layout.twig') %}
 
 {% block content %}
-    {% for post in entities %}
-        <article class="blog-post">
-            <h2 class="blog-post-title">{{ post.title|e }}</h2>
-            <p class="blog-post-meta">{{ post.dateCreated.format('d.m.Y H:i:s') }} by <a href="#">Admin</a></p>
-            <p>
-                {{ scMarkdown(post.message)|raw }}
-                <a href="{{ scLink('post_read_by_slug', {slug: post.slug}) }}">Читать</a>
-                {% if scUser().isAdmin %}
-                    | <a href="{{ scLink('action_record_admin', {module: 'Post', action: 'edit', id: post.id}) }}">Редактировать</a>
-                {% endif %}
-            </p>
-        </article>
+    <article class="blog-post">
+        <div class="row mb-2">
+            {% for post in entities %}
+                <div class="col-md-6">
+                    <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                        <div class="col p-4 d-flex flex-column position-static">
+                            <strong class="d-inline-block mb-2 text-primary">World</strong>
+                            <h3 class="mb-0">{{ post.title|e }}</h3>
+                            <div class="mb-1 text-muted">{{ post.dateCreated.format('d.m.Y') }}</div>
+                            <p class="card-text mb-auto">{{ scMarkdown(post.message)|slice(0, 140)|raw }}...</p>
+                            <a href="{{ scLink('post_read_by_slug', {slug: post.slug}) }}" class="stretched-link">Читать</a>
+                        </div>
+                        <!--div class="col-auto d-none d-lg-block">
+                            <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                        </div-->
+                    </div>
+                </div>
+            {%  endfor %}
+        </div>
+    </article>
 
-    {%  endfor %}
-    {% if scUser().isAdmin %}
-        <hr/>
-        <a href="{{ scLink('action_admin', {module: 'Post', action: 'edit'}) }}">Создать запись</a>
-    {% endif %}
+    <nav class="blog-pagination" aria-label="Pagination">
+        <a class="btn btn-outline-primary" href="#">Older</a>
+        <a class="btn btn-outline-secondary disabled">Newer</a>
+    </nav>
 {% endblock %}

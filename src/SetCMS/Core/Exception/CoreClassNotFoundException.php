@@ -9,21 +9,6 @@ use SetCMS\Contract\NotFound;
 class CoreClassNotFoundException extends CoreException implements NotFound
 {
 
-    public function __construct(protected string $controller)
-    {
-        
-    }
-
-    public function label(): string
-    {
-        return 'setcms.class.notfound';
-    }
-
-    public function placeholders(): array
-    {
-        return [
-            'controller' => $this->controller,
-        ];
-    }
+    protected $message = "Контроллер обработчика маршрута не найден";
 
 }

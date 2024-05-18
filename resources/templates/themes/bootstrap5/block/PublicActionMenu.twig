@@ -1,0 +1,20 @@
+{% if scUser().role.isAdmin() or scUser().role.isUser()  %}
+    Вы авторизованы, как {{ scUser().username }}
+    <br/>
+{% endif %}
+<span class="navbar-text">
+    {% if scUser().role.isAdmin() %}
+        <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'profile'}) }}">Профиль</a>
+        <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('home_admin') }}">Администрирование</a>
+        <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'logout'}) }}">Выйти</a>
+    {% endif %}    
+    {% if scUser().role.isUser() %}
+        <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'profile'}) }}">Профиль</a>
+        <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'logout'}) }}">Выйти</a>
+    {% endif %}
+    {% if scUser().role.isGuest() %}
+        <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'login'}) }}">Вход</a> 
+        <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'registration'}) }}">Регистрация</a>
+    {% endif %}
+
+</span>

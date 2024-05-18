@@ -4,16 +4,12 @@
 
 {% block content %}
     {% if post %}
-        <h1>{{ post.title }}</h1>
-        <p>
-            {{ scMarkdown(post.message)|raw }}
-        </p>
-
-        <p>
-            Дата создания: {{ post.dateCreated.format('d.m.Y H:i:s') }}
-            {% if scUser().isAdmin %}
-                | <a href="{{ scLink('action_record_admin', {module: 'Post', action: 'edit', id: post.id}) }}">Редактировать</a>
-            {% endif %}
-        </p>
+        <article class="blog-post">
+            <h2 class="blog-post-title">{{ post.title }}</h2>
+            <p class="blog-post-meta"><a href="#">Admin</a> опубликовал в {{ post.dateCreated.format('H:i') }} {{ post.dateCreated.format('d.m.Y') }}</p>
+            <p>
+                {{ scMarkdown(post.message)|raw }}
+            </p>
+        </article>
     {% endif %}
 {% endblock %}

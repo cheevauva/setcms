@@ -31,11 +31,11 @@ class CoreReflectionMethodRetrieveByMethodNameDAO implements Servant
         $this->context = $this->context ?? new SplObjectStorage;
 
         if (!class_exists($this->className, true)) {
-            throw new CoreClassNotFoundException($this->className);
+            throw new CoreClassNotFoundException;
         }
 
         if (!method_exists($this->className, $this->methodName)) {
-            throw new CoreMethodNotFoundException((new \ReflectionClass($this->className))->getShortName(), $this->methodName);
+            throw new CoreMethodNotFoundException;
         }
 
         $this->contextEntities = [];
