@@ -86,6 +86,10 @@ class CorePropertyHydrateServant implements Servant
             }
         }
 
+        if (is_object($rawValue) && class_exists(get_class($rawValue), true) && interface_exists($propertyType, true) && is_subclass_of($rawValue, $propertyType, true)) {
+            $this->object->{$property->getName()} = $value;
+        }
+
         if (class_exists($propertyType, true) && is_subclass_of($propertyType, ContractHydrateInterface::class, true)) {
             $hydrator = CorePropertyHydrateServant::make($this->factory());
             $hydrator->object = $this->object->{$property->getName()} = new $propertyType;

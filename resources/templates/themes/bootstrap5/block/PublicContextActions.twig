@@ -1,6 +1,14 @@
-{% if scUser().isAdmin %}
-    <a href="{{ scLink('action_admin', {module: 'Post', action: 'new'}) }}">Создать запись</a>
-{% endif %}        
-{% if scUser().isAdmin %}
-    | <a href="{{ scLink('action_record_admin', {module: 'Post', action: 'edit', id: post.id}) }}">Редактировать</a>
-{% endif %}
+<div class="position-sticky">
+    <div class="p-4 mb-3 bg-light rounded">
+        <ul class="nav flex-column">
+            {% for item in items %}
+                <li class="nav-item">
+                    <a class="nav-link {% if 0 %}active {% endif %}" aria-current="page" href="{{ item.route }}">{{ item.label }}</a>
+                </li>
+            {% endfor %}
+            <!--li class="nav-item">
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            </li-->
+        </ul>
+    </div>
+</div>

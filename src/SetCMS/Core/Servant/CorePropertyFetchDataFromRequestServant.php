@@ -42,32 +42,30 @@ class CorePropertyFetchDataFromRequestServant implements \SetCMS\Contract\Servan
         $attrClass = $reflectionAttribute->getName();
         $argument0 = $reflectionAttribute->getArguments()[0] ?? null;
 
-        if (empty($argument0)) {
-            return;
-        }
+        if (!empty($argument0)) {
+            if (is_a($attrClass, Body::class, true)) {
+                $this->data[$propertyName] = $this->request->getParsedBody()[$argument0] ?? null;
+            }
 
-        if (is_a($attrClass, Body::class, true)) {
-            $this->data[$propertyName] = $this->request->getParsedBody()[$argument0] ?? null;
-        }
+            if (is_a($attrClass, Query::class, true)) {
+                $this->data[$propertyName] = $this->request->getQueryParams()[$argument0] ?? null;
+            }
 
-        if (is_a($attrClass, Query::class, true)) {
-            $this->data[$propertyName] = $this->request->getQueryParams()[$argument0] ?? null;
-        }
+            if (is_a($attrClass, Cookies::class, true)) {
+                $this->data[$propertyName] = $this->request->getCookieParams()[$argument0] ?? null;
+            }
 
-        if (is_a($attrClass, Cookies::class, true)) {
-            $this->data[$propertyName] = $this->request->getCookieParams()[$argument0] ?? null;
-        }
+            if (is_a($attrClass, Headers::class, true)) {
+                $this->data[$propertyName] = $this->request->getHeaderLine($argument0);
+            }
 
-        if (is_a($attrClass, Headers::class, true)) {
-            $this->data[$propertyName] = $this->request->getHeaderLine($argument0);
-        }
+            if (is_a($attrClass, UploadedFiles::class, true)) {
+                $this->data[$propertyName] = $this->request->getUploadedFiles()[$argument0] ?? null;
+            }
 
-        if (is_a($attrClass, UploadedFiles::class, true)) {
-            $this->data[$propertyName] = $this->request->getUploadedFiles()[$argument0] ?? null;
-        }
-
-        if (is_a($attrClass, Attributes::class, true)) {
-            $this->data[$propertyName] = $this->request->getAttribute($argument0);
+            if (is_a($attrClass, Attributes::class, true)) {
+                $this->data[$propertyName] = $this->request->getAttribute($argument0);
+            }
         }
 
         if (is_a($attrClass, Request::class, true)) {

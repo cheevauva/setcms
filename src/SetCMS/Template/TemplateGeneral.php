@@ -48,13 +48,13 @@ abstract class TemplateGeneral implements ContractTemplateEngineInterface, Appli
     }
 
     #[\ReturnTypeWillChange]
-    protected function scRender(string $path, string $template): mixed
+    protected function scRender(string $path, string $template, array $params = []): mixed
     {
         try {
-            $value = $this->scCall($path);
+            $value = $this->scCall($path, $params);
 
             $htmlRender = ViewHtmlRender::make($this->factory());
-            $htmlRender->request = $this->createRequestByPath($path);
+            $htmlRender->request = $this->createRequestByPath($path, $params);
             $htmlRender->mixedValue = $value;
             $htmlRender->templateName = $template;
             $htmlRender->vars = $this->path2vars[$template] ?? [];
@@ -68,10 +68,12 @@ abstract class TemplateGeneral implements ContractTemplateEngineInterface, Appli
         return $content;
     }
 
-    protected function createRequestByPath(string $path): ServerRequestInterface
+    protected function createRequestByPath(string $path, array $params = []): ServerRequestInterface
     {
         $request = (new ServerRequestFactory)->createServerRequest('GET', new Uri($path));
         $request = $request->withAttribute('currentUser', $this->request->getAttribute('currentUser'));
+        $request = $request->withAttribute('parentRequest', $this->request);
+        $request = $request->withQueryParams($params);
 
         return $request;
     }
@@ -81,10 +83,10 @@ abstract class TemplateGeneral implements ContractTemplateEngineInterface, Appli
         return $this->request->getUri()->getPath();
     }
 
-    protected function scFetch(string $path): mixed
+    protected function scFetch(string $path, array $params = []): mixed
     {
         try {
-            $var = $this->scCall($path);
+            $var = $this->scCall($path, $params);
         } catch (\Throwable $ex) {
             $var = $ex->getMessage();
         }
@@ -96,13 +98,13 @@ abstract class TemplateGeneral implements ContractTemplateEngineInterface, Appli
         return $var;
     }
 
-    protected function scCall(string $path): mixed
+    protected function scCall(string $path, array $params = []): mixed
     {
         $routerMatch = $this->router()->match($path, 'GET');
-
-        $request = (new ServerRequestFactory)->createServerRequest('GET', new Uri($path));
+        
+        $request = $this->createRequestByPath($path, $params);
         $request = $request->withAttribute('routeTarget', $routerMatch->target);
-
+        
         foreach ($routerMatch->params as $pName => $pValue) {
             $request = $request->withAttribute($pName, $pValue);
         }

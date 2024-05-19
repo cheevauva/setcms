@@ -4,14 +4,21 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Menu;
 
+use SetCMS\Module\Menu\Scope\MenuPublicReadByContextScope;
 use SetCMS\Module\Menu\Scope\MenuPublicReadBySlugScope;
 use SetCMS\Module\Menu\DAO\MenuRetrieveManyBySlugDAO;
+use SetCMS\Module\Menu\Hook\MenuRetrieveActionsByContextHook;
 
 class MenuPublicController
 {
 
     use \SetCMS\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
+
+    public function readByContext(MenuPublicReadByContextScope $scope): MenuPublicReadByContextScope
+    {
+        return $this->serve(MenuRetrieveActionsByContextHook::class, $scope);
+    }
 
     public function readBySlug(MenuPublicReadBySlugScope $scope): MenuPublicReadBySlugScope
     {

@@ -1,6 +1,6 @@
 <?php
 
-return [
+$events = [
     SetCMS\Controller\Hook\ParseBodyHook::class => [
         SetCMS\Servant\ParseBodyRequestServant::class,
     ],
@@ -18,3 +18,9 @@ return [
         \SetCMS\Servant\ViewJsonRender::class,
     ]
 ];
+
+foreach (glob(__DIR__ . '/hooks/*') as $file) {
+    require $file;
+}
+
+return $events;

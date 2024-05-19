@@ -47,7 +47,7 @@ class TemplateTwig extends TemplateGeneral
         return $this->twig->render($this->scShortPath($name), $context);
     }
 
-    protected function scRender(string $path, ?string $template = null): Markup
+    protected function scRender(string $path, ?string $template = null, array $params = []): Markup
     {
         return new Markup(parent::scRender($path, $template), 'UTF-8');
     }

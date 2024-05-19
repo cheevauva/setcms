@@ -75,6 +75,7 @@ return [
                 //
                 \SetCMS\Module\Configuration\Scope\ConfigurationPublicAdminMenuScope::class => true,
                 \SetCMS\Module\Configuration\Scope\ConfigurationPublicMainScope::class => true,
+                \SetCMS\Module\Menu\Scope\MenuPublicReadByContextScope::class => true,
             ],
         ],
     ],
