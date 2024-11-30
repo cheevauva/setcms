@@ -6,7 +6,7 @@ return [
         $router = $request->getAttribute('router');
 
         assert($model instanceof \SetCMS\Module\OAuth\OAuthModel\OAuthCallbackScope);
-        assert($router instanceof \SetCMS\Router);
+        assert($router instanceof \SetCMS\Application\Router);
 
         if (!$model->entity()) {
             return $response;

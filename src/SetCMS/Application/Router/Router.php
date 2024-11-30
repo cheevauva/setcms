@@ -1,10 +1,10 @@
 <?php
 
-namespace SetCMS\Router;
+namespace SetCMS\Application\Router;
 
 use SetCMS\Contract\ContractRouterInterface as RouterInterface;
-use SetCMS\Router\RouterMatchDTO;
-use SetCMS\Router\Exception\RouterNotFoundException;
+use SetCMS\Application\Router\RouterMatchDTO;
+use SetCMS\Application\Router\Exception\RouterNotFoundException;
 use Psr\Container\ContainerInterface;
 use AltoRouter;
 use SetCMS\UUID;

@@ -10,13 +10,13 @@ use Psr\Http\Message\ResponseInterface;
 use SetCMS\Core\DAO\CoreReflectionMethodRetrieveByMethodNameDAO;
 use SetCMS\Scope;
 use SetCMS\Controller\Hook\ScopeProtectionHook;
-use SetCMS\Router\Exception\RouterNotAllowRequestMethodException;
-use SetCMS\Router\Exception\RouterMethodRequestNotDefinedException;
+use SetCMS\Application\Router\Exception\RouterNotAllowRequestMethodException;
+use SetCMS\Application\Router\Exception\RouterMethodRequestNotDefinedException;
 
 abstract class CoreDynamicController
 {
 
-    use \SetCMS\Router\RouterTrait;
+    use \SetCMS\Application\Router\RouterTrait;
     use \SetCMS\Traits\DITrait;
     use \SetCMS\Traits\EventDispatcherTrait;
 

@@ -13,7 +13,7 @@ class PagePublicController
 {
 
     use \SetCMS\Traits\ControllerTrait;
-    use \SetCMS\Router\RouterTrait;
+    use \SetCMS\Application\Router\RouterTrait;
 
     public function read(PagePublicReadScope $scope, PageRetrieveByIdDAO $servant): PagePublicReadScope
     {

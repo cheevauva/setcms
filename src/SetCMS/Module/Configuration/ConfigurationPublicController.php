@@ -11,7 +11,7 @@ class ConfigurationPublicController
 {
 
     use \SetCMS\Traits\ControllerTrait;
-    use \SetCMS\Router\RouterTrait;
+    use \SetCMS\Application\Router\RouterTrait;
 
     public function main(ConfigurationPublicMainScope $scope): ConfigurationPublicMainScope
     {

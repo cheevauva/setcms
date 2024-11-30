@@ -3,10 +3,10 @@
 declare(strict_types=1);
 
 return [
-    SetCMS\Middleware\ThrowableMiddleware::class,
-    SetCMS\Middleware\RouterMiddleware::class,
-    SetCMS\Middleware\ParseBodyMiddleware::class,
-    SetCMS\Middleware\RetrieveCurrentUserMiddleware::class,
-    SetCMS\Middleware\FrontControllerMiddleware::class,
-    SetCMS\Middleware\RenderViewMiddleware::class,
+    SetCMS\Application\Middleware\MiddlewareThrowable::class,
+    SetCMS\Application\Middleware\MiddlewareRouter::class,
+    SetCMS\Application\Middleware\MiddlewareParseBody::class,
+    SetCMS\Application\Middleware\MiddlewareRetrieveCurrentUser::class,
+    SetCMS\Application\Middleware\MiddlewareFrontController::class,
+    SetCMS\Application\Middleware\MiddlewareRenderView::class,
 ];

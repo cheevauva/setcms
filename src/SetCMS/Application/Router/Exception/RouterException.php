@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Router\Exception;
+namespace SetCMS\Application\Router\Exception;
 
 use SetCMS\Exception;
 

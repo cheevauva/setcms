@@ -11,7 +11,7 @@ class BlockPublicController
 {
 
     use \SetCMS\Traits\ControllerTrait;
-    use \SetCMS\Router\RouterTrait;
+    use \SetCMS\Application\Router\RouterTrait;
 
     public function blocksBySection(BlockPublicSectionScope $scope, BlockRetrieveManyBySectionDAO $servant): BlockPublicSectionScope
     {

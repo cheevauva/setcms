@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Middleware;
+namespace SetCMS\Application\Middleware;
 
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -13,7 +13,7 @@ use SetCMS\Scope;
 use SetCMS\Core\DAO\CoreReflectionMethodRetrieveByServerRequestDAO;
 use SetCMS\Controller\Hook\ScopeProtectionHook;
 
-class FrontControllerMiddleware implements MiddlewareInterface
+class MiddlewareFrontController implements MiddlewareInterface
 {
 
     use \SetCMS\Traits\QuickTrait;

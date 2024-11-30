@@ -20,7 +20,7 @@ class UserPublicController
 {
 
     use \SetCMS\Traits\ControllerTrait;
-    use \SetCMS\Router\RouterTrait;
+    use \SetCMS\Application\Router\RouterTrait;
 
     #[RequestMethod('GET')]
     public function login(UserPublicLoginScope $scope): UserPublicLoginScope

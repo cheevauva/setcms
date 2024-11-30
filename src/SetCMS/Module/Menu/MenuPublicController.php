@@ -13,7 +13,7 @@ class MenuPublicController
 {
 
     use \SetCMS\Traits\ControllerTrait;
-    use \SetCMS\Router\RouterTrait;
+    use \SetCMS\Application\Router\RouterTrait;
 
     public function readByContext(MenuPublicReadByContextScope $scope): MenuPublicReadByContextScope
     {

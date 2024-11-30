@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Middleware;
+namespace SetCMS\Application\Middleware;
 
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use SetCMS\Router\Router;
+use SetCMS\Application\Router\Router;
 
-class RouterMiddleware implements MiddlewareInterface
+class MiddlewareRouter implements MiddlewareInterface
 {
     use \SetCMS\Traits\DITrait;
 

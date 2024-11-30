@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Middleware;
+namespace SetCMS\Application\Middleware;
 
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class ParseBodyMiddleware implements MiddlewareInterface
+class MiddlewareParseBody implements MiddlewareInterface
 {
 
     use \SetCMS\Traits\DITrait;

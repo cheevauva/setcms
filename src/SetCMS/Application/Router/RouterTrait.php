@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Router;
+namespace SetCMS\Application\Router;
 
 trait RouterTrait
 {

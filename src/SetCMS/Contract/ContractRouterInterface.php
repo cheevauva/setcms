@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Contract;
 
-use SetCMS\Router\RouterMatchDTO;
+use SetCMS\Application\Router\RouterMatchDTO;
 
 interface ContractRouterInterface
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Middleware;
+namespace SetCMS\Application\Middleware;
 
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -13,7 +13,7 @@ use SetCMS\Contract\NotFound;
 use SetCMS\Contract\Forbidden;
 use SetCMS\Contract\NotAllow;
 
-class ThrowableMiddleware implements MiddlewareInterface
+class MiddlewareThrowable implements MiddlewareInterface
 {
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

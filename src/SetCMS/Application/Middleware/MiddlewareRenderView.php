@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Middleware;
+namespace SetCMS\Application\Middleware;
 
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
 use SetCMS\Servant\ViewRender;
 
-class RenderViewMiddleware implements MiddlewareInterface
+class MiddlewareRenderView implements MiddlewareInterface
 {
     use \SetCMS\Traits\DITrait;
     

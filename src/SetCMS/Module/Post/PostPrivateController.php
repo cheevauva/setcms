@@ -19,7 +19,7 @@ class PostPrivateController
 {
 
     use \SetCMS\Traits\ControllerTrait;
-    use \SetCMS\Router\RouterTrait;
+    use \SetCMS\Application\Router\RouterTrait;
 
     #[RequestMethod('GET')]
     public function index(PostPrivateIndexScope $scope, PostRetrieveManyDAO $servant): PostPrivateIndexScope
