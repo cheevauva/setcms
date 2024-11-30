@@ -10,8 +10,8 @@ use SetCMS\Scope;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\View\Hook\ViewRenderHook;
-use SetCMS\Template\TemplateFactory;
-use SetCMS\Template\TemplateEnum;
+use SetCMS\Application\Template\TemplateFactory;
+use SetCMS\Application\Template\TemplateEnum;
 
 class ViewHtmlRender implements Servant, Applicable
 {

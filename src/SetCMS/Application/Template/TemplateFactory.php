@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Template;
+namespace SetCMS\Application\Template;
 
 use SetCMS\Contract\ContractTemplateEngineInterface;
 

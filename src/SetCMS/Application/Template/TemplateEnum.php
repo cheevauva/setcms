@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Template;
+namespace SetCMS\Application\Template;
 
 enum TemplateEnum: string
 {

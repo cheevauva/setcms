@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Template;
+namespace SetCMS\Application\Template;
 
 use Psr\Http\Message\ServerRequestInterface;
 use League\CommonMark\CommonMarkConverter;
