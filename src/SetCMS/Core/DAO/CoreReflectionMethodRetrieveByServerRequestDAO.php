@@ -15,8 +15,8 @@ use SplObjectStorage;
 class CoreReflectionMethodRetrieveByServerRequestDAO implements Servant
 {
 
-    use \SetCMS\FactoryTrait;
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\FactoryTrait;
+    use \SetCMS\Traits\DITrait;
 
     public ServerRequestInterface $request;
     public ?ResponseInterface $response = null;

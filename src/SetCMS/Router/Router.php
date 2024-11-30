@@ -12,8 +12,8 @@ use SetCMS\UUID;
 class Router implements RouterInterface
 {
 
-    use \SetCMS\DITrait;
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\DITrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     private AltoRouter $altoRouter;
 

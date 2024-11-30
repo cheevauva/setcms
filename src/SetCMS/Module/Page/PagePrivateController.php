@@ -17,7 +17,7 @@ use SetCMS\Module\Page\DAO\PageSaveDAO;
 class PagePrivateController
 {
 
-    use \SetCMS\ControllerTrait;
+    use \SetCMS\Traits\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
     #[RequestMethod('GET')]

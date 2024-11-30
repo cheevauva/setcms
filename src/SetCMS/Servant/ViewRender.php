@@ -14,8 +14,8 @@ use SetCMS\View\Hook\ViewRenderHook;
 class ViewRender implements Servant
 {
 
-    use \SetCMS\FactoryTrait;
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\FactoryTrait;
+    use \SetCMS\Traits\DITrait;
 
     public mixed $mixedValue = null;
     public ServerRequestInterface $request;

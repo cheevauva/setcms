@@ -13,7 +13,7 @@ use ReflectionProperty;
 class CorePropertySatisfyServant implements Servant
 {
 
-    use \SetCMS\QuickTrait;
+    use \SetCMS\Traits\QuickTrait;
 
     public object $object;
     public array $messages = [];

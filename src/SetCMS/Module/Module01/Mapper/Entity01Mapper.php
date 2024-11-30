@@ -10,7 +10,7 @@ use SetCMS\Module\Module01\Entity01Entity;
 class Entity01Mapper extends EntityMapper
 {
 
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     protected function entity(): Entity01Entity
     {

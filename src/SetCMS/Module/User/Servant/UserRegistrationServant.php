@@ -14,7 +14,7 @@ use SetCMS\Module\User\Exception\UserAlreadyExistsException;
 class UserRegistrationServant implements \SetCMS\Contract\Servant
 {
 
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\DITrait;
 
     public string $username;
     public string $password;

@@ -13,7 +13,7 @@ use SetCMS\Module\Module01\Exception\Entity01AlreadyExistsException;
 class Entity01CreateServant implements Servant
 {
 
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\DITrait;
 
     public Entity01Entity $Entity01LC;
 

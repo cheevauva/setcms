@@ -13,7 +13,7 @@ use SetCMS\Module\UserSession\Exception\UserSessionNotFoundException;
 class UserSessionDeleteServant implements Servant
 {
 
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\DITrait;
 
     public ?UserSessionEntity $session = null;
     public ?UUID $id = null;

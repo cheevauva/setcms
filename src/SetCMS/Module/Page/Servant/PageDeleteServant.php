@@ -13,7 +13,7 @@ use SetCMS\Module\Page\Exception\PageNotFoundException;
 class PageDeleteServant implements Servant
 {
 
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\DITrait;
 
     public ?PageEntity $page = null;
     public ?UUID $id = null;

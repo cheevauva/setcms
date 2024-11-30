@@ -13,7 +13,7 @@ use SetCMS\View\Hook\ViewRenderHook;
 class ViewJsonRender implements Servant, Applicable
 {
 
-    use \SetCMS\QuickTrait;
+    use \SetCMS\Traits\QuickTrait;
 
     public object $mixedValue;
     public ?string $json = null;

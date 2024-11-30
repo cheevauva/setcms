@@ -11,7 +11,7 @@ use SetCMS\Contract\Factory as FactoryInterface;
 class Factory implements FactoryInterface
 {
 
-    use AsTrait;
+    use \SetCMS\Traits\AsTrait;
 
     private DIFactoryInterface $factory;
 

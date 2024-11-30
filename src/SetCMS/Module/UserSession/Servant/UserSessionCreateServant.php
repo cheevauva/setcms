@@ -13,7 +13,7 @@ use SetCMS\Module\UserSession\Exception\UserSessionAlreadyExistsException;
 class UserSessionCreateServant implements Servant
 {
 
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\DITrait;
 
     public UserSessionEntity $session;
 

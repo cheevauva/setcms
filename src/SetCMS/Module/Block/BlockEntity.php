@@ -9,7 +9,7 @@ use SetCMS\Common\Entity\Entity;
 class BlockEntity extends Entity
 {
 
-    use \SetCMS\AsTrait;
+    use \SetCMS\Traits\AsTrait;
 
     public string $path;
     public array $params;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS;
+namespace SetCMS\Traits;
 
 use SetCMS\Scope;
 use SetCMS\Contract\Servant;
@@ -13,7 +13,7 @@ use SetCMS\Core\Servant\CorePropertyFetchDataFromRequestServant;
 trait ControllerTrait
 {
 
-    use \SetCMS\QuickTrait;
+    use \SetCMS\Traits\QuickTrait;
 
     protected function serveScope(Scope $scope): void
     {

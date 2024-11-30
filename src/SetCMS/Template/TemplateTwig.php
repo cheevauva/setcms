@@ -13,8 +13,8 @@ use Twig\Markup;
 class TemplateTwig extends TemplateGeneral
 {
 
-    use \SetCMS\QuickTrait;
-    use \SetCMS\EnvTrait;
+    use \SetCMS\Traits\QuickTrait;
+    use \SetCMS\Traits\EnvTrait;
 
     private Environment $twig;
 

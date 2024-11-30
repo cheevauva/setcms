@@ -10,9 +10,9 @@ use SetCMS\Module\User\UserContstants;
 trait UserEntityDbDAOTrait
 {
 
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\DITrait;
     use \SetCMS\Database\MainConnectionTrait;
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     protected function mapper(): UserEntityDbMapper
     {

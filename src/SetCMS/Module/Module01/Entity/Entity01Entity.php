@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Module\Module01\Entity;
 
 use SetCMS\Common\Entity\Entity;
-use SetCMS\AsTrait;
+use SetCMS\Traits\AsTrait;
 
 class Entity01Entity extends Entity
 {

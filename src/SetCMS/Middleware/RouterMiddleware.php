@@ -12,7 +12,7 @@ use SetCMS\Router\Router;
 
 class RouterMiddleware implements MiddlewareInterface
 {
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\DITrait;
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

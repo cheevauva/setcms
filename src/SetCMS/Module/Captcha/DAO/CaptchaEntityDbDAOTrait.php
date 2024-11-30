@@ -10,9 +10,9 @@ use SetCMS\Module\Captcha\CaptchaConstants;
 trait CaptchaEntityDbDAOTrait
 {
 
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\DITrait;
     use \SetCMS\Database\MainConnectionTrait;
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     protected function table(): string
     {

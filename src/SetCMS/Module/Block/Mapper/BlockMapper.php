@@ -10,7 +10,7 @@ use SetCMS\Module\Block\BlockEntity;
 class BlockMapper extends EntityMapper
 {
 
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     protected function entity(): BlockEntity
     {

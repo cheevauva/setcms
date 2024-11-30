@@ -9,8 +9,8 @@ use SetCMS\Module\Captcha\CaptchaEntity;
 class CaptchaResolveServant implements \SetCMS\Contract\Servant
 {
 
-    use \SetCMS\DITrait;
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\DITrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     public string $solvedText;
     public CaptchaEntity $captcha;

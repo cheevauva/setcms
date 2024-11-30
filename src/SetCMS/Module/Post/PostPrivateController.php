@@ -18,7 +18,7 @@ use SetCMS\Module\Post\Servant\PostUpdateServant;
 class PostPrivateController
 {
 
-    use \SetCMS\ControllerTrait;
+    use \SetCMS\Traits\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
     #[RequestMethod('GET')]

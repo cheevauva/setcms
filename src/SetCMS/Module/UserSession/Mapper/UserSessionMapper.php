@@ -11,7 +11,7 @@ use SetCMS\UUID;
 class UserSessionMapper extends EntityMapper
 {
 
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     protected function entity(): UserSessionEntity
     {

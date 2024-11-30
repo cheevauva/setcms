@@ -10,7 +10,7 @@ use SetCMS\UUID;
 class UserSessionEntity extends Entity
 {
 
-    use \SetCMS\AsTrait;
+    use \SetCMS\Traits\AsTrait;
 
     public string $device;
     public UUID $userId;

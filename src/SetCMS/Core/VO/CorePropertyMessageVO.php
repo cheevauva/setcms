@@ -7,7 +7,7 @@ namespace SetCMS\Core\VO;
 class CorePropertyMessageVO
 {
 
-    use \SetCMS\AsTrait;
+    use \SetCMS\Traits\AsTrait;
 
     public ?string $field = null;
     public string $message;

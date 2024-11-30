@@ -19,7 +19,7 @@ use SetCMS\Module\Captcha\Servant\CaptchaUseResolvedCaptchaServant;
 class UserPublicController
 {
 
-    use \SetCMS\ControllerTrait;
+    use \SetCMS\Traits\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
     #[RequestMethod('GET')]

@@ -16,8 +16,8 @@ use SetCMS\Template\TemplateEnum;
 class ViewHtmlRender implements Servant, Applicable
 {
 
-    use \SetCMS\QuickTrait;
-    use \SetCMS\EnvTrait;
+    use \SetCMS\Traits\QuickTrait;
+    use \SetCMS\Traits\EnvTrait;
 
     public object $mixedValue;
     public array $vars = [];

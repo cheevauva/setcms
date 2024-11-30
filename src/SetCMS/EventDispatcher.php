@@ -13,7 +13,7 @@ use SetCMS\Contract\Servant;
 class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherInterface
 {
 
-    use AsTrait;
+    use \SetCMS\Traits\AsTrait;
 
     private Factory $factory;
     private static EventDispatcher $instance;

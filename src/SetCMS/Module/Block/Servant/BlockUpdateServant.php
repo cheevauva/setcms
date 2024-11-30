@@ -13,7 +13,7 @@ use SetCMS\Module\Block\Exception\BlockNotFoundException;
 class BlockUpdateServant implements Servant
 {
 
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\DITrait;
 
     public BlockEntity $block;
 

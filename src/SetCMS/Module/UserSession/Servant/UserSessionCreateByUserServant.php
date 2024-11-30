@@ -12,8 +12,8 @@ use SetCMS\Module\UserSession\DAO\UserSessionSaveDAO;
 class UserSessionCreateByUserServant implements Servant
 {
 
-    use \SetCMS\FactoryTrait;
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\FactoryTrait;
+    use \SetCMS\Traits\DITrait;
 
     public UserEntity $user;
     public ?UserSessionEntity $session;

@@ -12,7 +12,7 @@ use SetCMS\Module\Page\Scope\PagePublicReadBlockScope;
 class PagePublicController
 {
 
-    use \SetCMS\ControllerTrait;
+    use \SetCMS\Traits\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
     public function read(PagePublicReadScope $scope, PageRetrieveByIdDAO $servant): PagePublicReadScope

@@ -10,8 +10,8 @@ use SetCMS\Module\Block\BlockConstrants;
 trait BlockGenericDAO
 {
 
-    use \SetCMS\DITrait;
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\DITrait;
+    use \SetCMS\Traits\FactoryTrait;
     use \SetCMS\Database\MainConnectionTrait;
 
     protected function mapper(): BlockMapper

@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 class ACL extends LaminasAcl
 {
 
-    use FactoryTrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     public function __construct(ContainerInterface $container)
     {

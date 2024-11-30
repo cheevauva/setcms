@@ -14,8 +14,8 @@ use SetCMS\Core\Exception\CoreMethodNotFoundException;
 class CoreReflectionMethodRetrieveByMethodNameDAO implements Servant
 {
 
-    use \SetCMS\DITrait;
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\DITrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     public string $className;
     public string $methodName;

@@ -15,8 +15,8 @@ use SetCMS\Module\User\UserEntity;
 class RetrieveCurrentUserMiddleware implements MiddlewareInterface
 {
 
-    use \SetCMS\DITrait;
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\DITrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

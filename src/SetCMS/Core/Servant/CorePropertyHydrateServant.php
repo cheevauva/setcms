@@ -11,7 +11,7 @@ use SetCMS\Core\VO\CorePropertyMessageVO;
 class CorePropertyHydrateServant implements Servant
 {
 
-    use \SetCMS\QuickTrait;
+    use \SetCMS\Traits\QuickTrait;
 
     private const TYPES = [
         'int',

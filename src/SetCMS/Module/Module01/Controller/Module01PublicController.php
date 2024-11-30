@@ -7,5 +7,5 @@ namespace SetCMS\Module\Module01;
 class Module01PublicController
 {
 
-    use \SetCMS\ControllerTrait;
+    use \SetCMS\Traits\ControllerTrait;
 }

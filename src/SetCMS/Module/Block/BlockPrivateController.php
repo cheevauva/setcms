@@ -18,7 +18,7 @@ use SetCMS\Module\Block\Servant\BlockUpdateServant;
 class BlockPrivateController
 {
 
-    use \SetCMS\ControllerTrait;
+    use \SetCMS\Traits\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
     #[RequestMethod('GET')]

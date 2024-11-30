@@ -9,7 +9,7 @@ use SetCMS\Database\MainConnection;
 trait MainConnectionTrait
 {
 
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\DITrait;
 
     protected function db(): MainConnection
     {

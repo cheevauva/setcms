@@ -10,7 +10,7 @@ use Psr\EventDispatcher\StoppableEventInterface;
 class ViewRenderHook implements StoppableEventInterface
 {
 
-    use \SetCMS\HookTrait;
+    use \SetCMS\Traits\HookTrait;
 
     public mixed $data;
     public ServerRequestInterface $request;

@@ -13,7 +13,7 @@ use SetCMS\Module\Module01\Exception\Entity01NotFoundException;
 class Entity01UpdateServant implements Servant
 {
 
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\DITrait;
 
     public Entity01Entity $Entity01LC;
 

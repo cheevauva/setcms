@@ -9,7 +9,7 @@ use SetCMS\Module\Captcha\CaptchaEntity;
 class CaptchaEntityDbMapper extends \SetCMS\Common\Mapper\EntityMapper
 {
 
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     protected function entity(): CaptchaEntity
     {

@@ -16,7 +16,7 @@ use SetCMS\Module\User\DAO\UserSaveDAO;
 class UserPrivateController
 {
 
-    use \SetCMS\ControllerTrait;
+    use \SetCMS\Traits\ControllerTrait;
 
     #[RequestMethod('GET')]
     public function index(UserPrivateIndexScope $scope, UserRetrieveManyDAO $servant): UserPrivateIndexScope

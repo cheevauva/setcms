@@ -12,7 +12,7 @@ use SetCMS\Module\Menu\Hook\MenuRetrieveActionsByContextHook;
 class MenuPublicController
 {
 
-    use \SetCMS\ControllerTrait;
+    use \SetCMS\Traits\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
     public function readByContext(MenuPublicReadByContextScope $scope): MenuPublicReadByContextScope

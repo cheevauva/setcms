@@ -17,8 +17,8 @@ abstract class CoreDynamicController
 {
 
     use \SetCMS\Router\RouterTrait;
-    use \SetCMS\DITrait;
-    use \SetCMS\EventDispatcherTrait;
+    use \SetCMS\Traits\DITrait;
+    use \SetCMS\Traits\EventDispatcherTrait;
 
     abstract protected function classNamePattern();
 

@@ -19,8 +19,8 @@ use SetCMS\Servant\ViewHtmlRender;
 abstract class TemplateGeneral implements ContractTemplateEngineInterface, Applicable
 {
 
-    use \SetCMS\DITrait;
-    use \SetCMS\EnvTrait;
+    use \SetCMS\Traits\DITrait;
+    use \SetCMS\Traits\EnvTrait;
 
     protected ServerRequestInterface $request;
     protected array $path2vars = [];

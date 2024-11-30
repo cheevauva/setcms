@@ -11,7 +11,7 @@ use SetCMS\Module\User\UserEntity;
 class MenuRetrieveActionsByContextHook implements \SetCMS\Contract\Servant
 {
 
-    use \SetCMS\HookTrait;
+    use \SetCMS\Traits\HookTrait;
 
     /**
      * @var MenuActionEntity[]

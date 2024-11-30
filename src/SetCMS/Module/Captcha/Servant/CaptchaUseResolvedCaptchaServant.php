@@ -11,8 +11,8 @@ use SetCMS\Module\Captcha\DAO\CaptchaSaveDAO;
 class CaptchaUseResolvedCaptchaServant implements \SetCMS\Contract\Servant
 {
 
-    use \SetCMS\DITrait;
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\DITrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     public UUID $captcha;
 

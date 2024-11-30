@@ -13,8 +13,8 @@ use SetCMS\Module\Post\Exception\PostNotFoundException;
 class PostUpdateServant implements Servant
 {
 
-    use \SetCMS\DITrait;
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\DITrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     public PostEntity $post;
 

@@ -8,7 +8,7 @@ use SetCMS\Contract\ContractTemplateEngineInterface;
 
 class TemplateFactory
 {
-    use \SetCMS\QuickTrait;
+    use \SetCMS\Traits\QuickTrait;
     
     public function create(?TemplateEnum $template = null): ContractTemplateEngineInterface
     {

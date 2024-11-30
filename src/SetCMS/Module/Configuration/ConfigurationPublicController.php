@@ -10,7 +10,7 @@ use SetCMS\Module\Configuration\Scope\ConfigurationPublicAdminMenuScope;
 class ConfigurationPublicController
 {
 
-    use \SetCMS\ControllerTrait;
+    use \SetCMS\Traits\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
     public function main(ConfigurationPublicMainScope $scope): ConfigurationPublicMainScope

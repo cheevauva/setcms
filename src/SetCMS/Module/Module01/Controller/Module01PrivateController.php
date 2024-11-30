@@ -17,7 +17,7 @@ use SetCMS\Module\Module01\DAO\Entity01SaveDAO;
 class Module01PrivateController
 {
 
-    use \SetCMS\ControllerTrait;
+    use \SetCMS\Traits\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
     public function index(Module01PrivateIndexScope $scope, Entity01RetrieveManyDAO $servant): Module01PrivateIndexScope

@@ -16,7 +16,7 @@ use SetCMS\Controller\Hook\ScopeProtectionHook;
 class FrontControllerMiddleware implements MiddlewareInterface
 {
 
-    use \SetCMS\QuickTrait;
+    use \SetCMS\Traits\QuickTrait;
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

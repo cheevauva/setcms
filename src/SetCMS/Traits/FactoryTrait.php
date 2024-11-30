@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS;
+namespace SetCMS\Traits;
 
 use SetCMS\Contract\Factory;
 use Psr\Container\ContainerInterface;

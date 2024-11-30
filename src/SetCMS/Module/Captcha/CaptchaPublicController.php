@@ -15,7 +15,7 @@ use SetCMS\Module\Captcha\DAO\CaptchaSaveDAO;
 class CaptchaPublicController
 {
 
-    use \SetCMS\ControllerTrait;
+    use \SetCMS\Traits\ControllerTrait;
 
     #[RequestMethod('GET')]
     public function solve(CaptchaPublicSolveScope $scope): CaptchaPublicSolveScope

@@ -10,7 +10,7 @@ use SetCMS\Module\User\UserRoleEnum;
 class UserEntityDbMapper extends \SetCMS\Common\Mapper\EntityMapper
 {
 
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     protected function entity(): UserEntity
     {

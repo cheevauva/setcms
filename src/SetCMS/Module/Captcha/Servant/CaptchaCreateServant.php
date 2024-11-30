@@ -9,8 +9,8 @@ use SetCMS\Module\Captcha\CaptchaEntity;
 class CaptchaCreateServant implements \SetCMS\Contract\Servant
 {
 
-    use \SetCMS\DITrait;
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\DITrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     public CaptchaEntity $captcha;
 

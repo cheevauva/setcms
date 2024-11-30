@@ -10,8 +10,8 @@ use SetCMS\Module\Page\PageConstrants;
 trait PageGenericDAO
 {
 
-    use \SetCMS\DITrait;
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\DITrait;
+    use \SetCMS\Traits\FactoryTrait;
     use \SetCMS\Database\MainConnectionTrait;
 
     protected function mapper(): PageMapper

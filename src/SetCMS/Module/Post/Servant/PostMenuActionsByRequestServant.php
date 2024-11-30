@@ -15,7 +15,7 @@ use SetCMS\Module\Post\DAO\PostRetrieveBySlugDAO;
 class PostMenuActionsByRequestServant implements \SetCMS\Contract\Servant, \SetCMS\Contract\Applicable
 {
 
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\DITrait;
 
     private ?MenuRetrieveActionsByContextHook $hook = null;
 

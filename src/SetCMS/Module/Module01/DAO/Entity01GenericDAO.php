@@ -10,8 +10,8 @@ use SetCMS\Module\Module01\Module01Constrants;
 trait Entity01GenericDAO
 {
 
-    use \SetCMS\DITrait;
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\DITrait;
+    use \SetCMS\Traits\FactoryTrait;
     use \SetCMS\Database\MainConnectionTrait;
 
     protected function mapper(): Entity01Mapper

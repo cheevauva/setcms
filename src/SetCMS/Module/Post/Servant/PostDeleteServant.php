@@ -13,7 +13,7 @@ use SetCMS\Module\Post\Exception\PostNotFoundException;
 class PostDeleteServant implements Servant
 {
 
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\DITrait;
 
     public ?PostEntity $post = null;
     public ?UUID $id = null;

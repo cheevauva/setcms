@@ -9,7 +9,7 @@ use SetCMS\Common\Entity\Entity;
 class PostEntity extends Entity
 {
 
-    use \SetCMS\AsTrait;
+    use \SetCMS\Traits\AsTrait;
 
     public string $slug;
     public string $title;

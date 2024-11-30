@@ -12,7 +12,7 @@ use SetCMS\Controller\Hook\ParseBodyHook;
 class ParseBodyRequestServant implements Servant, Applicable
 {
 
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     public ServerRequestInterface $request;
     public mixed $parsedBody = null;

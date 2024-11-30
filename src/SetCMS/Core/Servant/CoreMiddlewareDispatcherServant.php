@@ -14,7 +14,7 @@ use Psr\Http\{
 class CoreMiddlewareDispatcherServant implements RequestHandlerInterface
 {
 
-    use \SetCMS\QuickTrait;
+    use \SetCMS\Traits\QuickTrait;
 
     public array $middlewares = [];
     protected int $index = -1;

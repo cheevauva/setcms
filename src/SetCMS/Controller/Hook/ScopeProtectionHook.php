@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 class ScopeProtectionHook implements \SetCMS\Contract\Applicable
 {
 
-    use \SetCMS\EventTrait;
+    use \SetCMS\Traits\EventTrait;
 
     public Scope $scope;
     public ?UserEntity $user = null;

@@ -16,7 +16,7 @@ use SetCMS\Attribute\Http\Parameter\Request;
 class CorePropertyFetchDataFromRequestServant implements \SetCMS\Contract\Servant
 {
 
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     public ServerRequestInterface $request;
     public object $object;

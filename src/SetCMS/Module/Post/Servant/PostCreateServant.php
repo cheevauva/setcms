@@ -13,7 +13,7 @@ use SetCMS\Module\Post\Exception\PostAlreadyExistsException;
 class PostCreateServant implements Servant
 {
 
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\DITrait;
 
     public PostEntity $post;
 

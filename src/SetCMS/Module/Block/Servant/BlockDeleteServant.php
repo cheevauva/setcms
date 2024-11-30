@@ -13,7 +13,7 @@ use SetCMS\Module\Block\Exception\BlockNotFoundException;
 class BlockDeleteServant implements Servant
 {
 
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\DITrait;
 
     public ?BlockEntity $block = null;
     public ?UUID $id = null;

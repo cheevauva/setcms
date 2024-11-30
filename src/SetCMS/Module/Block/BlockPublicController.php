@@ -10,7 +10,7 @@ use SetCMS\Module\Block\DAO\BlockRetrieveManyBySectionDAO;
 class BlockPublicController
 {
 
-    use \SetCMS\ControllerTrait;
+    use \SetCMS\Traits\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
     public function blocksBySection(BlockPublicSectionScope $scope, BlockRetrieveManyBySectionDAO $servant): BlockPublicSectionScope

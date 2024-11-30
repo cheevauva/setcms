@@ -13,7 +13,7 @@ use SetCMS\Servant\ViewRender;
 
 class RenderViewMiddleware implements MiddlewareInterface
 {
-    use \SetCMS\DITrait;
+    use \SetCMS\Traits\DITrait;
     
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

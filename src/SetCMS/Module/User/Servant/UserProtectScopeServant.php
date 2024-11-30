@@ -13,8 +13,8 @@ use SetCMS\ACL;
 class UserProtectScopeServant implements Servant, Applicable
 {
 
-    use \SetCMS\DITrait;
-    use \SetCMS\FactoryTrait;
+    use \SetCMS\Traits\DITrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     public UserEntity $user;
     public Scope $scope;

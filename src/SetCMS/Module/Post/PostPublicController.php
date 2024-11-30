@@ -12,7 +12,7 @@ use SetCMS\Module\Post\DAO\PostRetrieveManyDAO;
 class PostPublicController
 {
 
-    use \SetCMS\ControllerTrait;
+    use \SetCMS\Traits\ControllerTrait;
     use \SetCMS\Router\RouterTrait;
 
     public function index(PostPublicIndexScope $scope, PostRetrieveManyDAO $servant): PostPublicIndexScope
