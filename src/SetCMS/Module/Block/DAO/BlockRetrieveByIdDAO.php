@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Block\DAO;
 
-use SetCMS\Entity\DAO\EntityRetrieveByIdDAO;
+use SetCMS\Common\DAO\Entity\EntityRetrieveByIdDAO;
 use SetCMS\Module\Block\BlockEntity;
 
 class BlockRetrieveByIdDAO extends EntityRetrieveByIdDAO

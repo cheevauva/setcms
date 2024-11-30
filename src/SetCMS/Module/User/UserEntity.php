@@ -6,7 +6,7 @@ namespace SetCMS\Module\User;
 
 use SetCMS\Module\User\UserRoleEnum;
 
-class UserEntity extends \SetCMS\Entity
+class UserEntity extends \SetCMS\Common\Entity\Entity
 {
 
     public string $username;

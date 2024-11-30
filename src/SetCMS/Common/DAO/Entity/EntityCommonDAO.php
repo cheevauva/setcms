@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Entity\DAO;
+namespace SetCMS\Common\DAO\Entity;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
 use SetCMS\Contract\Servant;
-use SetCMS\Entity;
-use SetCMS\Entity\Mapper\EntityMapper;
+use SetCMS\Common\Entity\Entity;
+use SetCMS\Common\Mapper\EntityMapper;
 
 abstract class EntityCommonDAO implements Servant
 {

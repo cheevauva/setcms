@@ -1,5 +1,6 @@
 <!doctype html>
 <html>
+    {% set theme = "bootstrap5" %}
     {% set options = scFetch('/sub/configurations/main')  %}
     <head>
         <title>{% block title %}{{ options.title }}{% endblock %}</title>

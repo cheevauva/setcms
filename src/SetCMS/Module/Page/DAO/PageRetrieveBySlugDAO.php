@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page\DAO;
 
-use SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO;
+use SetCMS\Common\DAO\Entity\EntityRetrieveByCriteriaDAO;
 use SetCMS\Module\Page\PageEntity;
 
 class PageRetrieveBySlugDAO extends EntityRetrieveByCriteriaDAO

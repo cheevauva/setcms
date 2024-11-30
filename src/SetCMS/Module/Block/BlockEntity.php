@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Block;
 
-use SetCMS\Entity;
+use SetCMS\Common\Entity\Entity;
 
 class BlockEntity extends Entity
 {

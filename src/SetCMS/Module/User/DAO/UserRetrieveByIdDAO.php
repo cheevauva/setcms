@@ -6,7 +6,7 @@ namespace SetCMS\Module\User\DAO;
 
 use SetCMS\Module\User\UserEntity;
 
-class UserRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityRetrieveByIdDAO
+class UserRetrieveByIdDAO extends \SetCMS\Common\DAO\Entity\EntityRetrieveByIdDAO
 {
 
     use UserEntityDbDAOTrait;

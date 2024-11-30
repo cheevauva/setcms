@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS;
+namespace SetCMS\Common\Entity;
 
 use SetCMS\UUID;
 
@@ -28,5 +28,4 @@ class Entity
         $this->deleted = true;
         $this->dateModified = new \DateTime();
     }
-
 }

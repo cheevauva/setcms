@@ -6,7 +6,7 @@ namespace SetCMS\Module\User\DAO;
 
 use SetCMS\Module\User\UserEntity;
 
-class UserSaveDAO extends \SetCMS\Entity\DAO\EntitySaveDAO
+class UserSaveDAO extends \SetCMS\Common\DAO\Entity\EntitySaveDAO
 {
 
     use UserEntityDbDAOTrait;

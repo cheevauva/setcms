@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post;
 
-use SetCMS\Entity;
+use SetCMS\Common\Entity\Entity;
 
 class PostEntity extends Entity
 {

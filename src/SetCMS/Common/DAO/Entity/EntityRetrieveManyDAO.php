@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Entity\DAO;
+namespace SetCMS\Common\DAO\Entity;
 
 abstract class EntityRetrieveManyDAO extends EntityCommonDAO implements \SetCMS\Contract\Servant
 {

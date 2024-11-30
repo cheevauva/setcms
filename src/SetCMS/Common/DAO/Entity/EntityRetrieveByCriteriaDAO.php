@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Entity\DAO;
+namespace SetCMS\Common\DAO\Entity;
 
 use Doctrine\DBAL\Query\QueryBuilder;
-use SetCMS\Entity;
+use SetCMS\Common\Entity\Entity;
 
 abstract class EntityRetrieveByCriteriaDAO extends EntityCommonDAO
 {

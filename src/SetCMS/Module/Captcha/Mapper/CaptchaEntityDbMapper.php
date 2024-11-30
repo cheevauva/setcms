@@ -6,7 +6,7 @@ namespace SetCMS\Module\Captcha\Mapper;
 
 use SetCMS\Module\Captcha\CaptchaEntity;
 
-class CaptchaEntityDbMapper extends \SetCMS\Entity\Mapper\EntityMapper
+class CaptchaEntityDbMapper extends \SetCMS\Common\Mapper\EntityMapper
 {
 
     use \SetCMS\FactoryTrait;

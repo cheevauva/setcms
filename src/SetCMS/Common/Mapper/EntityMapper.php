@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Entity\Mapper;
+namespace SetCMS\Common\Mapper;
 
 use SetCMS\Contract\Servant;
-use SetCMS\Entity;
+use SetCMS\Common\Entity\Entity;
 use SetCMS\UUID;
 
 abstract class EntityMapper implements Servant

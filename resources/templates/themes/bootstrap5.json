@@ -1,0 +1,28 @@
+{
+    "theme": {
+        "name": "bootstrap5"
+    },
+    "block-templates": [
+        {
+            "name": "PublicContextActions",
+            "description": "Контекстное меню на публичной странице",
+            "template": "block/PublicContextActions.twig"
+        }
+    ],
+    "sections": [
+        {
+            "name": "Правый сайдбар",
+            "description": "Правый сайдбар на публичной страницы",
+            "section": "rights"
+        }
+    ],
+    "blocks": [
+        {
+            "description": "Контекстное меню на публичной странице",
+            "recommendedTemplate": "block/PublicContextActions.twig",
+            "recommendedSection": "rights",
+            "recommendedRoute": "/menu/for/context",
+            "recommendedParams": {}
+        }
+    ]
+}

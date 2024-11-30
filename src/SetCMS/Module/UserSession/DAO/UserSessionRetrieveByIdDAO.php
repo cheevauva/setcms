@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\UserSession\DAO;
 
-use SetCMS\Entity\DAO\EntityRetrieveByIdDAO;
+use SetCMS\Common\DAO\Entity\EntityRetrieveByIdDAO;
 use SetCMS\Module\UserSession\UserSessionEntity;
 
 class UserSessionRetrieveByIdDAO extends EntityRetrieveByIdDAO

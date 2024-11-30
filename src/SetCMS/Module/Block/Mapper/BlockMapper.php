@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Block\Mapper;
 
-use SetCMS\Entity\Mapper\EntityMapper;
+use SetCMS\Common\Mapper\EntityMapper;
 use SetCMS\Module\Block\BlockEntity;
 
 class BlockMapper extends EntityMapper

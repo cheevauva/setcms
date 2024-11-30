@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\DAO;
 
-use SetCMS\Entity\DAO\EntityHasByIdDAO;
+use SetCMS\Common\DAO\Entity\EntityHasByIdDAO;
 
 class PostHasByIdDAO extends EntityHasByIdDAO
 {

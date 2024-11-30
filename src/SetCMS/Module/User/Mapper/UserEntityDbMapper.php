@@ -7,7 +7,7 @@ namespace SetCMS\Module\User\Mapper;
 use SetCMS\Module\User\UserEntity;
 use SetCMS\Module\User\UserRoleEnum;
 
-class UserEntityDbMapper extends \SetCMS\Entity\Mapper\EntityMapper
+class UserEntityDbMapper extends \SetCMS\Common\Mapper\EntityMapper
 {
 
     use \SetCMS\FactoryTrait;

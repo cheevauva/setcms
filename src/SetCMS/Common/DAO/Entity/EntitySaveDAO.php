@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Entity\DAO;
+namespace SetCMS\Common\DAO\Entity;
 
-use SetCMS\Entity;
+use SetCMS\Common\Entity\Entity;
 use SetCMS\UUID;
 
 abstract class EntitySaveDAO extends EntityCommonDAO

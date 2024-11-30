@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page\DAO;
 
-use SetCMS\Entity\DAO\EntityRetrieveByIdDAO;
+use SetCMS\Common\DAO\Entity\EntityRetrieveByIdDAO;
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\Exception\PageNotFoundException;
 

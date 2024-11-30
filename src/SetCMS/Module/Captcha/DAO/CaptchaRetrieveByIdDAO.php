@@ -7,7 +7,7 @@ namespace SetCMS\Module\Captcha\DAO;
 use SetCMS\Module\Captcha\CaptchaEntity;
 use SetCMS\Module\Captcha\Exception\CaptchaNotFoundException;
 
-class CaptchaRetrieveByIdDAO extends \SetCMS\Entity\DAO\EntityRetrieveByIdDAO
+class CaptchaRetrieveByIdDAO extends \SetCMS\Common\DAO\Entity\EntityRetrieveByIdDAO
 {
 
     use CaptchaEntityDbDAOTrait;

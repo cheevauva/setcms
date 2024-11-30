@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\DAO;
 
-use SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO;
+use SetCMS\Common\DAO\Entity\EntityRetrieveByCriteriaDAO;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\Module\Post\Exception\PostNotFoundException;
 

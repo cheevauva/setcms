@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Block\DAO;
 
-use SetCMS\Entity\DAO\EntitySaveDAO;
+use SetCMS\Common\DAO\Entity\EntitySaveDAO;
 use SetCMS\Module\Block\BlockEntity;
 
 class BlockSaveDAO extends EntitySaveDAO
