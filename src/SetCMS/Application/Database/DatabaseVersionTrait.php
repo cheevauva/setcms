@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Database;
+namespace SetCMS\Application\Database;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\DBAL\Schema\Table;
 
-trait VersionTrait
+trait DatabaseVersionTrait
 {
 
     private function addDefaultColumns(Table $table)

@@ -12,7 +12,7 @@ trait UserSessionGenericDAO
 
     use \SetCMS\Traits\DITrait;
     use \SetCMS\Traits\FactoryTrait;
-    use \SetCMS\Database\MainConnectionTrait;
+    use \SetCMS\Application\Database\DatabaseMainConnectionTrait;
 
     protected function mapper(): UserSessionMapper
     {

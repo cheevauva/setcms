@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Database\MainMigration;
+namespace SetCMS\Application\Database\MainMigration;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -15,7 +15,7 @@ use SetCMS\Module\UserSession\UserSessionConstrants;
 final class Version20220430204715 extends AbstractMigration
 {
 
-    use \SetCMS\Database\VersionTrait;
+    use \SetCMS\Application\Database\DatabaseVersionTrait;
 
     public function getDescription(): string
     {

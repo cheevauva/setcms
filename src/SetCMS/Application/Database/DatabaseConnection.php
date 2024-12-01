@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Database;
+namespace SetCMS\Application\Database;
 
 use Psr\Container\ContainerInterface;
 use Doctrine\DBAL\DriverManager;
 
-abstract class Connection extends \Doctrine\DBAL\Connection
+abstract class DatabaseConnection extends \Doctrine\DBAL\Connection
 {
 
     public function __construct(ContainerInterface $container)

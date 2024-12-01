@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use SetCMS\Database\MainConnection;
+use SetCMS\Application\Database\DatabaseMainConnection;
 
 define('ROOT_PATH', dirname(__DIR__));
 
@@ -16,8 +16,8 @@ while (true) {
 
 require_once ROOT_PATH . '/bootstrap.php';
 
-$namespace = 'SetCMS\Database\MainMigration';
+$namespace = 'SetCMS\Application\Database\MainMigration';
 $directory = ROOT_PATH . '/src/SetCMS/Database/MainMigration';
-$connection = $container->get(MainConnection::class);
+$connection = $container->get(DatabaseMainConnection::class);
 
 require __DIR__ . '/migrations.php';
