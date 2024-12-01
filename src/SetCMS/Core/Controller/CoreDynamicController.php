@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Core;
+namespace SetCMS\Core\Controller;
 
 use SetCMS\Attribute\Http\RequestMethod;
 use Psr\Http\Message\ServerRequestInterface;

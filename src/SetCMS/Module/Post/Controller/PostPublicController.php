@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Post;
+namespace SetCMS\Module\Post\Controller;
 
 use SetCMS\Module\Post\Scope\PostPublicIndexScope;
 use SetCMS\Module\Post\Scope\PostPublicReadBySlugScope;

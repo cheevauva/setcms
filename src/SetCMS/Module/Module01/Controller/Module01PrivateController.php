@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Module01;
+namespace SetCMS\Module\Module01\Controller;
 
-use \Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\Module01\DAO\Entity01RetrieveManyDAO;
 use SetCMS\Module\Module01\DAO\Entity01RetrieveByIdDAO;
 use SetCMS\Module\Module01\Scope\Module01PrivateReadScope;

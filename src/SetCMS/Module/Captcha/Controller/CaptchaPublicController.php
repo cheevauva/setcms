@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Captcha;
+namespace SetCMS\Module\Captcha\Controller;
 
 use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Module\Captcha\DAO\CaptchaRetrieveByIdDAO;

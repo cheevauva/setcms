@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Configuration;
+namespace SetCMS\Module\Configuration\Controller;
 
 use SetCMS\Module\Configuration\Scope\ConfigurationPublicMainScope;
 use SetCMS\Module\Configuration\Scope\ConfigurationPublicAdminMenuScope;

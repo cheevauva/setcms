@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Block;
+namespace SetCMS\Module\Block\Controller;
 
 use SetCMS\Module\Block\Scope\BlockPublicSectionScope;
 use SetCMS\Module\Block\DAO\BlockRetrieveManyBySectionDAO;

@@ -1,9 +1,9 @@
 <?php
 
-use SetCMS\Core\CorePublicController;
-use SetCMS\Core\CorePrivateController;
-use SetCMS\Module\Post\PostPublicController;
-use SetCMS\Module\Post\PostPrivateController;
+use SetCMS\Core\Controller\CorePublicController;
+use SetCMS\Core\Controller\CorePrivateController;
+use SetCMS\Module\Post\Controller\PostPublicController;
+use SetCMS\Module\Post\Controller\PostPrivateController;
 
 $routes = [
     'home' => ['GET', '/', PostPublicController::toRoute()->index()],

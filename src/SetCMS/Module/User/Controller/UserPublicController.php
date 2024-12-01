@@ -1,6 +1,6 @@
 <?php
 
-namespace SetCMS\Module\User;
+namespace SetCMS\Module\User\Controller;
 
 use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Module\User\Servant\UserRegistrationServant;

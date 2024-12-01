@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Post;
+namespace SetCMS\Module\Post\Controller;
 
 use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Module\Post\DAO\PostRetrieveManyDAO;

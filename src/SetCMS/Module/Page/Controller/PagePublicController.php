@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Page;
+namespace SetCMS\Module\Page\Controller;
 
 use SetCMS\Module\Page\DAO\PageRetrieveByIdDAO;
 use SetCMS\Module\Page\DAO\PageRetrieveBySlugDAO;

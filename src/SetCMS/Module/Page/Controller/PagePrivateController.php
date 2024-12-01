@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Page;
+namespace SetCMS\Module\Page\Controller;
 
 use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Module\Page\DAO\PageRetrieveManyDAO;

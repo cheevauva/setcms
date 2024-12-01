@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Menu;
+namespace SetCMS\Module\Menu\Controller;
 
 use SetCMS\Module\Menu\Scope\MenuPublicReadByContextScope;
 use SetCMS\Module\Menu\Scope\MenuPublicReadBySlugScope;

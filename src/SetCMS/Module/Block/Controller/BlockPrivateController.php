@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Block;
+namespace SetCMS\Module\Block\Controller;
 
 use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Module\Block\DAO\BlockRetrieveManyDAO;
