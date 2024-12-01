@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-use SetCMS\Contract\Servant;
-use SetCMS\Contract\Applicable;
+use SetCMS\Application\Contract\ContractServant;
+use SetCMS\Application\Contract\ContractApplicable;
 use SetCMS\Scope;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\View\Hook\ViewRenderHook;
 
-class ViewJsonRender implements Servant, Applicable
+class ViewJsonRender implements ContractServant, ContractApplicable
 {
 
     use \SetCMS\Traits\QuickTrait;

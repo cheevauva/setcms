@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Core\Servant;
 
-use SetCMS\Contract\Servant;
-use SetCMS\Contract\ContractValidateInterface;
+use SetCMS\Application\Contract\ContractServant;
+use SetCMS\Application\Contract\ContractValidateInterface;
 use SetCMS\Attribute;
 use SetCMS\Core\VO\CorePropertyMessageVO;
 use ReflectionProperty;
 
-class CorePropertySatisfyServant implements Servant
+class CorePropertySatisfyServant implements ContractServant
 {
 
     use \SetCMS\Traits\QuickTrait;

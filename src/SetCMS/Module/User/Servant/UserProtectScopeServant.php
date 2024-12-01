@@ -2,15 +2,15 @@
 
 namespace SetCMS\Module\User\Servant;
 
-use SetCMS\Contract\Servant;
-use SetCMS\Contract\Applicable;
+use SetCMS\Application\Contract\ContractServant;
+use SetCMS\Application\Contract\ContractApplicable;
 use SetCMS\Controller\Hook\ScopeProtectionHook;
 use SetCMS\Module\User\UserEntity;
 use SetCMS\Module\User\Exception\UserForbiddenException;
 use SetCMS\Scope;
 use SetCMS\ACL;
 
-class UserProtectScopeServant implements Servant, Applicable
+class UserProtectScopeServant implements ContractServant, ContractApplicable
 {
 
     use \SetCMS\Traits\DITrait;

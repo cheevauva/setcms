@@ -6,11 +6,11 @@ namespace SetCMS\Common\DAO\Entity;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use SetCMS\Contract\Servant;
+use SetCMS\Application\Contract\ContractServant;
 use SetCMS\Common\Entity\Entity;
 use SetCMS\Common\Mapper\EntityMapper;
 
-abstract class EntityCommonDAO implements Servant
+abstract class EntityCommonDAO implements ContractServant
 {
 
     protected ?int $limit = null;

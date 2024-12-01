@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace SetCMS\Common\Mapper;
 
-use SetCMS\Contract\Servant;
+use SetCMS\Application\Contract\ContractServant;
 use SetCMS\Common\Entity\Entity;
 use SetCMS\UUID;
 
-abstract class EntityMapper implements Servant
+abstract class EntityMapper implements ContractServant
 {
 
     public ?Entity $entity = null;

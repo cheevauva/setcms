@@ -6,12 +6,12 @@ namespace SetCMS\Servant;
 
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Scope;
-use SetCMS\Contract\Servant;
+use SetCMS\Application\Contract\ContractServant;
 use SetCMS\View\Scope\ViewJsonExceptionScope;
 use SetCMS\View\Scope\ViewHtmlExceptionScope;
 use SetCMS\View\Hook\ViewRenderHook;
 
-class ViewRender implements Servant
+class ViewRender implements ContractServant
 {
 
     use \SetCMS\Traits\FactoryTrait;

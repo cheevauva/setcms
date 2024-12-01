@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace SetCMS\Application\Router\Exception;
 
-use SetCMS\Contract\NotFound;
+use SetCMS\Application\Contract\ContractNotFound;
 
-class RouterNotFoundException extends RouterException implements NotFound
+class RouterNotFoundException extends RouterException implements ContractNotFound
 {
 
     protected $message = "Маршрут не найден";

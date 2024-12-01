@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Contract;
+namespace SetCMS\Application\Contract;
 
 use SetCMS\Application\Router\RouterMatchDTO;
 

@@ -6,7 +6,7 @@ namespace SetCMS\Module\Captcha\Servant;
 
 use SetCMS\Module\Captcha\CaptchaEntity;
 
-class CaptchaResolveServant implements \SetCMS\Contract\Servant
+class CaptchaResolveServant implements \SetCMS\Application\Contract\ContractServant
 {
 
     use \SetCMS\Traits\DITrait;

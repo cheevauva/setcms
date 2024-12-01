@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-use SetCMS\Contract\Servant;
-use SetCMS\Contract\Applicable;
+use SetCMS\Application\Contract\ContractServant;
+use SetCMS\Application\Contract\ContractApplicable;
 use SetCMS\Scope;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -13,7 +13,7 @@ use SetCMS\View\Hook\ViewRenderHook;
 use SetCMS\Application\Template\TemplateFactory;
 use SetCMS\Application\Template\TemplateEnum;
 
-class ViewHtmlRender implements Servant, Applicable
+class ViewHtmlRender implements ContractServant, ContractApplicable
 {
 
     use \SetCMS\Traits\QuickTrait;

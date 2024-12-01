@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace SetCMS\Core\Servant;
 
-use SetCMS\Contract\Servant;
-use SetCMS\Contract\ContractHydrateInterface;
+use SetCMS\Application\Contract\ContractServant;
+use SetCMS\Application\Contract\ContractHydrateInterface;
 use SetCMS\Core\VO\CorePropertyMessageVO;
 
-class CorePropertyHydrateServant implements Servant
+class CorePropertyHydrateServant implements ContractServant
 {
 
     use \SetCMS\Traits\QuickTrait;

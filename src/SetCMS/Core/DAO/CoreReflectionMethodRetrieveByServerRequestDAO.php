@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Core\DAO;
 
-use SetCMS\Contract\Servant;
+use SetCMS\Application\Contract\ContractServant;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
@@ -12,7 +12,7 @@ use ReflectionMethod;
 use SetCMS\Core\DAO\CoreReflectionMethodRetrieveByMethodNameDAO;
 use SplObjectStorage;
 
-class CoreReflectionMethodRetrieveByServerRequestDAO implements Servant
+class CoreReflectionMethodRetrieveByServerRequestDAO implements ContractServant
 {
 
     use \SetCMS\Traits\FactoryTrait;

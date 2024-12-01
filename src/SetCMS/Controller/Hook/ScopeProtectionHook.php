@@ -7,7 +7,7 @@ use SetCMS\Module\User\UserEntity;
 use SetCMS\RequestAttribute;
 use Psr\Http\Message\ServerRequestInterface;
 
-class ScopeProtectionHook implements \SetCMS\Contract\Applicable
+class ScopeProtectionHook implements \SetCMS\Application\Contract\ContractApplicable
 {
 
     use \SetCMS\Traits\EventTrait;

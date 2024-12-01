@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Block\Servant;
 
-use SetCMS\Contract\Servant;
+use SetCMS\Application\Contract\ContractServant;
 use SetCMS\Module\Block\BlockEntity;
 use SetCMS\Module\Block\DAO\BlockHasByIdDAO;
 use SetCMS\Module\Block\DAO\BlockSaveDAO;
 use SetCMS\Module\Block\Exception\BlockAlreadyExistsException;
 
-class BlockCreateServant implements Servant
+class BlockCreateServant implements ContractServant
 {
 
     use \SetCMS\Traits\DITrait;

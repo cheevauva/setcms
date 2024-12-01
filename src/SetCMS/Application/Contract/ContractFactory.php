@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Contract;
+namespace SetCMS\Application\Contract;
 
-interface Factory
+interface ContractFactory
 {
 
     public function make(string $name, array $parameters = []): object;

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Module01\Servant;
 
-use SetCMS\Contract\Servant;
+use SetCMS\Application\Contract\ContractServant;
 use SetCMS\Module\Module01\Entity01Entity;
 use SetCMS\Module\Module01\DAO\Entity01RetrieveByIdDAO;
 use SetCMS\Module\Module01\DAO\Entity01SaveDAO;
 use SetCMS\Module\Module01\Exception\Entity01NotFoundException;
 
-class Entity01DeleteServant implements Servant
+class Entity01DeleteServant implements ContractServant
 {
 
     use \SetCMS\Traits\DITrait;

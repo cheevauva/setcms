@@ -13,7 +13,7 @@ use SetCMS\Attribute\Http\Parameter\UploadedFiles;
 use SetCMS\Attribute\Http\Parameter\Cookies;
 use SetCMS\Attribute\Http\Parameter\Request;
 
-class CorePropertyFetchDataFromRequestServant implements \SetCMS\Contract\Servant
+class CorePropertyFetchDataFromRequestServant implements \SetCMS\Application\Contract\ContractServant
 {
 
     use \SetCMS\Traits\FactoryTrait;

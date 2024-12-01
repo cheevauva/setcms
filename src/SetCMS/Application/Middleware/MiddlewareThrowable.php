@@ -9,9 +9,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
-use SetCMS\Contract\NotFound;
-use SetCMS\Contract\Forbidden;
-use SetCMS\Contract\NotAllow;
+use SetCMS\Application\Contract\ContractNotFound;
+use SetCMS\Application\Contract\ContractForbidden;
+use SetCMS\Application\Contract\ContractNotAllow;
 
 class MiddlewareThrowable implements MiddlewareInterface
 {
@@ -25,14 +25,14 @@ class MiddlewareThrowable implements MiddlewareInterface
         } catch (\Throwable $ex) {
             $response = $response->withStatus(500);
 
-            if ($ex instanceof NotAllow) {
+            if ($ex instanceof ContractNotAllow) {
                 $response = $response->withStatus(405);
             }
-            if ($ex instanceof NotFound) {
+            if ($ex instanceof ContractNotFound) {
                 $response = $response->withStatus(404);
             }
 
-            if ($ex instanceof Forbidden) {
+            if ($ex instanceof ContractForbidden) {
                 $response = $response->withStatus(403);
             }
 

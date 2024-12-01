@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Contract;
+namespace SetCMS\Application\Contract;
 
-interface Servant
+interface ContractServant
 {
 
     public function serve(): void;

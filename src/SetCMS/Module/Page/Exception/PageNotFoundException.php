@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page\Exception;
 
-use SetCMS\Contract\NotFound;
+use SetCMS\Application\Contract\ContractNotFound;
 
-class PageNotFoundException extends PageException implements NotFound
+class PageNotFoundException extends PageException implements ContractNotFound
 {
 
     public function label(): string

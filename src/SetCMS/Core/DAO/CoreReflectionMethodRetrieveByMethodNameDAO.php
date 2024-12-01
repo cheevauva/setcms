@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace SetCMS\Core\DAO;
 
-use SetCMS\Contract\Servant;
+use SetCMS\Application\Contract\ContractServant;
 use ReflectionParameter;
 use ReflectionMethod;
 use SplObjectStorage;
 use SetCMS\Core\Exception\CoreClassNotFoundException;
 use SetCMS\Core\Exception\CoreMethodNotFoundException;
 
-class CoreReflectionMethodRetrieveByMethodNameDAO implements Servant
+class CoreReflectionMethodRetrieveByMethodNameDAO implements ContractServant
 {
 
     use \SetCMS\Traits\DITrait;
@@ -79,7 +79,7 @@ class CoreReflectionMethodRetrieveByMethodNameDAO implements Servant
         }
 
         switch ($type) {
-            case Factory::class:
+            case ContractFactory::class:
                 return $this->factory();
             case ContainerInterface::class:
                 return $this->container;

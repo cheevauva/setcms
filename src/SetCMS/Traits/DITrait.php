@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Traits;
 
 use Psr\Container\ContainerInterface;
-use SetCMS\Contract\Factory;
+use SetCMS\Application\Contract\ContractFactory;
 
 trait DITrait
 {
@@ -17,9 +17,9 @@ trait DITrait
         $this->container = $container;
     }
 
-    protected function factory(): Factory
+    protected function factory(): ContractFactory
     {
-        return $this->container->get(Factory::class);
+        return $this->container->get(ContractFactory::class);
     }
 
 }

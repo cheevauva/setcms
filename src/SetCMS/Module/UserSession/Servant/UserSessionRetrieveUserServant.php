@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\UserSession\Servant;
 
-use SetCMS\Contract\Servant;
-use SetCMS\Contract\Applicable;
+use SetCMS\Application\Contract\ContractServant;
+use SetCMS\Application\Contract\ContractApplicable;
 use SetCMS\UUID;
 use SetCMS\Module\UserSession\DAO\UserSessionRetrieveByIdDAO;
 use SetCMS\Module\User\DAO\UserRetrieveByIdDAO;
 use SetCMS\Module\UserSession\UserSessionEntity;
 use SetCMS\Module\User\UserEntity;
 
-class UserSessionRetrieveUserServant implements Servant
+class UserSessionRetrieveUserServant implements ContractServant
 {
 
     use \SetCMS\Traits\DITrait;

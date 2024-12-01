@@ -2,7 +2,7 @@
 
 namespace SetCMS\Application\Router;
 
-use SetCMS\Contract\ContractRouterInterface as RouterInterface;
+use SetCMS\Application\Contract\ContractRouterInterface as RouterInterface;
 use SetCMS\Application\Router\RouterMatchDTO;
 use SetCMS\Application\Router\Exception\RouterNotFoundException;
 use Psr\Container\ContainerInterface;

@@ -11,7 +11,7 @@ use SetCMS\Module\User\Event\UserRegistrationEvent;
 use SetCMS\Module\User\UserRoleEnum;
 use SetCMS\Module\User\Exception\UserAlreadyExistsException;
 
-class UserRegistrationServant implements \SetCMS\Contract\Servant
+class UserRegistrationServant implements \SetCMS\Application\Contract\ContractServant
 {
 
     use \SetCMS\Traits\DITrait;

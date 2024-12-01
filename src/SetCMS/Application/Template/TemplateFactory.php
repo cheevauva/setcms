@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Application\Template;
 
-use SetCMS\Contract\ContractTemplateEngineInterface;
+use SetCMS\Application\Contract\ContractTemplateEngineInterface;
 
 class TemplateFactory
 {

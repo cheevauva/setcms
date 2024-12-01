@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-use SetCMS\Contract\Servant;
-use SetCMS\Contract\Applicable;
+use SetCMS\Application\Contract\ContractServant;
+use SetCMS\Application\Contract\ContractApplicable;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Controller\Hook\ParseBodyHook;
 
-class ParseBodyRequestServant implements Servant, Applicable
+class ParseBodyRequestServant implements ContractServant, ContractApplicable
 {
 
     use \SetCMS\Traits\FactoryTrait;

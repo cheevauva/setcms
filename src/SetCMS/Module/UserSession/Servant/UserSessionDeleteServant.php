@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\UserSession\Servant;
 
-use SetCMS\Contract\Servant;
+use SetCMS\Application\Contract\ContractServant;
 use SetCMS\Module\UserSession\UserSessionEntity;
 use SetCMS\Module\UserSession\DAO\UserSessionRetrieveByIdDAO;
 use SetCMS\Module\UserSession\DAO\UserSessionSaveDAO;
 use SetCMS\Module\UserSession\Exception\UserSessionNotFoundException;
 
-class UserSessionDeleteServant implements Servant
+class UserSessionDeleteServant implements ContractServant
 {
 
     use \SetCMS\Traits\DITrait;

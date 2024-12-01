@@ -8,7 +8,7 @@ use SetCMS\Module\Menu\MenuAction\Entity\MenuActionEntity;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\User\UserEntity;
 
-class MenuRetrieveActionsByContextHook implements \SetCMS\Contract\Servant
+class MenuRetrieveActionsByContextHook implements \SetCMS\Application\Contract\ContractServant
 {
 
     use \SetCMS\Traits\HookTrait;

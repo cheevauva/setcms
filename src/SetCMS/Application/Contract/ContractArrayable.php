@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Contract;
+namespace SetCMS\Application\Contract;
 
-interface Arrayable
+interface ContractArrayable
 {
 
     public function toArray(): array;

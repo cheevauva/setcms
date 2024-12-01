@@ -10,13 +10,13 @@ use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Uri;
 use SetCMS\UUID;
 use SetCMS\Scope;
-use SetCMS\Contract\ContractRouterInterface;
-use SetCMS\Contract\ContractTemplateEngineInterface;
-use SetCMS\Contract\Applicable;
+use SetCMS\Application\Contract\ContractRouterInterface;
+use SetCMS\Application\Contract\ContractTemplateEngineInterface;
+use SetCMS\Application\Contract\ContractApplicable;
 use SetCMS\Core\DAO\CoreReflectionMethodRetrieveByServerRequestDAO;
 use SetCMS\Servant\ViewHtmlRender;
 
-abstract class TemplateGeneral implements ContractTemplateEngineInterface, Applicable
+abstract class TemplateGeneral implements ContractTemplateEngineInterface, ContractApplicable
 {
 
     use \SetCMS\Traits\DITrait;

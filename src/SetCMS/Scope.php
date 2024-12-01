@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace SetCMS;
 
-use SetCMS\Contract\Arrayable;
-use SetCMS\Contract\ContractValidateInterface;
-use SetCMS\Contract\ContractScopeInterface;
-use SetCMS\Contract\ContractHydrateInterface;
+use SetCMS\Application\Contract\ContractArrayable;
+use SetCMS\Application\Contract\ContractValidateInterface;
+use SetCMS\Application\Contract\ContractScopeInterface;
+use SetCMS\Application\Contract\ContractHydrateInterface;
 use SetCMS\Core\Servant\CorePropertyFetchDataFromRequestServant;
 use SetCMS\Core\Servant\CorePropertyHydrateServant;
 use SetCMS\Core\Servant\CorePropertySatisfyServant;
 use Psr\Http\Message\ServerRequestInterface;
 
-abstract class Scope implements ContractHydrateInterface, ContractValidateInterface, Arrayable, ContractScopeInterface
+abstract class Scope implements ContractHydrateInterface, ContractValidateInterface, ContractArrayable, ContractScopeInterface
 {
 
     private array $messages = [];

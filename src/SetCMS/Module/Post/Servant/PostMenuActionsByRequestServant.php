@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post\Servant;
 
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Contract\ContractRouterInterface;
+use SetCMS\Application\Contract\ContractRouterInterface;
 use SetCMS\Module\Menu\Hook\MenuRetrieveActionsByContextHook;
 use SetCMS\Module\Menu\MenuAction\Entity\MenuActionEntity;
 use SetCMS\Module\Post\Scope\PostPublicReadBySlugScope;
 use SetCMS\Module\Post\Scope\PostPublicIndexScope;
 use SetCMS\Module\Post\DAO\PostRetrieveBySlugDAO;
 
-class PostMenuActionsByRequestServant implements \SetCMS\Contract\Servant, \SetCMS\Contract\Applicable
+class PostMenuActionsByRequestServant implements \SetCMS\Application\Contract\ContractServant, \SetCMS\Application\Contract\ContractApplicable
 {
 
     use \SetCMS\Traits\DITrait;

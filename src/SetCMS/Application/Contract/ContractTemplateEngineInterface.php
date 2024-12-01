@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Contract;
+namespace SetCMS\Application\Contract;
 
-use SetCMS\Contract\Applicable;
+use SetCMS\Application\Contract\ContractApplicable;
 
-interface ContractTemplateEngineInterface extends Applicable
+interface ContractTemplateEngineInterface extends ContractApplicable
 {
 
     public function assign(string $name, mixed $value): void;

@@ -6,9 +6,9 @@ namespace SetCMS;
 
 use Psr\Container\ContainerInterface;
 use DI\FactoryInterface as DIFactoryInterface;
-use SetCMS\Contract\Factory as FactoryInterface;
+use SetCMS\Application\Contract\ContractFactory;
 
-class Factory implements FactoryInterface
+class Factory implements ContractFactory
 {
 
     use \SetCMS\Traits\AsTrait;

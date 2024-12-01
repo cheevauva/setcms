@@ -4,21 +4,21 @@ namespace SetCMS;
 
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use SetCMS\Contract\Factory;
+use SetCMS\Application\Contract\ContractFactory;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 use Psr\EventDispatcher\StoppableEventInterface;
-use SetCMS\Contract\Applicable;
-use SetCMS\Contract\Servant;
+use SetCMS\Application\Contract\ContractApplicable;
+use SetCMS\Application\Contract\ContractServant;
 
 class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherInterface
 {
 
     use \SetCMS\Traits\AsTrait;
 
-    private Factory $factory;
+    private ContractFactory $factory;
     private static EventDispatcher $instance;
 
-    public function __construct(ContainerInterface $container, Factory $factory)
+    public function __construct(ContainerInterface $container, ContractFactory $factory)
     {
         static::$instance = $this;
 
@@ -42,17 +42,17 @@ class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherI
 
             $listenerObject = $this->factory->make($listener);
 
-            if ($listenerObject instanceof Applicable) {
+            if ($listenerObject instanceof ContractApplicable) {
                 $listenerObject->from($event);
             }
 
-            if ($listenerObject instanceof Servant) {
+            if ($listenerObject instanceof ContractServant) {
                 $listenerObject->serve();
             } else {
                 $this->factory->make($listener)($event, $eventName, $this);
             }
 
-            if ($listenerObject instanceof Applicable) {
+            if ($listenerObject instanceof ContractApplicable) {
                 $listenerObject->to($event);
             }
         }

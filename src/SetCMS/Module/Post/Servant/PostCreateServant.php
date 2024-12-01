@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Servant;
 
-use SetCMS\Contract\Servant;
+use SetCMS\Application\Contract\ContractServant;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\Module\Post\DAO\PostHasByIdDAO;
 use SetCMS\Module\Post\DAO\PostSaveDAO;
 use SetCMS\Module\Post\Exception\PostAlreadyExistsException;
 
-class PostCreateServant implements Servant
+class PostCreateServant implements ContractServant
 {
 
     use \SetCMS\Traits\DITrait;

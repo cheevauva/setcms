@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Traits;
 
 use SetCMS\Scope;
-use SetCMS\Contract\Servant;
+use SetCMS\Application\Contract\ContractServant;
 use SetCMS\Core\Servant\CorePropertySatisfyServant;
 use SetCMS\Core\Servant\CorePropertyHydrateServant;
 use SetCMS\Core\Servant\CorePropertyFetchDataFromRequestServant;
@@ -24,7 +24,7 @@ trait ControllerTrait
         ], $scope);
     }
 
-    protected function serveServantWithScope(Servant $servant, Scope $scope): void
+    protected function serveServantWithScope(ContractServant $servant, Scope $scope): void
     {
         try {
             $scope->to($servant);
@@ -54,7 +54,7 @@ trait ControllerTrait
         }
     }
 
-    private function serve(string|Servant $servant, Scope $scope): Scope
+    private function serve(string|ContractServant $servant, Scope $scope): Scope
     {
         if (is_string($servant)) {
             $servant = $this->factory()->make($servant);
