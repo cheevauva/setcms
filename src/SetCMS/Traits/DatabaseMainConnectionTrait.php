@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Application\Database;
+namespace SetCMS\Traits;
 
 use SetCMS\Application\Database\DatabaseMainConnection;
 

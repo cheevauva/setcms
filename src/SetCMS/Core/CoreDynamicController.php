@@ -16,7 +16,7 @@ use SetCMS\Application\Router\Exception\RouterMethodRequestNotDefinedException;
 abstract class CoreDynamicController
 {
 
-    use \SetCMS\Application\Router\RouterTrait;
+    use \SetCMS\Traits\RouterTrait;
     use \SetCMS\Traits\DITrait;
     use \SetCMS\Traits\EventDispatcherTrait;
 

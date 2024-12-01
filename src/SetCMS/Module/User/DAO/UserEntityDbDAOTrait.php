@@ -11,7 +11,7 @@ trait UserEntityDbDAOTrait
 {
 
     use \SetCMS\Traits\DITrait;
-    use \SetCMS\Application\Database\DatabaseMainConnectionTrait;
+    use \SetCMS\Traits\DatabaseMainConnectionTrait;
     use \SetCMS\Traits\FactoryTrait;
 
     protected function mapper(): UserEntityDbMapper

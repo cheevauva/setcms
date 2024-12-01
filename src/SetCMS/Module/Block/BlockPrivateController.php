@@ -19,7 +19,7 @@ class BlockPrivateController
 {
 
     use \SetCMS\Traits\ControllerTrait;
-    use \SetCMS\Application\Router\RouterTrait;
+    use \SetCMS\Traits\RouterTrait;
 
     #[RequestMethod('GET')]
     public function index(BlockPrivateIndexScope $scope, BlockRetrieveManyDAO $servant): BlockPrivateIndexScope

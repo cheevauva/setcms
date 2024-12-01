@@ -12,7 +12,7 @@ trait PageGenericDAO
 
     use \SetCMS\Traits\DITrait;
     use \SetCMS\Traits\FactoryTrait;
-    use \SetCMS\Application\Database\DatabaseMainConnectionTrait;
+    use \SetCMS\Traits\DatabaseMainConnectionTrait;
 
     protected function mapper(): PageMapper
     {

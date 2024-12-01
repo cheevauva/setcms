@@ -13,7 +13,7 @@ class PostPublicController
 {
 
     use \SetCMS\Traits\ControllerTrait;
-    use \SetCMS\Application\Router\RouterTrait;
+    use \SetCMS\Traits\RouterTrait;
 
     public function index(PostPublicIndexScope $scope, PostRetrieveManyDAO $servant): PostPublicIndexScope
     {

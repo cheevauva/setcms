@@ -12,7 +12,7 @@ trait Entity01GenericDAO
 
     use \SetCMS\Traits\DITrait;
     use \SetCMS\Traits\FactoryTrait;
-    use \SetCMS\Application\Database\DatabaseMainConnectionTrait;
+    use \SetCMS\Traits\DatabaseMainConnectionTrait;
 
     protected function mapper(): Entity01Mapper
     {
