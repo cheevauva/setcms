@@ -3,7 +3,7 @@
 namespace SetCMS\Module\User\Scope;
 
 use SetCMS\Scope;
-use SetCMS\Module\User\UserEntity;
+use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\Attribute\Http\Parameter\Attributes;
 
 class UserPublicProfileScope extends Scope

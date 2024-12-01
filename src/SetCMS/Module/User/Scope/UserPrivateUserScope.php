@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace SetCMS\Module\User\Scope;
 
 use SetCMS\UUID;
-use SetCMS\Module\User\UserEntity;
-use SetCMS\Module\User\UserRoleEnum;
+use SetCMS\Module\User\Entity\UserEntity;
+use SetCMS\Module\User\Enum\UserRoleEnum;
 
 class UserPrivateUserScope extends UserPrivateScope
 {

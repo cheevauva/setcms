@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\DAO;
 
-use SetCMS\Module\User\UserEntity;
+use SetCMS\Module\User\Entity\UserEntity;
 
 class UserSaveDAO extends \SetCMS\Common\DAO\Entity\EntitySaveDAO
 {
 
-    use UserEntityDbDAOTrait;
+    use UserCommonDAO;
 
     public UserEntity $user;
 

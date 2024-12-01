@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\User\UserEntity;
+namespace SetCMS\Module\User\VO;
 
-class PasswordVO
+class UserPasswordVO
 {
 
     public static function passwordVerify(string $password, string $hash): bool
@@ -30,5 +30,4 @@ class PasswordVO
     {
         return static::passwordVerify($password, $this->password);
     }
-
 }

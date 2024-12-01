@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\Mapper;
 
-use SetCMS\Module\User\UserEntity;
-use SetCMS\Module\User\UserRoleEnum;
+use SetCMS\Module\User\Entity\UserEntity;
+use SetCMS\Module\User\Enum\UserRoleEnum;
 
-class UserEntityDbMapper extends \SetCMS\Common\Mapper\EntityMapper
+class UserMapper extends \SetCMS\Common\Mapper\EntityMapper
 {
 
     use \SetCMS\Traits\FactoryTrait;

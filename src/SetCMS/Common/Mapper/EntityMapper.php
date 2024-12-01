@@ -39,6 +39,10 @@ abstract class EntityMapper implements ContractServant
 
     protected function entity4row(): void
     {
+        if (empty($this->entity) && !class_exists($this->row['entity_type'])) {
+            throw new \Exception(sprintf('row.entity_type(%s) not found', $this->row['entity_type']));
+        }
+        
         $this->entity = $this->entity ?? new $this->row['entity_type'];
         $this->entity->id = new UUID($this->row['id']);
         $this->entity->dateCreated = new \DateTime($this->row['date_created']);

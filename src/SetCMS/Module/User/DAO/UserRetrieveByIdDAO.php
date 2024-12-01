@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\DAO;
 
-use SetCMS\Module\User\UserEntity;
+use SetCMS\Module\User\Entity\UserEntity;
 
 class UserRetrieveByIdDAO extends \SetCMS\Common\DAO\Entity\EntityRetrieveByIdDAO
 {
 
-    use UserEntityDbDAOTrait;
+    use UserCommonDAO;
 
     public UserEntity $user;
 

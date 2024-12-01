@@ -10,7 +10,7 @@ use SetCMS\UUID;
 use SetCMS\Module\UserSession\DAO\UserSessionRetrieveByIdDAO;
 use SetCMS\Module\User\DAO\UserRetrieveByIdDAO;
 use SetCMS\Module\UserSession\UserSessionEntity;
-use SetCMS\Module\User\UserEntity;
+use SetCMS\Module\User\Entity\UserEntity;
 
 class UserSessionRetrieveUserServant implements ContractServant
 {

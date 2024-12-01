@@ -7,7 +7,7 @@ namespace SetCMS\Module\User\Scope;
 use SetCMS\UUID;
 use SetCMS\Attribute\Http\Parameter\Attributes;
 use SetCMS\Module\User\DAO\UserRetrieveByIdDAO;
-use SetCMS\Module\User\UserEntity;
+use SetCMS\Module\User\Entity\UserEntity;
 
 class UserPrivateReadScope extends UserPrivateScope
 {

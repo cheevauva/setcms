@@ -6,7 +6,7 @@ namespace SetCMS\Module\Menu\Hook;
 
 use SetCMS\Module\Menu\MenuAction\Entity\MenuActionEntity;
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Module\User\UserEntity;
+use SetCMS\Module\User\Entity\UserEntity;
 
 class MenuRetrieveActionsByContextHook implements \SetCMS\Application\Contract\ContractServant
 {

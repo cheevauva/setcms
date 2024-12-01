@@ -8,7 +8,7 @@ use SetCMS\Attribute\Http\Parameter\Body;
 use SetCMS\Module\User\Scope\UserPrivateUserScope;
 use SetCMS\Module\User\DAO\UserRetrieveByIdDAO;
 use SetCMS\Module\User\DAO\UserSaveDAO;
-use SetCMS\Module\User\UserEntity;
+use SetCMS\Module\User\Entity\UserEntity;
 
 class UserPrivateUpdateScope extends UserPrivateScope
 {

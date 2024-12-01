@@ -2,7 +2,7 @@
 
 namespace SetCMS\Module\User\Scope;
 
-use SetCMS\Module\User\UserEntity;
+use SetCMS\Module\User\Entity\UserEntity;
 
 class UserPublicRegistrationScope extends \SetCMS\Scope 
 {

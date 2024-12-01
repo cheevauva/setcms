@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Module\UserSession\Servant;
 
 use SetCMS\Application\Contract\ContractServant;
-use SetCMS\Module\User\UserEntity;
+use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\Module\UserSession\UserSessionEntity;
 use SetCMS\Module\UserSession\DAO\UserSessionSaveDAO;
 

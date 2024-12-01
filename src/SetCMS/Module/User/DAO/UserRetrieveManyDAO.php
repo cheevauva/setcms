@@ -7,5 +7,5 @@ namespace SetCMS\Module\User\DAO;
 class UserRetrieveManyDAO extends \SetCMS\Common\DAO\Entity\EntityRetrieveManyDAO
 {
 
-    use UserEntityDbDAOTrait;
+    use UserCommonDAO;
 }

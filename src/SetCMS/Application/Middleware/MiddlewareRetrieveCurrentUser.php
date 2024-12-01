@@ -10,7 +10,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\Module\UserSession\Servant\UserSessionRetrieveUserServant;
-use SetCMS\Module\User\UserEntity;
+use SetCMS\Module\User\Entity\UserEntity;
 
 class MiddlewareRetrieveCurrentUser implements MiddlewareInterface
 {

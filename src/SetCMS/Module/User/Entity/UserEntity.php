@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\User;
+namespace SetCMS\Module\User\Entity;
 
-use SetCMS\Module\User\UserRoleEnum;
+use SetCMS\Module\User\Enum\UserRoleEnum;
 
 class UserEntity extends \SetCMS\Common\Entity\Entity
 {

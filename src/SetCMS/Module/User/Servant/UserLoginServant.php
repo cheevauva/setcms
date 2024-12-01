@@ -7,7 +7,7 @@ namespace SetCMS\Module\User\Servant;
 use SetCMS\Module\User\DAO\UserRetrieveByUsernameDAO;
 use SetCMS\Module\User\Exception\UserNotFoundException;
 use SetCMS\Module\User\Exception\UserIncorrectPasswordException;
-use SetCMS\Module\User\UserEntity;
+use SetCMS\Module\User\Entity\UserEntity;
 
 class UserLoginServant implements \SetCMS\Application\Contract\ContractServant
 {

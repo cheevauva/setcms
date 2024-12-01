@@ -5,7 +5,7 @@ namespace SetCMS\Module\User\Servant;
 use SetCMS\Application\Contract\ContractServant;
 use SetCMS\Application\Contract\ContractApplicable;
 use SetCMS\Controller\Hook\ScopeProtectionHook;
-use SetCMS\Module\User\UserEntity;
+use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\Module\User\Exception\UserForbiddenException;
 use SetCMS\Scope;
 use SetCMS\ACL;

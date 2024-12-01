@@ -6,7 +6,7 @@ namespace SetCMS\Module\User\Scope;
 
 use SetCMS\Scope;
 use SetCMS\Module\User\Servant\UserLoginServant;
-use SetCMS\Module\User\UserEntity;
+use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\Module\UserSession\UserSessionEntity;
 use SetCMS\Module\Captcha\Servant\CaptchaUseResolvedCaptchaServant;
 use SetCMS\Module\UserSession\Servant\UserSessionCreateByUserServant;

@@ -1,6 +1,6 @@
 <?php
 
-use SetCMS\Module\User\UserRoleEnum;
+use SetCMS\Module\User\Enum\UserRoleEnum;
 
 return [
     'roles' => [

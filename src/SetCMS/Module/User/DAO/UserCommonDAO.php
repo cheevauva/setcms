@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\DAO;
 
-use SetCMS\Module\User\Mapper\UserEntityDbMapper;
+use SetCMS\Module\User\Mapper\UserMapper;
 use SetCMS\Module\User\UserContstants;
 
-trait UserEntityDbDAOTrait
+trait UserCommonDAO
 {
 
     use \SetCMS\Traits\DITrait;
     use \SetCMS\Traits\DatabaseMainConnectionTrait;
     use \SetCMS\Traits\FactoryTrait;
 
-    protected function mapper(): UserEntityDbMapper
+    protected function mapper(): UserMapper
     {
-        return UserEntityDbMapper::make($this->factory());
+        return UserMapper::make($this->factory());
     }
 
     protected function table(): string

@@ -3,7 +3,7 @@
 namespace SetCMS\Controller\Hook;
 
 use SetCMS\Scope;
-use SetCMS\Module\User\UserEntity;
+use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\RequestAttribute;
 use Psr\Http\Message\ServerRequestInterface;
 

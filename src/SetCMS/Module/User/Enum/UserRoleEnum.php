@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\User;
+namespace SetCMS\Module\User\Enum;
 
 enum UserRoleEnum: string
 {

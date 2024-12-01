@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\Servant;
 
-use SetCMS\Module\User\UserEntity;
+use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\Module\User\DAO\UserSaveDAO;
 use SetCMS\Module\User\DAO\UserRetrieveByUsernameDAO;
 use SetCMS\Module\User\Event\UserRegistrationEvent;
-use SetCMS\Module\User\UserRoleEnum;
+use SetCMS\Module\User\Enum\UserRoleEnum;
 use SetCMS\Module\User\Exception\UserAlreadyExistsException;
 
 class UserRegistrationServant implements \SetCMS\Application\Contract\ContractServant
