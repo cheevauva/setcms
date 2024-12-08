@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SetCMS;
 
 use Psr\Container\ContainerInterface;
@@ -20,22 +22,23 @@ class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherI
 
     public function __construct(ContainerInterface $container, ContractFactory $factory)
     {
-        static::$instance = $this;
-
         $this->factory = $factory;
 
         foreach ($container->get('events') as $event => $eventListeners) {
             foreach ($eventListeners as $priority => $eventListener) {
-                $this->addListener($event, $eventListener, 999999 - $priority);
+                $this->addListener($event, [$eventListener], 999999 - $priority);
             }
         }
     }
 
-    protected function callListeners(iterable $listeners, string $eventName, object $event)
+    #[\Override]
+    protected function callListeners(iterable $listeners, string $eventName, object $event): void
     {
         $stoppable = $event instanceof StoppableEventInterface;
 
         foreach ($listeners as $listener) {
+            $listener = $listener[0];
+
             if ($stoppable && $event->isPropagationStopped()) {
                 break;
             }
@@ -62,5 +65,4 @@ class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherI
     {
         return static::$instance;
     }
-
 }

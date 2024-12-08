@@ -7,31 +7,29 @@ namespace SetCMS\Traits;
 trait RouterTrait
 {
 
-    /**
-     * Creating adapter, using for create target route
-     * 
-     * @return static
-     */
-    public static function toRoute()
+    public static function toRoute(string $requestMethod, string $route)
     {
         $controller = static::class;
 
-        return new class($controller) {
+        return new class($controller, $requestMethod, $route) {
 
             protected string $controller;
+            protected string $requestMethod;
+            protected string $route;
 
-            public function __construct(string $controller)
+            public function __construct(string $controller, string $requestMethod, string $route)
             {
                 $this->controller = $controller;
+                $this->requestMethod = $requestMethod;
+                $this->route = $route;
             }
 
             public function __call($name, $arguments)
             {
                 unset($arguments);
 
-                return sprintf('%s::%s', $this->controller, $name);
+                return [$this->requestMethod, $this->route, sprintf('%s::%s', $this->controller, $name)];
             }
         };
     }
-
 }

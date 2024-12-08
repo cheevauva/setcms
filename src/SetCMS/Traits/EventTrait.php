@@ -3,27 +3,12 @@
 namespace SetCMS\Traits;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use SetCMS\EventDispatcher;
 
 trait EventTrait
 {
 
-    public function dispatch(?object $dispatcher = null): self
+    public function dispatch(EventDispatcherInterface $dispatcher): void
     {
-        if (is_null($dispatcher)) {
-            $dispatcher = EventDispatcher::instance();
-        }
-
-        if ($dispatcher instanceof EventDispatcherInterface) {
-            $dispatcher->dispatch($this);
-        }
-
-        return $this;
+        $dispatcher->dispatch($this);
     }
-
-    public function __invoke()
-    {
-        $this->dispatch();
-    }
-
 }

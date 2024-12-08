@@ -16,7 +16,7 @@ services:
             context: ./composer
         volumes:
             - ../../:/setcms
-        command: composer.phar install --prefer-dist --no-dev --no-scripts --no-plugins --no-interaction --no-progress
+        command: composer.phar update && composer.phar install --prefer-dist --no-dev --no-scripts --no-plugins --no-interaction --no-progress
     php:
         image: setcms_dev_php:latest
         build:

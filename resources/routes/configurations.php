@@ -4,5 +4,5 @@ declare(strict_types=1);
 
 use SetCMS\Module\Configuration\Controller\ConfigurationPublicController;
 
-$routes['configurations_main'] = ['GET', '/sub/configurations/main', ConfigurationPublicController::toRoute()->main()];
-$routes['admin_menu'] = ['GET', '/~/menu', ConfigurationPublicController::toRoute()->adminMemu()];
+$routes['configurations_main'] = ConfigurationPublicController::toRoute('GET', '/sub/configurations/main')->main();
+$routes['admin_menu'] = ConfigurationPublicController::toRoute('GET', '/~/menu')->adminMemu();

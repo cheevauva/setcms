@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Application\Database;
+namespace SetCMS\Module\Migration\Traits;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\DBAL\Schema\Table;
 
-trait DatabaseVersionTrait
+trait MigrationVersionTrait
 {
 
     private function addDefaultColumns(Table $table)

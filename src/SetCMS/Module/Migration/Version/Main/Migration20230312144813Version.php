@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Application\Database\MainMigration;
+namespace SetCMS\Module\Migration\Version\Main;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 use SetCMS\Module\Block\BlockConstrants;
 use Doctrine\DBAL\Types\Types;
 
-final class Version20230312144813 extends AbstractMigration
+final class Migration20230312144813Version extends AbstractMigration
 {
 
-    use \SetCMS\Application\Database\DatabaseVersionTrait;
+    use \SetCMS\Module\Migration\Traits\MigrationVersionTrait;
 
     public function getDescription(): string
     {

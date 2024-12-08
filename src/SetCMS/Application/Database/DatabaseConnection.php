@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace SetCMS\Application\Database;
 
+use Doctrine\DBAL\Connection;
 use Psr\Container\ContainerInterface;
 use Doctrine\DBAL\DriverManager;
 
-abstract class DatabaseConnection extends \Doctrine\DBAL\Connection
+abstract class DatabaseConnection extends Connection
 {
 
     public function __construct(ContainerInterface $container)
@@ -40,7 +41,7 @@ abstract class DatabaseConnection extends \Doctrine\DBAL\Connection
         $createDriverMethod = (new \ReflectionClass(DriverManager::class))->getMethod('createDriver');
         $createDriverMethod->setAccessible(true);
 
-        return parent::__construct($params, $createDriverMethod->invoke(null, $params));
+        return parent::__construct($params, $createDriverMethod->invoke(null, $env->get('DRIVER') , null));
     }
 
     private function env(array $env, string $prefix)

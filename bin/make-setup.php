@@ -12,17 +12,17 @@ $zip->open(dirname(__DIR__) . '/cache/setcms.zip', ZipArchive::CREATE | ZipArchi
 /** @var SplFileInfo[] $files */
 $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($rootPath), RecursiveIteratorIterator::LEAVES_ONLY);
 
+$ignoreItems = [
+    '.git/',
+    dirname(__DIR__) . '/cache/',
+    dirname(__DIR__) . '/composer.phar',
+];
+
 foreach ($files as $name => $file) {
-    if (strpos($file, '.git/') !== false) {
-        continue;
-    }
-
-    if (strpos($file, dirname(__DIR__) . '/cache/') !== false) {
-        continue;
-    }
-
-    if (strpos($file, dirname(__DIR__) . '/composer.phar') !== false) {
-        continue;
+    foreach ($ignoreItems as $ignoreItem) {
+        if (strpos($file, $ignoreItem) !== false) {
+            continue 2;
+        }
     }
 
     if (!$file->isDir()) {

@@ -16,6 +16,7 @@ class ViewRender implements ContractServant
 
     use \SetCMS\Traits\FactoryTrait;
     use \SetCMS\Traits\DITrait;
+    use \SetCMS\Traits\EventDispatcherTrait;
 
     public mixed $mixedValue = null;
     public ServerRequestInterface $request;
@@ -34,7 +35,7 @@ class ViewRender implements ContractServant
             $hook = new ViewRenderHook;
             $hook->data = $object;
             $hook->request = $this->request;
-            $hook->dispatch();
+            $hook->dispatch($this->eventDispatcher());
 
             $this->content = $hook->content ?? '';
             $this->contentType = $hook->contentType ?? '';

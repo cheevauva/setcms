@@ -3,11 +3,15 @@
 declare(strict_types=1);
 
 use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\Generator\ClassNameGenerator;
+use Doctrine\Migrations\Finder\MigrationFinder;
 use Doctrine\Migrations\Configuration\Configuration;
 use Doctrine\Migrations\Configuration\Connection\ExistingConnection;
 use Doctrine\Migrations\Metadata\Storage\TableMetadataStorageConfiguration;
 use Doctrine\Migrations\Tools\Console\Command;
 use Doctrine\Migrations\Configuration\Migration\ExistingConfiguration;
+use SetCMS\Module\Migration\Doctrine\MigrationDoctrineClassNameGenerator;
+use SetCMS\Module\Migration\Doctrine\MigrationDoctrineCustomGlobFinder;
 use Symfony\Component\Console\Application;
 
 if (empty($directory) || empty($namespace) || empty($connection)) {
@@ -20,7 +24,7 @@ while (true) {
 
     try {
         // ждем пока бд подниментся (на деве, на проде уже должно быть все подня)
-        $connection->connect();
+        $connection->executeQuery('SELECT 1');
         break;
     } catch (Exception $ex) {
         sleep(1);
@@ -42,6 +46,8 @@ $storageConfiguration->setTableName('migrations');
 $configuration->setMetadataStorageConfiguration($storageConfiguration);
 
 $dependencyFactory = DependencyFactory::fromConnection(new ExistingConfiguration($configuration), new ExistingConnection($connection));
+$dependencyFactory->setDefinition(ClassNameGenerator::class, fn(): MigrationDoctrineClassNameGenerator => new MigrationDoctrineClassNameGenerator());
+$dependencyFactory->setDefinition(MigrationFinder::class, fn(): MigrationDoctrineCustomGlobFinder => new MigrationDoctrineCustomGlobFinder());
 
 $cli = new Application(sprintf('Doctrine Migrations %s', $namespace));
 $cli->setCatchExceptions(true);

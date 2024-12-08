@@ -6,16 +6,16 @@ use SetCMS\Module\Post\Controller\PostPublicController;
 use SetCMS\Module\Post\Controller\PostPrivateController;
 
 $routes = [
-    'home' => ['GET', '/', PostPublicController::toRoute()->index()],
-    'home_admin' => ['GET', '/~', PostPrivateController::toRoute()->index()],
-    'action_record' => ['GET|POST|DELETE|PUT|OPTIONS|PATCH', '/[a:module]/[a:action]/[g:id]', CorePublicController::toRoute()->dynamicAction()],
-    'action' => ['GET|POST|DELETE|PUT|OPTIONS|PATCH', '/[a:module]/[a:action]', CorePublicController::toRoute()->dynamicAction()],
-    'do_action_record' => ['GET|POST|DELETE|PUT|OPTIONS|PATCH', '/[a:module]/[a:action]/[g:id]', CorePublicController::toRoute()->dynamicAction()],
-    'do_action' => ['GET|POST|DELETE|PUT|OPTIONS|PATCH', '/[a:module]/[a:action]', CorePublicController::toRoute()->dynamicAction()],
-    'action_record_admin' => ['GET|POST|DELETE|PUT|OPTIONS|PATCH', '/~/[a:module]/[a:action]/[g:id]', CorePrivateController::toRoute()->dynamicAction()],
-    'action_admin' => ['GET|POST|DELETE|PUT|OPTIONS|PATCH', '/~/[a:module]/[a:action]', CorePrivateController::toRoute()->dynamicAction()],
-    'do_action_record_admin' => ['POST|DELETE|PUT|OPTIONS|PATCH', '/~/[a:module]/[a:action]/[g:id]', CorePrivateController::toRoute()->dynamicAction()],
-    'do_action_admin' => ['POST|DELETE|PUT|OPTIONS|PATCH', '/~/[a:module]/[a:action]', CorePrivateController::toRoute()->dynamicAction()],
+    'home' => PostPublicController::toRoute('GET', '/')->index(),
+    'home_admin' => PostPrivateController::toRoute('GET', '/~')->index(),
+    'action_record' => CorePublicController::toRoute('GET|POST|DELETE|PUT|OPTIONS|PATCH', '/[a:module]/[a:action]/[g:id]')->dynamicAction(),
+    'action' => CorePublicController::toRoute('GET|POST|DELETE|PUT|OPTIONS|PATCH', '/[a:module]/[a:action]')->dynamicAction(),
+    'do_action_record' => CorePublicController::toRoute('GET|POST|DELETE|PUT|OPTIONS|PATCH', '/[a:module]/[a:action]/[g:id]')->dynamicAction(),
+    'do_action' => CorePublicController::toRoute('GET|POST|DELETE|PUT|OPTIONS|PATCH', '/[a:module]/[a:action]')->dynamicAction(),
+    'action_record_admin' => CorePrivateController::toRoute('GET|POST|DELETE|PUT|OPTIONS|PATCH', '/~/[a:module]/[a:action]/[g:id]')->dynamicAction(),
+    'action_admin' => CorePrivateController::toRoute('GET|POST|DELETE|PUT|OPTIONS|PATCH', '/~/[a:module]/[a:action]')->dynamicAction(),
+    'do_action_record_admin' => CorePrivateController::toRoute('POST|DELETE|PUT|OPTIONS|PATCH', '/~/[a:module]/[a:action]/[g:id]')->dynamicAction(),
+    'do_action_admin' => CorePrivateController::toRoute('POST|DELETE|PUT|OPTIONS|PATCH', '/~/[a:module]/[a:action]')->dynamicAction(),
 ];
 
 foreach (glob(__DIR__ . '/routes/*') as $file) {

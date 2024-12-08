@@ -1,4 +1,8 @@
 <?php
 
-$routes['menu_read_by_context'] = ['GET', '/menu/for/context', SetCMS\Module\Menu\Controller\MenuPublicController::toRoute()->readByContext()];
-$routes['menu_read_by_slug'] = ['GET', '/menu/for/[a:slug]', SetCMS\Module\Menu\Controller\MenuPublicController::toRoute()->readBySlug()];
+declare(strict_types=1);
+
+use SetCMS\Module\Menu\Controller\MenuPublicController;
+
+$routes['menu_read_by_context'] = MenuPublicController::toRoute('GET', '/menu/for/context')->readByContext();
+$routes['menu_read_by_slug'] = MenuPublicController::toRoute('GET', '/menu/for/[a:slug]')->readBySlug();
