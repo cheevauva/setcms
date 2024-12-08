@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Core\DAO;
+namespace SetCMS\Module\Dynamic\DAO;
 
 use SetCMS\Application\Contract\ContractServant;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
 use ReflectionMethod;
-use SetCMS\Core\DAO\CoreReflectionMethodRetrieveByMethodNameDAO;
+use SetCMS\Module\Dynamic\DAO\DynamicMethodRetrieveByMethodNameDAO;
 use SplObjectStorage;
 
-class CoreReflectionMethodRetrieveByServerRequestDAO implements ContractServant
+class DynamicMethodRetrieveByServerRequestDAO implements ContractServant
 {
 
     use \SetCMS\Traits\FactoryTrait;
@@ -34,7 +34,7 @@ class CoreReflectionMethodRetrieveByServerRequestDAO implements ContractServant
 
         list($className, $methodName) = explode('::', $request->getAttribute('routeTarget'));
 
-        $retrieveMethod = CoreReflectionMethodRetrieveByMethodNameDAO::make($this->factory());
+        $retrieveMethod = DynamicMethodRetrieveByMethodNameDAO::make($this->factory());
         $retrieveMethod->className = $className;
         $retrieveMethod->methodName = $methodName;
         $retrieveMethod->context = $this->getContext($request, $this->response);

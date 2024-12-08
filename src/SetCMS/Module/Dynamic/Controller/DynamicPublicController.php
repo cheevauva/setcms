@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Core\Controller;
+namespace SetCMS\Module\Dynamic\Controller;
 
-class CorePublicController extends CoreDynamicController
+class DynamicPublicController extends DynamicBaseController
 {
 
     protected function classNamePattern(): string

@@ -10,7 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
 use SetCMS\Scope;
-use SetCMS\Core\DAO\CoreReflectionMethodRetrieveByServerRequestDAO;
+use SetCMS\Module\Dynamic\DAO\DynamicMethodRetrieveByServerRequestDAO;
 use SetCMS\Controller\Hook\ScopeProtectionHook;
 
 class MiddlewareFrontController implements MiddlewareInterface
@@ -20,7 +20,7 @@ class MiddlewareFrontController implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $retrieveMethod = CoreReflectionMethodRetrieveByServerRequestDAO::make($this->factory());
+        $retrieveMethod = DynamicMethodRetrieveByServerRequestDAO::make($this->factory());
         $retrieveMethod->response = new Response;
         $retrieveMethod->request = $request;
         $retrieveMethod->serve();

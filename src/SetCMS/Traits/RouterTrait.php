@@ -7,6 +7,11 @@ namespace SetCMS\Traits;
 trait RouterTrait
 {
 
+    /**
+     * @param string $requestMethod
+     * @param string $route
+     * @return static
+     */
     public static function toRoute(string $requestMethod, string $route)
     {
         $controller = static::class;

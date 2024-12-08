@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Core\Exception;
+namespace SetCMS\Module\Dynamic\Exception;
 
-class CoreMethodNotFoundException extends CoreClassNotFoundException
+class DynamicMethodNotFoundException extends DynamicClassNotFoundException
 {
 
     protected $message = "Метод обработчик маршрута не найден";

@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Core\DAO;
+namespace SetCMS\Module\Dynamic\DAO;
 
 use SetCMS\Application\Contract\ContractServant;
 use ReflectionParameter;
 use ReflectionMethod;
 use SplObjectStorage;
-use SetCMS\Core\Exception\CoreClassNotFoundException;
-use SetCMS\Core\Exception\CoreMethodNotFoundException;
+use SetCMS\Module\Dynamic\Exception\DynamicClassNotFoundException;
+use SetCMS\Module\Dynamic\Exception\DynamicMethodNotFoundException;
 
-class CoreReflectionMethodRetrieveByMethodNameDAO implements ContractServant
+class DynamicMethodRetrieveByMethodNameDAO implements ContractServant
 {
 
     use \SetCMS\Traits\DITrait;
@@ -31,11 +31,11 @@ class CoreReflectionMethodRetrieveByMethodNameDAO implements ContractServant
         $this->context = $this->context ?? new SplObjectStorage;
 
         if (!class_exists($this->className, true)) {
-            throw new CoreClassNotFoundException;
+            throw new DynamicClassNotFoundException;
         }
 
         if (!method_exists($this->className, $this->methodName)) {
-            throw new CoreMethodNotFoundException;
+            throw new DynamicMethodNotFoundException;
         }
 
         $this->contextEntities = [];

@@ -13,7 +13,7 @@ use SetCMS\Scope;
 use SetCMS\Application\Contract\ContractRouterInterface;
 use SetCMS\Application\Contract\ContractTemplateEngineInterface;
 use SetCMS\Application\Contract\ContractApplicable;
-use SetCMS\Core\DAO\CoreReflectionMethodRetrieveByServerRequestDAO;
+use SetCMS\Module\Dynamic\DAO\DynamicMethodRetrieveByServerRequestDAO;
 use SetCMS\Servant\ViewHtmlRender;
 
 abstract class TemplateGeneral implements ContractTemplateEngineInterface, ContractApplicable
@@ -109,7 +109,7 @@ abstract class TemplateGeneral implements ContractTemplateEngineInterface, Contr
             $request = $request->withAttribute($pName, $pValue);
         }
 
-        $retrieveByPath = CoreReflectionMethodRetrieveByServerRequestDAO::make($this->factory());
+        $retrieveByPath = DynamicMethodRetrieveByServerRequestDAO::make($this->factory());
         $retrieveByPath->request = $request;
         $retrieveByPath->serve();
 

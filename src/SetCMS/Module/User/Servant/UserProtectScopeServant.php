@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace SetCMS\Module\User\Servant;
 
 use SetCMS\Application\Contract\ContractServant;
@@ -48,5 +50,4 @@ class UserProtectScopeServant implements ContractServant, ContractApplicable
     {
         
     }
-
 }
