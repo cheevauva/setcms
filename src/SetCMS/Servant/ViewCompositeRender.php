@@ -30,8 +30,16 @@ class ViewCompositeRender implements ContractServant, ContractApplicable
         $object = $this->mixedValue;
 
         if ($object instanceof Scope) {
-            $scope = $object;
-            $call = fn(string $path, array $params = []): mixed => $this->scCall($path, $params);
+            $scope = $object instanceof Scope ? $object->toArray() : $object;
+            $call = function (string $path, array $params = []) {
+                $scope =  $this->scCall($path, $params);
+                
+                if ($scope instanceof Scope) {
+                    $scope = $scope->toArray();
+                }
+                
+                return $scope;
+            };
             $content = null;
             $contentType = null;
             $file = sprintf('%s/resources/composite/%s.php', $this->container->get('basePath'), $this->templateNameByScope($object));
