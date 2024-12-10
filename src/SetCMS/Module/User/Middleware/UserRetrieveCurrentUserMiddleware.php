@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Application\Middleware;
+namespace SetCMS\Module\User\Middleware;
 
 use SetCMS\RequestAttribute;
 use Psr\Http\Server\MiddlewareInterface;
@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 use SetCMS\Module\UserSession\Servant\UserSessionRetrieveUserServant;
 use SetCMS\Module\User\Entity\UserEntity;
 
-class MiddlewareRetrieveCurrentUser implements MiddlewareInterface
+class UserRetrieveCurrentUserMiddleware implements MiddlewareInterface
 {
 
     use \SetCMS\Traits\DITrait;

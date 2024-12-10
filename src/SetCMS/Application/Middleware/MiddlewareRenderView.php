@@ -13,8 +13,9 @@ use SetCMS\Servant\ViewRender;
 
 class MiddlewareRenderView implements MiddlewareInterface
 {
+
     use \SetCMS\Traits\DITrait;
-    
+
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $output = $request->getAttribute('output');
@@ -24,6 +25,7 @@ class MiddlewareRenderView implements MiddlewareInterface
         } else {
             $response = new Response;
         }
+
         if (is_null($output)) {
             $response->getBody()->write('Success!');
         } else {
@@ -38,5 +40,4 @@ class MiddlewareRenderView implements MiddlewareInterface
 
         return $response;
     }
-
 }

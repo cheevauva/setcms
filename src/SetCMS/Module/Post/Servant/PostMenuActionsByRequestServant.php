@@ -82,5 +82,4 @@ class PostMenuActionsByRequestServant implements \SetCMS\Application\Contract\Co
     {
         
     }
-
 }

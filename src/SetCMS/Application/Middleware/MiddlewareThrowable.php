@@ -35,7 +35,7 @@ class MiddlewareThrowable implements MiddlewareInterface
             if ($ex instanceof ContractForbidden) {
                 $response = $response->withStatus(403);
             }
-
+           
             $response->getBody()->write($ex->getMessage());
 
             return $response;

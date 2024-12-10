@@ -12,6 +12,7 @@ class MenuRetrieveActionsByContextHook implements \SetCMS\Application\Contract\C
 {
 
     use \SetCMS\Traits\HookTrait;
+    use \SetCMS\Traits\EventDispatcherTrait;
 
     /**
      * @var MenuActionEntity[]
@@ -27,7 +28,7 @@ class MenuRetrieveActionsByContextHook implements \SetCMS\Application\Contract\C
         $this->currentUser = $this->request->getAttribute('currentUser');
         $this->mainRequest = $this->getMainRequest($this->request);
         $this->context = $this->mainRequest->getAttribute('output');
-        $this->dispatch();
+        $this->dispatch($this->eventDispatcher());
     }
 
     private function getMainRequest(ServerRequestInterface $request): ServerRequestInterface

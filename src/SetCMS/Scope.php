@@ -15,6 +15,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 abstract class Scope implements ContractHydrateInterface, ContractValidateInterface, ContractArrayable, ContractScopeInterface
 {
+    use Traits\AsTrait;
 
     private array $messages = [];
     private array $data = [];
