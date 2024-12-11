@@ -48,6 +48,7 @@
                     {% block content %}{% endblock %}
                 </div>
                 <div class="col-md-4">
+                    {{ scRender('/block/PublicActionMenu.twig', scCall('/menu/for/main')) }}
                     {{ scRender('/block/PublicContextActions.twig', scCall('/menu/for/context')) }}
                 </div>
             </div>

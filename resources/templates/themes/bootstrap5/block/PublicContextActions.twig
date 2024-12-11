@@ -1,14 +1,16 @@
-<div class="position-sticky">
-    <div class="p-4 mb-3 bg-light rounded">
-        <ul class="nav flex-column">
-            {% for item in items %}
-                <li class="nav-item">
-                    <a class="nav-link {% if 0 %}active {% endif %}" aria-current="page" href="{{ scLink(item.route, item.params) }}">{{ item.label }}</a>
-                </li>
-            {% endfor %}
-            <!--li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li-->
-        </ul>
+{% if items is not empty %}
+    <div class="position-sticky">
+        <div class="p-4 mb-3 bg-light rounded">
+            <ul class="nav flex-column">
+                {% for item in items %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if 0 %}active {% endif %}" aria-current="page" href="{{ scLink(item.route, item.params) }}">{{ item.label }}</a>
+                    </li>
+                {% endfor %}
+                <!--li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </li-->
+            </ul>
+        </div>
     </div>
-</div>
+{% endif %}
