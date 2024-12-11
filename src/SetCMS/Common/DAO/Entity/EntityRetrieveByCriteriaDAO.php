@@ -19,7 +19,7 @@ abstract class EntityRetrieveByCriteriaDAO extends EntityCommonDAO
     {
         $qb = $this->createQuery();
         $this->row = $qb->fetchAssociative() ?: null;
-        $this->entity = $this->row ? $this->entity4row($this->row) : null;
+        $this->entity = $this->row ? $this->asEntity($this->row) : null;
     }
 
     protected function createQuery(): QueryBuilder

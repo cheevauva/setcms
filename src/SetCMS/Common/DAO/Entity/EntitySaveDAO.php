@@ -27,9 +27,9 @@ abstract class EntitySaveDAO extends EntityCommonDAO
     public function serve(): void
     {
         if ($this->has($this->entity->id)) {
-            $this->db()->update($this->table(), $this->entity2row($this->entity), ['id' => $this->entity->id]);
+            $this->db()->update($this->table(), $this->asRow($this->entity), ['id' => $this->entity->id]);
         } else {
-            $this->db()->insert($this->table(), $this->entity2row($this->entity));
+            $this->db()->insert($this->table(), $this->asRow($this->entity));
         }
     }
 

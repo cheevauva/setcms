@@ -9,7 +9,7 @@ use SetCMS\Module\Block\DAO\BlockRetrieveManyDAO;
 class BlockPrivateIndexScope extends BlockPrivateScope
 {
 
-    protected ?\Iterator $entities = null;
+    protected array $entities = [];
 
     public function from(object $object): void
     {

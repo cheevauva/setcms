@@ -8,7 +8,7 @@ use SetCMS\Module\User\DAO\UserRetrieveManyDAO;
 
 class UserPrivateIndexScope extends UserPrivateScope
 {
-    protected ?\Iterator $entities = null;
+    protected array $entities = [];
 
     public function from(object $object): void
     {

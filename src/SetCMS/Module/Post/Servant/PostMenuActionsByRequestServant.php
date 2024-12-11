@@ -4,36 +4,35 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Servant;
 
-use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Application\Contract\ContractRouterInterface;
 use SetCMS\Module\Menu\Hook\MenuRetrieveActionsByContextHook;
 use SetCMS\Module\Menu\MenuAction\Entity\MenuActionEntity;
 use SetCMS\Module\Post\Scope\PostPublicReadBySlugScope;
-use SetCMS\Module\Post\Scope\PostPublicIndexScope;
 use SetCMS\Module\Post\DAO\PostRetrieveBySlugDAO;
+use SetCMS\Module\User\Entity\UserEntity;
+use SetCMS\UUID;
 
 class PostMenuActionsByRequestServant implements \SetCMS\Application\Contract\ContractServant, \SetCMS\Application\Contract\ContractApplicable
 {
 
     use \SetCMS\Traits\DITrait;
 
-    private ?MenuRetrieveActionsByContextHook $hook = null;
+    public UserEntity $currentUser;
+    public array $actions = [];
+    public mixed $context;
 
     public function serve(): void
     {
-        $context = $this->hook->context;
+        $context = $this->context;
 
         if ($context instanceof PostPublicReadBySlugScope) {
-            if ($this->hook->currentUser->isAdmin()) {
-                $this->hook->actions[] = $this->prepareEditAction($context->slug);
-                $this->hook->actions[] = $this->prepareIndexAction();
+            if ($this->currentUser->isAdmin()) {
+                $this->actions[] = $this->prepareEditAction($context->slug);
             }
         }
 
-        if ($context instanceof PostPublicIndexScope) {
-            if ($this->hook->currentUser->isAdmin()) {
-                $this->hook->actions[] = $this->prepareIndexAction();
-            }
+        if ($this->currentUser->isAdmin()) {
+            $this->actions[] = $this->prepareIndexAction();
+            $this->actions[] = $this->prepareCreateAction();
         }
     }
 
@@ -41,10 +40,11 @@ class PostMenuActionsByRequestServant implements \SetCMS\Application\Contract\Co
     {
         $indexAction = new MenuActionEntity;
         $indexAction->label = 'Список постов';
-        $indexAction->route = $this->router()->generate('action_admin', [
+        $indexAction->route = 'action_admin';
+        $indexAction->params = [
             'module' => 'Post',
             'action' => 'index',
-        ]);
+        ];
 
         return $indexAction;
     }
@@ -57,29 +57,42 @@ class PostMenuActionsByRequestServant implements \SetCMS\Application\Contract\Co
 
         $editAction = new MenuActionEntity;
         $editAction->label = 'Редактировать пост';
-        $editAction->route = $this->router()->generate('action_record_admin', [
+        $editAction->route = 'action_record_admin';
+        $editAction->params = [
             'module' => 'Post',
             'action' => 'edit',
             'id' => $retrieveBySlug->post->id->uuid,
-        ]);
+        ];
 
         return $editAction;
     }
 
-    private function router(): ContractRouterInterface
+    private function prepareCreateAction(): MenuActionEntity
     {
-        return $this->container->get(ContractRouterInterface::class);
+        $createAction = new MenuActionEntity;
+        $createAction->label = 'Создать пост';
+        $createAction->route = 'action_record_admin';
+        $createAction->params = [
+            'module' => 'Post',
+            'action' => 'new',
+            'id' => new UUID(),
+        ];
+
+        return $createAction;
     }
 
     public function from(object $object): void
     {
         if ($object instanceof MenuRetrieveActionsByContextHook) {
-            $this->hook = $object;
+            $this->currentUser = $object->currentUser;
+            $this->context = $object->context;
         }
     }
 
     public function to(object $object): void
     {
-        
+        if ($object instanceof MenuRetrieveActionsByContextHook) {
+            $object->actions = $this->actions;
+        }
     }
 }

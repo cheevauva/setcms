@@ -9,7 +9,7 @@ use SetCMS\Module\Module01\DAO\Entity01RetrieveManyDAO;
 class Module01PrivateIndexScope extends Module01PrivateScope
 {
 
-    protected ?\Iterator $entities = null;
+    protected array $entities = [];
 
     public function from(object $object): void
     {

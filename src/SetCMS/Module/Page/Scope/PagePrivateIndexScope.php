@@ -9,7 +9,7 @@ use SetCMS\Module\Page\DAO\PageRetrieveManyDAO;
 class PagePrivateIndexScope extends PagePrivateScope
 {
 
-    protected ?\Iterator $entities = null;
+    protected array $entities = [];
 
     public function from(object $object): void
     {

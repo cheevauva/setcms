@@ -13,5 +13,5 @@ interface ContractTemplateEngineInterface extends ContractApplicable
 
     public function render(string $name, array $context = []): string;
 
-    public function has(string $name): bool;
+    public function addFunction(string $name, \Closure $function): void;
 }

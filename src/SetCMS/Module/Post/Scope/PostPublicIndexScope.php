@@ -10,7 +10,7 @@ use SetCMS\Module\Post\DAO\PostRetrieveManyDAO;
 class PostPublicIndexScope extends Scope
 {
 
-    protected ?\Iterator $entities = null;
+    protected array $entities = [];
 
     public function from(object $object): void
     {

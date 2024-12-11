@@ -3,7 +3,7 @@
         <ul class="nav flex-column">
             {% for item in items %}
                 <li class="nav-item">
-                    <a class="nav-link {% if 0 %}active {% endif %}" aria-current="page" href="{{ item.route }}">{{ item.label }}</a>
+                    <a class="nav-link {% if 0 %}active {% endif %}" aria-current="page" href="{{ scLink(item.route, item.params) }}">{{ item.label }}</a>
                 </li>
             {% endfor %}
             <!--li class="nav-item">

@@ -15,7 +15,7 @@ $events = [
     ],
     SetCMS\View\Hook\ViewRenderHook::class => [
         \SetCMS\Servant\ViewCompositeRender::class,
-        \SetCMS\Servant\ViewHtmlRender::class,
+        \SetCMS\Servant\ViewTwigRender::class,
         \SetCMS\Servant\ViewJsonRender::class,
     ]
 ];

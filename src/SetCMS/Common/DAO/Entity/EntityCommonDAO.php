@@ -33,7 +33,7 @@ abstract class EntityCommonDAO implements ContractServant
         return $qb;
     }
 
-    protected function entity2row(Entity $entity): array
+    protected function asRow(Entity $entity): array
     {
         $mapper = $this->mapper();
         $mapper->entity = $entity;
@@ -43,7 +43,7 @@ abstract class EntityCommonDAO implements ContractServant
         return $mapper->row;
     }
 
-    protected function entity4row(array $row): Entity
+    protected function asEntity(array $row): Entity
     {
         $mapper = $this->mapper();
         $mapper->entity = null;
@@ -53,4 +53,14 @@ abstract class EntityCommonDAO implements ContractServant
         return $mapper->entity;
     }
 
+    protected function asEntities(array $rows): array
+    {
+        $entities = [];
+
+        foreach ($rows as $row) {
+            $entities[] = $this->asEntity($row);
+        }
+
+        return $entities;
+    }
 }

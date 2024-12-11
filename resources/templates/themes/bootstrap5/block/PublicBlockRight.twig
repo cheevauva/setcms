@@ -1,5 +1,0 @@
-{% for block in blocks %}
-    {{ scBindPathToVars(block.template, 'layoutScope', layoutScope) }}
-    {{ scBindPathToVars(block.template, 'parentScope', scope) }}
-    {{ scRender(block.path, block.template, block.params) }}
-{% endfor %}
