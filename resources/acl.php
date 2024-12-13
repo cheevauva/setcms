@@ -75,6 +75,10 @@ return [
                 //
                 \SetCMS\Module\Configuration\Scope\ConfigurationPublicAdminMenuScope::class => true,
                 \SetCMS\Module\Configuration\Scope\ConfigurationPublicMainScope::class => true,
+                //
+                \SetCMS\Module\Menu\Scope\MenuPrivateIndexScope::class => true,
+                \SetCMS\Module\Menu\Scope\MenuPrivateEditScope::class => true,
+                \SetCMS\Module\Menu\Scope\MenuPrivateCreateScope::class => true,
                 \SetCMS\Module\Menu\Scope\MenuPublicReadByContextScope::class => true,
             ],
         ],

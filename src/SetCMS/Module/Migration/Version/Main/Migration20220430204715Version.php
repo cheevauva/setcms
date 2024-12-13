@@ -67,5 +67,4 @@ final class Migration20220430204715Version extends AbstractMigration
     {
         $schema->dropTable('posts');
     }
-
 }

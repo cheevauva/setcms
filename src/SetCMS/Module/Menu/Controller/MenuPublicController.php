@@ -14,7 +14,7 @@ class MenuPublicController
 
     use \SetCMS\Traits\ControllerTrait;
     use \SetCMS\Traits\RouterTrait;
-
+    
     public function readByContext(MenuPublicReadByContextScope $scope): MenuPublicReadByContextScope
     {
         return $this->serve(MenuRetrieveActionsByContextHook::class, $scope);

@@ -1,0 +1,36 @@
+{% extends scShortPath('layout_admin.twig') %}
+
+{% block content_toolbar %}
+    <a href="{{ scLink('action_record_admin', {module: 'Menu', action: 'new', 'id': scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать</a>
+{% endblock %}
+
+{% block content_title %}Меню{% endblock %}
+
+{% block content %}
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Надпись</th>
+                    <th scope="col">Маршрут</th>
+                    <th scope="col">Параметры</th>
+                    <th scope="col">Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for menu in entities %}
+                    <tr>
+                        <td>{{ menu.id }}</td>
+                        <td>{{ menu.label }}</td>
+                        <td>{{ menu.route }}</td>
+                        <td>{{ menu.params|json_encode() }}</td>
+                        <td>
+                            <a href="{{ scLink('action_record_admin', {'module': 'Menu', action: 'edit', 'id': menu.id}) }}">Редактировать</a>
+                        </td>
+                    </tr>
+                {%  endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

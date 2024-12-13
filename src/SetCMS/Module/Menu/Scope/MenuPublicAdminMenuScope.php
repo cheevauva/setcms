@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Configuration\Scope;
+namespace SetCMS\Module\Menu\Scope;
 
 use SetCMS\Scope;
 
-class ConfigurationPublicAdminMenuScope extends Scope
+class MenuPublicAdminMenuScope extends Scope
 {
 
     public function toArray(): array
@@ -26,8 +26,8 @@ class ConfigurationPublicAdminMenuScope extends Scope
                     'name' => 'User',
                 ],
                 [
-                    'label' => 'Блоки',
-                    'name' => 'Block',
+                    'label' => 'Меню',
+                    'name' => 'Menu',
                 ],
             ]
         ];

@@ -18,9 +18,5 @@ class ConfigurationPublicController
         return $scope;
     }
 
-    public function adminMemu(ConfigurationPublicAdminMenuScope $scope): ConfigurationPublicAdminMenuScope
-    {
-        return $scope;
-    }
 
 }
