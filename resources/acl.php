@@ -2,7 +2,7 @@
 
 use SetCMS\Module\User\Enum\UserRoleEnum;
 
-return [
+$acl = [
     'roles' => [
         UserRoleEnum::GUEST->toString() => [],
         UserRoleEnum::USER->toString() => [
@@ -45,20 +45,6 @@ return [
         ],
         UserRoleEnum::ADMIN->toString() => [
             'scope' => [
-                // page
-                \SetCMS\Module\Page\Scope\PagePrivateIndexScope::class => true,
-                \SetCMS\Module\Page\Scope\PagePrivateCreateScope::class => true,
-                \SetCMS\Module\Page\Scope\PagePrivateUpdateScope::class => true,
-                \SetCMS\Module\Page\Scope\PagePrivateEditScope::class => true,
-                \SetCMS\Module\Page\Scope\PagePrivateReadScope::class => true,
-                // post
-                \SetCMS\Module\Post\Scope\PostPrivateIndexScope::class => true,
-                \SetCMS\Module\Post\Scope\PostPrivateSaveScope::class => true,
-                \SetCMS\Module\Post\Scope\PostPrivateEditScope::class => true,
-                \SetCMS\Module\Post\Scope\PostPrivateReadScope::class => true,
-                \SetCMS\Module\Post\Scope\PostPrivateUpdateScope::class => true,
-                \SetCMS\Module\Post\Scope\PostPrivateCreateScope::class => true,
-                \SetCMS\Module\Post\Scope\PostPublicIndexScope::class => true,
                 // user
                 \SetCMS\Module\User\Scope\UserPrivateIndexScope::class => true,
                 \SetCMS\Module\User\Scope\UserPrivateEditScope::class => true,
@@ -84,3 +70,9 @@ return [
         ],
     ],
 ];
+
+foreach (glob(__DIR__ . '/acl/*.php') as $file) {
+    require_once $file;
+}
+
+return $acl;

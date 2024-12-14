@@ -24,7 +24,7 @@ class PostPrivateController
     #[RequestMethod('GET')]
     public function index(PostPrivateIndexScope $scope, PostRetrieveManyDAO $servant): PostPrivateIndexScope
     {
-        return $this->serve($servant, $scope, []);
+        return $this->serve($servant, $scope);
     }
 
     #[RequestMethod('GET')]

@@ -17,6 +17,8 @@ class Module01PrivateReadScope extends Module01PrivateScope
     #[\Override]
     public function to(object $object): void
     {
+        parent::to($object);
+        
         if ($object instanceof Entity01RetrieveByIdDAO) {
             $object->id = $this->id;
         }
@@ -25,6 +27,8 @@ class Module01PrivateReadScope extends Module01PrivateScope
     #[\Override]
     public function from(object $object): void
     {
+        parent::from($object);
+        
         if ($object instanceof Entity01RetrieveByIdDAO) {
             $this->entity = $object->Entity01LC;
         }

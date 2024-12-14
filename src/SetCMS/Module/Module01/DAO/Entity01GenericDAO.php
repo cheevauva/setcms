@@ -23,5 +23,4 @@ trait Entity01GenericDAO
     {
         return Module01Constrants::TABLE_NAME;
     }
-
 }

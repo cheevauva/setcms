@@ -8,5 +8,4 @@ interface Module01Constrants
 {
 
     public const TABLE_NAME = 'Table01';
-
 }

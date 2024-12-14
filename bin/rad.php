@@ -21,6 +21,7 @@ function getFiles(string $directory, array $files = [])
 }
 
 $files = getFiles(sprintf('%s/src/SetCMS/Module/Module01/', ROOT_PATH));
+$files[] = sprintf('%s/resources/acl/Entity01LC.php', ROOT_PATH);
 $module = $argv[1] ?? null;
 $entity = $argv[2] ?? null;
 $table = $argv[3] ?? null;
@@ -35,7 +36,9 @@ foreach ($files as $file) {
     $source = $file;
     $target = strtr($file, [
         'Module01' => $module,
-        'Entity01' => $entity
+        'Entity01LC' => lcfirst($entity),
+        'Entity01' => $entity,
+        'Table01' => $table,
     ]);
 
     if (is_dir($source) && !is_dir($target)) {

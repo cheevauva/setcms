@@ -14,6 +14,8 @@ class Module01PrivateIndexScope extends Module01PrivateScope
     #[\Override]
     public function from(object $object): void
     {
+        parent::from($object);
+
         if ($object instanceof Entity01RetrieveManyDAO) {
             $this->entities = $object->entities;
         }
@@ -26,5 +28,4 @@ class Module01PrivateIndexScope extends Module01PrivateScope
             'entities' => $this->entities,
         ];
     }
-
 }
