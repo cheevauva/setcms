@@ -21,10 +21,10 @@ final class MigrationYmdhisVersion extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $menu = $schema->createTable(Module01Constrants::TABLE_NAME);
-        $menu->addColumn('field01', Types::STRING)->setLength(255);
+        $table = $schema->createTable(Module01Constrants::TABLE_NAME);
+        $table->addColumn('field01', Types::STRING)->setLength(255);
 
-        $this->addDefaultColumns($menu);
+        $this->addDefaultColumns($table);
     }
 
     public function down(Schema $schema): void

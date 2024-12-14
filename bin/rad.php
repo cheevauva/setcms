@@ -23,8 +23,9 @@ function getFiles(string $directory, array $files = [])
 $files = getFiles(sprintf('%s/src/SetCMS/Module/Module01/', ROOT_PATH));
 $files[] = sprintf('%s/resources/acl/Entity01LC.php', ROOT_PATH);
 $files[] = sprintf('%s/src/SetCMS/Module/Migration/Version/Main/MigrationYmdhisVersion.php', ROOT_PATH);
-$fiels[] = sprintf('%s/resources/templates/themes/bootstrap5/Module01PrivateIndexScope.twig', ROOT_PATH);
-
+$files[] = sprintf('%s/resources/templates/themes/bootstrap5/Module01PrivateIndexScope.twig', ROOT_PATH);
+$files[] = sprintf('%s/resources/templates/themes/bootstrap5/Module01PrivateEditScope.twig', ROOT_PATH);
+$files[] = sprintf('%s/resources/templates/themes/bootstrap5/Module01PrivateReadScope.twig', ROOT_PATH);
 $module = $argv[1] ?? null;
 $entity = $argv[2] ?? null;
 $table = $argv[3] ?? null;
