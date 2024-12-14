@@ -22,6 +22,8 @@ function getFiles(string $directory, array $files = [])
 
 $files = getFiles(sprintf('%s/src/SetCMS/Module/Module01/', ROOT_PATH));
 $files[] = sprintf('%s/resources/acl/Entity01LC.php', ROOT_PATH);
+$files[] = sprintf('%s/src/SetCMS/Module/Migration/Version/Main/MigrationYmdhisVersion.php', ROOT_PATH);
+
 $module = $argv[1] ?? null;
 $entity = $argv[2] ?? null;
 $table = $argv[3] ?? null;
@@ -32,14 +34,17 @@ if (empty($module) || empty($entity) || empty($table) || empty($fields)) {
     exit(1);
 }
 
+$parts = [
+    'Ymdhis' => date('YmdHis'),
+    'Module01' => $module,
+    'Entity01LC' => lcfirst($entity),
+    'Entity01' => $entity,
+    'Table01' => $table,
+];
+
 foreach ($files as $file) {
     $source = $file;
-    $target = strtr($file, [
-        'Module01' => $module,
-        'Entity01LC' => lcfirst($entity),
-        'Entity01' => $entity,
-        'Table01' => $table,
-    ]);
+    $target = strtr($file, $parts);
 
     if (is_dir($source) && !is_dir($target)) {
         mkdir($target, 0777, true);
@@ -50,12 +55,7 @@ foreach ($files as $file) {
         continue;
     }
 
-    $targetContent = strtr(file_get_contents($source), [
-        'Module01' => $module,
-        'Entity01LC' => lcfirst($entity),
-        'Entity01' => $entity,
-        'Table01' => $table,
-    ]);
+    $targetContent = strtr(file_get_contents($source), $parts);
 
     $lines = [];
 
