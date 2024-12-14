@@ -12,7 +12,8 @@ use SetCMS\Module\Module01\Scope\Module01PrivateEditScope;
 use SetCMS\Module\Module01\Scope\Module01PrivateIndexScope;
 use SetCMS\Module\Module01\Scope\Module01PrivateCreateScope;
 use SetCMS\Module\Module01\Scope\Module01PrivateUpdateScope;
-use SetCMS\Module\Module01\DAO\Entity01SaveDAO;
+use SetCMS\Module\Module01\Servant\Entity01CreateServant;
+use SetCMS\Module\Module01\Servant\Entity01UpdateServant;
 
 class Module01PrivateController
 {
@@ -48,7 +49,7 @@ class Module01PrivateController
     public function create(Module01PrivateCreateScope $scope): Module01PrivateCreateScope
     {
         return $this->multiserve([
-            Entity01SaveDAO::make($this->factory()),
+            Entity01CreateServant::make($this->factory()),
         ], $scope);
     }
 
@@ -57,7 +58,7 @@ class Module01PrivateController
     {
         return $this->multiserve([
             Entity01RetrieveByIdDAO::make($this->factory()),
-            Entity01SaveDAO::make($this->factory())
+            Entity01UpdateServant::make($this->factory()),
         ], $scope);
     }
 }

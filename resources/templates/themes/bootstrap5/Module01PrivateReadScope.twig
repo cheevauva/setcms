@@ -1,0 +1,15 @@
+{% extends scShortPath('layout_admin.twig') %}
+
+{% block title %}{{ options.title }} - {{ Entity01LC.title }}{% endblock %}
+
+{% block content %}
+    {% if Entity01LC %}
+        <article class="blog-Entity01LC">
+            <h2 class="blog-Entity01LC-title">{{ Entity01LC.title }}</h2>
+            <p class="blog-Entity01LC-meta"><a href="#">Admin</a> опубликовал в {{ Entity01LC.dateCreated.format('H:i') }} {{ Entity01LC.dateCreated.format('d.m.Y') }}</p>
+            <p>
+                {{ Entity01LC.field01 }}
+            </p>
+        </article>
+    {% endif %}
+{% endblock %}

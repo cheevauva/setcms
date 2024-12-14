@@ -1,0 +1,17 @@
+{% extends scShortPath('layout_admin.twig') %}
+
+{% import scShortPath('macros/forms.twig') as forms %}
+
+{% block content_title %}{% if Entity01LC.id %}Редактировать{% else %}Создать{% endif %} страницу{% endblock %}
+{% block content %}
+    <form class="setcms-form g-3" 
+          setcms-method="POST"
+          setcms-action="{{ scLink(Entity01LC.id ? 'action_record_admin' : 'action_admin', {module: 'Module01', action: Entity01LC ? 'update': 'create', id: Entity01LC.id}) }}"
+          setcms-redirect="{{ scLink('action_record_admin', {module: 'Module01', action: 'read', 'id': '${Entity01LC.id.uuid}'}) }}"
+          >
+
+        {{ forms.hidden({name: 'Entity01LC.id', value: Entity01LC ? Entity01LC.id : scUUID()  }) }}
+        {{ forms.input({name: 'Entity01LC.field01', value: Entity01LC.field01, type: 'text', label: 'field01'}) }}
+        {{ forms.submit({label: 'Сохранить'}) }}
+    </form>
+{% endblock %}

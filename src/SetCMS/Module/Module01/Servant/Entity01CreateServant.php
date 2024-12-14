@@ -14,6 +14,7 @@ class Entity01CreateServant implements ContractServant
 {
 
     use \SetCMS\Traits\DITrait;
+    use \SetCMS\Traits\FactoryTrait;
 
     public Entity01Entity $Entity01LC;
 
