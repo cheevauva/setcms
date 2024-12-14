@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Module01\Scope;
 
-use SetCMS\Module\Module01\Entity01Entity;
+use SetCMS\Module\Module01\Entity\Entity01Entity;
 use SetCMS\Module\Module01\Servant\Entity01CreateServant;
 
 class Module01PrivateCreateScope extends Module01PrivateScope

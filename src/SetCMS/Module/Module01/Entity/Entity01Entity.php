@@ -12,5 +12,5 @@ class Entity01Entity extends Entity
 
     use AsTrait;
 
-    public /* RAD:property:type */ $field01 /* RAD:property:defaultValue */;
+    public $field01;
 }

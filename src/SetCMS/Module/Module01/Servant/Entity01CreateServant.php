@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Module\Module01\Servant;
 
 use SetCMS\Application\Contract\ContractServant;
-use SetCMS\Module\Module01\Entity01Entity;
+use SetCMS\Module\Module01\Entity\Entity01Entity;
 use SetCMS\Module\Module01\DAO\Entity01HasByIdDAO;
 use SetCMS\Module\Module01\DAO\Entity01SaveDAO;
 use SetCMS\Module\Module01\Exception\Entity01AlreadyExistsException;
