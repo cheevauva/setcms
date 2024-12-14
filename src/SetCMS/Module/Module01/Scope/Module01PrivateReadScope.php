@@ -14,6 +14,7 @@ class Module01PrivateReadScope extends Module01PrivateScope
     protected ?Entity01Entity $entity = null;
     public UUID $id;
 
+    #[\Override]
     public function to(object $object): void
     {
         if ($object instanceof Entity01RetrieveByIdDAO) {
@@ -21,6 +22,7 @@ class Module01PrivateReadScope extends Module01PrivateScope
         }
     }
 
+    #[\Override]
     public function from(object $object): void
     {
         if ($object instanceof Entity01RetrieveByIdDAO) {
@@ -28,11 +30,11 @@ class Module01PrivateReadScope extends Module01PrivateScope
         }
     }
 
+    #[\Override]
     public function toArray(): array
     {
         return [
             'Entity01LC' => $this->entity,
         ];
     }
-
 }

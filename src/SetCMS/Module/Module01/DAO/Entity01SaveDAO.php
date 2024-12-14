@@ -14,11 +14,11 @@ class Entity01SaveDAO extends EntitySaveDAO
 
     public Entity01Entity $Entity01LC;
 
+    #[\Override]
     public function serve(): void
     {
         $this->entity = $this->Entity01LC;
 
         parent::serve();
     }
-
 }

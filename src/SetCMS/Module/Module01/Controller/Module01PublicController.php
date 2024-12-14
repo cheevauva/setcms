@@ -8,4 +8,5 @@ class Module01PublicController
 {
 
     use \SetCMS\Traits\ControllerTrait;
+    use \SetCMS\Traits\RouterTrait;
 }

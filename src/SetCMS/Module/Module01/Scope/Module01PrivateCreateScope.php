@@ -13,6 +13,7 @@ class Module01PrivateCreateScope extends Module01PrivateScope
     protected ?Entity01Entity $entity = null;
     public Module01PrivateEntity01Scope $Entity01LC;
 
+    #[\Override]
     public function to(object $object): void
     {
         parent::to($object);
@@ -24,11 +25,11 @@ class Module01PrivateCreateScope extends Module01PrivateScope
         }
     }
 
+    #[\Override]
     public function toArray(): array
     {
         return [
             'Entity01LC' => $this->entity,
         ];
     }
-
 }

@@ -12,11 +12,13 @@ class Entity01Mapper extends EntityMapper
 
     use \SetCMS\Traits\FactoryTrait;
 
+    #[\Override]
     protected function entity(): Entity01Entity
     {
         return parent::entity();
     }
 
+    #[\Override]
     protected function entity2row(): void
     {
         parent::entity2row();
@@ -24,11 +26,11 @@ class Entity01Mapper extends EntityMapper
         $this->row['field01'] = $this->entity()->field01;
     }
 
+    #[\Override]
     protected function entity4row(): void
     {
         parent::entity4row();
 
         $this->entity()->field01 = $this->row['field01'];
     }
-
 }

@@ -13,6 +13,7 @@ class Module01PrivateEntity01Scope extends Module01PrivateScope
     public UUID $id;
     public string $field01;
 
+    #[\Override]
     public function to(object $object): void
     {
         parent::to($object);
@@ -22,5 +23,4 @@ class Module01PrivateEntity01Scope extends Module01PrivateScope
             $object->field01 = $this->field01;
         }
     }
-
 }

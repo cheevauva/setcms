@@ -18,6 +18,7 @@ class Entity01DeleteServant implements ContractServant
     public ?Entity01Entity $Entity01LC = null;
     public ?UUID $id = null;
 
+    #[\Override]
     public function serve(): void
     {
         $retrieveById = Entity01RetrieveByIdDAO::make($this->factory());
@@ -37,5 +38,4 @@ class Entity01DeleteServant implements ContractServant
 
         $this->entity = $entity;
     }
-
 }

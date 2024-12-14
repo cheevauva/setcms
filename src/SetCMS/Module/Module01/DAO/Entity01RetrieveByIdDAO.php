@@ -14,11 +14,11 @@ class Entity01RetrieveByIdDAO extends EntityRetrieveByIdDAO
 
     public Entity01Entity $Entity01LC;
 
+    #[\Override]
     public function serve(): void
     {
         parent::serve();
 
         $this->Entity01LC = $this->entity;
     }
-
 }

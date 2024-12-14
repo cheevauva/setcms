@@ -17,6 +17,7 @@ class Entity01UpdateServant implements ContractServant
 
     public Entity01Entity $Entity01LC;
 
+    #[\Override]
     public function serve(): void
     {
         $hasById = Entity01HasByIdDAO::make($this->factory());
@@ -31,5 +32,4 @@ class Entity01UpdateServant implements ContractServant
         $saveEntity->Entity01LC = $this->Entity01LC;
         $saveEntity->serve();
     }
-
 }

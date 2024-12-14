@@ -11,6 +11,7 @@ class Module01PrivateIndexScope extends Module01PrivateScope
 
     protected array $entities = [];
 
+    #[\Override]
     public function from(object $object): void
     {
         if ($object instanceof Entity01RetrieveManyDAO) {
@@ -18,10 +19,11 @@ class Module01PrivateIndexScope extends Module01PrivateScope
         }
     }
 
+    #[\Override]
     public function toArray(): array
     {
         return [
-            'entities' => iterator_to_array($this->entities),
+            'entities' => $this->entities,
         ];
     }
 
