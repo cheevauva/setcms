@@ -1,0 +1,64 @@
+{% macro crud_list_column(column) %}
+    {% import scShortPath('macros/controls.twig') as controls %}
+
+
+
+    {% if column.type == 'checkbox' %}
+        {{  controls.checkbox({name: column.name, value: column.value}) }}
+    {% endif %}
+    {% if column.type == 'text' %}
+
+        {{ column.value }}
+    {% endif %}
+    {% if column.type == 'actions' %}
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                Действия
+            </button>
+            <ul class="dropdown-menu">
+                {% for action in column.actions %}
+                    <li><a class="dropdown-item"  href="{{ scLink(action.route, action.params) }}">{{ action.label }}</a></li>
+
+                {% endfor %}
+            </ul>
+        </div>
+
+    {% endif %}
+{% endmacro %}
+
+{% macro crud_list(params) %}
+    <div >
+        <form>
+            <table class="table">
+                <thead>
+                    {% for row in params.rows %}
+                        {% if row.type == 'header' %}
+                            <tr>
+                                {% for column in row.columns %}
+                                    <th scope="col">
+                                        {{ _self.crud_list_column(column) }}
+                                    </th>
+                                {% endfor %}
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </thead>
+                <tbody>
+                    {% for row in params.rows %}
+                        {% if row.type == 'row' %}
+                            <tr>
+                                {% for column in row.columns %}
+                                    <td>
+                                        {{ _self.crud_list_column(column) }}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endif %}
+
+                    {%  endfor %}
+
+                </tbody>
+            </table>
+        </form>
+    </div>
+{% endmacro %}

@@ -1,4 +1,5 @@
 {% extends scShortPath('layout_admin.twig') %}
+{% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_toolbar %}
 
@@ -7,30 +8,94 @@
 {% block content_title %}Пользователи{% endblock %}
 
 {% block content %}
-    <div class="table-responsive">
-        <table class="table table-striped table-sm">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Имя</th>
-                    <th scope="col">Роль</th>
-                    <th scope="col">Дата создания</th>
-                    <th scope="col">Действие</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for entity in entities %}
-                    <tr>
-                        <td>{{ entity.id }}</td>
-                        <td>{{ entity.username }}</td>
-                        <td>{{ entity.role.value }}</td>
-                        <td>{{ entity.dateCreated.format('d.m.Y H:i:s') }}</td>
-                        <td>
-                            <a href="{{ scLink('action_record_admin', {'module': 'User', action: 'edit', 'id': entity.id}) }}">Редактировать</a>
-                        </td>
-                    </tr>
-                {%  endfor %}
-            </tbody>
-        </table>
-    </div>
+    {%  
+        set rows = [
+            {
+                type: 'header',
+                columns: [
+                    {
+                        type: 'checkbox',
+                        name: 'id',
+                        value: 'selectall'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Имя'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Роль'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Дата создания'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Дата изменения'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Действия'
+                    },
+                ]
+            }
+        ]
+    %}
+    {% for entity in entities %}
+        {%  
+            set rows = rows|merge([{
+                type: 'row',
+                columns: [
+                    {
+                        name: 'id[]',
+                        type: 'checkbox',
+                        value: entity.id.uuid
+                    },
+                    {
+                        type: 'text',
+                        value: entity.username
+                    },
+                    {
+                        type: 'text',
+                        value: entity.role.value
+                    },
+                    {
+                        type: 'text',
+                        value: entity.dateCreated.format('d.m.Y H:i:s')
+                    },
+                    {
+                        type: 'text',
+                        value: entity.dateModified.format('d.m.Y H:i:s')
+                    },
+                    {
+                        name: 'actions',
+                        type: 'actions',
+                        actions: [
+                            {
+                                label: 'Просмотр',
+                                route: 'action_record_admin',
+                                params: {
+                                    module: 'User', 
+                                    action: 'read',
+                                    id: entity.id
+                                }
+                            },
+                            {
+                                label: 'Редактировать',
+                                route: 'action_record_admin',
+                                params: {
+                                    module: 'User', 
+                                    action: 'edit',
+                                    id: entity.id
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }])
+        %}
+    {% endfor %}
+
+    {{ crud.crud_list({rows: rows})  }}
 {% endblock %}

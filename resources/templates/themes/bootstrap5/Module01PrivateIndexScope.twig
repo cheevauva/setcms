@@ -1,4 +1,5 @@
 {% extends scShortPath('layout_admin.twig') %}
+{% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_toolbar %}
     <a href="{{ scLink('action_record_admin', {module: 'Module01', action: 'new', 'id': scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать</a>
@@ -7,27 +8,71 @@
 {% block content_title %}Module01{% endblock %}
 
 {% block content %}
-    <div class="table-responsive">
-        <table class="table table-striped table-sm">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">field01</th>
-                    <th scope="col">Действия</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for Entity01LC in entities %}
-                    <tr>
-                        <td>{{ Entity01LC.id }}</td>
-                        <td>{{ Entity01LC.field01 }}</td>
-                        <td>
-                            <a href="{{ scLink('action_record_admin', {'module': 'Module01', action: 'edit', 'id': Entity01LC.id}) }}">Редактировать</a>
-                            <a href="{{ scLink('action_record_admin', {'module': 'Module01', action: 'read', 'id': Entity01LC.id}) }}">Просмотр</a>
-                        </td>
-                    </tr>
-                {%  endfor %}
-            </tbody>
-        </table>
-    </div>
+    {%  
+        set rows = [
+            {
+                type: 'header',
+                columns: [
+                    {
+                        type: 'checkbox',
+                        name: 'id',
+                        value: 'selectall'
+                    },
+                    {
+                        type: 'text',
+                        value: 'field01'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Действия'
+                    },
+                ]
+            }
+        ]
+    %}
+    {% for entity in entities %}
+        {%  
+            set rows = rows|merge([{
+                type: 'row',
+                columns: [
+                    {
+                        name: 'id[]',
+                        type: 'checkbox',
+                        value: entity.id.uuid
+                    },
+                    {
+                        type: 'text',
+                        value: entity.field01
+                    },
+                    {
+                        name: 'actions',
+                        type: 'actions',
+                        actions: [
+                            {
+                                label: 'Просмотр',
+                                route: 'action_record_admin',
+                                params: {
+                                    module: 'Module01', 
+                                    action: 'read',
+                                    id: entity.id
+                                }
+                            },
+                            {
+                                label: 'Редактировать',
+                                route: 'action_record_admin',
+                                params: {
+                                    module: 'Module01', 
+                                    action: 'edit',
+                                    id: entity.id
+                                }
+                            }
+                        ]
+
+                    }
+                ]
+            }])
+        %}
+    {% endfor %}
+
+    {{ crud.crud_list({rows: rows})  }}
 {% endblock %}
