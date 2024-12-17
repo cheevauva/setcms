@@ -5,6 +5,6 @@
 {% block content %}
     <h1>{{ page.title }}</h1>
     <p>
-        {{ scMarkdown(page.content ?? '')|raw }}
+        {{ page.content|raw }}
     </p>
 {% endblock %}

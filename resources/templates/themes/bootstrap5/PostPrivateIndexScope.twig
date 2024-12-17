@@ -16,7 +16,8 @@
                     {
                         type: 'checkbox',
                         name: 'id',
-                        value: 'selectall'
+                        value: 'selectall',
+                        data: {test: 1}
                     },
                     {
                         type: 'text',
@@ -50,7 +51,8 @@
                     {
                         name: 'id[]',
                         type: 'checkbox',
-                        value: entity.id.uuid
+                        value: entity.id.uuid,
+                        data: {test: 1}
                     },
                     {
                         type: 'text',
@@ -106,5 +108,5 @@
         %}
     {% endfor %}
 
-    {{ crud.crud_list({rows: rows})  }}
+    {{ crud.listview({rows: rows})  }}
 {% endblock %}

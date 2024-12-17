@@ -1,7 +1,7 @@
 <h4 class="fst-italic">{{ page.title }}</h4>
 <p class="mb-0">
     {% if page %}
-        {{ scMarkdown(page.content)|raw }}
+        {{ page.content|raw }}
     {% else %}
         page not found
     {% endif %}

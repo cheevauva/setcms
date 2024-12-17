@@ -41,7 +41,7 @@ abstract class ViewHtmlRender implements ContractServant, ContractApplicable
             }
 
             $this->assign('scope', $value);
-            
+
             foreach (get_class_methods($this) as $method) {
                 if (strpos($method, 'sc') === 0) {
                     $this->addFunction($method, \Closure::fromCallable([$this, $method]));
@@ -98,7 +98,7 @@ abstract class ViewHtmlRender implements ContractServant, ContractApplicable
     }
 
     #[\ReturnTypeWillChange]
-    protected function scRender( string $template, mixed $value = null, array $vars = []): mixed
+    protected function scRender(string $template, mixed $value = null, array $vars = []): mixed
     {
         try {
             $htmlRender = static::make($this->factory());
@@ -161,21 +161,20 @@ abstract class ViewHtmlRender implements ContractServant, ContractApplicable
         return strval(new UUID);
     }
 
-    #[\ReturnTypeWillChange]
-    protected function scMarkdown(?string $string = null)
-    {
-        $converter = new CommonMarkConverter([
-            'html_input' => 'strip',
-            'allow_unsafe_links' => false,
-        ]);
 
-        return (string) $converter->convert(trim($string));
-    }
-
-    protected function scLink(string $route, $params = [], $query = ''): string
+    protected function scLink(string $route, $params = [], array|string $query = []): string
     {
         $link = $this->router()->generate($route, $params);
-        $link .= $query ? ('?' . (is_array($query) ? http_build_query($query) : $query)) : '';
+
+        if ($query) {
+            if (is_string($query)) {
+                $link .= '?' . $query;
+            }
+
+            if (is_array($query)) {
+                $link .= '?' . http_build_query($query);
+            }
+        }
 
         return $link;
     }

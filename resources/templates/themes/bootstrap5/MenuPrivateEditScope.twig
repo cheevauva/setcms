@@ -1,19 +1,58 @@
 {% extends scShortPath('layout_admin.twig') %}
-{% import scShortPath('macros/forms.twig') as forms %}
+{% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_title %}Создать меню{% endblock %}
 
 {% block content %}
-    <form class="setcms-form g-3" 
-          setcms-method="POST"
-          setcms-action="{{ scLink(menu.id ? 'action_record_admin' : 'action_admin', {module: 'Menu', action: menu ? 'update': 'create', id: menu.id}) }}"
-          setcms-redirect="{{ scLink('action_admin', {module: 'Menu', action: 'index'}) }}"
-          >
-
-        {{ forms.hidden({name: 'menu.id', value: menu ? menu.id : scUUID() }) }}
-        {{ forms.input({name: 'menu.label', value: menu.label, type: 'text', label: 'Надпись'}) }}
-        {{ forms.input({name: 'menu.route', value: menu.route, type: 'text', label: 'Маршрут'}) }}
-        {{ forms.textarea({name: 'menu.params', value: menu.params, label: 'Параметры'}) }}
-        {{ forms.submit({label: 'Сохранить'}) }}
-    </form>
+    {{ 
+        crud.editview({
+            action: scLink(menu.id ? 'action_record_admin' : 'action_admin', {module: 'Menu', action: 'update', id: menu.id}),
+            redirect: scLink('action_record_admin', {module: 'Menu', action: 'read', 'id': '${menu.id.uuid}'}),
+            actions: {
+                fields: [
+                    {
+                        type: 'submit',
+                        label: 'Сохранить',
+                    },
+                ],
+            },
+            panels: [
+                {
+                    name: 'default',
+                    label: 'Основные данные',
+                    active: true,
+                    fields: [
+                        {
+                            type: 'hidden',
+                            name: 'menu.id',
+                            value: menu.id|default(scUUID())
+                        },
+                        {name: 'menu.label', value: menu.label, type: 'input', label: 'Надпись'},
+                        {name: 'menu.route', value: menu.route, type: 'input', label: 'Маршрут'},
+                        {name: 'menu.params', value: menu.params, type: 'textarea', label: 'Параметры'}
+                    ]
+                }, 
+                {
+                    name: 'services',
+                    label: 'Служебные данные',
+                    fields: [
+                        {
+                            name: 'menu.dateCreated',
+                            value: menu.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата создания',
+                            disabled: true
+                        },
+                        {
+                            name: 'menu.dateModified',
+                            value: menu.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата изменения',
+                            disabled: true
+                        },
+                    ]
+                }
+            ]
+        }) 
+    }}
 {% endblock %}

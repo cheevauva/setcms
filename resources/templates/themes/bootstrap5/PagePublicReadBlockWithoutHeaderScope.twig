@@ -1,5 +1,5 @@
 {% if page %}
-    {{ scMarkdown(page.content)|raw }}
+    {{ page.content|raw }}
 {% else %}
     page not found
 {% endif %}

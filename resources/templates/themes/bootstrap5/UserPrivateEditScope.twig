@@ -1,16 +1,66 @@
 {% extends scShortPath('layout_admin.twig') %}
-{% import scShortPath('macros/forms.twig') as forms %}
+{% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_title %}Сохранить пользователя{% endblock %}
 
 {% block content %}
-    <form class="setcms-form g-3" 
-          setcms-method="POST"
-          setcms-action="{{ scLink(user.id ? 'action_record_admin' : 'action_admin', {module: 'User', action: 'update', id: user.id}) }}"
-          setcms-redirect="{{ scLink('action_record_admin', {module: 'User', action: 'read', 'id': '${user.id.uuid}'}) }}"
-          >
-        {{ forms.hidden({name: 'user.id', value: user ? user.id : scUUID() }) }}
-        {{ forms.select({value: user.role.value, name: 'user.role', options: {'guest': 'Гость', 'user': 'Пользователь', 'admin': 'Админ'}, label: 'Роль'}) }}
-        {{ forms.submit({label: 'Сохранить'}) }}
-    </form>
+    {{ 
+        crud.editview({
+            action: scLink(user.id ? 'action_record_admin' : 'action_admin', {module: 'User', action: 'update', id: user.id}),
+            redirect: scLink('action_record_admin', {module: 'User', action: 'read', 'id': '${user.id.uuid}'}),
+            actions: {
+                fields: [
+                    {
+                        type: 'submit',
+                        label: 'Сохранить',
+                    },
+                ],
+            },
+            panels: [
+                {
+                    name: 'default',
+                    label: 'Основные данные',
+                    active: true,
+                    fields: [
+                        {
+                            type: 'hidden',
+                            name: 'user.id',
+                            value: user.id|default(scUUID())
+                        },
+                        {
+                            name: 'user.role',
+                            value: user.role.value,
+                            type: 'input',
+                            label: 'Роль',
+                            options: {
+                                'guest': 'Гость',
+                                'user': 'Пользователь',
+                                'admin': 'Админ'
+                            }
+                        },
+                    ]
+                }, 
+                {
+                    name: 'services',
+                    label: 'Служебные данные',
+                    fields: [
+                        {
+                            name: 'user.dateCreated',
+                            value: user.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата создания',
+                            disabled: true
+                        },
+                        {
+                            name: 'user.dateModified',
+                            value: user.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата изменения',
+                            disabled: true
+                        },
+                    ]
+                }
+            ]
+        }) 
+    }}
 {% endblock %}

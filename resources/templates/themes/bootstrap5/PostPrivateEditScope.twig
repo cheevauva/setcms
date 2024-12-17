@@ -1,21 +1,73 @@
 {% extends scShortPath('layout_admin.twig') %}
-{% import scShortPath('macros/forms.twig') as forms %}
+{% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_title %}Создать пост{% endblock %}
 
 {% block content %}
-    <form class="setcms-form g-3" 
-          setcms-method="POST"
-          setcms-action="{{ scLink(post.id ? 'action_record_admin' : 'action_admin', {module: 'Post', action: post ? 'update': 'create', id: post.id}) }}"
-          setcms-redirect="{{ scLink('action_record_admin', {module: 'Post', action: 'read', 'id': '${post.id.uuid}'}) }}"
-          >
-
-        {{ forms.hidden({name: 'post.id', value: post ? post.id : scUUID() }) }}
-        {{ forms.input({name: 'post.slug', value: post.slug, type: 'text', label: 'Псевдоним'}) }}
-        {{ forms.input({name: 'post.title', value: post.title, type: 'text', label: 'Заголовок'}) }}
-        {{ forms.textarea({name: 'post.message', value: post.message, label: 'Сообщение'}) }}
-        {{ forms.input({name: 'post.dateCreated', value: post.dateCreated.format('Y-m-d H:i:s'), type: 'text', label: 'Дата создания', disabled: true}) }}
-        {{ forms.input({name: 'post.dateModified', value: post.dateModified.format('Y-m-d H:i:s'), type: 'text', label: 'Дата изменения', disabled: true}) }}
-        {{ forms.submit({label: 'Сохранить'}) }}
-    </form>
+    {{ 
+        crud.editview({
+            action: scLink(post.id ? 'action_record_admin' : 'action_admin', {module: 'Post', action: post ? 'update': 'create', id: post.id}),
+            redirect: scLink('action_record_admin', {module: 'Post', action: 'read', 'id': '${post.id.uuid}'}),
+            actions: {
+                fields: [
+                    {
+                        type: 'submit',
+                        label: 'Сохранить',
+                    },
+                ],
+            },
+            panels: [
+                {
+                    name: 'default',
+                    label: 'Основные данные',
+                    active: true,
+                    fields: [
+                        {
+                            type: 'hidden',
+                            name: 'post.id',
+                            value: post.id|default(scUUID())
+                        },
+                        {
+                            name: 'post.slug',
+                            value: post.slug,
+                            type: 'input',
+                            label: 'Псевдоним'
+                        },
+                        {
+                            name: 'post.title',
+                            value: post.title,
+                            type: 'input',
+                            label: 'Заголовок'
+                        },
+                        {
+                            name: 'post.message',
+                            type: 'textarea',
+                            value: post.message,
+                            label: 'Сообщение'
+                        },
+                    ]
+                }, 
+                {
+                    name: 'services',
+                    label: 'Служебные данные',
+                    fields: [
+                        {
+                            name: 'post.dateCreated',
+                            value: post.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата создания',
+                            disabled: true
+                        },
+                        {
+                            name: 'post.dateModified',
+                            value: post.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата изменения',
+                            disabled: true
+                        },
+                    ]
+                }
+            ]
+        }) 
+    }}
 {% endblock %}

@@ -10,7 +10,7 @@
                             <strong class="d-inline-block mb-2 text-primary">World</strong>
                             <h3 class="mb-0">{{ post.title|e }}</h3>
                             <div class="mb-1 text-muted">{{ post.dateCreated.format('d.m.Y') }}</div>
-                            <p class="card-text mb-auto">{{ scMarkdown(post.message)|slice(0, 140)|raw }}...</p>
+                            <p class="card-text mb-auto">{{ post.message|slice(0, 140)|raw }}...</p>
                             <a href="{{ scLink('post_read_by_slug', {slug: post.slug}) }}" class="stretched-link">Читать</a>
                         </div>
                         <!--div class="col-auto d-none d-lg-block">

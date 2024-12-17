@@ -8,7 +8,7 @@
             <h2 class="blog-post-title">{{ post.title }}</h2>
             <p class="blog-post-meta"><a href="#">Admin</a> опубликовал в {{ post.dateCreated.format('H:i') }} {{ post.dateCreated.format('d.m.Y') }}</p>
             <p>
-                {{ scMarkdown(post.message)|raw }}
+                {{ post.message|raw }}
             </p>
         </article>
     {% endif %}

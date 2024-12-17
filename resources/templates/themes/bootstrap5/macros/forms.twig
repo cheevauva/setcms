@@ -13,9 +13,32 @@
                class="form-control {% if params.model and not params.model.isValidField(params.name) %}is-invalid{% endif %}"  
                size="{{ params.size }}" 
                placeholder="{{ params.placeholder }}" 
+               data-data="{{ params.data|json_encode() }}"
                {% if params.disabled %}disabled="disabled"{% endif %}
                >
         <div class="invalid-feedback">{{ params.model.getFieldMessage(params.name) }}</div>
+    </div>
+{% endmacro %}
+
+{% macro boolean(params) %}
+    {% set value = params.value %}
+    {% if params.entity %}
+        {% set value = attribute(params.entity, params.name) %}
+    {% endif %}
+    <div class="mb-2">
+        <input name="{{ params.name }}" class="form-check-input" type="hidden" value="0">
+        <input 
+            name="{{ params.name }}" 
+            class="form-check-input" 
+            type="checkbox"
+            value="1"
+            {% if value %}checked="checked"{% endif %} 
+            {% if params.disabled %}disabled="disabled"{% endif %} 
+            data-data="{{ params.data|json_encode() }}"
+            >
+        {% if params.label %}
+            <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
+        {% endif  %}
     </div>
 {% endmacro %}
 
@@ -25,9 +48,21 @@
         {% set value = attribute(params.entity, params.name) %}
     {% endif %}
     <div class="mb-2">
-        <input name="{{ params.name }}" class="form-check-input" type="hidden" value="0">
-        <input name="{{ params.name }}" class="form-check-input" type="checkbox" value="1" {% if value %}checked="checked"{% endif %} {% if params.disabled %}disabled="disabled"{% endif %}>
-        <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
+        {% if params.hiddenValue %}
+        <input name="{{ params.name }}" class="form-check-input" type="hidden" value="{{ params.hiddenValue|default('0') }}">
+        {% endif %}
+        <input 
+            name="{{ params.name }}" 
+            class="form-check-input" 
+            type="checkbox"
+            value="{{ params.value }}"
+            {% if value %}checked="checked"{% endif %} 
+            {% if params.disabled %}disabled="disabled"{% endif %} 
+            data-data="{{ params.data|json_encode() }}"
+            >
+        {% if params.label %}
+            <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
+        {% endif  %}
     </div>
 {% endmacro %}
 
@@ -37,7 +72,12 @@
         {% set value = attribute(params.entity, params.name) %}
     {% endif %}
     <div class="m-0 p-0">
-        <input name="{{ params.name }}" type="hidden" value="{{ value }}" class="{% if params.model and not params.model.isValidField(params.name) %}is-invalid{% endif %}">
+        <input 
+            name="{{ params.name }}"
+            type="hidden" value="{{ value }}" 
+            class="{% if params.model and not params.model.isValidField(params.name) %}is-invalid{% endif %}"
+            data-data="{{ params.data|json_encode() }}"
+            >
         <div class="invalid-feedback">{% if params.model and not params.model.isValidField(params.name) %}{{ params.name }}: {{ params.model.getFieldMessage(params.name) }}{% endif %}</div>
     </div>
 {% endmacro %}
@@ -51,7 +91,7 @@
         <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
     {% endif %}
     <div class="mb-2">
-        <select name="{{ params.name }}" class="form-control">
+        <select name="{{ params.name }}" class="form-control" data-data="{{ params.data|json_encode() }}">
             {% for val, option in params.options %}
                 <option value="{{ val }}" {% if val == value %}selected="selected"{% endif %}>{{ option }}</option>
             {% endfor %}
@@ -68,7 +108,7 @@
         {% if params.label %}
             <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
         {% endif %}
-        <textarea name="{{ params.name }}" class="form-control">{{ value }}</textarea>
+        <textarea name="{{ params.name }}" class="form-control" data-data="{{ params.data|json_encode() }}">{{ value }}</textarea>
         <div class="invalid-feedback"></div>
     </div>
 {% endmacro %}
@@ -79,7 +119,7 @@
             <div class="col-md-8 ml-0 pl-0">
                 <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
                 <input name="{{ params.name }}" type="hidden" value="" class="setcms-captcha-captcha-id" setcms-action="{{ scLink('do_action', {module: 'Captcha', action: 'solve'}) }}">
-                <input class="form-control setcms-captcha-solvedtext" type="text">
+                <input class="form-control setcms-captcha-solvedtext" data-data="{{ params.data|json_encode() }}"  type="text">
                 <div class="invalid-feedback"></div>
             </div>
             <div class="col-md-4 mb-2">

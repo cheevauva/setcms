@@ -1,20 +1,72 @@
 {% extends scShortPath('layout_admin.twig') %}
-{% import scShortPath('macros/forms.twig') as forms %}
+{% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_title %}{% if page.id %}Редактировать{% else %}Создать{% endif %} страницу{% endblock %}
 {% block content %}
-    <form class="setcms-form g-3" 
-          setcms-method="POST"
-          setcms-action="{{ scLink(page.id ? 'action_record_admin' : 'action_admin', {module: 'Page', action: page ? 'update': 'create', id: page.id}) }}"
-          setcms-redirect="{{ scLink('action_record_admin', {module: 'Page', action: 'read', 'id': '${page.id.uuid}'}) }}"
-          >
-
-        {{ forms.hidden({name: 'page.id', value: page ? page.id : scUUID()  }) }}
-        {{ forms.input({name: 'page.slug', value: page.slug, type: 'text', label: 'Псевдоним'}) }}
-        {{ forms.input({name: 'page.title', value: page.title, type: 'text', label: 'Заголовок'}) }}
-        {{ forms.textarea({name: 'page.content', value: page.content, label: 'Текст'}) }}
-        {{ forms.input({name: 'page.dateCreated', value: page.dateCreated.format('Y-m-d H:i:s'), type: 'text', label: 'Дата создания', disabled: true}) }}
-        {{ forms.input({name: 'page.dateModified', value: page.dateModified.format('Y-m-d H:i:s'), type: 'text', label: 'Дата изменения', disabled: true}) }}
-        {{ forms.submit({label: 'Сохранить'}) }}
-    </form>
+    {{ 
+        crud.editview({
+            action: scLink(page.id ? 'action_record_admin' : 'action_admin', {module: 'Page', action: page ? 'update': 'create', id: page.id}),
+            redirect: scLink('action_record_admin', {module: 'Page', action: 'read', 'id': '${page.id.uuid}'}),
+            actions: {
+                fields: [
+                    {
+                        type: 'submit',
+                        label: 'Сохранить',
+                    },
+                ],
+            },
+            panels: [
+                {
+                    name: 'default',
+                    label: 'Основные данные',
+                    active: true,
+                    fields: [
+                        {
+                            type: 'hidden',
+                            name: 'page.id',
+                            value: page.id|default(scUUID())
+                        },
+                        {
+                            name: 'page.slug',
+                            value: page.slug,
+                            type: 'input',
+                            label: 'Псевдоним'
+                        },
+                        {
+                            name: 'page.title',
+                            value: page.title,
+                            type: 'input',
+                            label: 'Заголовок'
+                        },
+                        {
+                            name: 'page.content',
+                            type: 'textarea',
+                            value: page.content,
+                            label: 'Текст'
+                        },
+                    ]
+                }, 
+                {
+                    name: 'services',
+                    label: 'Служебные данные',
+                    fields: [
+                        {
+                            name: 'page.dateCreated',
+                            value: page.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата создания',
+                            disabled: true
+                        },
+                        {
+                            name: 'page.dateModified',
+                            value: page.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата изменения',
+                            disabled: true
+                        },
+                    ]
+                }
+            ]
+        }) 
+    }}
 {% endblock %}
