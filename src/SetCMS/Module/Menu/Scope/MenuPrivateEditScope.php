@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Module\Menu\Scope;
 
 use SetCMS\Scope;
+use SetCMS\UUID;
 use SetCMS\Attribute\Http\Parameter\Attributes;
 use SetCMS\Module\Menu\DAO\MenuRetrieveByIdDAO;
 use SetCMS\Module\Menu\Entity\MenuEntity;
@@ -17,6 +18,7 @@ class MenuPrivateEditScope extends Scope
     #[Attributes('id')]
     public UUID $id;
 
+    #[\Override]
     public function to(object $object): void
     {
         parent::to($object);
@@ -26,6 +28,7 @@ class MenuPrivateEditScope extends Scope
         }
     }
 
+    #[\Override]
     public function from(object $object): void
     {
         parent::from($object);
@@ -35,6 +38,7 @@ class MenuPrivateEditScope extends Scope
         }
     }
 
+    #[\Override]
     public function toArray(): array
     {
         return [

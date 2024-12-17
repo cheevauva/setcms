@@ -29,7 +29,7 @@
                         },
                         {name: 'menu.label', value: menu.label, type: 'input', label: 'Надпись'},
                         {name: 'menu.route', value: menu.route, type: 'input', label: 'Маршрут'},
-                        {name: 'menu.params', value: menu.params, type: 'textarea', label: 'Параметры'}
+                        {name: 'menu.params', value: menu.params|json_encode(), type: 'textarea', label: 'Параметры'}
                     ]
                 }, 
                 {
