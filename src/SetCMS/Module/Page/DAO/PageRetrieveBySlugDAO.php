@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page\DAO;
 
-use SetCMS\Common\DAO\Entity\EntityRetrieveByCriteriaDAO;
+use SetCMS\Common\DAO\Entity\EntityRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Page\PageEntity;
 
-class PageRetrieveBySlugDAO extends EntityRetrieveByCriteriaDAO
+class PageRetrieveBySlugDAO extends EntityRetrieveManyByCriteriaDAO
 {
 
-    use PageGenericDAO;
+    use PageCommonDAO;
 
     public string $slug;
     public ?PageEntity $page;

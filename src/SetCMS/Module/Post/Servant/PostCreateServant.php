@@ -4,22 +4,19 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Servant;
 
-use SetCMS\Application\Contract\ContractServant;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\Module\Post\DAO\PostHasByIdDAO;
 use SetCMS\Module\Post\DAO\PostSaveDAO;
 use SetCMS\Module\Post\Exception\PostAlreadyExistsException;
 
-class PostCreateServant implements ContractServant
+class PostCreateServant extends \UUA\Servant
 {
-
-    use \SetCMS\Traits\DITrait;
 
     public PostEntity $post;
 
     public function serve(): void
     {
-        $hasEntityById = PostHasByIdDAO::make($this->factory());
+        $hasEntityById = PostHasByIdDAO::new($this->container);
         $hasEntityById->id = $this->post->id;
         $hasEntityById->serve();
 
@@ -27,9 +24,8 @@ class PostCreateServant implements ContractServant
             throw new PostAlreadyExistsException;
         }
 
-        $saveEntity = PostSaveDAO::make($this->factory());
+        $saveEntity = PostSaveDAO::new($this->container);
         $saveEntity->post = $this->post;
         $saveEntity->serve();
     }
-
 }

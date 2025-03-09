@@ -13,8 +13,10 @@ use SetCMS\Application\Contract\ContractNotFound;
 use SetCMS\Application\Contract\ContractForbidden;
 use SetCMS\Application\Contract\ContractNotAllow;
 
-class MiddlewareThrowable implements MiddlewareInterface
+class MiddlewareThrowable implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {
+    use \UUA\Traits\ContainerTrait;
+    use \UUA\Traits\BuildTrait;
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

@@ -8,22 +8,22 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Uri;
-use League\CommonMark\CommonMarkConverter;
-use SetCMS\Application\Contract\ContractServant;
-use SetCMS\Application\Contract\ContractApplicable;
-use SetCMS\Scope;
-use SetCMS\View\Hook\ViewRenderHook;
+use SetCMS\Controller;
 use SetCMS\Module\Dynamic\DAO\DynamicMethodRetrieveByServerRequestDAO;
 use SetCMS\Application\Contract\ContractRouterInterface;
 use SetCMS\UUID;
+use SetCMS\DTO\SetCMSOutputDTO;
 
-abstract class ViewHtmlRender implements ContractServant, ContractApplicable
+abstract class ViewHtmlRender extends \UUA\Servant
 {
 
-    use \SetCMS\Traits\QuickTrait;
-    use \SetCMS\Traits\EnvTrait;
+    use \UUA\Traits\EnvTrait;
 
     public ?object $mixedValue = null;
+
+    /**
+     * @var array<string,mixed>
+     */
     public array $vars = [];
     public ?string $html = null;
     public ?string $templateName = null;
@@ -32,9 +32,12 @@ abstract class ViewHtmlRender implements ContractServant, ContractApplicable
     public function serve(): void
     {
         $value = $this->mixedValue;
+        $data = new SetCMSOutputDTO();
 
-        if ($value instanceof Scope) {
-            $templateName = $this->templateName ?? $this->templateNameByScope($value);
+        if ($value instanceof Controller) {
+            $value->to($data);
+
+            $templateName = $this->templateName ?? $this->templateNameByController($data->finalScope() ?? $value);
 
             if (!$this->has($templateName)) {
                 return;
@@ -52,7 +55,7 @@ abstract class ViewHtmlRender implements ContractServant, ContractApplicable
                 $this->assign($v, $vv);
             }
 
-            $this->html = $this->render($templateName, $value->toArray());
+            $this->html = $this->render($templateName, $data->data());
         }
 
         if ($value instanceof ResponseInterface) {
@@ -60,24 +63,12 @@ abstract class ViewHtmlRender implements ContractServant, ContractApplicable
         }
     }
 
-    public function from(object $object): void
-    {
-        if ($object instanceof ViewRenderHook) {
-            $this->mixedValue = $object->data;
-            $this->request = $object->request;
-        }
-    }
-
-    public function to(object $object): void
-    {
-        if ($object instanceof ViewRenderHook) {
-            $object->content = $this->html;
-            $object->contentType = 'text/html';
-        }
-    }
-
     abstract protected function assign(string $name, mixed $value): void;
 
+    /**
+     * @param string $name
+     * @param array<string, mixed> $context
+     */
     abstract protected function render(string $name, array $context = []): string;
 
     abstract protected function addFunction(string $name, \Closure $function): void;
@@ -87,6 +78,11 @@ abstract class ViewHtmlRender implements ContractServant, ContractApplicable
         return file_exists($this->scLongPath($name));
     }
 
+    /**
+     * @param string $path
+     * @param array<string,mixed> $params
+     * @return ServerRequestInterface
+     */
     protected function createRequestByPath(string $path, array $params = []): ServerRequestInterface
     {
         $request = (new ServerRequestFactory)->createServerRequest('GET', new Uri($path));
@@ -97,11 +93,17 @@ abstract class ViewHtmlRender implements ContractServant, ContractApplicable
         return $request;
     }
 
+    /**
+     * @param string $template
+     * @param mixed $value
+     * @param array<string, mixed> $vars
+     * @return mixed
+     */
     #[\ReturnTypeWillChange]
     protected function scRender(string $template, mixed $value = null, array $vars = []): mixed
     {
         try {
-            $htmlRender = static::make($this->factory());
+            $htmlRender = static::new($this->container);
             $htmlRender->request = $this->request;
             $htmlRender->mixedValue = $value;
             $htmlRender->templateName = $template;
@@ -116,9 +118,18 @@ abstract class ViewHtmlRender implements ContractServant, ContractApplicable
         return $content;
     }
 
+    /**
+     * @param string $path
+     * @param array<string, mixed> $params
+     * @return mixed
+     */
     protected function scCall(string $path, array $params = []): mixed
     {
-        $routerMatch = $this->router()->match($path, 'GET');
+        try {
+            $routerMatch = $this->router()->match($path, 'GET');
+        } catch (\Exception $ex) {
+            return $ex->getMessage();
+        }
 
         $request = $this->createRequestByPath($path, $params);
         $request = $request->withAttribute('routeTarget', $routerMatch->target);
@@ -126,20 +137,25 @@ abstract class ViewHtmlRender implements ContractServant, ContractApplicable
         foreach ($routerMatch->params as $pName => $pValue) {
             $request = $request->withAttribute($pName, $pValue);
         }
-
-        $retrieveByPath = DynamicMethodRetrieveByServerRequestDAO::make($this->factory());
+        $retrieveByPath = DynamicMethodRetrieveByServerRequestDAO::new($this->container);
         $retrieveByPath->request = $request;
         $retrieveByPath->serve();
 
-        foreach ($retrieveByPath->reflectionArguments as $argument) {
-            if ($argument instanceof Scope) {
-                $argument->from($request);
-            }
-        }
+        $output = new SetCMSOutputDTO();
 
-        return $retrieveByPath->reflectionMethod->invokeArgs($retrieveByPath->reflectionObject, $retrieveByPath->reflectionArguments);
+        $controller = $retrieveByPath->controller;
+        $controller->from($request);
+        $controller->serve();
+        $controller->to($output);
+
+        return $output->data();
     }
 
+    /**
+     * @param string $path
+     * @param array<string,mixed> $params
+     * @return mixed
+     */
     protected function scFetch(string $path, array $params = []): mixed
     {
         try {
@@ -148,7 +164,7 @@ abstract class ViewHtmlRender implements ContractServant, ContractApplicable
             $var = $ex->getMessage();
         }
 
-        if ($var instanceof Scope) {
+        if ($var instanceof Controller) {
             return $var->toArray();
         }
 
@@ -156,13 +172,19 @@ abstract class ViewHtmlRender implements ContractServant, ContractApplicable
     }
 
     #[\ReturnTypeWillChange]
-    protected function scUUID()
+    protected function scUUID(): string
     {
         return strval(new UUID);
     }
 
-
-    protected function scLink(string $route, $params = [], array|string $query = []): string
+    /**
+     * @param string $route
+     * @param array<string, mixed> $params
+     * @param array<string, mixed>|string $query
+     * @return string
+     */
+    #[\ReturnTypeWillChange]
+    protected function scLink(string $route, array $params = [], array|string $query = []): string
     {
         $link = $this->router()->generate($route, $params);
 
@@ -184,9 +206,15 @@ abstract class ViewHtmlRender implements ContractServant, ContractApplicable
         return sprintf('%s/resources/templates/%s', $this->basePath(), $this->scShortPath($name));
     }
 
-    protected function templateNameByScope(Scope $scope): string
+    private function templateNameByController(Controller $controller): string
     {
-        return (new \ReflectionObject($scope))->getShortName();
+        $shortName = (new \ReflectionObject($controller))->getShortName();
+
+        if (substr($shortName, -10) === 'Controller') {
+            $shortName = substr($shortName, 0, -10) . 'Scope';
+        }
+
+        return $shortName;
     }
 
     protected function scUriPath(): string

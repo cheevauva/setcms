@@ -7,6 +7,8 @@ namespace SetCMS\Module\Captcha\Exception;
 class CaptchaTooMuchSolveAttemptsException extends CaptchaException
 {
 
-    protected $message = "Слишком много попыток, обновите картинку с кодом";
-
+    public function __construct(string $message = 'Слишком много попыток, обновите картинку с кодом')
+    {
+        parent::__construct($message);
+    }
 }

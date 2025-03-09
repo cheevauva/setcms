@@ -10,29 +10,24 @@ use SetCMS\Module\User\Enum\UserRoleEnum;
 class UserMapper extends \SetCMS\Common\Mapper\EntityMapper
 {
 
-    use \SetCMS\Traits\FactoryTrait;
-
-    protected function entity(): UserEntity
-    {
-        return parent::entity();
-    }
-
     protected function entity2row(): void
     {
         parent::entity2row();
 
-        $this->row['username'] = $this->entity()->username;
-        $this->row['password'] = $this->entity()->password;
-        $this->row['role'] = $this->entity()->role->value;
+        $entity = UserEntity::as($this->entity);
+
+        $this->row['username'] = $entity->username;
+        $this->row['password'] = $entity->password;
+        $this->row['role'] = $entity->role->value;
     }
 
     protected function entity4row(): void
     {
         parent::entity4row();
 
-        $this->entity()->username = $this->row['username'];
-        $this->entity()->password = $this->row['password'];
-        $this->entity()->role = UserRoleEnum::from($this->row['role']);
+        $entity = UserEntity::as($this->entity);
+        $entity->username = $this->row['username'];
+        $entity->password = $this->row['password'];
+        $entity->role = UserRoleEnum::from($this->row['role']);
     }
-
 }

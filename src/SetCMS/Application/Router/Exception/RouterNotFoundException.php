@@ -9,6 +9,9 @@ use SetCMS\Application\Contract\ContractNotFound;
 class RouterNotFoundException extends RouterException implements ContractNotFound
 {
 
-    protected $message = "Маршрут не найден";
+    public function __construct(string $message = 'Маршрут не найден')
+    {
+        parent::__construct($message);
+    }
 
 }

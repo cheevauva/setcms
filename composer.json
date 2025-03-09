@@ -19,9 +19,13 @@
         "psr/http-server-handler": "1.0.2",
         "psr/http-server-middleware": "1.0.2"
     },
+    "require-dev": {
+        "phpstan/phpstan": "^2.1"
+    },
     "autoload": {
         "psr-4": {
-            "SetCMS\\": "src/SetCMS"
+            "SetCMS\\": "src/SetCMS",
+            "UUA\\": "UUA"
         }
     },
     "config": {

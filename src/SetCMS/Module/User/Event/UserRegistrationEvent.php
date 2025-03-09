@@ -4,11 +4,8 @@ namespace SetCMS\Module\User\Event;
 
 use SetCMS\Module\User\Entity\UserEntity;
 
-class UserRegistrationEvent
+class UserRegistrationEvent extends \UUA\Event
 {
-
-    use \SetCMS\Traits\AsTrait;
-    use \SetCMS\Traits\EventTrait;
 
     public function __construct(public UserEntity $user)
     {

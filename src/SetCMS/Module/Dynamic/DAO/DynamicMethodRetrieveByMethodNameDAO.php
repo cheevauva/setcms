@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Dynamic\DAO;
 
-use SetCMS\Application\Contract\ContractServant;
+
 use ReflectionParameter;
 use ReflectionMethod;
 use SplObjectStorage;
 use SetCMS\Module\Dynamic\Exception\DynamicClassNotFoundException;
 use SetCMS\Module\Dynamic\Exception\DynamicMethodNotFoundException;
 
-class DynamicMethodRetrieveByMethodNameDAO implements ContractServant
+class DynamicMethodRetrieveByMethodNameDAO extends \UUA\DAO
 {
 
-    use \SetCMS\Traits\DITrait;
-    use \SetCMS\Traits\FactoryTrait;
+    
+    
 
     public string $className;
     public string $methodName;

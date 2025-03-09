@@ -13,10 +13,8 @@ use SetCMS\Attribute\Http\Parameter\UploadedFiles;
 use SetCMS\Attribute\Http\Parameter\Cookies;
 use SetCMS\Attribute\Http\Parameter\Request;
 
-class CorePropertyFetchDataFromRequestServant implements \SetCMS\Application\Contract\ContractServant
+class CorePropertyFetchDataFromRequestServant extends \UUA\Servant
 {
-
-    use \SetCMS\Traits\FactoryTrait;
 
     public ServerRequestInterface $request;
     public object $object;

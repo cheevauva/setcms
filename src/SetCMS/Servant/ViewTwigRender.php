@@ -50,9 +50,9 @@ class ViewTwigRender extends ViewHtmlRender
         return new Markup(parent::scRender($template, $value, $vars), 'UTF-8');
     }
 
-    protected function scUUID(): Markup
+    protected function scUUID(): string
     {
-        return new Markup(parent::scUUID(), 'UTF-8');
+        return strval(parent::scUUID());
     }
 
     protected function scShortPath(string $name): string

@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\UserSession\Servant;
 
-use SetCMS\Application\Contract\ContractServant;
 use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\Module\UserSession\UserSessionEntity;
 use SetCMS\Module\UserSession\DAO\UserSessionSaveDAO;
 
-class UserSessionCreateByUserServant implements ContractServant
+class UserSessionCreateByUserServant extends \UUA\Servant
 {
-
-    use \SetCMS\Traits\FactoryTrait;
-    use \SetCMS\Traits\DITrait;
 
     public UserEntity $user;
     public ?UserSessionEntity $session;
@@ -26,11 +22,10 @@ class UserSessionCreateByUserServant implements ContractServant
         $session->device = $this->device;
         $session->dateExpiries = new \DateTime('+1 year');
 
-        $save = UserSessionSaveDAO::make($this->factory());
+        $save = UserSessionSaveDAO::new($this->container);
         $save->session = $session;
         $save->serve();
 
         $this->session = $session;
     }
-
 }

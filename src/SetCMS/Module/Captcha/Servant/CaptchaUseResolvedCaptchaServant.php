@@ -5,30 +5,28 @@ declare(strict_types=1);
 namespace SetCMS\Module\Captcha\Servant;
 
 use SetCMS\UUID;
-use SetCMS\Module\Captcha\DAO\CaptchaRetrieveByIdDAO;
+use SetCMS\Module\Captcha\CaptchaEntity;
+use SetCMS\Module\Captcha\DAO\CaptchaRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Captcha\DAO\CaptchaSaveDAO;
 
-class CaptchaUseResolvedCaptchaServant implements \SetCMS\Application\Contract\ContractServant
+class CaptchaUseResolvedCaptchaServant extends \UUA\Servant
 {
-
-    use \SetCMS\Traits\DITrait;
-    use \SetCMS\Traits\FactoryTrait;
 
     public UUID $captcha;
 
+    #[\Override]
     public function serve(): void
     {
-        $captchaRetrieveById = CaptchaRetrieveByIdDAO::make($this->factory());
-        $captchaRetrieveById->id = $this->captcha;
-        $captchaRetrieveById->throwExceptionIfNotFound = true;
-        $captchaRetrieveById->serve();
+        $captchaById = CaptchaRetrieveManyByCriteriaDAO::new($this->container);
+        $captchaById->id = $this->captcha;
+        $captchaById->throwExceptionIfNotFound = true;
+        $captchaById->serve();
 
-        $captcha = $captchaRetrieveById->captcha;
+        $captcha = CaptchaEntity::as($captchaById->first);
         $captcha->use();
 
-        $captchaSave = CaptchaSaveDAO::make($this->factory());
+        $captchaSave = CaptchaSaveDAO::new($this->container);
         $captchaSave->captcha = $captcha;
         $captchaSave->serve();
     }
-
 }

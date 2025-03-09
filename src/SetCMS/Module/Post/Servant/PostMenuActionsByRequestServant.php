@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Servant;
 
-use SetCMS\Module\Menu\Hook\MenuRetrieveActionsByContextHook;
 use SetCMS\Module\Menu\MenuAction\Entity\MenuActionEntity;
-use SetCMS\Module\Post\Scope\PostPublicReadBySlugScope;
+use SetCMS\Module\Post\Scope\PostPublicReadBySlugController;
 use SetCMS\Module\Post\DAO\PostRetrieveBySlugDAO;
 use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\UUID;
 
-class PostMenuActionsByRequestServant implements \SetCMS\Application\Contract\ContractServant, \SetCMS\Application\Contract\ContractApplicable
+class PostMenuActionsByRequestServant extends \UUA\Servant
 {
 
-    use \SetCMS\Traits\DITrait;
+    
 
     public UserEntity $currentUser;
     public array $actions = [];
@@ -24,7 +23,7 @@ class PostMenuActionsByRequestServant implements \SetCMS\Application\Contract\Co
     {
         $context = $this->context;
 
-        if ($context instanceof PostPublicReadBySlugScope) {
+        if ($context instanceof PostPublicReadBySlugController) {
             if ($this->currentUser->isAdmin()) {
                 $this->actions[] = $this->prepareEditAction($context->slug);
             }
@@ -51,7 +50,7 @@ class PostMenuActionsByRequestServant implements \SetCMS\Application\Contract\Co
 
     private function prepareEditAction(string $slug): MenuActionEntity
     {
-        $retrieveBySlug = PostRetrieveBySlugDAO::make($this->factory());
+        $retrieveBySlug = PostRetrieveBySlugDAO::new($this->container);
         $retrieveBySlug->slug = $slug;
         $retrieveBySlug->serve();
 
@@ -79,20 +78,5 @@ class PostMenuActionsByRequestServant implements \SetCMS\Application\Contract\Co
         ];
 
         return $createAction;
-    }
-
-    public function from(object $object): void
-    {
-        if ($object instanceof MenuRetrieveActionsByContextHook) {
-            $this->currentUser = $object->currentUser;
-            $this->context = $object->context;
-        }
-    }
-
-    public function to(object $object): void
-    {
-        if ($object instanceof MenuRetrieveActionsByContextHook) {
-            $object->actions = $this->actions;
-        }
     }
 }

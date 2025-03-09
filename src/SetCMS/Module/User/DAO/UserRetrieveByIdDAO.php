@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace SetCMS\Module\User\DAO;
 
 use SetCMS\Module\User\Entity\UserEntity;
+use SetCMS\Common\DAO\Entity\EntityRetrieveManyByCriteriaDAO;
 
-class UserRetrieveByIdDAO extends \SetCMS\Common\DAO\Entity\EntityRetrieveByIdDAO
+class UserRetrieveByIdDAO extends EntityRetrieveManyByCriteriaDAO
 {
 
     use UserCommonDAO;
@@ -17,7 +18,6 @@ class UserRetrieveByIdDAO extends \SetCMS\Common\DAO\Entity\EntityRetrieveByIdDA
     {
         parent::serve();
 
-        $this->user = $this->entity;
+        $this->user = $this->first;
     }
-
 }

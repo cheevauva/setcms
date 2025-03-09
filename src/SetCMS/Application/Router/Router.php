@@ -9,35 +9,33 @@ use Psr\Container\ContainerInterface;
 use AltoRouter;
 use SetCMS\UUID;
 
-class Router implements RouterInterface
+class Router implements RouterInterface, \UUA\ContainerConstructInterface
 {
 
-    use \SetCMS\Traits\DITrait;
-    use \SetCMS\Traits\FactoryTrait;
+    use \UUA\Traits\BuildTrait;
 
     private AltoRouter $altoRouter;
 
     public function __construct(ContainerInterface $container)
     {
-        $this->container = $container;
-
         $this->altoRouter = new AltoRouter;
         $this->altoRouter->setBasePath($container->get('env')['BASE_URL'] ?? '');
         $this->altoRouter->addMatchTypes([
             'g' => sprintf('(%s)++', UUID::REGEX),
         ]);
 
-        foreach ($container->get('routes') as $name => $route) {
-            $this->altoRouter->map($route[0], $route[1], $route[2], $name);
+        foreach ($container->get('routes') as $rule => $controller) {
+            $route = explode(' ', $rule);
+            $this->altoRouter->map($route[0], $route[1], $controller, $route[2]);
         }
     }
 
-    public function generate($routeName, $params = []): string
+    public function generate(string $routeName, array $params = []): string
     {
         return $this->altoRouter->generate($routeName, $params);
     }
 
-    public function match($requestUrl = null, $requestMethod = null): RouterMatchDTO
+    public function match(?string $requestUrl = null, ?string $requestMethod = null): RouterMatchDTO
     {
         $result = $this->altoRouter->match($requestUrl, $requestMethod);
 
@@ -46,11 +44,10 @@ class Router implements RouterInterface
         }
 
         $routerMatch = new RouterMatchDTO;
-        $routerMatch->params = $result['params'];
-        $routerMatch->target = $result['target'];
-        $routerMatch->name = $result['name'];
+        $routerMatch->params = $result['params'] ?? [];
+        $routerMatch->target = strval($result['target'] ?? throw new \RuntimeException('target is undefined'));
+        $routerMatch->name = strval($result['name'] ?? throw new \RuntimeException('name is undefined'));
 
         return $routerMatch;
     }
-
 }

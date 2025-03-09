@@ -9,5 +9,5 @@ use SetCMS\Common\DAO\Entity\EntityRetrieveManyDAO;
 class Entity01RetrieveManyDAO extends EntityRetrieveManyDAO
 {
 
-    use Entity01GenericDAO;
+    use Entity01CommonDAO;
 }

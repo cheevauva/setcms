@@ -5,18 +5,14 @@ declare(strict_types=1);
 namespace SetCMS\Servant;
 
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Scope;
-use SetCMS\Application\Contract\ContractServant;
+use SetCMS\Controller;
+
 use SetCMS\View\Scope\ViewJsonExceptionScope;
 use SetCMS\View\Scope\ViewHtmlExceptionScope;
 use SetCMS\View\Hook\ViewRenderHook;
 
-class ViewRender implements ContractServant
+class ViewRender extends \UUA\Servant
 {
-
-    use \SetCMS\Traits\FactoryTrait;
-    use \SetCMS\Traits\DITrait;
-    use \SetCMS\Traits\EventDispatcherTrait;
 
     public mixed $mixedValue = null;
     public ServerRequestInterface $request;
@@ -31,7 +27,7 @@ class ViewRender implements ContractServant
             $object = $this->makeScopeByThrowable($object);
         }
 
-        if ($object instanceof Scope) {
+        if ($object instanceof Controller) {
             $hook = new ViewRenderHook;
             $hook->data = $object;
             $hook->request = $this->request;
@@ -42,7 +38,7 @@ class ViewRender implements ContractServant
         }
     }
 
-    protected function makeScopeByThrowable(\Throwable $object): Scope
+    protected function makeScopeByThrowable(\Throwable $object): Controller
     {
         $acceptType = $this->request->getHeaderLine('Accept') ?? 'application/json';
 

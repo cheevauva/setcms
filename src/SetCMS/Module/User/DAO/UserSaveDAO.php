@@ -13,6 +13,7 @@ class UserSaveDAO extends \SetCMS\Common\DAO\Entity\EntitySaveDAO
 
     public UserEntity $user;
 
+    #[\Override]
     public function serve(): void
     {
         $this->entity = $this->user;

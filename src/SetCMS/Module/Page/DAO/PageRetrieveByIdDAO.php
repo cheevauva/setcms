@@ -11,10 +11,10 @@ use SetCMS\Module\Page\Exception\PageNotFoundException;
 class PageRetrieveByIdDAO extends EntityRetrieveByIdDAO
 {
 
-    use PageGenericDAO;
-    use \SetCMS\Traits\FactoryTrait;
+    use PageCommonDAO;
+    
 
-    public PageEntity $page;
+    public ?PageEntity $page;
     public bool $throwExceptionIfNotFound = false;
 
     public function serve(): void

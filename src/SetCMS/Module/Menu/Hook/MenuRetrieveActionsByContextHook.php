@@ -7,13 +7,11 @@ namespace SetCMS\Module\Menu\Hook;
 use SetCMS\Module\Menu\MenuAction\Entity\MenuActionEntity;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\User\Entity\UserEntity;
+use SetCMS\Module\Post\Servant\PostMenuActionsByRequestServant;
 
-class MenuRetrieveActionsByContextHook implements \SetCMS\Application\Contract\ContractServant
+class MenuRetrieveActionsByContextHook extends \UUA\Servant
 {
-
-    use \SetCMS\Traits\HookTrait;
-    use \SetCMS\Traits\EventDispatcherTrait;
-
+    
     /**
      * @var MenuActionEntity[]
      */
@@ -40,4 +38,18 @@ class MenuRetrieveActionsByContextHook implements \SetCMS\Application\Contract\C
         return $request;
     }
 
+    public function from(object $object): void
+    {
+        if ($object instanceof PostMenuActionsByRequestServant) {
+            $this->actions = $object->actions;
+        }
+    }
+
+    public function to(object $object): void
+    {
+        if ($object instanceof PostMenuActionsByRequestServant) {
+            $object->currentUser = $this->currentUser;
+            $object->context = $this->context;
+        }
+    }
 }

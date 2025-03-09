@@ -7,6 +7,8 @@ namespace SetCMS\Module\Captcha\Exception;
 class CaptchaAlreadySolvedException extends CaptchaException
 {
 
-    protected $message = "Вы уже указали правильный код";
-
+    public function __construct(string $message = 'Вы уже указали правильный код')
+    {
+        parent::__construct($message);
+    }
 }

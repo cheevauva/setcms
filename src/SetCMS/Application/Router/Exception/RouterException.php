@@ -9,9 +9,9 @@ use SetCMS\Exception;
 class RouterException extends Exception
 {
 
-    public function label(): string
+    public function __construct(string $message = 'Исключительная ситуация при обработке маршрута')
     {
-        return 'setcms.router';
+        parent::__construct($message);
     }
 
 }

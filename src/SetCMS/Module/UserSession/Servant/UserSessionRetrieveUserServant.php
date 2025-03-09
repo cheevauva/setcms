@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\UserSession\Servant;
 
-use SetCMS\Application\Contract\ContractServant;
-use SetCMS\Application\Contract\ContractApplicable;
 use SetCMS\UUID;
 use SetCMS\Module\UserSession\DAO\UserSessionRetrieveByIdDAO;
 use SetCMS\Module\User\DAO\UserRetrieveByIdDAO;
 use SetCMS\Module\UserSession\UserSessionEntity;
 use SetCMS\Module\User\Entity\UserEntity;
 
-class UserSessionRetrieveUserServant implements ContractServant
+class UserSessionRetrieveUserServant extends \UUA\Servant
 {
-
-    use \SetCMS\Traits\DITrait;
-    use \SetCMS\Traits\FactoryTrait;
 
     public string $token;
     public ?UserSessionEntity $session = null;
@@ -30,7 +25,7 @@ class UserSessionRetrieveUserServant implements ContractServant
             return;
         }
 
-        $retrieveSession = UserSessionRetrieveByIdDAO::make($this->factory());
+        $retrieveSession = UserSessionRetrieveByIdDAO::new($this->container);
         $retrieveSession->id = $sessionId;
         $retrieveSession->serve();
 
@@ -38,7 +33,7 @@ class UserSessionRetrieveUserServant implements ContractServant
             return;
         }
 
-        $retrieveUser = UserRetrieveByIdDAO::make($this->factory());
+        $retrieveUser = UserRetrieveByIdDAO::new($this->container);
         $retrieveUser->id = $retrieveSession->session->userId;
         $retrieveUser->serve();
 
@@ -49,5 +44,4 @@ class UserSessionRetrieveUserServant implements ContractServant
         $this->user = $retrieveUser->user;
         $this->session = $retrieveSession->session;
     }
-
 }

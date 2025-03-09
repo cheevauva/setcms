@@ -9,7 +9,7 @@ use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Response;
 use SetCMS\Core\Servant\CoreMiddlewareDispatcherServant;
 
-$middlewareDispatcher = CoreMiddlewareDispatcherServant::make($factory);
+$middlewareDispatcher = CoreMiddlewareDispatcherServant::new($container);
 $middlewareDispatcher->middlewares = require_once '../resources/middlewares.php';
 $middlewareDispatcher->request = ServerRequestFactory::fromGlobals();
 $middlewareDispatcher->response = new Response;

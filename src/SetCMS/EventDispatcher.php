@@ -4,29 +4,27 @@ declare(strict_types=1);
 
 namespace SetCMS;
 
+use UUA\UnitInterface;
+use UUA\EventHandler;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use SetCMS\Application\Contract\ContractFactory;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 use Psr\EventDispatcher\StoppableEventInterface;
-use SetCMS\Application\Contract\ContractApplicable;
-use SetCMS\Application\Contract\ContractServant;
 
-class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherInterface
+class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherInterface, \UUA\ContainerConstructInterface
 {
 
-    use \SetCMS\Traits\AsTrait;
+    use \UUA\Traits\AsTrait;
+    use \UUA\Traits\ContainerTrait;
 
-    private ContractFactory $factory;
-    private static EventDispatcher $instance;
-
-    public function __construct(ContainerInterface $container, ContractFactory $factory)
+    #[\Override]
+    public function __construct(ContainerInterface $container)
     {
-        $this->factory = $factory;
-
+        $this->container = $container;
+        
         foreach ($container->get('events') as $event => $eventListeners) {
             foreach ($eventListeners as $priority => $eventListener) {
-                $this->addListener($event, [$eventListener], 999999 - $priority);
+                $this->addListener($event, $eventListener, 999999 - $priority);
             }
         }
     }
@@ -34,29 +32,28 @@ class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherI
     #[\Override]
     protected function callListeners(iterable $listeners, string $eventName, object $event): void
     {
-        $stoppable = $event instanceof StoppableEventInterface;
-
         foreach ($listeners as $listener) {
-            $listener = $listener[0];
-
-            if ($stoppable && $event->isPropagationStopped()) {
+            if ($event instanceof StoppableEventInterface && $event->isPropagationStopped()) {
                 break;
             }
 
-            $listenerObject = $this->factory->make($listener);
+            $unit = $listener[0]::new($this->container);
 
-            if ($listenerObject instanceof ContractApplicable) {
-                $listenerObject->from($event);
+            if (!($unit instanceof UnitInterface)) {
+                throw new \Exception(sprintf('Обработчик "%s" для события "%s" должен имплементировать UnitInterface', $listener[0], $eventName));
             }
 
-            if ($listenerObject instanceof ContractServant) {
-                $listenerObject->serve();
-            } else {
-                $this->factory->make($listener)($event, $eventName, $this);
+            $symbiont = isset($listener[1]) ? new $listener[1]($unit) : null;
+
+            if ($symbiont instanceof EventHandler) {
+                $symbiont->from($event);
             }
 
-            if ($listenerObject instanceof ContractApplicable) {
-                $listenerObject->to($event);
+                $unit->serve();
+
+
+            if ($symbiont instanceof EventHandler) {
+                $symbiont->to($event);
             }
         }
     }

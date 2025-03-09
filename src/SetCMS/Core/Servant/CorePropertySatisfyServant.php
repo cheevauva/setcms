@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace SetCMS\Core\Servant;
 
-use SetCMS\Application\Contract\ContractServant;
+
 use SetCMS\Application\Contract\ContractValidateInterface;
 use SetCMS\Attribute;
 use SetCMS\Core\VO\CorePropertyMessageVO;
 use ReflectionProperty;
 
-class CorePropertySatisfyServant implements ContractServant
+class CorePropertySatisfyServant extends \UUA\Servant
 {
 
-    use \SetCMS\Traits\QuickTrait;
+    
 
     public object $object;
     public array $messages = [];
@@ -41,7 +41,7 @@ class CorePropertySatisfyServant implements ContractServant
             }
 
             if ($rawValue instanceof ContractValidateInterface) {
-                $satisfyer = CorePropertySatisfyServant::make($this->factory());
+                $satisfyer = CorePropertySatisfyServant::new($this->container);
                 $satisfyer->object = $rawValue;
                 $satisfyer->serve();
 

@@ -10,29 +10,24 @@ use SetCMS\Module\Post\PostEntity;
 class PostMapper extends EntityMapper
 {
 
-    use \SetCMS\Traits\FactoryTrait;
-
-    protected function entity(): PostEntity
-    {
-        return parent::entity();
-    }
-
     protected function entity2row(): void
     {
         parent::entity2row();
-
-        $this->row['message'] = $this->entity()->message;
-        $this->row['slug'] = $this->entity()->slug;
-        $this->row['title'] = $this->entity()->title;
+        
+        $entity = PostEntity::as($this->entity);
+        
+        $this->row['message'] = $entity->message;
+        $this->row['slug'] = $entity->slug;
+        $this->row['title'] = $entity->title;
     }
 
     protected function entity4row(): void
     {
         parent::entity4row();
-
-        $this->entity()->message = $this->row['message'];
-        $this->entity()->title = $this->row['title'];
-        $this->entity()->slug = $this->row['slug'];
+        
+        $entity = PostEntity::as($this->entity);
+        $entity->message = $this->row['message'];
+        $entity->title = $this->row['title'];
+        $entity->slug = $this->row['slug'];
     }
-
 }

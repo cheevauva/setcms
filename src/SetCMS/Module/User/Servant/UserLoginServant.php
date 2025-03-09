@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\Servant;
 
-use SetCMS\Module\User\DAO\UserRetrieveByUsernameDAO;
+use SetCMS\Module\User\DAO\UserRetrieveManyByCriteriaDAO;
 use SetCMS\Module\User\Exception\UserNotFoundException;
 use SetCMS\Module\User\Exception\UserIncorrectPasswordException;
 use SetCMS\Module\User\Entity\UserEntity;
 
-class UserLoginServant implements \SetCMS\Application\Contract\ContractServant
+class UserLoginServant extends \UUA\Servant
 {
 
-    use \SetCMS\Traits\DITrait;
-    use \SetCMS\Traits\FactoryTrait;
+    
+    
 
     public string $username;
     public string $password;
@@ -21,15 +21,16 @@ class UserLoginServant implements \SetCMS\Application\Contract\ContractServant
 
     public function serve(): void
     {
-        $retrieveByUsername = UserRetrieveByUsernameDAO::make($this->factory());
+        $retrieveByUsername = UserRetrieveManyByCriteriaDAO::new($this->container);
+        $retrieveByUsername->limit = 1;
         $retrieveByUsername->username = $this->username;
         $retrieveByUsername->serve();
 
-        if (empty($retrieveByUsername->user)) {
+        if (empty($retrieveByUsername->first)) {
             throw new UserNotFoundException;
         }
 
-        $user = $retrieveByUsername->user;
+        $user = UserEntity::as($retrieveByUsername->first);
 
         if (!password_verify($this->password, $user->password)) {
             throw new UserIncorrectPasswordException;

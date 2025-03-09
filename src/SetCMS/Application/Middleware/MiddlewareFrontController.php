@@ -9,36 +9,36 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
-use SetCMS\Scope;
+use SetCMS\Controller;
 use SetCMS\Module\Dynamic\DAO\DynamicMethodRetrieveByServerRequestDAO;
 use SetCMS\Controller\Hook\ScopeProtectionHook;
 
-class MiddlewareFrontController implements MiddlewareInterface
+class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {
 
-    use \SetCMS\Traits\QuickTrait;
+    use \UUA\Traits\BuildTrait;
+    use \UUA\Traits\ContainerTrait;
+    use \UUA\Traits\EventDispatcherTrait;
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $retrieveMethod = DynamicMethodRetrieveByServerRequestDAO::make($this->factory());
-        $retrieveMethod->response = new Response;
-        $retrieveMethod->request = $request;
-        $retrieveMethod->serve();
+        $retrieveController = DynamicMethodRetrieveByServerRequestDAO::new($this->container);
+        $retrieveController->request = $request;
+        $retrieveController->serve();
 
-        foreach ($retrieveMethod->reflectionArguments as $argument) {
-            if ($argument instanceof Scope) {
-                $argument->from($request);
+        $controller = $retrieveController->controller;
+        $controller->from($request);
+        $controller->from(new Response);
 
-                $event = new ScopeProtectionHook;
-                $event->scope = $argument;
-                $event->user = $request->getAttribute('currentUser');
-                $event->dispatch($this->eventDispatcher());
-            }
-        }
+        $event = new ScopeProtectionHook();
+        $event->scope = $controller;
+        $event->user = $request->getAttribute('currentUser');
+        $event->dispatch($this->eventDispatcher());
 
-        $request = $request->withAttribute('output', $retrieveMethod->reflectionMethod->invokeArgs($retrieveMethod->reflectionObject, $retrieveMethod->reflectionArguments));
+        $controller->serve();
+
+        $request = $request->withAttribute('output', $controller);
 
         return $handler->handle($request);
     }
-
 }

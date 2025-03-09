@@ -12,6 +12,10 @@ class RouterMatchDTO
      * @var string
      */
     public string $name;
+
+    /**
+     * @var array<(string|int)|mixed>
+     */
     public array $params;
 
     /**
@@ -19,5 +23,4 @@ class RouterMatchDTO
      * @var string
      */
     public string $target;
-
 }

@@ -14,6 +14,7 @@ class UserSessionSaveDAO extends EntitySaveDAO
 
     public UserSessionEntity $session;
 
+    #[\Override]
     public function serve(): void
     {
         $this->entity = $this->session;

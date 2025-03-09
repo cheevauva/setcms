@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace SetCMS\Traits;
 
 use SetCMS\Application\Database\DatabaseMainConnection;
+use Doctrine\DBAL\Connection;
 
 trait DatabaseMainConnectionTrait
 {
+    use \UUA\Traits\ContainerTrait;
 
-    use \SetCMS\Traits\DITrait;
-
-    protected function db(): DatabaseMainConnection
+    protected function db(): Connection
     {
-        return $this->container->get(DatabaseMainConnection::class);
+        return DatabaseMainConnection::singleton($this->container)->getConnection();
     }
-
 }

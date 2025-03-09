@@ -9,6 +9,8 @@ use SetCMS\UUID;
 class Entity
 {
 
+    use \UUA\Traits\AsTrait;
+
     public UUID $id;
     public string $entityType;
     public \DateTime $dateCreated;

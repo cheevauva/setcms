@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Scope;
+namespace SetCMS\Controller;
 
-class FrontControllerScope extends \SetCMS\Scope
+class FrontControllerScope extends \SetCMS\Controller
 {
     
 }

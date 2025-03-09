@@ -11,10 +11,8 @@ use Psr\Http\{
     Server\RequestHandlerInterface
 };
 
-class CoreMiddlewareDispatcherServant implements RequestHandlerInterface
+class CoreMiddlewareDispatcherServant extends \UUA\Servant implements RequestHandlerInterface
 {
-
-    use \SetCMS\Traits\QuickTrait;
 
     public array $middlewares = [];
     protected int $index = -1;
@@ -40,7 +38,7 @@ class CoreMiddlewareDispatcherServant implements RequestHandlerInterface
 
     private function createMiddleware(string $class): MiddlewareInterface
     {
-        return $this->factory()->make($class);
+        return $class::new($this->container);
     }
 
 }

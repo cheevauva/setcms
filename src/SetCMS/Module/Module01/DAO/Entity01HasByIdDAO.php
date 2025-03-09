@@ -9,5 +9,5 @@ use SetCMS\Common\DAO\Entity\EntityHasByIdDAO;
 class Entity01HasByIdDAO extends EntityHasByIdDAO
 {
 
-    use Entity01GenericDAO;
+    use Entity01CommonDAO;
 }

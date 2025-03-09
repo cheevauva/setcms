@@ -11,10 +11,11 @@ use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
 use SetCMS\Servant\ViewRender;
 
-class MiddlewareRenderView implements MiddlewareInterface
+class MiddlewareRenderView implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {
 
-    use \SetCMS\Traits\DITrait;
+    use \UUA\Traits\BuildTrait;
+    use \UUA\Traits\ContainerTrait;
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -29,7 +30,7 @@ class MiddlewareRenderView implements MiddlewareInterface
         if (is_null($output)) {
             $response->getBody()->write('Success!');
         } else {
-            $render = ViewRender::make($this->factory());
+            $render = ViewRender::new($this->container);
             $render->request = $request;
             $render->mixedValue = $output;
             $render->serve();

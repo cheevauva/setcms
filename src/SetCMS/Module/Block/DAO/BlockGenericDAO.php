@@ -10,18 +10,15 @@ use SetCMS\Module\Block\BlockConstrants;
 trait BlockGenericDAO
 {
 
-    use \SetCMS\Traits\DITrait;
-    use \SetCMS\Traits\FactoryTrait;
     use \SetCMS\Traits\DatabaseMainConnectionTrait;
 
     protected function mapper(): BlockMapper
     {
-        return BlockMapper::make($this->factory());
+        return BlockMapper::new($this->container);
     }
 
     protected function table(): string
     {
         return BlockConstrants::TABLE_NAME;
     }
-
 }

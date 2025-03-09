@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace SetCMS\Core\Servant;
 
-use SetCMS\Application\Contract\ContractServant;
+
 use SetCMS\Application\Contract\ContractHydrateInterface;
 use SetCMS\Core\VO\CorePropertyMessageVO;
 
-class CorePropertyHydrateServant implements ContractServant
+class CorePropertyHydrateServant extends \UUA\Servant
 {
 
-    use \SetCMS\Traits\QuickTrait;
+    
 
     private const TYPES = [
         'int',
@@ -91,7 +91,7 @@ class CorePropertyHydrateServant implements ContractServant
         }
 
         if (class_exists($propertyType, true) && is_subclass_of($propertyType, ContractHydrateInterface::class, true)) {
-            $hydrator = CorePropertyHydrateServant::make($this->factory());
+            $hydrator = CorePropertyHydrateServant::new($this->container);
             $hydrator->object = $this->object->{$property->getName()} = new $propertyType;
             $hydrator->array = $this->array[$property->getName()];
             $hydrator->serve();

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\UserSession\DAO;
 
-use SetCMS\Common\DAO\Entity\EntityRetrieveByIdDAO;
+use SetCMS\Common\DAO\Entity\EntityRetrieveManyByCriteriaDAO;
 use SetCMS\Module\UserSession\UserSessionEntity;
 
-class UserSessionRetrieveByIdDAO extends EntityRetrieveByIdDAO
+class UserSessionRetrieveByIdDAO extends EntityRetrieveManyByCriteriaDAO
 {
 
     use UserSessionGenericDAO;
@@ -18,7 +18,7 @@ class UserSessionRetrieveByIdDAO extends EntityRetrieveByIdDAO
     {
         parent::serve();
 
-        $this->session = $this->entity;
+        $this->session = $this->first;
     }
 
 }

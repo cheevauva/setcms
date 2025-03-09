@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-use SetCMS\Application\Contract\ContractServant;
 use SetCMS\Application\Contract\ContractApplicable;
-use SetCMS\Scope;
+use SetCMS\Controller;
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\View\Hook\ViewRenderHook;
+use SetCMS\DTO\SetCMSOutputJsonDTO;
 
-class ViewJsonRender implements ContractServant, ContractApplicable
+class ViewJsonRender extends \UUA\Servant
 {
-
-    use \SetCMS\Traits\QuickTrait;
 
     public object $mixedValue;
     public ?string $json = null;
@@ -21,38 +18,17 @@ class ViewJsonRender implements ContractServant, ContractApplicable
 
     public function serve(): void
     {
+        $json = new SetCMSOutputJsonDTO;
         $object = $this->mixedValue;
 
-        if ($object instanceof Scope) {
-            $this->json = json_encode([
-                'result' => !$object->hasMessages(),
-                'data' => $object->toArray(),
-                'messages' => $object->getMessages(),
-            ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-            return;
+        if ($object instanceof Controller) {
+            $object->to($json);
         }
 
         $this->json = json_encode([
-            'result' => true,
-            'data' => $object,
-            'messages' => [],
+            'result' => $json->isSuccess,
+            'data' => $json->data(),
+            'messages' => $json->messages(),
         ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
     }
-
-    public function from(object $object): void
-    {
-        if ($object instanceof ViewRenderHook) {
-            $this->mixedValue = $object->data;
-            $this->request = $object->request;
-        }
-    }
-
-    public function to(object $object): void
-    {
-        if ($object instanceof ViewRenderHook) {
-            $object->content = $this->json;
-            $object->contentType = 'application/json';
-        }
-    }
-
 }

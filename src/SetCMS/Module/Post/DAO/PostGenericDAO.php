@@ -10,13 +10,13 @@ use SetCMS\Module\Post\PostConstrants;
 trait PostGenericDAO
 {
 
-    use \SetCMS\Traits\DITrait;
-    use \SetCMS\Traits\FactoryTrait;
+    
+    
     use \SetCMS\Traits\DatabaseMainConnectionTrait;
 
     protected function mapper(): PostMapper
     {
-        return PostMapper::make($this->factory());
+        return PostMapper::new($this->container);
     }
 
     protected function table(): string

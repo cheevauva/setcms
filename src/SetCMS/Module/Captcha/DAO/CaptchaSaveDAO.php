@@ -9,8 +9,8 @@ use SetCMS\Module\Captcha\CaptchaEntity;
 class CaptchaSaveDAO extends \SetCMS\Common\DAO\Entity\EntitySaveDAO
 {
 
-    use \SetCMS\Traits\FactoryTrait;
-    use CaptchaEntityDbDAOTrait;
+    
+    use CaptchaCommonDAO;
     
     public CaptchaEntity $captcha;
 

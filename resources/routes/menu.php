@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-use SetCMS\Module\Menu\Controller\MenuPublicController;
-use SetCMS\Module\Menu\Controller\MenuPrivateController;
+use SetCMS\Module\Menu\Controller\MenuPublicReadByContextController;
+use SetCMS\Module\Menu\Controller\MenuPublicReadBySlugController;
+use SetCMS\Module\Menu\Controller\MenuPublicAdminMenuController;
 
-$routes['menu_read_by_context'] = MenuPublicController::toRoute('GET', '/menu/for/context')->readByContext();
-$routes['menu_read_by_slug'] = MenuPublicController::toRoute('GET', '/menu/for/[a:slug]')->readBySlug();
-$routes['admin_menu'] = MenuPrivateController::toRoute('GET', '/~/menu')->adminMemu();
+$routes['GET /menu/for/context menu_read_by_context'] = MenuPublicReadByContextController::class;
+$routes['GET menu/for/[a:slug] menu_read_by_slug'] = MenuPublicReadBySlugController::class;
+$routes['GET /~/menu admin_menu'] = MenuPublicAdminMenuController::class;

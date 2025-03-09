@@ -9,6 +9,9 @@ use SetCMS\Application\Contract\ContractForbidden;
 class UserForbiddenException extends UserException implements ContractForbidden
 {
 
-    protected $message = "Доступ запрещён";
+    public function __construct(string $message = 'Доступ запрещён')
+    {
+        parent::__construct($message);
+    }
 
 }

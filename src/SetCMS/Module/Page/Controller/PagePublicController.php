@@ -12,17 +12,20 @@ use SetCMS\Module\Page\Scope\PagePublicReadBlockScope;
 class PagePublicController
 {
 
-    use \SetCMS\Traits\ControllerTrait;
-    use \SetCMS\Traits\RouterTrait;
+    
+    
 
     public function read(PagePublicReadScope $scope, PageRetrieveByIdDAO $servant): PagePublicReadScope
     {
-        return $this->serve($servant, $scope);
+        $this->serve($servant, $scope);
+
+        return $scope;
     }
 
     public function block(PagePublicReadBlockScope $scope, PageRetrieveBySlugDAO $servant): PagePublicReadBlockScope
     {
-        return $this->serve($servant, $scope);
-    }
+        $this->serve($servant, $scope);
 
+        return $scope;
+    }
 }

@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\UserSession\Servant;
 
-use SetCMS\Application\Contract\ContractServant;
+
 use SetCMS\Module\UserSession\UserSessionEntity;
 use SetCMS\Module\UserSession\DAO\UserSessionHasByIdDAO;
 use SetCMS\Module\UserSession\DAO\UserSessionSaveDAO;
 use SetCMS\Module\UserSession\Exception\UserSessionAlreadyExistsException;
 
-class UserSessionCreateServant implements ContractServant
+class UserSessionCreateServant extends \UUA\Servant
 {
 
-    use \SetCMS\Traits\DITrait;
+    
 
     public UserSessionEntity $session;
 
     public function serve(): void
     {
-        $hasEntityById = UserSessionHasByIdDAO::make($this->factory());
+        $hasEntityById = UserSessionHasByIdDAO::new($this->container);
         $hasEntityById->id = $this->session->id;
         $hasEntityById->serve();
 
@@ -27,7 +27,7 @@ class UserSessionCreateServant implements ContractServant
             throw new UserSessionAlreadyExistsException;
         }
 
-        $saveEntity = UserSessionSaveDAO::make($this->factory());
+        $saveEntity = UserSessionSaveDAO::new($this->container);
         $saveEntity->session = $this->session;
         $saveEntity->serve();
     }

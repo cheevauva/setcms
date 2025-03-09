@@ -28,7 +28,6 @@ $containerBuilder->addDefinitions([
 ]);
 
 $container = $containerBuilder->build();
-$factory = Factory::as($container->get(Factory::class));
 $eventDispatcher = EventDispatcher::as($container->get(EventDispatcherInterface::class));
 
 assert($container instanceof ContainerInterface);

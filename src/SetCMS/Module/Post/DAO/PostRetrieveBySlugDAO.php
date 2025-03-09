@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\DAO;
 
-use SetCMS\Common\DAO\Entity\EntityRetrieveByCriteriaDAO;
+use SetCMS\Common\DAO\Entity\EntityRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\Module\Post\Exception\PostNotFoundException;
 
-class PostRetrieveBySlugDAO extends EntityRetrieveByCriteriaDAO
+class PostRetrieveBySlugDAO extends EntityRetrieveManyByCriteriaDAO
 {
 
     use PostGenericDAO;

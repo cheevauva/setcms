@@ -10,31 +10,28 @@ use SetCMS\Module\Block\BlockEntity;
 class BlockMapper extends EntityMapper
 {
 
-    use \SetCMS\Traits\FactoryTrait;
-
-    protected function entity(): BlockEntity
-    {
-        return parent::entity();
-    }
-
+    #[\Override]
     protected function entity2row(): void
     {
         parent::entity2row();
-
-        $this->row['path'] = $this->entity()->path;
-        $this->row['params'] = json_encode($this->entity()->params, JSON_UNESCAPED_UNICODE);
-        $this->row['template'] = $this->entity()->template;
-        $this->row['section'] = $this->entity()->section;
+        
+        $entity = BlockEntity::as($this->entity);
+        
+        $this->row['path'] = $entity->path;
+        $this->row['params'] = json_encode($entity->params, JSON_UNESCAPED_UNICODE);
+        $this->row['template'] = $entity->template;
+        $this->row['section'] = $entity->section;
     }
 
+    #[\Override]
     protected function entity4row(): void
     {
         parent::entity4row();
 
-        $this->entity()->path = $this->row['path'];
-        $this->entity()->params = json_decode($this->row['params'], true);
-        $this->entity()->template = $this->row['template'];
-        $this->entity()->section = $this->row['section'];
+        $entity = BlockEntity::as($this->entity);
+        $entity->path = $this->row['path'] ?? throw new \RuntimeException('row.path is undefined');
+        $entity->params = json_decode($this->row['params'] ?? '{}', true);
+        $entity->template = $this->row['template']  ?? throw new \RuntimeException('row.template is undefined');
+        $entity->section = $this->row['section'] ?? throw new \RuntimeException('row.section is undefined');
     }
-
 }

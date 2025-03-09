@@ -10,13 +10,11 @@ use SetCMS\Module\UserSession\UserSessionConstrants;
 trait UserSessionGenericDAO
 {
 
-    use \SetCMS\Traits\DITrait;
-    use \SetCMS\Traits\FactoryTrait;
     use \SetCMS\Traits\DatabaseMainConnectionTrait;
 
     protected function mapper(): UserSessionMapper
     {
-        return UserSessionMapper::make($this->factory());
+        return UserSessionMapper::new($this->container);
     }
 
     protected function table(): string

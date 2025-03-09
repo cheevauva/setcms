@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page\Scope;
 
-use SetCMS\Scope;
+use SetCMS\Controller;
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\DAO\PageRetrieveBySlugDAO;
 use SetCMS\Attribute\Http\Parameter\Attributes;
 
-class PagePublicReadBlockScope extends Scope
+class PagePublicReadBlockScope extends Controller
 {
 
     protected ?PageEntity $entity = null;

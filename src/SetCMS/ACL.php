@@ -5,10 +5,10 @@ namespace SetCMS;
 use Laminas\Permissions\Acl\Acl as LaminasAcl;
 use Psr\Container\ContainerInterface;
 
-class ACL extends LaminasAcl
+class ACL extends LaminasAcl implements \UUA\ContainerConstructInterface
 {
-
-    use \SetCMS\Traits\FactoryTrait;
+    use \UUA\Traits\BuildTrait;
+    use \UUA\Traits\ContainerTrait;
 
     public function __construct(ContainerInterface $container)
     {

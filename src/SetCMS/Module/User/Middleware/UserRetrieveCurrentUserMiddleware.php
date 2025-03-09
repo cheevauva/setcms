@@ -12,18 +12,18 @@ use Psr\Http\Message\ResponseInterface;
 use SetCMS\Module\UserSession\Servant\UserSessionRetrieveUserServant;
 use SetCMS\Module\User\Entity\UserEntity;
 
-class UserRetrieveCurrentUserMiddleware implements MiddlewareInterface
+class UserRetrieveCurrentUserMiddleware implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {
 
-    use \SetCMS\Traits\DITrait;
-    use \SetCMS\Traits\FactoryTrait;
+    use \UUA\Traits\BuildTrait;
+    use \UUA\Traits\ContainerTrait;
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $tokenName = RequestAttribute::accessToken->toString();
         $token = $request->getCookieParams()[$tokenName] ?? $request->getHeaderLine(strtolower($tokenName));
 
-        $retrieveUser = UserSessionRetrieveUserServant::make($this->factory());
+        $retrieveUser = UserSessionRetrieveUserServant::new($this->container);
         $retrieveUser->token = $token;
         $retrieveUser->serve();
 
@@ -36,5 +36,4 @@ class UserRetrieveCurrentUserMiddleware implements MiddlewareInterface
 
         return $handler->handle($request);
     }
-
 }

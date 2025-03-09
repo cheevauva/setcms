@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Common\DAO\Entity;
 
-abstract class EntityRetrieveManyDAO extends EntityCommonDAO implements \SetCMS\Application\Contract\ContractServant
+use SetCMS\Common\Entity\Entity;
+
+abstract class EntityRetrieveManyDAO extends EntityCommonDAO
 {
 
     public array $entities;
+    public Entity $first;
 
     public function serve(): void
     {

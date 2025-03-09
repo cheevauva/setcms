@@ -4,38 +4,41 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\UserSession\Servant;
 
-use SetCMS\Application\Contract\ContractServant;
+use SetCMS\UUID;
 use SetCMS\Module\UserSession\UserSessionEntity;
 use SetCMS\Module\UserSession\DAO\UserSessionRetrieveByIdDAO;
 use SetCMS\Module\UserSession\DAO\UserSessionSaveDAO;
 use SetCMS\Module\UserSession\Exception\UserSessionNotFoundException;
 
-class UserSessionDeleteServant implements ContractServant
+class UserSessionDeleteServant extends \UUA\Servant
 {
-
-    use \SetCMS\Traits\DITrait;
 
     public ?UserSessionEntity $session = null;
     public ?UUID $id = null;
 
     public function serve(): void
     {
-        $retrieveById = UserSessionRetrieveByIdDAO::make($this->factory());
-        $retrieveById->id = $this->id ?? $this->session->id;
+        $sessionId = $this->id ?? ($this->session->id ?? null);
+
+        if (empty($sessionId)) {
+            throw new \RuntimeException('sessionId не определён');
+        }
+
+        $retrieveById = UserSessionRetrieveByIdDAO::new($this->container);
+        $retrieveById->id = $sessionId;
         $retrieveById->serve();
 
-        if (!$retrieveById->entity) {
+        if (empty($retrieveById->session)) {
             throw new UserSessionNotFoundException;
         }
 
         $entity = $retrieveById->session;
         $entity->deleted = true;
 
-        $save = UserSessionSaveDAO::make($this->factory());
-        $save->entity = $entity;
+        $save = UserSessionSaveDAO::new($this->container);
+        $save->session = $entity;
         $save->serve();
 
-        $this->entity = $entity;
+        $this->session = $entity;
     }
-
 }

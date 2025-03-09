@@ -10,29 +10,24 @@ use SetCMS\Module\Page\PageEntity;
 class PageMapper extends EntityMapper
 {
 
-    use \SetCMS\Traits\FactoryTrait;
-
-    protected function entity(): PageEntity
-    {
-        return parent::entity();
-    }
-
     protected function entity2row(): void
     {
         parent::entity2row();
 
-        $this->row['slug'] = $this->entity()->slug;
-        $this->row['title'] = $this->entity()->title;
-        $this->row['content'] = $this->entity()->content;
+        $entity = PageEntity::as($this->entity);
+
+        $this->row['slug'] = $entity->slug;
+        $this->row['title'] = $entity->title;
+        $this->row['content'] = $entity->content;
     }
 
     protected function entity4row(): void
     {
         parent::entity4row();
 
-        $this->entity()->slug = $this->row['slug'];
-        $this->entity()->title = $this->row['title'];
-        $this->entity()->content = $this->row['content'];
+        $entity = PageEntity::as($this->entity);
+        $entity->slug = $this->row['slug'];
+        $entity->title = $this->row['title'];
+        $entity->content = $this->row['content'];
     }
-
 }

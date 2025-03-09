@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Block\Scope;
 
-use SetCMS\Scope;
+use SetCMS\Controller;
 
-class BlockPrivateScope extends Scope
+class BlockPrivateScope extends Controller
 {
     
 }

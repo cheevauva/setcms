@@ -10,7 +10,7 @@ use Doctrine\DBAL\Schema\Table;
 trait MigrationVersionTrait
 {
 
-    private function addDefaultColumns(Table $table)
+    private function addDefaultColumns(Table $table): void
     {
         $table->addColumn('id', Types::GUID);
         $table->addColumn('entity_type', Types::STRING);

@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Module01\Servant;
 
-use SetCMS\Application\Contract\ContractServant;
+use SetCMS\UUID;
 use SetCMS\Module\Module01\Entity\Entity01Entity;
 use SetCMS\Module\Module01\DAO\Entity01RetrieveByIdDAO;
 use SetCMS\Module\Module01\DAO\Entity01SaveDAO;
 use SetCMS\Module\Module01\Exception\Entity01NotFoundException;
 
-class Entity01DeleteServant implements ContractServant
+class Entity01DeleteServant extends \UUA\Servant
 {
-
-    use \SetCMS\Traits\DITrait;
 
     public ?Entity01Entity $Entity01LC = null;
     public ?UUID $id = null;
@@ -21,21 +19,21 @@ class Entity01DeleteServant implements ContractServant
     #[\Override]
     public function serve(): void
     {
-        $retrieveById = Entity01RetrieveByIdDAO::make($this->factory());
-        $retrieveById->id = $this->id ?? $this->Entity01LC->id;
-        $retrieveById->serve();
+        $Entity01LCById = Entity01RetrieveByIdDAO::new($this->container);
+        $Entity01LCById->id = $this->id ?? ($this->Entity01LC->id ?? throw new \RuntimeException('id is undefined'));
+        $Entity01LCById->serve();
 
-        if (!$retrieveById->entity) {
+        if (!$Entity01LCById->first) {
             throw new Entity01NotFoundException;
         }
 
-        $entity = $retrieveById->Entity01LC;
-        $entity->deleted = true;
+        $Entity01LC = Entity01Entity::as($Entity01LCById->first);
+        $Entity01LC->deleted = true;
 
-        $save = Entity01SaveDAO::make($this->factory());
-        $save->entity = $entity;
+        $save = Entity01SaveDAO::new($this->container);
+        $save->entity = $Entity01LC;
         $save->serve();
 
-        $this->entity = $entity;
+        $this->Entity01LC = $Entity01LC;
     }
 }

@@ -5,67 +5,48 @@ declare(strict_types=1);
 namespace SetCMS\Application\Database;
 
 use Doctrine\DBAL\Connection;
-use Psr\Container\ContainerInterface;
 use Doctrine\DBAL\DriverManager;
 
-abstract class DatabaseConnection extends Connection
+abstract class DatabaseConnection implements \UUA\ContainerConstructInterface
 {
 
-    public function __construct(ContainerInterface $container)
-    {
-        $basePath = $container->get('basePath');
-        $prefix = mb_strtoupper((new \ReflectionClass($this))->getShortName());
-        $env = $this->env($container->get('env'), $prefix);
+    use \UUA\Traits\BuildTrait;
+    use \UUA\Traits\ContainerTrait;
 
-        switch ($env->get('DRIVER')) {
+    protected Connection $connection;
+
+    public function getConnection(): Connection
+    {
+        if (isset($this->connection)) {
+            return $this->connection;
+        }
+
+        $prefix = mb_strtoupper((new \ReflectionClass($this))->getShortName()) . '_';
+        $env = new \UUA\ArrayObjectStrict($this->container->get('env'));
+
+        switch ($env[$prefix . 'DRIVER']) {
             case 'pdo_sqlite':
                 $params = [
-                    'path' => sprintf('%s/%s', $basePath, $env->get('PATH')),
-                    'driver' => $env->get('DRIVER'),
+                    'path' => sprintf('%s/%s', $this->container->get('basePath'), $env[$prefix . 'PATH']),
+                    'driver' => $env[$prefix . 'DRIVER'],
                     'charset' => 'UTF8',
                 ];
                 break;
             case 'pdo_pgsql':
             case 'pdo_mysql':
                 $params = [
-                    'dbname' => $env->get('DBNAME'),
-                    'user' => $env->get('USER'),
-                    'password' => $env->get('PASSWORD'),
-                    'host' => $env->get('HOST'),
-                    'driver' => $env->get('DRIVER'),
+                    'dbname' => $env[$prefix . 'DBNAME'],
+                    'user' => $env[$prefix . 'USER'],
+                    'password' => $env[$prefix . 'PASSWORD'],
+                    'host' => $env[$prefix . 'HOST'],
+                    'driver' => $env[$prefix . 'DRIVER'],
                     'charset' => 'UTF8',
                 ];
                 break;
+            default:
+                throw new \RuntimeException(sprintf('driver %s not supported', $env[$prefix . 'DRIVER']));
         }
 
-        $createDriverMethod = (new \ReflectionClass(DriverManager::class))->getMethod('createDriver');
-        $createDriverMethod->setAccessible(true);
-
-        return parent::__construct($params, $createDriverMethod->invoke(null, $env->get('DRIVER') , null));
+        return $this->connection = DriverManager::getConnection($params);
     }
-
-    private function env(array $env, string $prefix)
-    {
-        return new class($env, $prefix) {
-
-            protected array $env;
-            protected string $prefix;
-
-            public function __construct(array $env, string $prefix)
-            {
-                $this->prefix = $prefix;
-                $this->env = $env;
-            }
-
-            public function get(string $name): string
-            {
-                if (!isset($this->env[$this->prefix . '_' . $name])) {
-                    throw new \RuntimeException(sprintf('%s not defined in env', $this->prefix . '_' . $name));
-                }
-
-                return $this->env[$this->prefix . '_' . $name];
-            }
-        };
-    }
-
 }

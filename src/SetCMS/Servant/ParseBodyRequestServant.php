@@ -4,22 +4,18 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-use SetCMS\Application\Contract\ContractServant;
 use SetCMS\Application\Contract\ContractApplicable;
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Controller\Hook\ParseBodyHook;
 
-class ParseBodyRequestServant implements ContractServant, ContractApplicable
+class ParseBodyRequestServant extends \UUA\Servant implements ContractApplicable
 {
-
-    use \SetCMS\Traits\FactoryTrait;
 
     public ServerRequestInterface $request;
     public mixed $parsedBody = null;
 
     public function serve(): void
     {
-        $contentType = $this->request->getHeaderLine('Content-type') ?? '';
+        $contentType = $this->request->getHeaderLine('Content-type');
         $content = $this->request->getBody()->getContents();
 
         if (str_contains($contentType, 'application/json') && $content) {
@@ -29,16 +25,11 @@ class ParseBodyRequestServant implements ContractServant, ContractApplicable
 
     public function from(object $object): void
     {
-        if ($object instanceof ParseBodyHook) {
-            $this->request = $object->request;
-        }
+
     }
 
     public function to(object $object): void
     {
-        if ($object instanceof ParseBodyHook) {
-            $object->withParsedBody($this->parsedBody);
-        }
-    }
 
+    }
 }

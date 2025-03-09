@@ -9,5 +9,5 @@ use SetCMS\Common\DAO\Entity\EntityRetrieveManyDAO;
 class MenuRetrieveManyDAO extends EntityRetrieveManyDAO
 {
 
-    use MenuGenericDAO;
+    use MenuCommonDAO;
 }

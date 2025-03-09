@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Menu\DAO;
 
-class MenuRetrieveManyBySlugDAO implements \SetCMS\Application\Contract\ContractServant
+class MenuRetrieveManyBySlugDAO extends \UUA\DAO
 {
 
     public string $slug;

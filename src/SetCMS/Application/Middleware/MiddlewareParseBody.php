@@ -9,11 +9,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-class MiddlewareParseBody implements MiddlewareInterface
+class MiddlewareParseBody implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {
 
-    use \SetCMS\Traits\DITrait;
-    use \SetCMS\Traits\FactoryTrait;
+    use \UUA\Traits\BuildTrait;
+    use \UUA\Traits\ContainerTrait;
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
@@ -26,5 +26,4 @@ class MiddlewareParseBody implements MiddlewareInterface
 
         return $handler->handle($request);
     }
-
 }

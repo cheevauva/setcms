@@ -6,11 +6,10 @@ namespace SetCMS\Common\DAO\Entity;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
-use SetCMS\Application\Contract\ContractServant;
 use SetCMS\Common\Entity\Entity;
 use SetCMS\Common\Mapper\EntityMapper;
 
-abstract class EntityCommonDAO implements ContractServant
+abstract class EntityCommonDAO extends \UUA\DAO
 {
 
     protected ?int $limit = null;
@@ -33,26 +32,40 @@ abstract class EntityCommonDAO implements ContractServant
         return $qb;
     }
 
+    /**
+     * @param Entity $entity
+     * @return array<string, mixed>
+     */
     protected function asRow(Entity $entity): array
     {
         $mapper = $this->mapper();
         $mapper->entity = $entity;
-        $mapper->row = null;
         $mapper->serve();
-
+        
+        if (is_null($mapper->row)) {
+            throw new \RuntimeException('row must be array');
+        }
+        
         return $mapper->row;
     }
 
+    /**
+     * @param array<string, mixed> $row
+     * @return Entity
+     */
     protected function asEntity(array $row): Entity
     {
         $mapper = $this->mapper();
-        $mapper->entity = null;
         $mapper->row = $row;
         $mapper->serve();
 
-        return $mapper->entity;
+        return Entity::as($mapper->entity);
     }
 
+    /**
+     * @param array<array<string, mixed>> $rows
+     * @return array<Entity>
+     */
     protected function asEntities(array $rows): array
     {
         $entities = [];

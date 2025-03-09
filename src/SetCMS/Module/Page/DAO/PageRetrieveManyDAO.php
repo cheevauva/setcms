@@ -9,5 +9,5 @@ use SetCMS\Common\DAO\Entity\EntityRetrieveManyDAO;
 class PageRetrieveManyDAO extends EntityRetrieveManyDAO
 {
 
-    use PageGenericDAO;
+    use PageCommonDAO;
 }

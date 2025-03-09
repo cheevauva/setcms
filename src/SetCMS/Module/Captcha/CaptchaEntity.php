@@ -27,7 +27,7 @@ class CaptchaEntity extends \SetCMS\Common\Entity\Entity
         $this->text = strval(rand(1000000, 9999999));
     }
 
-    protected function verifyDateExpiried()
+    protected function verifyDateExpiried(): void
     {
         if ($this->isExpiried()) {
             throw new CaptchaExpiredException;
@@ -39,7 +39,7 @@ class CaptchaEntity extends \SetCMS\Common\Entity\Entity
         return (new \DateTime) > $this->dateExpiried;
     }
 
-    public function use()
+    public function use(): void
     {
         $this->verifyDateExpiried();
 
@@ -63,7 +63,7 @@ class CaptchaEntity extends \SetCMS\Common\Entity\Entity
         }
 
         if ($this->solveAttempts > 5) {
-            throw new CaptchaTooMuchSolveAttemptsException;
+            throw new CaptchaTooMuchSolveAttemptsException();
         }
 
         if ($this->text === $solvedText) {

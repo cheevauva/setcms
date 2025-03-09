@@ -6,10 +6,8 @@ namespace SetCMS\Servant;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use SetCMS\Application\Contract\ContractServant;
-use SetCMS\Module\Modules\ModuleException;
 
-class CSRFProtectServant implements ContractServant
+class CSRFProtectServant extends \UUA\Servant
 {
 
     public ServerRequestInterface $request;
@@ -27,14 +25,13 @@ class CSRFProtectServant implements ContractServant
         }
 
         if (in_array($this->request->getMethod(), ['POST'], true)) {
-            if (empty($this->request->getCookieParams()['X-CSRF-Token']) || empty($this->request->getHeader('X-CSRF-Token')[0])) {
-                throw ModuleException::badRequest('Один из CSRF токенов пуст');
+            if (empty($this->request->getCookieParams()['X-CSRF-Token']) || empty($this->request->getHeaderLine('X-CSRF-Token'))) {
+                throw new \RuntimeException('Один из CSRF токенов пуст');
             }
 
-            if ($this->request->getCookieParams()['X-CSRF-Token'] !== $request->getHeader('X-CSRF-Token')[0]) {
-                throw ModuleException::badRequest('CSRF токены не совпадают');
+            if ($this->request->getCookieParams()['X-CSRF-Token'] !== $this->request->getHeaderLine('X-CSRF-Token')) {
+                throw new \RuntimeException('CSRF токены не совпадают');
             }
         }
     }
-
 }

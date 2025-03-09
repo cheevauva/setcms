@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Block\Servant;
 
-use SetCMS\Application\Contract\ContractServant;
+
 use SetCMS\Module\Block\BlockEntity;
 use SetCMS\Module\Block\DAO\BlockHasByIdDAO;
 use SetCMS\Module\Block\DAO\BlockSaveDAO;
 use SetCMS\Module\Block\Exception\BlockAlreadyExistsException;
 
-class BlockCreateServant implements ContractServant
+class BlockCreateServant extends \UUA\Servant
 {
 
-    use \SetCMS\Traits\DITrait;
+    
 
     public BlockEntity $block;
 
     public function serve(): void
     {
-        $hasEntityById = BlockHasByIdDAO::make($this->factory());
+        $hasEntityById = BlockHasByIdDAO::new($this->container);
         $hasEntityById->id = $this->block->id;
         $hasEntityById->serve();
 
@@ -27,7 +27,7 @@ class BlockCreateServant implements ContractServant
             throw new BlockAlreadyExistsException;
         }
 
-        $saveEntity = BlockSaveDAO::make($this->factory());
+        $saveEntity = BlockSaveDAO::new($this->container);
         $saveEntity->block = $this->block;
         $saveEntity->serve();
     }

@@ -6,8 +6,14 @@ namespace SetCMS\Attribute\Http;
 
 use Attribute;
 
-#[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_PARAMETER | Attribute::IS_REPEATABLE)]
+#[Attribute(Attribute::TARGET_CLASS)]
 class RequestMethod
 {
-    //put your code here
+
+    public string $method;
+
+    public function __construct(string $method)
+    {
+        $this->method = $method;
+    }
 }

@@ -10,7 +10,7 @@ use SetCMS\Module\Menu\Entity\MenuEntity;
 class MenuSaveDAO extends EntitySaveDAO
 {
 
-    use MenuGenericDAO;
+    use MenuCommonDAO;
 
     public MenuEntity $menu;
 

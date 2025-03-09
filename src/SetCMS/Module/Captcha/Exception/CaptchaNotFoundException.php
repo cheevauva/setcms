@@ -7,6 +7,8 @@ namespace SetCMS\Module\Captcha\Exception;
 class CaptchaNotFoundException extends CaptchaException
 {
 
-    protected $message = "Каптча не найдена";
-
+    public function __construct(string $message = 'Каптча не найдена')
+    {
+        parent::__construct($message);
+    }
 }

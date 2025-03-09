@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SetCMS\Servant;
 
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\View\Hook\ViewRenderHook;
 
 class ViewCompositeRender extends ViewHtmlRender
 {
@@ -15,13 +14,6 @@ class ViewCompositeRender extends ViewHtmlRender
     public ServerRequestInterface $request;
     public string $context;
 
-    public function to(object $object): void
-    {
-        if ($object instanceof ViewRenderHook) {
-            $object->content = $this->content;
-            $object->contentType = $this->contentType;
-        }
-    }
 
     #[\Override]
     protected function addFunction(string $name, \Closure $function): void
@@ -48,7 +40,7 @@ class ViewCompositeRender extends ViewHtmlRender
         if (file_exists($file)) {
             require $file;
         }
-
+        
         $this->content = $content;
         $this->contentType = $contentType;
 

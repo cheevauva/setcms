@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace SetCMS\View\Scope;
 
-use SetCMS\Scope;
+use SetCMS\Controller;
 use SetCMS\Exception;
 use SetCMS\Core\VO\CorePropertyMessageVO;
 
-class ViewJsonExceptionScope extends Scope
+class ViewJsonExceptionScope extends Controller
 {
 
     protected array $data = [];

@@ -10,7 +10,7 @@ use SetCMS\Module\Module01\Entity\Entity01Entity;
 class Entity01RetrieveByIdDAO extends EntityRetrieveByIdDAO
 {
 
-    use Entity01GenericDAO;
+    use Entity01CommonDAO;
 
     public Entity01Entity $Entity01LC;
 

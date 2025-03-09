@@ -10,13 +10,14 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\Application\Router\Router;
 
-class MiddlewareRouter implements MiddlewareInterface
+class MiddlewareRouter implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {
-    use \SetCMS\Traits\DITrait;
+    use \UUA\Traits\BuildTrait;
+    use \UUA\Traits\ContainerTrait;
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $routerMatch = Router::make($this->factory())->match(...[
+        $routerMatch = Router::new($this->container)->match(...[
             $request->getUri()->getPath(),
             $request->getMethod()
         ]);
@@ -24,10 +25,9 @@ class MiddlewareRouter implements MiddlewareInterface
         foreach ($routerMatch->params as $pName => $pValue) {
             $request = $request->withAttribute($pName, $pValue);
         }
-        
+
         $request = $request->withAttribute('routeTarget', $routerMatch->target);
-        
+
         return $handler->handle($request);
     }
-
 }

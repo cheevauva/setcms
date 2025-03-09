@@ -10,20 +10,14 @@ use SetCMS\Module\Module01\Entity\Entity01Entity;
 class Entity01Mapper extends EntityMapper
 {
 
-    use \SetCMS\Traits\FactoryTrait;
-
-    #[\Override]
-    protected function entity(): Entity01Entity
-    {
-        return parent::entity();
-    }
-
     #[\Override]
     protected function entity2row(): void
     {
         parent::entity2row();
 
-        $this->row['field01'] = $this->entity()->field01;
+        $entity = Entity01Entity::as($this->entity);
+
+        $this->row['field01'] = $entity->field01;
     }
 
     #[\Override]
@@ -31,6 +25,7 @@ class Entity01Mapper extends EntityMapper
     {
         parent::entity4row();
 
-        $this->entity()->field01 = $this->row['field01'];
+        $entity = Entity01Entity::as($this->entity);
+        $entity->field01 = $this->row['field01'];
     }
 }

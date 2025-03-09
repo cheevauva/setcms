@@ -6,11 +6,8 @@ namespace SetCMS\Module\Captcha\Servant;
 
 use SetCMS\Module\Captcha\CaptchaEntity;
 
-class CaptchaCreateServant implements \SetCMS\Application\Contract\ContractServant
+class CaptchaCreateServant extends \UUA\Servant
 {
-
-    use \SetCMS\Traits\DITrait;
-    use \SetCMS\Traits\FactoryTrait;
 
     public CaptchaEntity $captcha;
 

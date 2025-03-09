@@ -4,54 +4,31 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Dynamic\DAO;
 
-use SetCMS\Application\Contract\ContractServant;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
-use ReflectionMethod;
-use SetCMS\Module\Dynamic\DAO\DynamicMethodRetrieveByMethodNameDAO;
-use SplObjectStorage;
+use SetCMS\Controller;
 
-class DynamicMethodRetrieveByServerRequestDAO implements ContractServant
+class DynamicMethodRetrieveByServerRequestDAO extends \UUA\DAO
 {
 
-    use \SetCMS\Traits\FactoryTrait;
-    use \SetCMS\Traits\DITrait;
+    use \UUA\Traits\ContainerTrait;
 
     public ServerRequestInterface $request;
     public ?ResponseInterface $response = null;
-    public ?ReflectionMethod $reflectionMethod;
-    public ?object $reflectionObject;
-    public ?array $reflectionArguments;
+    public Controller $controller;
 
     public function serve(): void
     {
         $request = $this->request;
-        
+
         if (empty($this->response)) {
             $this->response = new Response;
         }
 
-        list($className, $methodName) = explode('::', $request->getAttribute('routeTarget'));
+        $className = $request->getAttribute('routeTarget');
+        
 
-        $retrieveMethod = DynamicMethodRetrieveByMethodNameDAO::make($this->factory());
-        $retrieveMethod->className = $className;
-        $retrieveMethod->methodName = $methodName;
-        $retrieveMethod->context = $this->getContext($request, $this->response);
-        $retrieveMethod->serve();
-
-        $this->reflectionMethod = $retrieveMethod->reflectionMethod;
-        $this->reflectionObject = $retrieveMethod->reflectionObject;
-        $this->reflectionArguments = $retrieveMethod->reflectionArguments;
+        $this->controller = Controller::as($className::new($this->container));;
     }
-
-    private function getContext(ServerRequestInterface $request, ResponseInterface $response): SplObjectStorage
-    {
-        $context = new SplObjectStorage;
-        $context->attach($request, ServerRequestInterface::class);
-        $context->attach($response, ResponseInterface::class);
-
-        return $context;
-    }
-
 }

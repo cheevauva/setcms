@@ -10,13 +10,13 @@ use SetCMS\Module\User\UserContstants;
 trait UserCommonDAO
 {
 
-    use \SetCMS\Traits\DITrait;
+    
     use \SetCMS\Traits\DatabaseMainConnectionTrait;
-    use \SetCMS\Traits\FactoryTrait;
+    
 
     protected function mapper(): UserMapper
     {
-        return UserMapper::make($this->factory());
+        return UserMapper::new($this->container);
     }
 
     protected function table(): string

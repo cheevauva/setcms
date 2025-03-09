@@ -10,7 +10,7 @@ use SetCMS\Module\Page\PageEntity;
 class PageSaveDAO extends EntitySaveDAO
 {
 
-    use PageGenericDAO;
+    use PageCommonDAO;
 
     public PageEntity $page;
 

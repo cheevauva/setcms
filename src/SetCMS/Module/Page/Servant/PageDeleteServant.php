@@ -4,38 +4,35 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page\Servant;
 
-use SetCMS\Application\Contract\ContractServant;
+use SetCMS\UUID;
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\DAO\PageRetrieveByIdDAO;
 use SetCMS\Module\Page\DAO\PageSaveDAO;
 use SetCMS\Module\Page\Exception\PageNotFoundException;
 
-class PageDeleteServant implements ContractServant
+class PageDeleteServant extends \UUA\Servant
 {
-
-    use \SetCMS\Traits\DITrait;
 
     public ?PageEntity $page = null;
     public ?UUID $id = null;
 
     public function serve(): void
     {
-        $retrieveById = PageRetrieveByIdDAO::make($this->factory());
-        $retrieveById->id = $this->id ?? $this->page->id;
-        $retrieveById->serve();
+        $pageById = PageRetrieveByIdDAO::new($this->container);
+        $pageById->id = $this->page->id ?? ($this->id ?? throw new \RuntimeException('id is not defined'));
+        $pageById->serve();
 
-        if (!$retrieveById->entity) {
+        if (!$pageById->first) {
             throw new PageNotFoundException;
         }
 
-        $entity = $retrieveById->page;
-        $entity->deleted = true;
+        $page = PageEntity::as($pageById->first);
+        $page->deleted = true;
 
-        $save = PageSaveDAO::make($this->factory());
-        $save->entity = $entity;
+        $save = PageSaveDAO::new($this->container);
+        $save->entity = $page;
         $save->serve();
 
-        $this->entity = $entity;
+        $this->page = $page;
     }
-
 }

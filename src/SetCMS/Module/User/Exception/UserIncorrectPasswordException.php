@@ -7,6 +7,6 @@ namespace SetCMS\Module\User\Exception;
 class UserIncorrectPasswordException extends UserException
 {
 
-    protected $message = "Неверный пароль пользователя";
+    protected string $message = "Неверный пароль пользователя";
 
 }

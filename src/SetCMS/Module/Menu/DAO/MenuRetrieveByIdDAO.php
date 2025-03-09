@@ -10,7 +10,7 @@ use SetCMS\Module\Menu\Entity\MenuEntity;
 class MenuRetrieveByIdDAO extends EntityRetrieveByIdDAO
 {
 
-    use MenuGenericDAO;
+    use MenuCommonDAO;
 
     public MenuEntity $menu;
 

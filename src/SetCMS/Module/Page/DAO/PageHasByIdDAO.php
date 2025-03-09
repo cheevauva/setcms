@@ -9,5 +9,5 @@ use SetCMS\Common\DAO\Entity\EntityHasByIdDAO;
 class PageHasByIdDAO extends EntityHasByIdDAO
 {
 
-    use PageGenericDAO;
+    use PageCommonDAO;
 }

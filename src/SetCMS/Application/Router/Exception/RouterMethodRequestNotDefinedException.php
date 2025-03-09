@@ -7,6 +7,8 @@ namespace SetCMS\Application\Router\Exception;
 class RouterMethodRequestNotDefinedException extends RouterException
 {
 
-    protected $message = "В обработчике маршрута не указан ожидаемый тип метода запроса";
-
+    public function __construct(string $message = 'В обработчике маршрута не указан ожидаемый тип метода запроса')
+    {
+        parent::__construct($message);
+    }
 }

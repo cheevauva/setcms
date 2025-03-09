@@ -10,10 +10,7 @@ use SetCMS\UUID;
 class UserSessionEntity extends Entity
 {
 
-    use \SetCMS\Traits\AsTrait;
-
     public string $device;
     public UUID $userId;
     public \DateTimeInterface $dateExpiries;
-
 }

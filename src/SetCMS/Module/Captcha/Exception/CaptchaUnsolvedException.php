@@ -7,6 +7,9 @@ namespace SetCMS\Module\Captcha\Exception;
 class CaptchaUnsolvedException extends CaptchaException
 {
 
-    protected $message = "Код указан неверно";
+    public function __construct(string $message = 'Код указан неверно')
+    {
+        parent::__construct($message);
+    }
 
 }

@@ -10,22 +10,16 @@ use SetCMS\Module\Menu\Entity\MenuEntity;
 class MenuMapper extends EntityMapper
 {
 
-    use \SetCMS\Traits\FactoryTrait;
-
-    #[\Override]
-    protected function entity(): MenuEntity
-    {
-        return parent::entity();
-    }
-
     #[\Override]
     protected function entity2row(): void
     {
         parent::entity2row();
-        
-        $this->row['label'] = $this->entity()->label;
-        $this->row['route'] = $this->entity()->route;
-        $this->row['params'] = json_encode($this->entity()->params, JSON_UNESCAPED_UNICODE);
+
+        $entity = MenuEntity::as($this->entity);
+
+        $this->row['label'] = $entity->label;
+        $this->row['route'] = $entity->route;
+        $this->row['params'] = json_encode($entity->params, JSON_UNESCAPED_UNICODE);
     }
 
     #[\Override]
@@ -33,8 +27,9 @@ class MenuMapper extends EntityMapper
     {
         parent::entity4row();
         
-        $this->entity()->label = $this->row['label'];
-        $this->entity()->route = $this->row['route'];
-        $this->entity()->params = json_decode($this->row['params'], true);
+        $entity = MenuEntity::as($this->entity);
+        $entity->label = $this->row['label'];
+        $entity->route = $this->row['route'];
+        $entity->params = json_decode($this->row['params'], true);
     }
 }

@@ -8,5 +8,9 @@ use SetCMS\Exception;
 
 class CaptchaException extends Exception
 {
-    //put your code here
+
+    public function __construct(string $message = 'Исключительная ситуация при обработке каптчи')
+    {
+        parent::__construct($message);
+    }
 }

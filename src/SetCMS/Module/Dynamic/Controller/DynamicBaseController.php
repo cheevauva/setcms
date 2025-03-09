@@ -5,45 +5,61 @@ declare(strict_types=1);
 namespace SetCMS\Module\Dynamic\Controller;
 
 use SetCMS\Attribute\Http\RequestMethod;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use SetCMS\Scope;
+use SetCMS\Controller;
 use SetCMS\Controller\Hook\ScopeProtectionHook;
 use SetCMS\Application\Router\Exception\RouterNotAllowRequestMethodException;
 use SetCMS\Application\Router\Exception\RouterMethodRequestNotDefinedException;
-use SetCMS\Module\Dynamic\DAO\DynamicMethodRetrieveByMethodNameDAO;
+use SetCMS\Attribute\Http\Parameter\Attributes;
 
-abstract class DynamicBaseController
+abstract class DynamicBaseController extends Controller
 {
 
-    use \SetCMS\Traits\RouterTrait;
-    use \SetCMS\Traits\DITrait;
-    use \SetCMS\Traits\EventDispatcherTrait;
-    use \SetCMS\Traits\EnvTrait;
+    use \UUA\Traits\EventDispatcherTrait;
+    use \UUA\Traits\EnvTrait;
+
+    #[Attributes('module')]
+    public string $module;
+
+    #[Attributes('action')]
+    public string $action;
+    protected Controller $controller;
 
     abstract protected function classNamePattern();
 
-    public function action(ServerRequestInterface $request, ResponseInterface $response)
+    #[\Override]
+    protected function units(): array
     {
-        $context = new \SplObjectStorage;
-        $context->attach($request, ServerRequestInterface::class);
-        $context->attach($response, ResponseInterface::class);
+        return [
+            $this->controller,
+        ];
+    }
 
-        $retrieveMethod = DynamicMethodRetrieveByMethodNameDAO::make($this->factory());
-        $retrieveMethod->context = $context;
-        $retrieveMethod->methodName = $request->getAttribute('action');
-        $retrieveMethod->className = strtr($this->classNamePattern(), [
-            '{module}' => ucfirst($request->getAttribute('module')),
+    #[\Override]
+    public function serve(): void
+    {
+        $this->controller = $this->controller();
+
+        parent::serve();
+    }
+
+    #[\Override]
+    protected function isCustomized(): bool
+    {
+        return false;
+    }
+
+    protected function controller(): Controller
+    {
+        $className = strtr($this->classNamePattern(), [
+            '{module}' => ucfirst($this->request->getAttribute('module')),
+            '{action}' => ucfirst($this->request->getAttribute('action')),
         ]);
-        $retrieveMethod->serve();
 
-        if ($retrieveMethod->reflectionMethod->getName() === __FUNCTION__ && is_a($retrieveMethod->className, __CLASS__, true)) {
+        if (is_a($className, __CLASS__, true)) {
             throw new \RuntimeException('Oh my sweet summer child - you know noting');
         }
 
-        $allowRequestMethods = null;
-
-        foreach ($retrieveMethod->reflectionMethod->getAttributes() as $reflectionAttribute) {
+        foreach ((new \ReflectionClass($className))->getAttributes() as $reflectionAttribute) {
             if (is_a($reflectionAttribute->getName(), RequestMethod::class, true)) {
                 $allowRequestMethods = $reflectionAttribute->getArguments();
             }
@@ -53,22 +69,38 @@ abstract class DynamicBaseController
             throw new RouterMethodRequestNotDefinedException;
         }
 
-        if (!in_array($request->getMethod(), $allowRequestMethods, true)) {
+        if (!in_array($this->request->getMethod(), $allowRequestMethods, true)) {
             throw new RouterNotAllowRequestMethodException;
         }
 
+        $controller = Controller::as($className::new($this->container));
+        $controller->from($this->request);
 
-        foreach ($retrieveMethod->reflectionArguments as $argument) {
-            if ($argument instanceof Scope) {
-                $argument->from($request);
+        $event = new ScopeProtectionHook();
+        $event->scope = $controller;
+        $event->user = $this->request->getAttribute('currentUser');
+        $event->dispatch($this->eventDispatcher());
 
-                $event = new ScopeProtectionHook;
-                $event->scope = $argument;
-                $event->user = $request->getAttribute('currentUser');
-                $event->dispatch($this->eventDispatcher());
-            }
+        return $controller;
+    }
+
+    #[\Override]
+    public function to(object $object): void
+    {
+        parent::to($object);
+
+        if (isset($this->controller)) {
+            $this->controller->to($object);
         }
+    }
 
-        return $retrieveMethod->reflectionMethod->invokeArgs($retrieveMethod->reflectionObject, $retrieveMethod->reflectionArguments);
+    #[\Override]
+    public function from(object $object): void
+    {
+        parent::from($object);
+
+        if (isset($this->controller)) {
+            $this->controller->from($object);
+        }
     }
 }
