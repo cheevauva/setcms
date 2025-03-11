@@ -12,7 +12,7 @@ use SetCMS\Common\Mapper\EntityMapper;
 abstract class EntityCommonDAO extends \UUA\DAO
 {
 
-    protected ?int $limit = null;
+    public ?int $limit = null;
     protected int $offset = 0;
 
     abstract protected function db(): Connection;

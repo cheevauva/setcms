@@ -38,8 +38,7 @@ class UserRegistrationServant extends \UUA\Servant
         $saveUser->user = $user;
         $saveUser->serve();
 
-        $userRegistration  = new UserRegistrationEvent();
-        $userRegistration->user = $user;
+        $userRegistration  = new UserRegistrationEvent($user);
         $userRegistration->dispatch($this->eventDispatcher());
 
         $this->user = $user;

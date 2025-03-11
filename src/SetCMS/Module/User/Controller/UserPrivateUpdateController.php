@@ -47,7 +47,7 @@ class UserPrivateUpdateController extends UserPrivateController
         parent::to($object);
 
         if ($object instanceof UserRetrieveByIdDAO) {
-            $object->throwExceptionIfNotFound = true;
+            $object->orThrow = true;
             $object->id = $this->user->id;
         }
 

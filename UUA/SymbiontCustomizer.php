@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace UUA;
 
-use UUA\DAO;
-use UUA\Servant;
-
-class EventHandler extends Symbiont
+class SymbiontCustomizer extends Symbiont
 {
 
-    protected DAO|Servant $master;
+    protected object $master;
 
-    public function __construct(DAO|Servant $master)
+    public function __construct(object $master)
     {
         $this->master = $master;
     }

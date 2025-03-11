@@ -12,7 +12,9 @@ use SetCMS\Module\Captcha\Exception\CaptchaException;
 use SetCMS\Module\User\Exception\UserAlreadyExistsException;
 use SetCMS\Module\User\Servant\UserRegistrationServant;
 use SetCMS\Attribute\ResponderPassProperty;
+use SetCMS\Attribute\Http\RequestMethod;
 
+#[RequestMethod('POST')]
 class UserPublicDoRegistrationController extends \SetCMS\Controller
 {
 

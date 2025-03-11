@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post\Servant;
 
 use SetCMS\Module\Menu\MenuAction\Entity\MenuActionEntity;
-use SetCMS\Module\Post\Scope\PostPublicReadBySlugController;
-use SetCMS\Module\Post\DAO\PostRetrieveBySlugDAO;
+use SetCMS\Module\Post\Controller\PostPublicReadBySlugController;
+use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\UUID;
 
 class PostMenuActionsByRequestServant extends \UUA\Servant
 {
-
-    
 
     public UserEntity $currentUser;
     public array $actions = [];
@@ -50,7 +48,7 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
 
     private function prepareEditAction(string $slug): MenuActionEntity
     {
-        $retrieveBySlug = PostRetrieveBySlugDAO::new($this->container);
+        $retrieveBySlug = PostRetrieveManyByCriteriaDAO::new($this->container);
         $retrieveBySlug->slug = $slug;
         $retrieveBySlug->serve();
 
@@ -60,7 +58,7 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
         $editAction->params = [
             'module' => 'Post',
             'action' => 'edit',
-            'id' => $retrieveBySlug->post->id->uuid,
+            'id' => $retrieveBySlug->first->id->uuid,
         ];
 
         return $editAction;

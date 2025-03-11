@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace SetCMS\Module\Menu\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\Module\Menu\Hook\MenuRetrieveActionsByContextHook;
 use SetCMS\Module\Menu\MenuAction\Entity\MenuActionEntity;
 use SetCMS\Attribute\Http\Parameter\Request;
 use SetCMS\Attribute\ResponderPassProperty;
+use SetCMS\Module\Post\Servant\PostMenuActionsByRequestServant;
 
 class MenuPublicReadByContextController extends \SetCMS\Controller
 {
@@ -19,14 +19,11 @@ class MenuPublicReadByContextController extends \SetCMS\Controller
     #[ResponderPassProperty]
     protected array $items = [];
 
-    #[Request]
-    public ServerRequestInterface $currentRequest;
-
     #[\Override]
     protected function units(): array
     {
         return [
-            MenuRetrieveActionsByContextHook::class,
+            PostMenuActionsByRequestServant::class,
         ];
     }
 
@@ -35,8 +32,8 @@ class MenuPublicReadByContextController extends \SetCMS\Controller
     {
         parent::from($object);
 
-        if ($object instanceof MenuRetrieveActionsByContextHook) {
-            $this->items = $object->actions;
+        if ($object instanceof PostMenuActionsByRequestServant) {
+            $this->items += $object->actions;
         }
     }
 
@@ -45,8 +42,18 @@ class MenuPublicReadByContextController extends \SetCMS\Controller
     {
         parent::to($object);
 
-        if ($object instanceof MenuRetrieveActionsByContextHook) {
-            $object->request = $this->currentRequest;
+        if ($object instanceof PostMenuActionsByRequestServant) {
+            $object->currentUser = $this->request->getAttribute('currentUser');
+            $object->context = $this->getMainRequest($this->request)->getAttribute('output');
         }
+    }
+
+    private function getMainRequest(ServerRequestInterface $request): ServerRequestInterface
+    {
+        if ($request->getAttribute('parentRequest') && $request->getAttribute('parentRequest') instanceof ServerRequestInterface) {
+            return $this->getMainRequest($request->getAttribute('parentRequest'));
+        }
+
+        return $request;
     }
 }

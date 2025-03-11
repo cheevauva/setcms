@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS;
 
 use UUA\UnitInterface;
-use UUA\EventHandler;
+use UUA\SymbiontCustomizer;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
@@ -45,14 +45,14 @@ class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherI
 
             $symbiont = isset($listener[1]) ? new $listener[1]($unit) : null;
 
-            if ($symbiont instanceof EventHandler) {
+            if ($symbiont instanceof SymbiontCustomizer) {
                 $symbiont->from($event);
             }
 
                 $unit->serve();
 
 
-            if ($symbiont instanceof EventHandler) {
+            if ($symbiont instanceof SymbiontCustomizer) {
                 $symbiont->to($event);
             }
         }

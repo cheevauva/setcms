@@ -7,8 +7,6 @@ namespace UUA;
 abstract class Event
 {
 
-    
     use Traits\AsTrait;
     use Traits\EventTrait;
-
 }

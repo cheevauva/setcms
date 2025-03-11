@@ -23,7 +23,7 @@ class PagePrivateUpdateScope extends PagePrivateScope
 
         if ($object instanceof PageRetrieveByIdDAO) {
             $object->id = $this->page->id;
-            $object->throwExceptionIfNotFound = true;
+            $object->orThrow = true;
         }
 
         if ($object instanceof PageSaveDAO) {

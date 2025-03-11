@@ -13,6 +13,6 @@ class UserPublicProfileController extends Controller
 {
 
     #[Attributes('currentUser')]
-    #[ResponderPassProperty]
+    #[ResponderPassProperty('user')]
     protected UserEntity $user;
 }

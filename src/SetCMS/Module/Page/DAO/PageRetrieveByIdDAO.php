@@ -21,7 +21,7 @@ class PageRetrieveByIdDAO extends EntityRetrieveByIdDAO
     {
         parent::serve();
 
-        if (empty($this->entity) && $this->throwExceptionIfNotFound) {
+        if (empty($this->entity) && $this->orThrow) {
             throw new PageNotFoundException;
         }
 

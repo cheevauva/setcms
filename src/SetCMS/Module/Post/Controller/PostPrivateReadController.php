@@ -36,7 +36,7 @@ class PostPrivateReadController extends PostPrivateController
 
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
             $object->id = $this->id;
-            $object->throwExceptionIfNotFound = true;
+            $object->orThrow = true;
         }
     }
 

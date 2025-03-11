@@ -112,14 +112,16 @@ abstract class Controller extends Unit implements ContractHydrateInterface, Cont
 
         if ($object instanceof SetCMSOutputDTO) {
             $object->finalScope($this);
+            $object->isSuccess = empty($this->messages);
             
             foreach ($this->messages as $messag) {
                 $object->addMessage($messag);
             }
+            
             foreach ((new \ReflectionObject($this))->getProperties() as $property) {
                 foreach ($property->getAttributes(ResponderPassProperty::class) as $attribute) {
                     assert($attribute instanceof \ReflectionAttribute);
-                    $object->set($attribute->getArguments()[0] ?? $property->getName(), $this->{$property->getName()});
+                    $object->set($attribute->getArguments()[0] ?? $property->getName(), $this->{$property->getName()} ?? null);
                 }
             }
         }

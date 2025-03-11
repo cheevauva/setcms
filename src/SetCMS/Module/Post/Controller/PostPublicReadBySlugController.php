@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post\Controller;
 
 use SetCMS\Controller;
-use SetCMS\Module\Post\DAO\PostRetrieveBySlugDAO;
+use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\Attribute\Http\Parameter\Attributes;
 use SetCMS\Attribute\ResponderPassProperty;
@@ -17,13 +17,13 @@ class PostPublicReadBySlugController extends Controller
     public string $slug;
 
     #[ResponderPassProperty]
-    private ?PostEntity $post = null;
+    protected ?PostEntity $post = null;
 
     #[\Override]
     protected function units(): array
     {
         return [
-            PostRetrieveBySlugDAO::class,
+            PostRetrieveManyByCriteriaDAO::class,
         ];
     }
 
@@ -32,9 +32,9 @@ class PostPublicReadBySlugController extends Controller
     {
         parent::to($object);
 
-        if ($object instanceof PostRetrieveBySlugDAO) {
+        if ($object instanceof PostRetrieveManyByCriteriaDAO) {
             $object->slug = $this->slug;
-            $object->throwExceptionIfNotFound = true;
+            $object->orThrow = true;
         }
     }
 
@@ -43,7 +43,7 @@ class PostPublicReadBySlugController extends Controller
     {
         parent::from($object);
 
-        if ($object instanceof PostRetrieveBySlugDAO) {
+        if ($object instanceof PostRetrieveManyByCriteriaDAO) {
             $this->post = $object->post;
         }
     }

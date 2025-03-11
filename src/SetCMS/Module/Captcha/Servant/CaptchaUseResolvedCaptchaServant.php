@@ -19,7 +19,7 @@ class CaptchaUseResolvedCaptchaServant extends \UUA\Servant
     {
         $captchaById = CaptchaRetrieveManyByCriteriaDAO::new($this->container);
         $captchaById->id = $this->captcha;
-        $captchaById->throwExceptionIfNotFound = true;
+        $captchaById->orThrow = true;
         $captchaById->serve();
 
         $captcha = CaptchaEntity::as($captchaById->first);

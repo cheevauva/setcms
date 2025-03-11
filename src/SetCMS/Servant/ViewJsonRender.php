@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-use SetCMS\Application\Contract\ContractApplicable;
 use SetCMS\Controller;
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\DTO\SetCMSOutputJsonDTO;
+use SetCMS\DTO\SetCMSOutputDTO;
 
 class ViewJsonRender extends \UUA\Servant
 {
@@ -18,7 +17,7 @@ class ViewJsonRender extends \UUA\Servant
 
     public function serve(): void
     {
-        $json = new SetCMSOutputJsonDTO;
+        $json = new SetCMSOutputDTO;
         $object = $this->mixedValue;
 
         if ($object instanceof Controller) {

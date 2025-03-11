@@ -8,6 +8,7 @@ use SetCMS\Controller;
 use SetCMS\Module\UserSession\DAO\UserSessionDeleteByIdDAO;
 use SetCMS\UUID;
 use SetCMS\Attribute\Http\Parameter\Cookies;
+use SetCMS\Attribute\Http\RequestMethod;
 
 #[RequestMethod('GET')]
 class UserPublicLogoutController extends Controller

@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\ACL\EventHandler;
+namespace SetCMS\Module\ACL\Symbiont;
 
 use SetCMS\Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
 use SetCMS\Controller\Hook\ScopeProtectionHook;
 use SetCMS\Module\User\Exception\UserForbiddenException;
 use SetCMS\Module\User\Entity\UserEntity;
 
-class ACLUserScopeProtectionEventHandler extends \UUA\EventHandler
+class ACLUserScopeProtectionSymbiont extends \UUA\SymbiontCustomizer
 {
 
     #[\Override]

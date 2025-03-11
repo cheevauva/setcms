@@ -10,7 +10,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
 use SetCMS\Controller;
-use SetCMS\Module\Dynamic\DAO\DynamicMethodRetrieveByServerRequestDAO;
 use SetCMS\Controller\Hook\ScopeProtectionHook;
 
 class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerConstructInterface
@@ -22,11 +21,9 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $retrieveController = DynamicMethodRetrieveByServerRequestDAO::new($this->container);
-        $retrieveController->request = $request;
-        $retrieveController->serve();
-
-        $controller = $retrieveController->controller;
+        $className = $request->getAttribute('routeTarget');
+        
+        $controller = Controller::as($className::new($this->container));
         $controller->from($request);
         $controller->from(new Response);
 

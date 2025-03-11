@@ -23,6 +23,7 @@ class CaptchaPublicSolveController extends \SetCMS\Controller
 
     #[Query('solvedText')]
     public string $solvedText;
+
     protected CaptchaEntity $captcha;
 
     #[ResponderPassProperty]
@@ -48,7 +49,7 @@ class CaptchaPublicSolveController extends \SetCMS\Controller
 
         if ($object instanceof CaptchaRetrieveManyByCriteriaDAO) {
             $object->id = $this->id;
-            $object->throwExceptionIfNotFound = true;
+            $object->orThrow = true;
         }
 
         if ($object instanceof CaptchaResolveServant) {

@@ -24,7 +24,7 @@ class PagePublicReadScope extends Controller
 
         if ($object instanceof PageRetrieveByIdDAO) {
             $object->id = $this->id;
-            $object->throwExceptionIfNotFound = true;
+            $object->orThrow = true;
         }
     }
 

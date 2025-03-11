@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\EventHandler;
+namespace SetCMS\Symbiont;
 
 use SetCMS\Servant\ViewCompositeRender;
 use SetCMS\Servant\ViewJsonRender;
 use SetCMS\Servant\ViewHtmlRender;
 use SetCMS\View\Hook\ViewRenderHook;
 
-class ViewRenderEventHandler extends \UUA\EventHandler
+class ViewRenderSymbiont extends \UUA\SymbiontCustomizer
 {
 
     public function from(object $object): void
@@ -49,7 +49,7 @@ class ViewRenderEventHandler extends \UUA\EventHandler
             if ($this->master instanceof ViewHtmlRender) {
                 $master = ViewHtmlRender::as($this->master);
                 $object->content = $master->html;
-                $object->contentType = 'application/json';
+                $object->contentType = 'text/html';
             }
         }
 

@@ -12,9 +12,6 @@ use SetCMS\Module\User\Entity\UserEntity;
 class UserLoginServant extends \UUA\Servant
 {
 
-    
-    
-
     public string $username;
     public string $password;
     public UserEntity $user;
@@ -38,5 +35,4 @@ class UserLoginServant extends \UUA\Servant
 
         $this->user = $user;
     }
-
 }

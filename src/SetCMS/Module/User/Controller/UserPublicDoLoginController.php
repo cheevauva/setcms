@@ -78,24 +78,29 @@ class UserPublicDoLoginController extends Controller
     {
         parent::from($object);
 
-        if ($object instanceof UserNotFoundException) {
-            $this->catchToMessage('username', $object);
-        }
-
-        if ($object instanceof UserIncorrectPasswordException) {
-            $this->catchToMessage('password', $object);
-        }
-
-        if ($object instanceof CaptchaException) {
-            $this->catchToMessage('captcha', $object);
-        }
-
         if ($object instanceof UserLoginServant) {
             $this->user = $object->user;
         }
 
         if ($object instanceof UserSessionCreateByUserServant) {
             $this->sessionId = strval(UserSessionEntity::as($object->session)->id);
+        }
+    }
+
+    #[\Override]
+    protected function catch(\Throwable $throwable): void
+    {
+
+        if ($throwable instanceof UserNotFoundException) {
+            $this->catchToMessage('username', $throwable);
+        }
+
+        if ($throwable instanceof UserIncorrectPasswordException) {
+            $this->catchToMessage('password', $throwable);
+        }
+
+        if ($throwable instanceof CaptchaException) {
+            $this->catchToMessage('captcha', $throwable);
         }
     }
 }

@@ -9,10 +9,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Uri;
 use SetCMS\Controller;
-use SetCMS\Module\Dynamic\DAO\DynamicMethodRetrieveByServerRequestDAO;
 use SetCMS\Application\Contract\ContractRouterInterface;
 use SetCMS\UUID;
 use SetCMS\DTO\SetCMSOutputDTO;
+use SetCMS\Event\AppErrorEvent;
 
 abstract class ViewHtmlRender extends \UUA\Servant
 {
@@ -112,10 +112,16 @@ abstract class ViewHtmlRender extends \UUA\Servant
 
             return $htmlRender->html;
         } catch (\Throwable $ex) {
-            $content = $ex->getMessage();
+            (new AppErrorEvent($ex->getMessage(), [
+                __METHOD__,
+                $path,
+                $params,
+                $ex->getFile(),
+                $ex->getLine(),
+            ]))->dispatch($this->eventDispatcher());
+            
+           return null;
         }
-
-        return $content;
     }
 
     /**
@@ -127,28 +133,32 @@ abstract class ViewHtmlRender extends \UUA\Servant
     {
         try {
             $routerMatch = $this->router()->match($path, 'GET');
-        } catch (\Exception $ex) {
-            return $ex->getMessage();
+
+            $request = $this->createRequestByPath($path, $params);
+            $request = $request->withAttribute('routeTarget', $routerMatch->target);
+
+            foreach ($routerMatch->params as $pName => $pValue) {
+                $request = $request->withAttribute($pName, $pValue);
+            }
+
+            $className = $routerMatch->target;
+
+            $controller = Controller::as($className::new($this->container));
+            $controller->from($request);
+            $controller->serve();
+
+            return $controller;
+        } catch (\Throwable $ex) {
+            (new AppErrorEvent($ex->getMessage(), [
+                __METHOD__,
+                $path,
+                $params,
+                $ex->getFile(),
+                $ex->getLine(),
+            ]))->dispatch($this->eventDispatcher());
+
+            return null;
         }
-
-        $request = $this->createRequestByPath($path, $params);
-        $request = $request->withAttribute('routeTarget', $routerMatch->target);
-
-        foreach ($routerMatch->params as $pName => $pValue) {
-            $request = $request->withAttribute($pName, $pValue);
-        }
-        $retrieveByPath = DynamicMethodRetrieveByServerRequestDAO::new($this->container);
-        $retrieveByPath->request = $request;
-        $retrieveByPath->serve();
-
-        $output = new SetCMSOutputDTO();
-
-        $controller = $retrieveByPath->controller;
-        $controller->from($request);
-        $controller->serve();
-        $controller->to($output);
-
-        return $output->data();
     }
 
     /**
@@ -158,17 +168,28 @@ abstract class ViewHtmlRender extends \UUA\Servant
      */
     protected function scFetch(string $path, array $params = []): mixed
     {
+        $data = null;
+
         try {
+            $output = new SetCMSOutputDTO();
+
             $var = $this->scCall($path, $params);
+
+            if ($var instanceof Controller) {
+                $var->to($output);
+                $data = $output->data();
+            }
         } catch (\Throwable $ex) {
-            $var = $ex->getMessage();
+            (new AppErrorEvent($ex->getMessage(), [
+                __METHOD__,
+                $path,
+                $params,
+                $ex->getFile(),
+                $ex->getLine(),
+            ]))->dispatch($this->eventDispatcher());
         }
 
-        if ($var instanceof Controller) {
-            return $var->toArray();
-        }
-
-        return $var;
+        return $data;
     }
 
     #[\ReturnTypeWillChange]

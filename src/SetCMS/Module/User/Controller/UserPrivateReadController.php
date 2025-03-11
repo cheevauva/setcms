@@ -38,7 +38,7 @@ class UserPrivateReadController extends UserPrivateController
 
         if ($object instanceof UserRetrieveByIdDAO) {
             $object->id = $this->id;
-            $object->throwExceptionIfNotFound = true;
+            $object->orThrow = true;
         }
     }
 }

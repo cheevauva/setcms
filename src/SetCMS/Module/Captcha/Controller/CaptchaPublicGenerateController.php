@@ -9,6 +9,7 @@ use SetCMS\Module\Captcha\Servant\CaptchaCreateAsPngServant;
 use SetCMS\Module\Captcha\DAO\CaptchaSaveDAO;
 use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Attribute\ResponderPassProperty;
+use SetCMS\UUID;
 
 #[RequestMethod('GET')]
 class CaptchaPublicGenerateController extends \SetCMS\Controller
@@ -17,7 +18,7 @@ class CaptchaPublicGenerateController extends \SetCMS\Controller
     private CaptchaEntity $captcha;
 
     #[ResponderPassProperty]
-    protected ?string $id;
+    protected ?UUID $id;
 
     #[ResponderPassProperty]
     protected ?string $content = null;
@@ -39,7 +40,7 @@ class CaptchaPublicGenerateController extends \SetCMS\Controller
         if ($object instanceof CaptchaCreateAsPngServant) {
             $this->content = base64_encode($object->png);
             $this->captcha = $object->captcha;
-            $this->id = strval($object->captcha->id);
+            $this->id = $object->captcha->id;
         }
     }
 

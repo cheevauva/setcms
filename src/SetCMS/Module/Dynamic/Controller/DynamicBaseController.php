@@ -66,7 +66,7 @@ abstract class DynamicBaseController extends Controller
         }
 
         if (empty($allowRequestMethods)) {
-            throw new RouterMethodRequestNotDefinedException;
+            throw new RouterMethodRequestNotDefinedException(sprintf('В обработчике %s не указан ожидаемый тип метода запроса', $className));
         }
 
         if (!in_array($this->request->getMethod(), $allowRequestMethods, true)) {

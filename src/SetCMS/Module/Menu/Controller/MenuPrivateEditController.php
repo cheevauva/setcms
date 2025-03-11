@@ -37,7 +37,7 @@ class MenuPrivateEditController extends Controller
 
         if ($object instanceof MenuRetrieveByIdDAO) {
             $object->id = $this->id;
-            $object->throwExceptionIfNotFound = true;
+            $object->orThrow = true;
         }
     }
 

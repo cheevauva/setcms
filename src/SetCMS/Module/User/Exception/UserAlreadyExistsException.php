@@ -7,6 +7,8 @@ namespace SetCMS\Module\User\Exception;
 class UserAlreadyExistsException extends UserException
 {
 
-    protected $message = "Пользователь уже существует";
-
+    public function __construct(string $message = 'Пользователь уже существует')
+    {
+        parent::__construct($message);
+    }
 }

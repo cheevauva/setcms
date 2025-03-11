@@ -15,27 +15,28 @@ abstract class EntityRetrieveManyByCriteriaDAO extends EntityCommonDAO
     public ?Entity $first = null;
     public array $entities = [];
     public UUID $id;
-    public bool $deleted = false;
-    public bool $throwExceptionIfNotFound = false;
+    public bool $deleted;
+    public bool $orThrow = false;
 
     public function serve(): void
     {
+        if (isset($this->deleted)) {
+            $this->criteria['deleted'] = intval($this->deleted);
+        }
+
         if (isset($this->id)) {
-            $this->criteria = [
-                'id' => $this->id,
-                'deleted' => (int) $this->deleted,
-            ];
+            $this->criteria['id'] = $this->id;
             $this->limit = 1;
         }
 
         $rows = $this->createQuery()->fetchAllAssociative();
 
-        if ($this->throwExceptionIfNotFound && empty($rows)) {
+        if ($this->orThrow && empty($rows)) {
             throw new \RuntimeException('Запись не найдена');
         }
 
         $this->entities = $this->asEntities($rows);
-        $this->first = $this->entities[0];
+        $this->first = $this->entities[0] ?? null;
     }
 
     protected function createQuery(): QueryBuilder
