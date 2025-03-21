@@ -9,11 +9,11 @@ use SetCMS\ACL;
 class ACLCheckByRoleAndPrivilegeServant extends \UUA\Servant
 {
 
-    public string $role;
-    public string $privilege;
-    public bool $isAllow = false;
-    public bool $throwExceptions = false;
-    public ?\Throwable $exception = null;
+    public public(set)string $role;
+    public public(set) string $privilege;
+    public protected(set) bool $isAllow = false;
+    public public(set) bool $throwExceptions = false;
+    public protected(set) ?\Throwable $exception = null;
 
     public function serve(): void
     {

@@ -7,9 +7,12 @@ namespace SetCMS\Module\Dynamic\Controller;
 use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Controller;
 use SetCMS\Controller\Hook\ScopeProtectionHook;
-use SetCMS\Application\Router\Exception\RouterNotAllowRequestMethodException;
-use SetCMS\Application\Router\Exception\RouterMethodRequestNotDefinedException;
 use SetCMS\Attribute\Http\Parameter\Attributes;
+use SetCMS\Module\Dynamic\Exception\DynamicClassNotFoundException;
+use SetCMS\Module\Dynamic\Exception\DynamicRequestMethodNotDefinedException;
+use SetCMS\Module\Dynamic\Exception\DynamicRequestMethodNotAllowedException;
+use SetCMS\Module\Dynamic\Exception\DynamicExpectedAttributeNotDefinedException;
+use SetCMS\Application\Router\RouterMatchDTO;
 
 abstract class DynamicBaseController extends Controller
 {
@@ -50,10 +53,16 @@ abstract class DynamicBaseController extends Controller
 
     protected function controller(): Controller
     {
+        $routerMatch = RouterMatchDTO::as($this->request->getAttribute('routerMatch'));
+        
         $className = strtr($this->classNamePattern(), [
-            '{module}' => ucfirst($this->request->getAttribute('module')),
-            '{action}' => ucfirst($this->request->getAttribute('action')),
+            '{module}' => ucfirst($routerMatch->params['module'] ?? throw new DynamicExpectedAttributeNotDefinedException('module')),
+            '{action}' => ucfirst($routerMatch->params['action'] ?? throw new DynamicExpectedAttributeNotDefinedException('action')),
         ]);
+
+        if (!class_exists($className, true)) {
+            throw new DynamicClassNotFoundException($className);
+        }
 
         if (is_a($className, __CLASS__, true)) {
             throw new \RuntimeException('Oh my sweet summer child - you know noting');
@@ -66,11 +75,11 @@ abstract class DynamicBaseController extends Controller
         }
 
         if (empty($allowRequestMethods)) {
-            throw new RouterMethodRequestNotDefinedException(sprintf('В обработчике %s не указан ожидаемый тип метода запроса', $className));
+            throw new DynamicRequestMethodNotDefinedException($className);
         }
 
         if (!in_array($this->request->getMethod(), $allowRequestMethods, true)) {
-            throw new RouterNotAllowRequestMethodException;
+            throw new DynamicRequestMethodNotAllowedException($className, $this->request->getMethod());
         }
 
         $controller = Controller::as($className::new($this->container));

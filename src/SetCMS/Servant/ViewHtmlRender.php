@@ -9,10 +9,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Uri;
 use SetCMS\Controller;
-use SetCMS\Application\Contract\ContractRouterInterface;
 use SetCMS\UUID;
 use SetCMS\DTO\SetCMSOutputDTO;
 use SetCMS\Event\AppErrorEvent;
+use SetCMS\Application\Router\RouterController;
+use SetCMS\Application\Router\Exception\RouterNotFoundException;
 
 abstract class ViewHtmlRender extends \UUA\Servant
 {
@@ -133,18 +134,17 @@ abstract class ViewHtmlRender extends \UUA\Servant
     {
         try {
             $routerMatch = $this->router()->match($path, 'GET');
+            
+            if (!$routerMatch) {
+                throw new RouterNotFoundException(sprintf('Not found: GET %s', $path));
+            }
 
             $request = $this->createRequestByPath($path, $params);
-            $request = $request->withAttribute('routeTarget', $routerMatch->target);
-
-            foreach ($routerMatch->params as $pName => $pValue) {
-                $request = $request->withAttribute($pName, $pValue);
-            }
 
             $className = $routerMatch->target;
 
             $controller = Controller::as($className::new($this->container));
-            $controller->from($request);
+            $controller->from($request->withAttribute('routerMatch', $routerMatch));
             $controller->serve();
 
             return $controller;
@@ -262,9 +262,9 @@ abstract class ViewHtmlRender extends \UUA\Servant
         return $this->env()['TEMPLATE'];
     }
 
-    protected function router(): ContractRouterInterface
+    protected function router(): RouterController
     {
-        return $this->container->get(ContractRouterInterface::class);
+        return RouterController::singleton($this->container);
     }
 
     protected function scBaseUrl(): string

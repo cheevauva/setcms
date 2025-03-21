@@ -6,13 +6,9 @@ use DI\ContainerBuilder;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use SetCMS\EventDispatcher;
-use SetCMS\Factory;
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createImmutable(__DIR__, [
-    '.env',
-    '.env.dist',
-]);
+$dotenv = Dotenv::createImmutable(__DIR__, ['.env', '.env.dist']);
 
 $containerBuilder = new ContainerBuilder();
 $containerBuilder->addDefinitions(require __DIR__ . '/resources/di.php');
@@ -21,7 +17,7 @@ $containerBuilder->addDefinitions([
     'env' => $dotenv->load(),
     'events' => require __DIR__ . '/resources/events.php',
     'acl' => require __DIR__ . '/resources/acl.php',
-    'routes' => require __DIR__ . '/resources/routes.php',
+    'controllers' => require __DIR__ . '/resources/controllers.php',
     'headers' => require __DIR__ . '/resources/headers.php',
     'modules' => require __DIR__ . '/resources/modules.php',
     'themes' => require __DIR__ . '/resources/themes.php',

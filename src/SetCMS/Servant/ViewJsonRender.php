@@ -11,9 +11,9 @@ use SetCMS\DTO\SetCMSOutputDTO;
 class ViewJsonRender extends \UUA\Servant
 {
 
-    public object $mixedValue;
-    public ?string $json = null;
-    public ServerRequestInterface $request;
+    public public(set) object $mixedValue;
+    public protected(set) ?string $json = null;
+    public public(set) ServerRequestInterface $request;
 
     public function serve(): void
     {

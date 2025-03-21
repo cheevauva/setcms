@@ -8,4 +8,5 @@ trait HookTrait
 {
 
     use EventTrait;
+    use \UUA\Traits\AsTrait;
 }

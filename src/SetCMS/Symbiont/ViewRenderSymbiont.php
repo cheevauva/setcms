@@ -12,53 +12,45 @@ use SetCMS\View\Hook\ViewRenderHook;
 class ViewRenderSymbiont extends \UUA\SymbiontCustomizer
 {
 
-    public function from(object $object): void
+    #[\Override]
+    public function to(object $object): void
     {
-        if ($object instanceof ViewRenderHook) {
-            if ($this->master instanceof ViewJsonRender) {
-                $master = ViewJsonRender::as($this->master);
-                $master->mixedValue = $object->data;
-                $master->request = $object->request;
-            }
+        $master = ViewRenderHook::as($this->master);
 
-            if ($this->master instanceof ViewHtmlRender) {
-                $master = ViewHtmlRender::as($this->master);
-                $master->mixedValue = $object->data;
-                $master->request = $object->request;
-            }
+        if ($object instanceof ViewJsonRender) {
+            $object->mixedValue = $master->data;
+            $object->request = $master->request;
+        }
 
-            if ($this->master instanceof ViewCompositeRender) {
-                $master = ViewCompositeRender::as($this->master);
-                $master->mixedValue = $object->data;
-                $master->request = $object->request;
-            }
+        if ($object instanceof ViewHtmlRender) {
+            $object->mixedValue = $master->data;
+            $object->request = $master->request;
+        }
+
+        if ($object instanceof ViewCompositeRender) {
+            $object->mixedValue = $master->data;
+            $object->request = $master->request;
         }
     }
 
-    public function to(object $object): void
+    #[\Override]
+    public function from(object $object): void
     {
-        if ($object instanceof ViewRenderHook) {
-            if ($this->master instanceof ViewJsonRender) {
-                $master = ViewJsonRender::as($this->master);
-                $object->content = $master->json;
-                $object->contentType = 'application/json';
-            }
+        $master = ViewRenderHook::as($this->master);
+
+        if ($object instanceof ViewHtmlRender) {
+            $master->content = $object->html;
+            $master->contentType = 'text/html';
         }
 
-        if ($object instanceof ViewRenderHook) {
-            if ($this->master instanceof ViewHtmlRender) {
-                $master = ViewHtmlRender::as($this->master);
-                $object->content = $master->html;
-                $object->contentType = 'text/html';
-            }
+        if ($object instanceof ViewCompositeRender) {
+            $master->content = $object->content ?? null;
+            $master->contentType = $object->contentType ?? null;
         }
 
-        if ($object instanceof ViewRenderHook) {
-            if ($this->master instanceof ViewCompositeRender) {
-                $master = ViewCompositeRender::as($this->master);
-                $object->content = $master->content;
-                $object->contentType = $master->contentType;
-            }
+        if ($object instanceof ViewJsonRender) {
+            $master->content = $object->json;
+            $master->contentType = 'application/json';
         }
     }
 }

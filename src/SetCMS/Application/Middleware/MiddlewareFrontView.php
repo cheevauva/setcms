@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
 use SetCMS\Servant\ViewRender;
 
-class MiddlewareRenderView implements MiddlewareInterface, \UUA\ContainerConstructInterface
+class MiddlewareFrontView implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {
 
     use \UUA\Traits\BuildTrait;
@@ -19,20 +19,20 @@ class MiddlewareRenderView implements MiddlewareInterface, \UUA\ContainerConstru
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $output = $request->getAttribute('output');
+        $controller = $request->getAttribute('controller');
 
-        if ($output instanceof ResponseInterface) {
-            $request = $output;
+        if ($controller instanceof ResponseInterface) {
+            $request = $controller;
         } else {
             $response = new Response;
         }
 
-        if (is_null($output)) {
+        if (is_null($controller)) {
             $response->getBody()->write('Success!');
         } else {
             $render = ViewRender::new($this->container);
             $render->request = $request;
-            $render->mixedValue = $output;
+            $render->mixedValue = $controller;
             $render->serve();
 
             $response = $response->withHeader('Content-Type', $render->contentType);

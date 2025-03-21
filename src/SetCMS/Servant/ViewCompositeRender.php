@@ -9,8 +9,8 @@ use Psr\Http\Message\ServerRequestInterface;
 class ViewCompositeRender extends ViewHtmlRender
 {
 
-    public ?string $content = null;
-    public ?string $contentType = null;
+    public readonly protected(set) ?string $content;
+    public readonly protected(set) ?string $contentType;
     public ServerRequestInterface $request;
     public string $context;
 

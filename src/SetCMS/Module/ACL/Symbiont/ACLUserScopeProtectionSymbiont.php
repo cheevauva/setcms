@@ -13,13 +13,13 @@ class ACLUserScopeProtectionSymbiont extends \UUA\SymbiontCustomizer
 {
 
     #[\Override]
-    public function from(object $object): void
+    public function to(object $object): void
     {
-        if ($object instanceof ScopeProtectionHook) {
-            $master = ACLCheckByRoleAndPrivilegeServant::as($this->master);
-            $master->role = UserEntity::as($object->user)->role->value;
-            $master->throwExceptions = true;
-            $master->privilege = get_class($object->scope);
+        if ($object instanceof ACLCheckByRoleAndPrivilegeServant) {
+            $master = ScopeProtectionHook::as($this->master);
+            $object->role = UserEntity::as($master->user)->role->value;
+            $object->throwExceptions = true;
+            $object->privilege = get_class($master->scope);
         }
     }
 

@@ -11,6 +11,8 @@ use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
 use SetCMS\Controller;
 use SetCMS\Controller\Hook\ScopeProtectionHook;
+use SetCMS\Application\Router\RouterController;
+use SetCMS\Application\Router\Exception\RouterNotFoundException;
 
 class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {
@@ -19,12 +21,22 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
     use \UUA\Traits\ContainerTrait;
     use \UUA\Traits\EventDispatcherTrait;
 
+    #[\Override]
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $className = $request->getAttribute('routeTarget');
+        $method = $request->getMethod();
+        $path = $request->getUri()->getPath();
+
+        $routerMatch = RouterController::singleton($this->container)->match($path, $method);
+
+        if (!$routerMatch) {
+            throw new RouterNotFoundException(sprintf('%s %s', $method, $path));
+        }
         
+        $className = $routerMatch->target;
+
         $controller = Controller::as($className::new($this->container));
-        $controller->from($request);
+        $controller->from($request->withAttribute('routerMatch', $routerMatch));
         $controller->from(new Response);
 
         $event = new ScopeProtectionHook();
@@ -34,8 +46,6 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
 
         $controller->serve();
 
-        $request = $request->withAttribute('output', $controller);
-
-        return $handler->handle($request);
+        return $handler->handle($request->withAttribute('controller', $controller));
     }
 }

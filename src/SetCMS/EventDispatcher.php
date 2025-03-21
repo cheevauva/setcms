@@ -43,17 +43,17 @@ class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherI
                 throw new \Exception(sprintf('Обработчик "%s" для события "%s" должен имплементировать UnitInterface', $listener[0], $eventName));
             }
 
-            $symbiont = isset($listener[1]) ? new $listener[1]($unit) : null;
+            $symbiont = isset($listener[1]) ? new $listener[1]($event) : null;
 
             if ($symbiont instanceof SymbiontCustomizer) {
-                $symbiont->from($event);
+                $symbiont->to($unit);
             }
 
                 $unit->serve();
 
 
             if ($symbiont instanceof SymbiontCustomizer) {
-                $symbiont->to($event);
+                $symbiont->from($unit);
             }
         }
     }

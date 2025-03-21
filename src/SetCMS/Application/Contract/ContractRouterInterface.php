@@ -9,7 +9,7 @@ use SetCMS\Application\Router\RouterMatchDTO;
 interface ContractRouterInterface
 {
 
-    public function match(?string $requestUrl = null, ?string $requestMethod = null): RouterMatchDTO;
+    public function match(?string $requestUrl = null, ?string $requestMethod = null): ?RouterMatchDTO;
 
     /**
      * @param string $routeName
