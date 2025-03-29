@@ -4,141 +4,87 @@ declare(strict_types=1);
 
 namespace SetCMS;
 
-use SetCMS\Application\Contract\ContractArrayable;
-use SetCMS\Application\Contract\ContractScopeInterface;
-use SetCMS\Application\Contract\ContractHydrateInterface;
-use SetCMS\Core\Servant\CorePropertyFetchDataFromRequestServant;
-use SetCMS\Core\Servant\CorePropertyHydrateServant;
-use SetCMS\Core\Servant\CorePropertySatisfyServant;
-use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\DTO\SetCMSOutputDTO;
-use SetCMS\Attribute\ResponderPassProperty;
+use SplObjectStorage;
 use UUA\Unit;
+use UUA\ContainerConstructInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use SetCMS\View;
+use SetCMS\Responder;
+use SetCMS\ResponseCollection;
+use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
+use SetCMS\Validation\Validation;
 
-abstract class Controller extends Unit implements ContractHydrateInterface, ContractArrayable, ContractScopeInterface, \UUA\ContainerConstructInterface
+abstract class Controller extends Unit implements ContainerConstructInterface
 {
 
     use \UUA\Traits\AsTrait;
     use \UUA\Traits\ContainerTrait;
     use \UUA\Traits\BuildTrait;
+    use \UUA\Traits\EventDispatcherTrait;
+    use \UUA\Traits\EnvTrait;
 
-    /**
-     * @var array<int, mixed>
-     */
-    private array $messages = [];
+    public ServerRequestInterface $request;
+    public ResponseCollection $responseCollection;
+    protected SplObjectStorage $messages;
 
-    /**
-     * @var array<int, mixed>
-     */
-    private array $data = [];
-    protected ?ServerRequestInterface $request;
-
-    public function getMessages(): array
+    protected function init(): void
     {
-        return $this->messages;
-    }
-
-    protected function isCustomized(): bool
-    {
-        return true;
+        $this->messages = new SplObjectStorage();
     }
 
     protected function catch(\Throwable $throwable): void
     {
-        throw $throwable;
+        
     }
 
-    protected function catchToMessage($field, \Throwable $throwable): void
+    protected function mapper(): void
     {
-        $this->messages[] = [
-            'field' => $field,
-            'message' => $throwable->getMessage(),
-        ];
+        
     }
 
-    protected function withMessage(mixed $message): void
+    protected function validation(mixed $data): Validation
     {
-        $this->messages[] = $message;
-    }
-
-    public function hasMessages(): bool
-    {
-        return !empty($this->messages);
-    }
-
-    protected function validate(): \Iterator
-    {
-        yield from [];
+        if (!is_array($data)) {
+            throw new \Exception('Ожидался array, а пришел ' . gettype($data));
+        }
+        
+        return new Validation($data, $this->messages);
     }
 
     public function from(object $object): void
     {
-        if ($object instanceof CorePropertyHydrateServant) {
-            foreach ($object->messages as $message) {
-                $this->withMessage($message);
-            }
+        if ($object instanceof View && $object->response) {
+            $this->responseCollection->attach($object->response, get_class($object));
         }
 
-        if ($object instanceof CorePropertySatisfyServant) {
-            foreach ($object->messages as $message) {
-                $this->withMessage($message);
-            }
-        }
-
-        if ($object instanceof ServerRequestInterface) {
-            $this->request = $object;
-        }
-
-        if ($object instanceof CorePropertyFetchDataFromRequestServant) {
-            $this->data = $object->data;
+        if ($object instanceof Responder && $object->response) {
+            $this->responseCollection->attach($object->response, get_class($object));
         }
     }
 
     public function to(object $object): void
     {
-        if ($object instanceof CorePropertyHydrateServant) {
-            $object->object = $this;
-            $object->array = $this->data;
+        if ($object instanceof Responder) {
+            $object->messages = $this->messages;
         }
 
-        if ($object instanceof CorePropertySatisfyServant) {
-            $object->object = $this;
-        }
-
-        if ($object instanceof CorePropertyFetchDataFromRequestServant) {
-            $object->request = $this->request;
-            $object->object = $this;
-        }
-
-        if ($object instanceof SetCMSOutputDTO) {
-            $object->finalScope($this);
-            $object->isSuccess = empty($this->messages);
-            
-            foreach ($this->messages as $messag) {
-                $object->addMessage($messag);
-            }
-            
-            foreach ((new \ReflectionObject($this))->getProperties() as $property) {
-                foreach ($property->getAttributes(ResponderPassProperty::class) as $attribute) {
-                    assert($attribute instanceof \ReflectionAttribute);
-                    $object->set($attribute->getArguments()[0] ?? $property->getName(), $this->{$property->getName()} ?? null);
-                }
-            }
+        if ($object instanceof View) {
+            $object->messages = $this->messages;
         }
     }
 
     /**
      * @return string[]
      */
-    protected function units(): array
+    protected function domainUnits(): array
     {
         return [];
     }
 
     /**
-     * @return array<mixed, mixed>
+     * @return string[]
      */
-    public function toArray(): array
+    protected function viewUnits(): array
     {
         return [];
     }
@@ -146,24 +92,29 @@ abstract class Controller extends Unit implements ContractHydrateInterface, Cont
     #[\Override]
     public function serve(): void
     {
-        if ($this->isCustomized()) {
-            $this->multiserveUnits([
-                CorePropertyFetchDataFromRequestServant::class,
-                CorePropertyHydrateServant::class,
-                CorePropertySatisfyServant::class,
-            ]);
-        }
+        try {
+            $onBeforeServe = new ControllerOnBeforeServeEvent();
+            $onBeforeServe->controller = $this;
+            $onBeforeServe->request = $this->request;
+            $onBeforeServe->dispatch($this->eventDispatcher());
 
-        $this->multiserveUnits($this->units());
+            $this->mapper();
+
+            $this->multiserveUnits($this->domainUnits());
+        } catch (\Exception $ex) {
+            $this->catch($ex);
+        } finally {
+            $this->multiserveUnits($this->viewUnits(), false);
+        }
     }
 
     /**
      * @param array<Unit>|array<int, string> $units
      * @return void
      */
-    protected function multiserveUnits(array $units): void
+    protected function multiserveUnits(array $units, bool $breakIfMessages = true): void
     {
-        if ($this->hasMessages()) {
+        if ($breakIfMessages && $this->messages->count()) {
             return;
         }
 
@@ -176,15 +127,11 @@ abstract class Controller extends Unit implements ContractHydrateInterface, Cont
                 throw new \RuntimeException('unit must be extends Unit');
             }
 
-            try {
-                $this->to($unit);
-                $unit->serve();
-                $this->from($unit);
-            } catch (\SetCMS\Exception $ex) {
-                $this->catch($ex);
-            }
+            $this->to($unit);
+            $unit->serve();
+            $this->from($unit);
 
-            if ($this->hasMessages()) {
+            if ($breakIfMessages && $this->messages->count()) {
                 return;
             }
         }

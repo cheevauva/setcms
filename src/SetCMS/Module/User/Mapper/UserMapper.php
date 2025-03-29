@@ -26,8 +26,8 @@ class UserMapper extends \SetCMS\Common\Mapper\EntityMapper
         parent::entity4row();
 
         $entity = UserEntity::as($this->entity);
-        $entity->username = $this->row['username'];
-        $entity->password = $this->row['password'];
-        $entity->role = UserRoleEnum::from($this->row['role']);
+        $entity->username = strval($this->row['username'] ?? throw new \Exception('row.username not defined'));
+        $entity->password = strval($this->row['password'] ?? throw new \Exception('row.password not defined'));
+        $entity->role = UserRoleEnum::from(strval($this->row['role'] ?? throw new \Exception('row.role not defined')));
     }
 }

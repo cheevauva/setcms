@@ -9,7 +9,9 @@
           >
         {{ forms.input({name: 'username', placeholder: 'Пользователь'}) }}
         {{ forms.input({name: 'password', placeholder: 'Пароль', type: 'password'}) }}
-        {{ forms.captcha({name: 'captcha', label: 'Код с картинки'}) }}
+        {% if useCaptcha %}
+            {{ forms.captcha({name: 'captcha', label: 'Код с картинки'}) }}
+        {% endif %}
         {{ forms.submit({label: 'Отправить'}) }}
     </form>
 {% endblock %}

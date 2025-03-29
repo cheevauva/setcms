@@ -7,24 +7,38 @@ namespace SetCMS\Module\Post\Controller;
 use SetCMS\Controller;
 use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Post\PostEntity;
-use SetCMS\Attribute\Http\Parameter\Attributes;
-use SetCMS\Attribute\ResponderPassProperty;
+use SetCMS\Module\Post\View\PostPublicReadBySlugView;
+use SetCMS\Module\Post\View\PostPublicNotFoundView;
 
 class PostPublicReadBySlugController extends Controller
 {
 
-    #[Attributes('slug')]
-    public string $slug;
-
-    #[ResponderPassProperty]
-    protected ?PostEntity $post = null;
+    protected string $slug;
+    protected PostEntity $post;
 
     #[\Override]
-    protected function units(): array
+    protected function domainUnits(): array
     {
         return [
             PostRetrieveManyByCriteriaDAO::class,
         ];
+    }
+
+    #[\Override]
+    protected function viewUnits(): array
+    {
+        return [
+            PostPublicNotFoundView::class,
+            PostPublicReadBySlugView::class,
+        ];
+    }
+
+    #[\Override]
+    protected function mapper(): void
+    {
+        $validationAttr = $this->validation($this->request->getAttributes());
+
+        $this->slug = $validationAttr->string('slug')->notEmpty()->val();
     }
 
     #[\Override]
@@ -35,6 +49,11 @@ class PostPublicReadBySlugController extends Controller
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
             $object->slug = $this->slug;
             $object->orThrow = true;
+        }
+
+
+        if ($object instanceof PostPublicReadBySlugView) {
+            $object->post = $this->post ?? null;
         }
     }
 
@@ -47,4 +66,5 @@ class PostPublicReadBySlugController extends Controller
             $this->post = $object->post;
         }
     }
+
 }

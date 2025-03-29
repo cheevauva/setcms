@@ -23,7 +23,7 @@ class UserPrivateUpdateController extends UserPrivateController
     public UserPrivateUserScope $user;
 
     #[\Override]
-    protected function units(): array
+    protected function domainUnits(): array
     {
         return [
             UserRetrieveByIdDAO::class,

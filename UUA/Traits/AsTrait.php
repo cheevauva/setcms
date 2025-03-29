@@ -19,4 +19,9 @@ trait AsTrait
 
         return $self;
     }
+
+    public static function is(?object $self): bool
+    {
+        return $self instanceof static;
+    }
 }

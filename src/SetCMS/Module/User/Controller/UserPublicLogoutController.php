@@ -18,7 +18,7 @@ class UserPublicLogoutController extends Controller
     public UUID $token;
 
     #[\Override]
-    protected function units(): array
+    protected function domainUnits(): array
     {
         return [
             UserSessionDeleteByIdDAO::class,

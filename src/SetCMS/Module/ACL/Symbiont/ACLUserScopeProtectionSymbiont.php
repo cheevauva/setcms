@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Module\ACL\Symbiont;
 
 use SetCMS\Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
-use SetCMS\Controller\Hook\ScopeProtectionHook;
+use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
 use SetCMS\Module\User\Exception\UserForbiddenException;
 use SetCMS\Module\User\Entity\UserEntity;
 
@@ -16,10 +16,10 @@ class ACLUserScopeProtectionSymbiont extends \UUA\SymbiontCustomizer
     public function to(object $object): void
     {
         if ($object instanceof ACLCheckByRoleAndPrivilegeServant) {
-            $master = ScopeProtectionHook::as($this->master);
-            $object->role = UserEntity::as($master->user)->role->value;
+            $master = ControllerOnBeforeServeEvent::as($this->master);
+            $object->role = UserEntity::as($master->request->getAttribute('currentUser'))->role->value;
             $object->throwExceptions = true;
-            $object->privilege = get_class($master->scope);
+            $object->privilege = get_class($master->controller);
         }
     }
 

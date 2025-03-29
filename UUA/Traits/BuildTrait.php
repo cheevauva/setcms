@@ -13,7 +13,9 @@ trait BuildTrait
 
     final public static function new(ContainerInterface $container): static
     {
-        return new static($container);
+        $className = ($container->get('fake') ?: [])[static::class] ?? static::class;
+
+        return static::as(new $className($container));
     }
 
     public static function singleton(ContainerInterface $container): static

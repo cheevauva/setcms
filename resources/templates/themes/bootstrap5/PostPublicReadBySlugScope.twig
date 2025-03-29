@@ -3,6 +3,7 @@
 {% block title %}{{ options.title }} - {{ post.title }}{% endblock %}
 
 {% block content %}
+    {{ post|json_encode() }}
     {% if post %}
         <article class="blog-post">
             <h2 class="blog-post-title">{{ post.title }}</h2>

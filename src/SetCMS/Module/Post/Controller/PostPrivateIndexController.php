@@ -5,21 +5,28 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post\Controller;
 
 use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
-use SetCMS\Attribute\ResponderPassProperty;
 use SetCMS\Attribute\Http\RequestMethod;
+use SetCMS\Module\Post\View\PostPrivateIndexView;
 
 #[RequestMethod('GET')]
 class PostPrivateIndexController extends PostPrivateController
 {
 
-    #[ResponderPassProperty]
     protected array $entities = [];
 
     #[\Override]
-    protected function units(): array
+    protected function domainUnits(): array
     {
         return [
             PostRetrieveManyByCriteriaDAO::class,
+        ];
+    }
+
+    #[\Override]
+    protected function viewUnits(): array
+    {
+        return [
+            PostPrivateIndexView::class,
         ];
     }
 
@@ -30,6 +37,14 @@ class PostPrivateIndexController extends PostPrivateController
 
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
             $this->entities = $object->entities;
+        }
+    }
+
+    #[\Override]
+    public function to(object $object): void
+    {
+        if ($object instanceof PostPrivateIndexView) {
+            $object->entities = $this->entities;
         }
     }
 }

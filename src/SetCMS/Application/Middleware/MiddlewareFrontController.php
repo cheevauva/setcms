@@ -8,11 +8,9 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use Laminas\Diactoros\Response;
 use SetCMS\Controller;
-use SetCMS\Controller\Hook\ScopeProtectionHook;
 use SetCMS\Application\Router\RouterController;
-use SetCMS\Application\Router\Exception\RouterNotFoundException;
+use SetCMS\ResponseCollection;
 
 class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {
@@ -30,21 +28,21 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
         $routerMatch = RouterController::singleton($this->container)->match($path, $method);
 
         if (!$routerMatch) {
-            throw new RouterNotFoundException(sprintf('%s %s', $method, $path));
+            return $handler->handle($request);
         }
+        
+        $responseCollection = new ResponseCollection();
         
         $className = $routerMatch->target;
 
         $controller = Controller::as($className::new($this->container));
-        $controller->from($request->withAttribute('routerMatch', $routerMatch));
-        $controller->from(new Response);
-
-        $event = new ScopeProtectionHook();
-        $event->scope = $controller;
-        $event->user = $request->getAttribute('currentUser');
-        $event->dispatch($this->eventDispatcher());
-
+        $controller->request = $request->withAttribute('routerMatch', $routerMatch);
+        $controller->responseCollection = $responseCollection;
         $controller->serve();
+        
+        if ($responseCollection->valid()) {
+            return $responseCollection->current();
+        }
 
         return $handler->handle($request->withAttribute('controller', $controller));
     }

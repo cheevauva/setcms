@@ -21,7 +21,7 @@ class MenuPrivateIndexController extends Controller
     protected array $entities = [];
 
     #[\Override]
-    protected function units(): array
+    protected function domainUnits(): array
     {
         return [
             MenuRetrieveManyDAO::class,

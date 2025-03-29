@@ -12,16 +12,11 @@ abstract class Router implements RouterInterface, \UUA\ContainerConstructInterfa
 {
 
     use \UUA\Traits\BuildTrait;
+    use \UUA\Traits\ContainerTrait;
 
     private AltoRouter $altoRouter;
     protected ContainerInterface $container;
 
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-
-        $this->init();
-    }
 
     protected function init(): void
     {

@@ -11,7 +11,7 @@ class MenuPrivateNewController extends MenuPrivateEditController
 {
 
     #[\Override]
-    protected function units(): array
+    protected function domainUnits(): array
     {
         return [];
     }

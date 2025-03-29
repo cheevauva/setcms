@@ -12,8 +12,8 @@ class UserSessionCreateByUserServant extends \UUA\Servant
 {
 
     public UserEntity $user;
-    public ?UserSessionEntity $session;
     public string $device;
+    public protected(set) UserSessionEntity $session;
 
     public function serve(): void
     {

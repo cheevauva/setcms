@@ -6,58 +6,69 @@ namespace SetCMS\Module\Dynamic\Controller;
 
 use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Controller;
-use SetCMS\Controller\Hook\ScopeProtectionHook;
-use SetCMS\Attribute\Http\Parameter\Attributes;
+use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
 use SetCMS\Module\Dynamic\Exception\DynamicClassNotFoundException;
 use SetCMS\Module\Dynamic\Exception\DynamicRequestMethodNotDefinedException;
 use SetCMS\Module\Dynamic\Exception\DynamicRequestMethodNotAllowedException;
 use SetCMS\Module\Dynamic\Exception\DynamicExpectedAttributeNotDefinedException;
 use SetCMS\Application\Router\RouterMatchDTO;
+use SetCMS\View;
+use SetCMS\Responder;
+use Psr\Http\Message\ResponseInterface;
+use UUA\Unit;
 
 abstract class DynamicBaseController extends Controller
 {
 
-    use \UUA\Traits\EventDispatcherTrait;
-    use \UUA\Traits\EnvTrait;
-
-    #[Attributes('module')]
-    public string $module;
-
-    #[Attributes('action')]
-    public string $action;
+    protected string $module;
+    protected string $action;
     protected Controller $controller;
+    protected null|View|Responder $responderOrView;
+    protected protected(set) ResponseInterface $response;
 
-    abstract protected function classNamePattern();
+    abstract protected function classNameControllerPattern(): string;
+
+    abstract protected function classNameResponderViewPatterns(): array;
 
     #[\Override]
-    protected function units(): array
+    protected function domainUnits(): array
     {
         return [
             $this->controller,
         ];
     }
 
-    #[\Override]
-    public function serve(): void
-    {
-        $this->controller = $this->controller();
 
-        parent::serve();
+    #[\Override]
+    protected function viewUnits(): array
+    {
+        return array_filter([
+            $this->responderOrView,
+        ]);
     }
 
     #[\Override]
-    protected function isCustomized(): bool
+    public function serve(): void
     {
-        return false;
+        $routerMatch = RouterMatchDTO::as($this->request->getAttribute('routerMatch'));
+
+        $this->module = $routerMatch->params['module'] ?? throw new DynamicExpectedAttributeNotDefinedException('module');
+        $this->action = $routerMatch->params['action'] ?? throw new DynamicExpectedAttributeNotDefinedException('action');
+
+        $this->responderOrView = $this->responderOrView();
+        $this->controller = $this->controller();
+        
+        parent::serve();
     }
 
     protected function controller(): Controller
     {
         $routerMatch = RouterMatchDTO::as($this->request->getAttribute('routerMatch'));
-        
-        $className = strtr($this->classNamePattern(), [
-            '{module}' => ucfirst($routerMatch->params['module'] ?? throw new DynamicExpectedAttributeNotDefinedException('module')),
-            '{action}' => ucfirst($routerMatch->params['action'] ?? throw new DynamicExpectedAttributeNotDefinedException('action')),
+        $id = $routerMatch->params['id'] ?? null;
+
+        $className = strtr($this->classNameControllerPattern(), [
+            '{module}' => ucfirst($this->module),
+            '{action}' => ucfirst($this->action),
         ]);
 
         if (!class_exists($className, true)) {
@@ -83,14 +94,47 @@ abstract class DynamicBaseController extends Controller
         }
 
         $controller = Controller::as($className::new($this->container));
-        $controller->from($this->request);
+        $controller->request = $this->request->withAttribute('module', $this->module)->withAttribute('action', $this->action)->withAttribute('id', $id);
+        $controller->responseCollection = $this->responseCollection;
 
-        $event = new ScopeProtectionHook();
-        $event->scope = $controller;
-        $event->user = $this->request->getAttribute('currentUser');
-        $event->dispatch($this->eventDispatcher());
+        $onBeforeServe = new ControllerOnBeforeServeEvent();
+        $onBeforeServe->controller = $controller;
+        $onBeforeServe->request = $this->request;
+        $onBeforeServe->dispatch($this->eventDispatcher());
 
         return $controller;
+    }
+
+    protected function responderOrView(): null|View|Responder
+    {
+        foreach ($this->classNameResponderViewPatterns() as $pattern) {
+            $className = strtr($pattern, [
+                '{module}' => ucfirst($this->module),
+                '{action}' => ucfirst($this->action),
+            ]);
+
+            if (!class_exists($className, true)) {
+                continue;
+            }
+
+            $unit = Unit::as($className::new($this->container));
+
+            if (!View::is($unit) && !Responder::is($unit)) {
+                throw new \Exception('bad type unit');
+            }
+
+            return $unit;
+        }
+
+        return null;
+    }
+
+    #[\Override]
+    protected function catch(\Throwable $throwable): void
+    {
+        if (isset($this->controller)) {
+            $this->controller->catch($throwable);
+        }
     }
 
     #[\Override]

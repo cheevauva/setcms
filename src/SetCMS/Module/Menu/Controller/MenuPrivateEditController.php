@@ -23,7 +23,7 @@ class MenuPrivateEditController extends Controller
     public UUID $id;
 
     #[\Override]
-    protected function units(): array
+    protected function domainUnits(): array
     {
         return [
             MenuRetrieveByIdDAO::class

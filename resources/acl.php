@@ -46,6 +46,9 @@ $acl = [
         ],
         UserRoleEnum::ADMIN->toString() => [
             'scope' => [
+                \SetCMS\Module\Dynamic\Controller\DynamicPrivateController::class => true,
+                //post
+                \SetCMS\Module\Post\Controller\PostPrivateNewController::class => true,
                 // user
                 \SetCMS\Module\User\Controller\UserPrivateIndexController::class => true,
                 \SetCMS\Module\User\Controller\UserPrivateEditController::class => true,

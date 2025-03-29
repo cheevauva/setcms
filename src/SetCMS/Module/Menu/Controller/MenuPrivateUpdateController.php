@@ -13,7 +13,7 @@ class MenuPrivateUpdateController extends \SetCMS\Controller
 {
 
     #[\Override]
-    protected function units(): array
+    protected function domainUnits(): array
     {
         return [
             MenuRetrieveByIdDAO::class,

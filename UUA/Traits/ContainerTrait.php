@@ -14,6 +14,11 @@ trait ContainerTrait
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
+        $this->init();
     }
 
+    protected function init(): void
+    {
+        
+    }
 }

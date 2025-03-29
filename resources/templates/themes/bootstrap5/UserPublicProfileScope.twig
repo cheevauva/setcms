@@ -4,7 +4,7 @@
     <div class="row g-0">
         <h4>Профиль пользователя</h4>
         <div class="mb-3">
-            Привет, {{ scUser().username }}!
+            Привет, {{ user.username }}!
         </div>
         <div class="mb-0">
             <a href="{{ scLink('action', {module: 'User', action: 'logout'}) }}" class="btn btn-primary">Выйти</a>

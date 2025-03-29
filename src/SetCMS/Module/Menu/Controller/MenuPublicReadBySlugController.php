@@ -21,7 +21,7 @@ class MenuPublicReadBySlugController extends \SetCMS\Controller
     protected array $items = [];
 
     #[\Override]
-    protected function units(): array
+    protected function domainUnits(): array
     {
         return [
             MenuRetrieveManyBySlugDAO::class,

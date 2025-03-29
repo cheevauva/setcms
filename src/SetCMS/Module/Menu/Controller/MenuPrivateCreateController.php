@@ -22,7 +22,7 @@ class MenuPrivateCreateController extends Controller
     public MenuPrivateMenuScope $menu;
 
     #[\Override]
-    protected function units(): array
+    protected function domainUnits(): array
     {
         return [
             MenuSaveDAO::class

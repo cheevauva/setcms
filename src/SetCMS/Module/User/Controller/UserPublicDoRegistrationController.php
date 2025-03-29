@@ -4,58 +4,64 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\Controller;
 
-use SetCMS\Attribute\NotBlank;
-use SetCMS\Attribute\Http\Parameter\Body;
 use SetCMS\UUID;
+use SetCMS\Controller;
 use SetCMS\Module\Captcha\Servant\CaptchaUseResolvedCaptchaServant;
 use SetCMS\Module\Captcha\Exception\CaptchaException;
+use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\Module\User\Exception\UserAlreadyExistsException;
 use SetCMS\Module\User\Servant\UserRegistrationServant;
-use SetCMS\Attribute\ResponderPassProperty;
+use SetCMS\Module\User\Exception\UserPasswordsNotEqualException;
+use SetCMS\Module\User\Exception\UserPasswordMustBeMoreThan8CharactersException;
 use SetCMS\Attribute\Http\RequestMethod;
 
 #[RequestMethod('POST')]
-class UserPublicDoRegistrationController extends \SetCMS\Controller
+class UserPublicDoRegistrationController extends Controller
 {
 
-    #[NotBlank]
-    #[Body('username')]
     public string $username;
-
-    #[NotBlank]
-    #[Body('password')]
     public string $password;
-
-    #[NotBlank]
-    #[Body('password2')]
     public string $password2;
-
-    #[Body('captcha')]
     public UUID $captcha;
-
-    //
-    #[ResponderPassProperty]
-    private ?UserEntity $user = null;
+    protected UserEntity $user;
+    protected bool $useCaptcha;
 
     #[\Override]
-    protected function units(): array
+    protected function init(): void
     {
-        return [
-            CaptchaUseResolvedCaptchaServant::class,
-            UserRegistrationServant::class,
-        ];
+        parent::init();
+
+        $this->useCaptcha = boolval($this->env()['CAPTCHA_USE_USER_REGISTRATION'] ?? true);
     }
 
     #[\Override]
-    protected function validate(): \Iterator
+    protected function domainUnits(): array
     {
+        return array_filter([
+            $this->useCaptcha ? CaptchaUseResolvedCaptchaServant::class : null,
+            UserRegistrationServant::class,
+        ]);
+    }
+
+    #[\Override]
+    protected function mapper(): void
+    {
+        $validation = $this->validation($this->request->getParsedBody());
+
+        $this->username = $validation->string('username')->notEmpty()->val();
+        $this->password = $validation->string('password')->notEmpty()->val();
+        $this->password2 = $validation->string('password2')->notEmpty()->val();
+
+        if ($this->useCaptcha) {
+            $this->captcha = $validation->uuid('captcha')->notEmpty()->val();
+        }
+
         if (!empty($this->password) && !empty($this->password2) && $this->password !== $this->password2) {
-            yield ['password', 'Пароли не совпадают'];
-            yield ['password2', 'Пароли не совпадают'];
+            $this->catch(new UserPasswordsNotEqualException());
         }
 
         if (mb_strlen($this->password) < 8) {
-            yield ['password', 'Пароль должен содержать минимум 8 символов'];
+            $this->catch(new UserPasswordMustBeMoreThan8CharactersException());
         }
     }
 
@@ -87,12 +93,21 @@ class UserPublicDoRegistrationController extends \SetCMS\Controller
     #[\Override]
     protected function catch(\Throwable $throwable): void
     {
+        if ($throwable instanceof UserPasswordsNotEqualException) {
+            $this->messages->attach($throwable, 'password');
+            $this->messages->attach($throwable, 'password2');
+        }
+
+        if ($throwable instanceof UserPasswordMustBeMoreThan8CharactersException) {
+            $this->messages->attach($throwable, 'password');
+        }
+
         if ($throwable instanceof CaptchaException) {
-            $this->catchToMessage('captcha', $throwable);
+            $this->messages->attach($throwable, 'captcha');
         }
 
         if ($throwable instanceof UserAlreadyExistsException) {
-            $this->catchToMessage('username', $throwable);
+            $this->messages->attach($throwable, 'username');
         }
     }
 }

@@ -13,44 +13,64 @@ use SetCMS\Module\UserSession\Servant\UserSessionCreateByUserServant;
 use SetCMS\Module\Captcha\Exception\CaptchaException;
 use SetCMS\Module\User\Exception\UserNotFoundException;
 use SetCMS\Module\User\Exception\UserIncorrectPasswordException;
-use SetCMS\Attribute\Http\Parameter\Body;
-use SetCMS\Attribute\Http\Parameter\Headers;
-use SetCMS\Attribute\NotBlank;
+use SetCMS\Module\User\View\UserPublicDoLoginView;
 use SetCMS\UUID;
 use SetCMS\Attribute\Http\RequestMethod;
-use SetCMS\Attribute\ResponderPassProperty;
 
 #[RequestMethod('POST')]
 class UserPublicDoLoginController extends Controller
 {
 
-    #[NotBlank]
-    #[Body('username')]
-    public string $username;
-
-    #[NotBlank]
-    #[Body('password')]
-    public string $password;
-
-    #[Headers('user-agent')]
-    public string $device;
-
-    #[Body('captcha')]
-    public UUID $captcha;
+    protected string $username;
+    protected string $password;
+    protected UUID $captcha;
+    protected string $device;
     protected UserEntity $user;
     protected UserSessionEntity $session;
-
-    #[ResponderPassProperty]
     protected string $sessionId;
+    protected bool $useCaptcha = false;
 
     #[\Override]
-    protected function units(): array
+    protected function init(): void
     {
-        return [
-            CaptchaUseResolvedCaptchaServant::class,
+        parent::init();
+
+        $this->useCaptcha = boolval($this->env()['CAPTCHA_USE_USER_LOGIN'] ?? true);
+    }
+
+    #[\Override]
+    protected function domainUnits(): array
+    {
+        return array_filter([
+            $this->useCaptcha ? CaptchaUseResolvedCaptchaServant::class : null,
             UserLoginServant::class,
             UserSessionCreateByUserServant::class,
+        ]);
+    }
+
+    #[\Override]
+    protected function viewUnits(): array
+    {
+        return [
+            UserPublicDoLoginView::class,
         ];
+    }
+
+    #[\Override]
+    protected function mapper(): void
+    {
+        $validationBody = $this->validation($this->request->getParsedBody());
+        $validationHeaders = $this->validation([
+            'device' => $this->request->getHeaderLine('user-agent')
+        ]);
+
+        $this->username = $validationBody->string('username')->notEmpty()->val();
+        $this->password = $validationBody->string('password')->notEmpty()->val();
+        $this->device = $validationHeaders->string('device')->notEmpty()->val();
+
+        if ($this->useCaptcha) {
+            $this->captcha = $validationBody->uuid('captcha')->notEmpty()->val();
+        }
     }
 
     #[\Override]
@@ -71,6 +91,10 @@ class UserPublicDoLoginController extends Controller
             $object->user = $this->user;
             $object->device = $this->device;
         }
+
+        if ($object instanceof UserPublicDoLoginView) {
+            $object->sessionId = strval(UserSessionEntity::as($this->session)->id);
+        }
     }
 
     #[\Override]
@@ -81,26 +105,24 @@ class UserPublicDoLoginController extends Controller
         if ($object instanceof UserLoginServant) {
             $this->user = $object->user;
         }
-
         if ($object instanceof UserSessionCreateByUserServant) {
-            $this->sessionId = strval(UserSessionEntity::as($object->session)->id);
+            $this->session = $object->session;
         }
     }
 
     #[\Override]
     protected function catch(\Throwable $throwable): void
     {
-
         if ($throwable instanceof UserNotFoundException) {
-            $this->catchToMessage('username', $throwable);
+            $this->messages->attach($throwable, 'username');
         }
 
         if ($throwable instanceof UserIncorrectPasswordException) {
-            $this->catchToMessage('password', $throwable);
+            $this->messages->attach($throwable, 'password');
         }
 
         if ($throwable instanceof CaptchaException) {
-            $this->catchToMessage('captcha', $throwable);
+            $this->messages->attach($throwable, 'captcha');
         }
     }
 }

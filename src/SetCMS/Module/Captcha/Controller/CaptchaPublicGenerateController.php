@@ -4,44 +4,40 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Captcha\Controller;
 
+use SetCMS\Controller;
 use SetCMS\Module\Captcha\CaptchaEntity;
-use SetCMS\Module\Captcha\Servant\CaptchaCreateAsPngServant;
 use SetCMS\Module\Captcha\DAO\CaptchaSaveDAO;
+use SetCMS\Module\Captcha\View\CaptchaPublicGenerateView;
 use SetCMS\Attribute\Http\RequestMethod;
-use SetCMS\Attribute\ResponderPassProperty;
-use SetCMS\UUID;
 
 #[RequestMethod('GET')]
-class CaptchaPublicGenerateController extends \SetCMS\Controller
+class CaptchaPublicGenerateController extends Controller
 {
 
-    private CaptchaEntity $captcha;
-
-    #[ResponderPassProperty]
-    protected ?UUID $id;
-
-    #[ResponderPassProperty]
-    protected ?string $content = null;
+    protected CaptchaEntity $captcha;
 
     #[\Override]
-    protected function units(): array
+    protected function init(): void
+    {
+        parent::init();
+
+        $this->captcha = new CaptchaEntity();
+    }
+
+    #[\Override]
+    protected function domainUnits(): array
     {
         return [
-            CaptchaCreateAsPngServant::class,
             CaptchaSaveDAO::class,
         ];
     }
 
     #[\Override]
-    public function from(object $object): void
+    protected function viewUnits(): array
     {
-        parent::from($object);
-
-        if ($object instanceof CaptchaCreateAsPngServant) {
-            $this->content = base64_encode($object->png);
-            $this->captcha = $object->captcha;
-            $this->id = $object->captcha->id;
-        }
+        return [
+            CaptchaPublicGenerateView::class,
+        ];
     }
 
     #[\Override]
@@ -51,6 +47,12 @@ class CaptchaPublicGenerateController extends \SetCMS\Controller
 
         if ($object instanceof CaptchaSaveDAO) {
             $object->captcha = $this->captcha;
+        }
+
+        if ($object instanceof CaptchaPublicGenerateView) {
+            $object->captcha = $this->captcha;
+            $object->includeLines = boolval($this->env()['CAPTCHA_GENERATE_LINES'] ?? true);
+            $object->includePixels = boolval($this->env()['CAPTCHA_GENERATE_PIXELS'] ?? true);
         }
     }
 }

@@ -7,9 +7,6 @@ namespace SetCMS\Application\Contract;
 interface ContractScopeInterface
 {
 
-    public function getMessages(): array;
-
-    public function hasMessages(): bool;
 
     public function from(object $object): void;
 

@@ -20,7 +20,7 @@ class UserPrivateIndexController extends UserPrivateController
     protected array $entities = [];
 
     #[\Override]
-    protected function units(): array
+    protected function domainUnits(): array
     {
         return [
             UserRetrieveManyDAO::class,

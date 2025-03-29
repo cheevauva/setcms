@@ -10,6 +10,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Laminas\Diactoros\Response;
 use SetCMS\Servant\ViewRender;
+use SetCMS\Application\Router\RouterView;
+use SetCMS\Controller;
 
 class MiddlewareFrontView implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {
@@ -19,25 +21,39 @@ class MiddlewareFrontView implements MiddlewareInterface, \UUA\ContainerConstruc
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        return $handler->handle($request);
         $controller = $request->getAttribute('controller');
+        $view = null;
 
-        if ($controller instanceof ResponseInterface) {
-            $request = $controller;
-        } else {
-            $response = new Response;
+        $method = $request->getMethod();
+        $path = $request->getUri()->getPath();
+
+        $routerMatch = RouterView::singleton($this->container)->match($path, $method);
+
+        if (!$controller && !$routerMatch) {
+            return $handler->handle($request);
         }
 
-        if (is_null($controller)) {
-            $response->getBody()->write('Success!');
-        } else {
-            $render = ViewRender::new($this->container);
-            $render->request = $request;
-            $render->mixedValue = $controller;
-            $render->serve();
+        if ($routerMatch) {
+            $className = $routerMatch->target;
 
-            $response = $response->withHeader('Content-Type', $render->contentType);
-            $response->getBody()->write($render->content);
+            $view = Controller::as($className::new($this->container));
+            $view->from($request->withAttribute('routerMatch', $routerMatch));
+            $view->from(new Response);
+
+            if ($controller) {
+                $view->from($controller);
+            }
         }
+
+        $render = ViewRender::new($this->container);
+        $render->request = $request;
+        $render->mixedValue = $view ?? $controller;
+        $render->serve();
+
+        $response = new Response;
+        $response = $response->withHeader('Content-Type', $render->contentType);
+        $response->getBody()->write($render->content);
 
         return $response;
     }

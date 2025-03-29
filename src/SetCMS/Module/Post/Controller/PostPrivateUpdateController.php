@@ -4,25 +4,21 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Controller;
 
+use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Post\Servant\PostUpdateServant;
-use SetCMS\Attribute\Http\Parameter\Body;
-use SetCMS\Attribute\ResponderPassProperty;
-use SetCMS\Attribute\Http\RequestMethod;
+use SetCMS\Module\Post\View\PostPrivateUpdateView;
 
 #[RequestMethod('POST')]
 class PostPrivateUpdateController extends PostPrivateController
 {
 
-    #[ResponderPassProperty('post')]
-    protected ?PostEntity $entity = null;
-
-    #[Body('post')]
-    public PostPrivatePostController $post;
+    protected PostEntity $post;
+    protected PostEntity $newPost;
 
     #[\Override]
-    protected function units(): array
+    protected function domainUnits(): array
     {
         return [
             PostRetrieveManyByCriteriaDAO::class,
@@ -31,19 +27,42 @@ class PostPrivateUpdateController extends PostPrivateController
     }
 
     #[\Override]
+    protected function viewUnits(): array
+    {
+        return [
+            PostPrivateUpdateView::class,
+        ];
+    }
+
+    #[\Override]
+    protected function mapper(): void
+    {
+        $validation = $this->validation($this->request->getParsedBody());
+
+        $this->newPost = new PostEntity;
+        $this->newPost->id = $validation->uuid('post.id')->notEmpty()->val();
+        $this->newPost->slug = $validation->string('post.slug')->notEmpty()->val();
+        $this->newPost->title = $validation->string('post.title')->notEmpty()->val();
+        $this->newPost->message = $validation->string('post.message')->notEmpty()->val();
+    }
+
+    #[\Override]
     public function to(object $object): void
     {
         parent::to($object);
 
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
-            $this->entity = new PostEntity;
-            $this->post->to($this->entity);
-            $object->id = $this->entity->id;
+            $object->id = $this->newPost->id;
+            $object->orThrow = true;
         }
 
         if ($object instanceof PostUpdateServant) {
-            $this->post->to($this->entity);
-            $object->post = $this->entity;
+
+            $object->post = $this->post;
+        }
+
+        if ($object instanceof PostPrivateUpdateView) {
+            $object->post = $this->post ?? null;
         }
     }
 
@@ -53,7 +72,11 @@ class PostPrivateUpdateController extends PostPrivateController
         parent::from($object);
 
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
-            $this->entity = $object->post;
+            $this->post = PostEntity::as($object->post);
+            $this->post->message = $this->newPost->message;
+            $this->post->slug = $this->newPost->slug;
+            $this->post->title = $this->newPost->title;
+            $this->post->slug = $this->newPost->slug;
         }
     }
 }
