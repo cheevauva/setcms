@@ -9,10 +9,7 @@ use SetCMS\Module\User\Controller\UserPrivateUserScope;
 use SetCMS\Module\User\DAO\UserRetrieveByIdDAO;
 use SetCMS\Module\User\DAO\UserSaveDAO;
 use SetCMS\Module\User\Entity\UserEntity;
-use SetCMS\Attribute\ResponderPassProperty;
-use SetCMS\Attribute\Http\RequestMethod;
 
-#[RequestMethod('POST')]
 class UserPrivateUpdateController extends UserPrivateController
 {
 

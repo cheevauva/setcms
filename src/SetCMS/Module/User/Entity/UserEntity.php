@@ -32,5 +32,4 @@ class UserEntity extends \SetCMS\Common\Entity\Entity
     {
         return $this->hasRole(UserRoleEnum::ADMIN);
     }
-
 }

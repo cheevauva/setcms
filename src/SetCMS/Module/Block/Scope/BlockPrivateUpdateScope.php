@@ -48,5 +48,4 @@ class BlockPrivateUpdateScope extends BlockPrivateScope
             'block' => $this->entity,
         ];
     }
-
 }

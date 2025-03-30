@@ -20,7 +20,7 @@ class CaptchaPublicSolveView extends ViewJson
         if (!$this->captcha) {
             return [];
         }
-        
+
         $data['isSolved'] = $this->captcha->isSolved;
         $data['isUsed'] = $this->captcha->isUsed;
 

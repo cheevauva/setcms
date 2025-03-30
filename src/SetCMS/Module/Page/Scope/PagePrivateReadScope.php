@@ -29,7 +29,7 @@ class PagePrivateReadScope extends PagePrivateScope
     public function from(object $object): void
     {
         parent::from($object);
-        
+
         if ($object instanceof PageRetrieveByIdDAO) {
             $this->entity = $object->page;
         }
@@ -41,5 +41,4 @@ class PagePrivateReadScope extends PagePrivateScope
             'page' => $this->entity,
         ];
     }
-
 }

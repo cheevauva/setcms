@@ -16,5 +16,4 @@ class Body
     {
         $this->name = $name;
     }
-
 }

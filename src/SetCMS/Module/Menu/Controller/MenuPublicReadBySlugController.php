@@ -6,7 +6,6 @@ namespace SetCMS\Module\Menu\Controller;
 
 use SetCMS\Attribute\Http\Parameter\Attributes;
 use SetCMS\Module\Menu\DAO\MenuRetrieveManyBySlugDAO;
-use SetCMS\Attribute\ResponderPassProperty;
 
 class MenuPublicReadBySlugController extends \SetCMS\Controller
 {
@@ -17,7 +16,6 @@ class MenuPublicReadBySlugController extends \SetCMS\Controller
     /**
      * @var array<mixed>
      */
-    #[ResponderPassProperty]
     protected array $items = [];
 
     #[\Override]

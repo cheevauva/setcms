@@ -14,7 +14,6 @@ class ViewCompositeRender extends ViewHtmlRender
     public ServerRequestInterface $request;
     public string $context;
 
-
     #[\Override]
     protected function addFunction(string $name, \Closure $function): void
     {
@@ -32,15 +31,15 @@ class ViewCompositeRender extends ViewHtmlRender
     {
         $content = null;
         $contentType = null;
-        
+
         $file = $this->scLongPath($name);
 
         extract($this->vars);
-        
+
         if (file_exists($file)) {
             require $file;
         }
-        
+
         $this->content = $content;
         $this->contentType = $contentType;
 

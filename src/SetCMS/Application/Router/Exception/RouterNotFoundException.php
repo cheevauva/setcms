@@ -13,5 +13,4 @@ class RouterNotFoundException extends RouterException implements ContractNotFoun
     {
         parent::__construct($message);
     }
-
 }

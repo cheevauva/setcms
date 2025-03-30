@@ -9,10 +9,7 @@ use SetCMS\UUID;
 use SetCMS\Attribute\Http\Parameter\Attributes;
 use SetCMS\Module\Menu\DAO\MenuRetrieveByIdDAO;
 use SetCMS\Module\Menu\Entity\MenuEntity;
-use SetCMS\Attribute\Http\RequestMethod;
-use SetCMS\Attribute\ResponderPassProperty;
 
-#[RequestMethod('GET')]
 class MenuPrivateEditController extends Controller
 {
 

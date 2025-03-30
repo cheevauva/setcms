@@ -9,5 +9,6 @@ use SetCMS\Module\Post\PostEntity;
 
 class PostPrivateUpdateView extends ViewJson
 {
+
     public ?PostEntity $post = null;
 }

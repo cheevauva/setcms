@@ -13,5 +13,4 @@ class PostNotFoundException extends PostException implements ContractNotFound
     {
         return 'setcms.post.notfound';
     }
-
 }

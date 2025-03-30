@@ -13,5 +13,4 @@ class UserForbiddenException extends UserException implements ContractForbidden
     {
         parent::__construct($message);
     }
-
 }

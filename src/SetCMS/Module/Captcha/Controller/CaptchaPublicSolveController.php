@@ -10,10 +10,8 @@ use SetCMS\Module\Captcha\Servant\CaptchaResolveServant;
 use SetCMS\Module\Captcha\DAO\CaptchaRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Captcha\DAO\CaptchaSaveDAO;
 use SetCMS\Module\Captcha\CaptchaEntity;
-use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Module\Captcha\View\CaptchaPublicSolveView;
 
-#[RequestMethod('GET')]
 class CaptchaPublicSolveController extends \SetCMS\Controller
 {
 

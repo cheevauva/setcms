@@ -14,5 +14,4 @@ class PostPrivateIndexView extends ViewTwig
      * @var \SetCMS\Module\Post\PostEntity[]
      */
     public array $entities = [];
-
 }

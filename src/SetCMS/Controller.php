@@ -31,6 +31,7 @@ abstract class Controller extends Unit implements ContainerConstructInterface
 
     protected function catch(\Throwable $object): void
     {
+        
     }
 
     protected function init(): void

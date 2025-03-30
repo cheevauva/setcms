@@ -20,5 +20,4 @@ class UserSaveDAO extends \SetCMS\Common\DAO\Entity\EntitySaveDAO
 
         parent::serve();
     }
-
 }

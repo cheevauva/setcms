@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Controller;
 
-use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Post\Servant\PostUpdateServant;
 use SetCMS\Module\Post\View\PostPrivateUpdateView;
 
-#[RequestMethod('POST')]
 class PostPrivateUpdateController extends PostPrivateController
 {
 

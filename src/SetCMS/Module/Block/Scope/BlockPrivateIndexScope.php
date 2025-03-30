@@ -14,7 +14,7 @@ class BlockPrivateIndexScope extends BlockPrivateScope
     public function from(object $object): void
     {
         parent::from($object);
-        
+
         if ($object instanceof BlockRetrieveManyDAO) {
             $this->entities = $object->entities;
         }
@@ -26,5 +26,4 @@ class BlockPrivateIndexScope extends BlockPrivateScope
             'entities' => iterator_to_array($this->entities),
         ];
     }
-
 }

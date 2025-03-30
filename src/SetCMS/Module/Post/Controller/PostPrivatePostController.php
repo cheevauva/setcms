@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Controller;
 
-use SetCMS\Attribute\NotBlank;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\UUID;
 
@@ -12,14 +11,8 @@ class PostPrivatePostController extends PostPrivateController
 {
 
     public UUID $id;
-
-    #[NotBlank]
     public string $slug;
-
-    #[NotBlank]
     public string $message;
-
-    #[NotBlank]
     public string $title;
 
     #[\Override]
@@ -34,5 +27,4 @@ class PostPrivatePostController extends PostPrivateController
             $object->title = $this->title;
         }
     }
-
 }

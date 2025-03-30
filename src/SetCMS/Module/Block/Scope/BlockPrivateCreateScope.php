@@ -33,5 +33,4 @@ class BlockPrivateCreateScope extends BlockPrivateScope
             'block' => $this->entity,
         ];
     }
-
 }

@@ -6,10 +6,11 @@ namespace SetCMS\Validation;
 
 class Arr extends Any
 {
-    public function val(): array 
+
+    public function val(): array
     {
         $this->validate();
-        
+
         return (array) $this->value;
     }
 }

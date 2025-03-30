@@ -43,5 +43,4 @@ class PagePublicReadScope extends Controller
             'page' => $this->entity,
         ];
     }
-
 }

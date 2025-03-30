@@ -21,5 +21,4 @@ trait UserSessionGenericDAO
     {
         return UserSessionConstrants::TABLE_NAME;
     }
-
 }

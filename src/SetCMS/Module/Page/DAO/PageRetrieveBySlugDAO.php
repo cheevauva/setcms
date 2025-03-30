@@ -26,5 +26,4 @@ class PageRetrieveBySlugDAO extends EntityRetrieveManyByCriteriaDAO
 
         $this->page = $this->entity;
     }
-
 }

@@ -16,5 +16,4 @@ final class Attributes
     {
         $this->name = $name;
     }
-
 }

@@ -6,6 +6,5 @@ namespace SetCMS\Module\User\Controller;
 
 class UserPrivateEditController extends UserPrivateReadController
 {
-
-
+    
 }

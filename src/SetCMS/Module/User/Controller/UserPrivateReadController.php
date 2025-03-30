@@ -8,14 +8,10 @@ use SetCMS\UUID;
 use SetCMS\Attribute\Http\Parameter\Attributes;
 use SetCMS\Module\User\DAO\UserRetrieveByIdDAO;
 use SetCMS\Module\User\Entity\UserEntity;
-use SetCMS\Attribute\ResponderPassProperty;
-use SetCMS\Attribute\Http\RequestMethod;
 
-#[RequestMethod('GET')]
 class UserPrivateReadController extends UserPrivateController
 {
 
-    #[ResponderPassProperty]
     protected UserEntity $user;
 
     #[Attributes('id')]

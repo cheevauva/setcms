@@ -22,5 +22,4 @@ class BlockRetrieveManyBySectionDAO extends BlockRetrieveManyDAO
 
         return $qb;
     }
-
 }

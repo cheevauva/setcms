@@ -53,8 +53,8 @@ abstract class ViewHtml extends \SetCMS\View
         foreach ($this->vars as $v => $vv) {
             $this->assign($v, $vv);
         }
-        
-        
+
+
         $html = $this->render($templateName, get_object_vars($this));
 
         $response = (new Response())->withStatus(200)->withHeader('Content-Type', 'text/html');

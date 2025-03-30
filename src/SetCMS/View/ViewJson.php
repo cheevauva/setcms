@@ -45,7 +45,7 @@ class ViewJson extends View
                 'field' => $this->messages->getInfo(),
                 'message' => $message
             ];
-            
+
             $this->messages->next();
         }
 

@@ -6,5 +6,5 @@ namespace SetCMS\Application\Contract;
 
 interface ContractHydrateInterface
 {
-
+    
 }

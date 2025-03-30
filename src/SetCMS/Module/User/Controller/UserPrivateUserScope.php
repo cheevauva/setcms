@@ -25,5 +25,4 @@ class UserPrivateUserScope extends UserPrivateController
             $object->role = $this->role;
         }
     }
-
 }

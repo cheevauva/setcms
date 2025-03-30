@@ -13,5 +13,4 @@ class PageNotFoundException extends PageException implements ContractNotFound
     {
         return 'setcms.page.notfound';
     }
-
 }

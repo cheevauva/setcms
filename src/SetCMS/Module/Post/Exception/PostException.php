@@ -13,5 +13,4 @@ class PostException extends Exception
     {
         return 'setcms.post.label';
     }
-
 }

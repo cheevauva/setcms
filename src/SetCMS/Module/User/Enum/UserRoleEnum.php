@@ -30,5 +30,4 @@ enum UserRoleEnum: string
     {
         return $this->value;
     }
-
 }

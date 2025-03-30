@@ -12,9 +12,6 @@ use SetCMS\Module\Page\Scope\PagePublicReadBlockScope;
 class PagePublicController
 {
 
-    
-    
-
     public function read(PagePublicReadScope $scope, PageRetrieveByIdDAO $servant): PagePublicReadScope
     {
         $this->serve($servant, $scope);

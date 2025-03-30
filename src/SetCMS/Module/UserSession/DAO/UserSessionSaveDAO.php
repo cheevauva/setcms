@@ -21,5 +21,4 @@ class UserSessionSaveDAO extends EntitySaveDAO
 
         parent::serve();
     }
-
 }

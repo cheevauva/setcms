@@ -21,7 +21,7 @@ class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherI
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        
+
         foreach ($container->get('events') as $event => $eventListeners) {
             foreach ($eventListeners as $priority => $eventListener) {
                 $this->addListener($event, $eventListener, 999999 - $priority);
@@ -49,8 +49,7 @@ class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherI
                 $symbiont->to($unit);
             }
 
-                $unit->serve();
-
+            $unit->serve();
 
             if ($symbiont instanceof SymbiontCustomizer) {
                 $symbiont->from($unit);

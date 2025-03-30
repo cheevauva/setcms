@@ -20,5 +20,4 @@ class BlockRetrieveByIdDAO extends EntityRetrieveByIdDAO
 
         $this->block = $this->entity;
     }
-
 }

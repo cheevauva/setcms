@@ -6,7 +6,5 @@ namespace SetCMS\Module\Module01\Controller;
 
 class Module01PublicController
 {
-
-    
     
 }

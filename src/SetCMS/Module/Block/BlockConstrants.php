@@ -8,5 +8,4 @@ interface BlockConstrants
 {
 
     public const TABLE_NAME = 'blocks';
-
 }

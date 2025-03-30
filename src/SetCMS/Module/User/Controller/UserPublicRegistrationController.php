@@ -2,12 +2,11 @@
 
 namespace SetCMS\Module\User\Controller;
 
-use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Module\User\View\UserPublicRegistrationView;
 
-#[RequestMethod('GET')]
 class UserPublicRegistrationController extends \SetCMS\Controller
 {
+
     protected bool $useCaptcha;
 
     #[\Override]
@@ -25,12 +24,12 @@ class UserPublicRegistrationController extends \SetCMS\Controller
             UserPublicRegistrationView::class
         ];
     }
-    
+
     #[\Override]
     public function to(object $object): void
     {
         parent::to($object);
-        
+
         if ($object instanceof UserPublicRegistrationView) {
             $object->useCaptcha = $this->useCaptcha;
         }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Block\Servant;
 
-
 use SetCMS\Module\Block\BlockEntity;
 use SetCMS\Module\Block\DAO\BlockHasByIdDAO;
 use SetCMS\Module\Block\DAO\BlockSaveDAO;
@@ -12,8 +11,6 @@ use SetCMS\Module\Block\Exception\BlockAlreadyExistsException;
 
 class BlockCreateServant extends \UUA\Servant
 {
-
-    
 
     public BlockEntity $block;
 
@@ -31,5 +28,4 @@ class BlockCreateServant extends \UUA\Servant
         $saveEntity->block = $this->block;
         $saveEntity->serve();
     }
-
 }

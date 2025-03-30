@@ -33,5 +33,4 @@ class PagePrivateCreateScope extends PagePrivateScope
             'page' => $this->entity,
         ];
     }
-
 }

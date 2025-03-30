@@ -25,11 +25,11 @@ class ParseBodyRequestServant extends \UUA\Servant implements ContractApplicable
 
     public function from(object $object): void
     {
-
+        
     }
 
     public function to(object $object): void
     {
-
+        
     }
 }

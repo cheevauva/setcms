@@ -7,20 +7,13 @@ namespace SetCMS\Module\Menu\Controller;
 use SetCMS\Controller;
 use SetCMS\Module\Menu\Entity\MenuEntity;
 use SetCMS\UUID;
-use SetCMS\Attribute;
 
 class MenuPrivateMenuScope extends Controller
 {
 
     public UUID $id;
-
-    #[Attribute\NotBlank]
     public string $label;
-
-    #[Attribute\NotBlank]
     public string $route;
-
-    #[Attribute\NotBlank]
     public string $params;
 
     public function to(object $object): void
@@ -34,14 +27,14 @@ class MenuPrivateMenuScope extends Controller
             $object->route = $this->route;
         }
     }
-    
+
     #[\Override]
     protected function validate(): \Iterator
     {
         if (!json_validate($this->params)) {
             yield ['params', 'Невалидный json'];
         }
-        
+
         yield from parent::validate();
     }
 }

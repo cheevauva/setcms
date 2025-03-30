@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Core\Servant;
+namespace SetCMS\Application\Middleware\Servant;
 
-use Psr\Http\{
-    Message\ServerRequestInterface,
-    Message\ResponseInterface,
-    Server\MiddlewareInterface,
-    Server\RequestHandlerInterface
-};
+use UUA\Servant;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
-class CoreMiddlewareDispatcherServant extends \UUA\Servant implements RequestHandlerInterface
+class MiddlewareDispatcherServant extends Servant implements RequestHandlerInterface
 {
 
     public array $middlewares = [];
@@ -40,5 +39,4 @@ class CoreMiddlewareDispatcherServant extends \UUA\Servant implements RequestHan
     {
         return $class::new($this->container);
     }
-
 }

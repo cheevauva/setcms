@@ -24,5 +24,4 @@ enum RequestAttribute: string
     {
         return $this->value;
     }
-
 }

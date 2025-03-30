@@ -16,5 +16,4 @@ final class Query
     {
         $this->name = $name;
     }
-
 }

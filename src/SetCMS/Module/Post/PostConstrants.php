@@ -8,5 +8,4 @@ interface PostConstrants
 {
 
     public const TABLE_NAME = 'posts';
-
 }

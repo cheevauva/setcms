@@ -15,9 +15,7 @@ use SetCMS\Module\User\Exception\UserNotFoundException;
 use SetCMS\Module\User\Exception\UserIncorrectPasswordException;
 use SetCMS\Module\User\View\UserPublicDoLoginView;
 use SetCMS\UUID;
-use SetCMS\Attribute\Http\RequestMethod;
 
-#[RequestMethod('POST')]
 class UserPublicDoLoginController extends Controller
 {
 

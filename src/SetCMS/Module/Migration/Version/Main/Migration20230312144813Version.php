@@ -34,5 +34,4 @@ final class Migration20230312144813Version extends AbstractMigration
     {
         $schema->dropTable(BlockConstrants::TABLE_NAME);
     }
-
 }

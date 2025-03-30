@@ -62,12 +62,12 @@ abstract class EntityMapper extends \UUA\Servant
         } else {
             $entity = Entity::as($this->entity);
         }
-        
+
         $entity->id = new UUID(strval($this->row['id'] ?? throw new \RuntimeException('row.id is undefined')));
         $entity->dateCreated = new \DateTime(strval($this->row['date_created'] ?? throw new \RuntimeException('row.date_created is undefined')));
         $entity->dateModified = new \DateTime(strval($this->row['date_modified'] ?? throw new \RuntimeException('row.date_modified is undefined')));
         $entity->deleted = boolval($this->row['deleted'] ?? throw new \RuntimeException('row.deleted is undefined'));
-        
+
         $this->entity = $entity;
     }
 }

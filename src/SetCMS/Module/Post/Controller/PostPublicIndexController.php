@@ -6,11 +6,9 @@ namespace SetCMS\Module\Post\Controller;
 
 use SetCMS\Controller;
 use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
-use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Module\Post\View\PostPublicIndexView;
 use SetCMS\Module\Post\PostEntity;
 
-#[RequestMethod('GET')]
 class PostPublicIndexController extends Controller
 {
 
@@ -44,12 +42,12 @@ class PostPublicIndexController extends Controller
             $this->entities = $object->entities;
         }
     }
-    
+
     #[\Override]
     public function to(object $object): void
     {
         parent::to($object);
-        
+
         if ($object instanceof PostPublicIndexView) {
             $object->entities = $this->entities;
         }

@@ -41,11 +41,11 @@ abstract class EntityCommonDAO extends \UUA\DAO
         $mapper = $this->mapper();
         $mapper->entity = $entity;
         $mapper->serve();
-        
+
         if (is_null($mapper->row)) {
             throw new \RuntimeException('row must be array');
         }
-        
+
         return $mapper->row;
     }
 

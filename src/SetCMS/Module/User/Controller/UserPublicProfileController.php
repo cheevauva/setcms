@@ -5,9 +5,7 @@ namespace SetCMS\Module\User\Controller;
 use SetCMS\Controller;
 use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\Module\User\View\UserPublicProfileView;
-use SetCMS\Attribute\Http\RequestMethod;
 
-#[RequestMethod('GET')]
 class UserPublicProfileController extends Controller
 {
 

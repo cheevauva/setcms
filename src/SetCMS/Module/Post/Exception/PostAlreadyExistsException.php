@@ -11,5 +11,4 @@ class PostAlreadyExistsException extends PostException
     {
         return 'setcms.post.alreadyexists';
     }
-
 }

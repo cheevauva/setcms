@@ -7,7 +7,6 @@ namespace SetCMS\Module\Menu\Controller;
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\Menu\MenuAction\Entity\MenuActionEntity;
 use SetCMS\Attribute\Http\Parameter\Request;
-use SetCMS\Attribute\ResponderPassProperty;
 use SetCMS\Module\Post\Servant\PostMenuActionsByRequestServant;
 
 class MenuPublicReadByContextController extends \SetCMS\Controller
@@ -16,7 +15,6 @@ class MenuPublicReadByContextController extends \SetCMS\Controller
     /**
      * @var MenuActionEntity[]
      */
-    #[ResponderPassProperty]
     protected array $items = [];
 
     #[\Override]

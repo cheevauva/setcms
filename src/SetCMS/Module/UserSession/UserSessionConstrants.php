@@ -8,5 +8,4 @@ interface UserSessionConstrants
 {
 
     public const TABLE_NAME = 'user_sessions';
-
 }

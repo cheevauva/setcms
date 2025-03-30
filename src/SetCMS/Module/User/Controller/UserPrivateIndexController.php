@@ -5,18 +5,14 @@ declare(strict_types=1);
 namespace SetCMS\Module\User\Controller;
 
 use SetCMS\Module\User\DAO\UserRetrieveManyDAO;
-use SetCMS\Attribute\ResponderPassProperty;
-use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Module\User\Entity\UserEntity;
 
-#[RequestMethod('GET')]
 class UserPrivateIndexController extends UserPrivateController
 {
 
     /**
      * @var array<UserEntity>
      */
-    #[ResponderPassProperty]
     protected array $entities = [];
 
     #[\Override]

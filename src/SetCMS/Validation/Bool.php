@@ -6,7 +6,7 @@ namespace SetCMS\Validation;
 
 class Bool extends Any
 {
-    
+
     #[\Override]
     public function validate(): void
     {

@@ -10,9 +10,6 @@ use SetCMS\Module\Block\DAO\BlockRetrieveManyBySectionDAO;
 class BlockPublicController
 {
 
-    
-    
-
     public function blocksBySection(BlockPublicSectionScope $scope, BlockRetrieveManyBySectionDAO $servant): BlockPublicSectionScope
     {
         $this->serveScope($scope);
@@ -20,5 +17,4 @@ class BlockPublicController
 
         return $scope;
     }
-
 }

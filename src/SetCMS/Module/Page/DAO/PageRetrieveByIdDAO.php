@@ -12,7 +12,6 @@ class PageRetrieveByIdDAO extends EntityRetrieveByIdDAO
 {
 
     use PageCommonDAO;
-    
 
     public ?PageEntity $page;
     public bool $throwExceptionIfNotFound = false;
@@ -27,5 +26,4 @@ class PageRetrieveByIdDAO extends EntityRetrieveByIdDAO
 
         $this->page = $this->entity;
     }
-
 }

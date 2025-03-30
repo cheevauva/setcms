@@ -16,5 +16,4 @@ class CaptchaResolveServant extends \UUA\Servant
     {
         $this->captcha->solve($this->solvedText);
     }
-
 }

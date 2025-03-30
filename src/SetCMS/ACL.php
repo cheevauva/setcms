@@ -7,6 +7,7 @@ use Psr\Container\ContainerInterface;
 
 class ACL extends LaminasAcl implements \UUA\ContainerConstructInterface
 {
+
     use \UUA\Traits\BuildTrait;
     use \UUA\Traits\ContainerTrait;
 
@@ -41,5 +42,4 @@ class ACL extends LaminasAcl implements \UUA\ContainerConstructInterface
             }
         }
     }
-
 }

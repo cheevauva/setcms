@@ -8,5 +8,4 @@ interface UserContstants
 {
 
     public const TABLE_NAME = 'users';
-
 }

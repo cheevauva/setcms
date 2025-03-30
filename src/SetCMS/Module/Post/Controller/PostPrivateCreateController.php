@@ -6,10 +6,8 @@ namespace SetCMS\Module\Post\Controller;
 
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\Module\Post\Servant\PostCreateServant;
-use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Module\Post\View\PostPrivateCreateView;
 
-#[RequestMethod('POST')]
 class PostPrivateCreateController extends PostPrivateController
 {
 

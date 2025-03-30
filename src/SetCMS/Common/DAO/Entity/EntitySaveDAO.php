@@ -32,5 +32,4 @@ abstract class EntitySaveDAO extends EntityCommonDAO
             $this->db()->insert($this->table(), $this->asRow($this->entity));
         }
     }
-
 }

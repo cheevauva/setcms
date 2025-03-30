@@ -23,5 +23,4 @@ abstract class EntityHasByIdDAO extends EntityCommonDAO
 
         $this->isExists = !!$qb->fetchOne();
     }
-
 }

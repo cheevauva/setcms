@@ -28,5 +28,4 @@ class BlockPrivateBlockScope extends BlockPrivateScope
             $object->section = $this->section;
         }
     }
-
 }

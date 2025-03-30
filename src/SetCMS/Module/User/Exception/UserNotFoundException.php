@@ -11,5 +11,4 @@ class UserNotFoundException extends UserException
     {
         parent::__construct('Пользователь не найден');
     }
-
 }

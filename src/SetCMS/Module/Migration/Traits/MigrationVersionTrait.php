@@ -20,5 +20,4 @@ trait MigrationVersionTrait
         $table->addUniqueIndex(['id']);
         $table->setPrimaryKey(['id']);
     }
-
 }

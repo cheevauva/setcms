@@ -26,7 +26,7 @@ class MenuMapper extends EntityMapper
     protected function entity4row(): void
     {
         parent::entity4row();
-        
+
         $entity = MenuEntity::as($this->entity);
         $entity->label = $this->row['label'];
         $entity->route = $this->row['route'];

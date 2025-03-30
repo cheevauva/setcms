@@ -33,7 +33,7 @@ abstract class DynamicBaseController extends Controller
         if (!isset($this->controller()->response)) {
             throw new \RuntimeException(sprintf('empty response for %s', get_class($this->controller())));
         }
-        
+
         $this->response = $this->controller()->response;
     }
 
@@ -42,7 +42,7 @@ abstract class DynamicBaseController extends Controller
         if (isset($this->controller)) {
             return $this->controller;
         }
-        
+
         $routerMatch = RouterMatchDTO::as($this->request->getAttribute('routerMatch'));
 
         $module = $routerMatch->params['module'] ?? throw new DynamicExpectedAttributeNotDefinedException('module');
@@ -77,7 +77,7 @@ abstract class DynamicBaseController extends Controller
     protected function catch(\Throwable $object): void
     {
         parent::catch($object);
-        
+
         if (isset($this->controller)) {
             $this->controller->catch($object);
         }

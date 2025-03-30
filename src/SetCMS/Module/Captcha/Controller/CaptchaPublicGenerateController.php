@@ -8,9 +8,7 @@ use SetCMS\Controller;
 use SetCMS\Module\Captcha\CaptchaEntity;
 use SetCMS\Module\Captcha\DAO\CaptchaSaveDAO;
 use SetCMS\Module\Captcha\View\CaptchaPublicGenerateView;
-use SetCMS\Attribute\Http\RequestMethod;
 
-#[RequestMethod('GET')]
 class CaptchaPublicGenerateController extends Controller
 {
 

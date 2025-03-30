@@ -37,5 +37,4 @@ class PagePublicReadBlockScope extends Controller
             'page' => $this->entity,
         ];
     }
-
 }

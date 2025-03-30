@@ -8,5 +8,4 @@ class CaptchaConstants
 {
 
     public const TABLE_NAME = 'captcha';
-
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SetCMS\Module\Menu\Controller;
 
 use SetCMS\Controller;
-use SetCMS\Attribute\ResponderPassProperty;
 
 class MenuPublicAdminMenuController extends Controller
 {
@@ -13,7 +12,6 @@ class MenuPublicAdminMenuController extends Controller
     /**
      * @var array<int,array<mixed>>
      */
-    #[ResponderPassProperty]
     protected array $modules = [
         [
             'label' => 'Посты',

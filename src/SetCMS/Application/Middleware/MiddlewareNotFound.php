@@ -21,7 +21,7 @@ class MiddlewareNotFound implements MiddlewareInterface, \UUA\ContainerConstruct
     {
         $response = new Response;
         $response->getBody()->write('Not found');
-        
+
         return $response->withStatus(404, 'Not found');
     }
 }

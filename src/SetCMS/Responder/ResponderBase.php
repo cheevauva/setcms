@@ -19,7 +19,7 @@ class ResponderBase extends Responder
         if (!$this->messages->valid()) {
             return;
         }
-        
+
         $this->messages->rewind();
 
         while ($this->messages->valid()) {

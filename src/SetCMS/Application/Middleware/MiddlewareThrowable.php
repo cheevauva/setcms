@@ -8,7 +8,6 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-
 use SetCMS\Responder\ResponderBase;
 
 class MiddlewareThrowable implements MiddlewareInterface, \UUA\ContainerConstructInterface
@@ -27,7 +26,7 @@ class MiddlewareThrowable implements MiddlewareInterface, \UUA\ContainerConstruc
             $base->messages = new \SplObjectStorage();
             $base->messages->attach($ex);
             $base->serve();
-            
+
             return $base->response;
         }
     }

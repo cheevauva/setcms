@@ -16,5 +16,4 @@ final class Headers
     {
         $this->name = $name;
     }
-
 }

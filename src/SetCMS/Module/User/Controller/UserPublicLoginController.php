@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace SetCMS\Module\User\Controller;
 
 use SetCMS\Controller;
-use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Module\User\View\UserPublicLoginView;
 
-#[RequestMethod('GET')]
 class UserPublicLoginController extends Controller
 {
 
     protected bool $useCaptcha;
-    
+
     #[\Override]
     protected function init(): void
     {
@@ -29,12 +27,12 @@ class UserPublicLoginController extends Controller
             UserPublicLoginView::class
         ];
     }
-    
+
     #[\Override]
     public function to(object $object): void
     {
         parent::to($object);
-        
+
         if ($object instanceof UserPublicLoginView) {
             $object->useCaptcha = $this->useCaptcha;
         }

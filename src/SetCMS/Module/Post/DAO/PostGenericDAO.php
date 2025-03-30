@@ -10,8 +10,6 @@ use SetCMS\Module\Post\PostConstrants;
 trait PostGenericDAO
 {
 
-    
-    
     use \SetCMS\Traits\DatabaseMainConnectionTrait;
 
     protected function mapper(): PostMapper
@@ -23,5 +21,4 @@ trait PostGenericDAO
     {
         return PostConstrants::TABLE_NAME;
     }
-
 }

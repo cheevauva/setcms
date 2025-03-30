@@ -49,5 +49,4 @@ class UUID
     {
         return $this->uuid;
     }
-
 }

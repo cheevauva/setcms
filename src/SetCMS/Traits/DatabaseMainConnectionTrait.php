@@ -9,6 +9,7 @@ use Doctrine\DBAL\Connection;
 
 trait DatabaseMainConnectionTrait
 {
+
     use \UUA\Traits\ContainerTrait;
 
     protected function db(): Connection

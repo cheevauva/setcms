@@ -16,5 +16,4 @@ final class Cookies
     {
         $this->name = $name;
     }
-
 }

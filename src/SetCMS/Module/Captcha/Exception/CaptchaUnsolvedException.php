@@ -11,5 +11,4 @@ class CaptchaUnsolvedException extends CaptchaException
     {
         parent::__construct($message);
     }
-
 }

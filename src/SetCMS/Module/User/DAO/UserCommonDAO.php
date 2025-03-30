@@ -10,9 +10,7 @@ use SetCMS\Module\User\UserContstants;
 trait UserCommonDAO
 {
 
-    
     use \SetCMS\Traits\DatabaseMainConnectionTrait;
-    
 
     protected function mapper(): UserMapper
     {
@@ -23,5 +21,4 @@ trait UserCommonDAO
     {
         return UserContstants::TABLE_NAME;
     }
-
 }

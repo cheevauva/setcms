@@ -20,5 +20,4 @@ class PageSaveDAO extends EntitySaveDAO
 
         parent::serve();
     }
-
 }

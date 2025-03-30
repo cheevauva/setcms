@@ -11,5 +11,4 @@ class UserIncorrectPasswordException extends UserException
     {
         parent::__construct($message);
     }
-
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace SetCMS\Module\Module01\Scope;
 
 use SetCMS\UUID;
-use SetCMS\Attribute\NotBlank;
 use SetCMS\Module\Module01\Entity\Entity01Entity;
 
 class Module01PrivateEntity01Scope extends Module01PrivateScope

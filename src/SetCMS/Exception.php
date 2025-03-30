@@ -16,5 +16,4 @@ class Exception extends \Exception
     {
         return [];
     }
-
 }

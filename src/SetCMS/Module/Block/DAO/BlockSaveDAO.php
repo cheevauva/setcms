@@ -20,5 +20,4 @@ class BlockSaveDAO extends EntitySaveDAO
 
         parent::serve();
     }
-
 }

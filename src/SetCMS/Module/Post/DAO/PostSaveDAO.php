@@ -20,5 +20,4 @@ class PostSaveDAO extends EntitySaveDAO
 
         parent::serve();
     }
-
 }

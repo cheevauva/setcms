@@ -42,7 +42,7 @@ class Any
             $this->throw(new ValidationNotEmptyException($this->path));
         }
     }
-    
+
     protected function throw(\Throwable $ex): void
     {
         if ($this->quiet) {

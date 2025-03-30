@@ -8,5 +8,4 @@ interface PageConstrants
 {
 
     public const TABLE_NAME = 'pages';
-
 }

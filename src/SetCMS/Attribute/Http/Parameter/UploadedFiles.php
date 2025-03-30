@@ -16,5 +16,4 @@ final class UploadedFiles
     {
         $this->name = $name;
     }
-
 }

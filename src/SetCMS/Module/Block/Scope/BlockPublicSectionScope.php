@@ -40,5 +40,4 @@ class BlockPublicSectionScope extends Controller
             'blocks' => $this->blocks,
         ];
     }
-
 }

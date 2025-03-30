@@ -12,5 +12,4 @@ class DynamicPublicController extends DynamicBaseController
     {
         return 'SetCMS\Module\{module}\Controller\{module}Public{action}Controller';
     }
-
 }

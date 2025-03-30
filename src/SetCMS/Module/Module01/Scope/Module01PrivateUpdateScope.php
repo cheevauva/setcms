@@ -13,7 +13,7 @@ class Module01PrivateUpdateScope extends Module01PrivateScope
 {
 
     protected ?Entity01Entity $entity = null;
-    
+
     #[Body('Entity01LC')]
     public Module01PrivateEntity01Scope $Entity01LC;
 

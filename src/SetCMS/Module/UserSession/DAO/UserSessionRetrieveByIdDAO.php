@@ -20,5 +20,4 @@ class UserSessionRetrieveByIdDAO extends EntityRetrieveManyByCriteriaDAO
 
         $this->session = $this->first;
     }
-
 }

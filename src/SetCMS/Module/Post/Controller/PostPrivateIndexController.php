@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post\Controller;
 
 use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
-use SetCMS\Attribute\Http\RequestMethod;
 use SetCMS\Module\Post\View\PostPrivateIndexView;
 
-#[RequestMethod('GET')]
 class PostPrivateIndexController extends PostPrivateController
 {
 

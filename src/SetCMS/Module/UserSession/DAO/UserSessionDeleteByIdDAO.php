@@ -23,5 +23,4 @@ class UserSessionDeleteByIdDAO extends EntityCommonDAO
             'id' => strval(isset($this->session) ? $this->session->id : $this->id),
         ]);
     }
-
 }

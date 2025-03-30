@@ -8,17 +8,13 @@ use SetCMS\Controller;
 use SetCMS\Module\Menu\DAO\MenuSaveDAO;
 use SetCMS\Module\Menu\Entity\MenuEntity;
 use SetCMS\Attribute\Http\Parameter\Body;
-use SetCMS\Attribute\Http\RequestMethod;
-use SetCMS\Attribute\ResponderPassProperty;
 
-#[RequestMethod('POST')]
 class MenuPrivateCreateController extends Controller
 {
 
     protected ?MenuEntity $entity = null;
 
     #[Body('menu')]
-    #[ResponderPassProperty]
     public MenuPrivateMenuScope $menu;
 
     #[\Override]

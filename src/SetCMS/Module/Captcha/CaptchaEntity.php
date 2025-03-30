@@ -76,5 +76,4 @@ class CaptchaEntity extends \SetCMS\Common\Entity\Entity
 
         return $this->isSolved;
     }
-
 }
