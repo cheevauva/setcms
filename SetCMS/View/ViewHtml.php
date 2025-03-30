@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SetCMS\View;
 
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Uri;
