@@ -12,6 +12,6 @@ class PostPrivateNewView extends ViewTwig
     #[\Override]
     protected function templateName(): ?string
     {
-        return 'PostPrivateEditScope';
+        return 'PostPrivateEdit';
     }
 }

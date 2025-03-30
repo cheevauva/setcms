@@ -8,9 +8,10 @@ use SetCMS\View\ViewTwig;
 
 class PagePrivateNewView extends ViewTwig
 {
+
     #[\Override]
     protected function templateName(): ?string
     {
-        return 'PagePrivateEditScope';
+        return 'PagePrivateEdit';
     }
 }

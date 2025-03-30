@@ -231,7 +231,7 @@ abstract class ViewHtml extends \SetCMS\View
         $shortName = (new \ReflectionClass(static::class))->getShortName();
 
         if (substr($shortName, -4) === 'View') {
-            $shortName = substr($shortName, 0, -4) . 'Scope';
+            $shortName = substr($shortName, 0, -4);
         }
 
         return $shortName;
