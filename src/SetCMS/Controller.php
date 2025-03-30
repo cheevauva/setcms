@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace SetCMS;
 
 use SplObjectStorage;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 use UUA\Unit;
 use UUA\ContainerConstructInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\View;
 use SetCMS\Responder;
-use SetCMS\ResponseCollection;
 use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
 use SetCMS\Validation\Validation;
+use SetCMS\Controller\Exception\ControllerUnitMustBeInstanceofUnitException;
 
 abstract class Controller extends Unit implements ContainerConstructInterface
 {
@@ -24,20 +25,21 @@ abstract class Controller extends Unit implements ContainerConstructInterface
     use \UUA\Traits\EnvTrait;
 
     public ServerRequestInterface $request;
-    public ResponseCollection $responseCollection;
+    public protected(set) ResponseInterface $response;
     protected SplObjectStorage $messages;
+    protected SplObjectStorage $exceptions;
+
+    protected function catch(\Throwable $object): void
+    {
+    }
 
     protected function init(): void
     {
         $this->messages = new SplObjectStorage();
+        $this->exceptions = new SplObjectStorage();
     }
 
-    protected function catch(\Throwable $throwable): void
-    {
-        
-    }
-
-    protected function mapper(): void
+    protected function process(): void
     {
         
     }
@@ -47,18 +49,18 @@ abstract class Controller extends Unit implements ContainerConstructInterface
         if (!is_array($data)) {
             throw new \Exception('Ожидался array, а пришел ' . gettype($data));
         }
-        
+
         return new Validation($data, $this->messages);
     }
 
     public function from(object $object): void
     {
         if ($object instanceof View && $object->response) {
-            $this->responseCollection->attach($object->response, get_class($object));
+            $this->response = $object->response;
         }
 
         if ($object instanceof Responder && $object->response) {
-            $this->responseCollection->attach($object->response, get_class($object));
+            $this->response = $object->response;
         }
     }
 
@@ -98,13 +100,31 @@ abstract class Controller extends Unit implements ContainerConstructInterface
             $onBeforeServe->request = $this->request;
             $onBeforeServe->dispatch($this->eventDispatcher());
 
-            $this->mapper();
-
+            $this->process();
             $this->multiserveUnits($this->domainUnits());
-        } catch (\Exception $ex) {
+        } catch (\Throwable $ex) {
+            $this->exceptions->attach($ex);
             $this->catch($ex);
-        } finally {
-            $this->multiserveUnits($this->viewUnits(), false);
+        }
+
+        $this->throwUncatchedExceptions();
+        $this->multiserveUnits($this->viewUnits(), false);
+    }
+
+    protected function throwUncatchedExceptions(): void
+    {
+        if (!$this->exceptions->valid()) {
+            return;
+        }
+
+        while ($this->exceptions->valid()) {
+            $uncatchedMessage = $this->exceptions->current();
+
+            if (!$this->messages->contains($uncatchedMessage)) {
+                throw $uncatchedMessage;
+            }
+
+            $this->exceptions->next();
         }
     }
 
@@ -124,7 +144,7 @@ abstract class Controller extends Unit implements ContainerConstructInterface
             }
 
             if (!($unit instanceof Unit)) {
-                throw new \RuntimeException('unit must be extends Unit');
+                throw new ControllerUnitMustBeInstanceofUnitException($unit);
             }
 
             $this->to($unit);

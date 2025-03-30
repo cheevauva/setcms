@@ -32,7 +32,7 @@ class PostPrivateCreateController extends PostPrivateController
     }
 
     #[\Override]
-    protected function mapper(): void
+    protected function process(): void
     {
         $body = $this->request->getParsedBody() ?? [];
 

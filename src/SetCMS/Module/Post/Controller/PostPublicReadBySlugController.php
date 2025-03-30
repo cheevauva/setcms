@@ -8,7 +8,7 @@ use SetCMS\Controller;
 use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\Module\Post\View\PostPublicReadBySlugView;
-use SetCMS\Module\Post\View\PostPublicNotFoundView;
+use SetCMS\Application\Router\RouterMatchDTO;
 
 class PostPublicReadBySlugController extends Controller
 {
@@ -28,17 +28,16 @@ class PostPublicReadBySlugController extends Controller
     protected function viewUnits(): array
     {
         return [
-            PostPublicNotFoundView::class,
             PostPublicReadBySlugView::class,
         ];
     }
 
     #[\Override]
-    protected function mapper(): void
+    protected function process(): void
     {
-        $validationAttr = $this->validation($this->request->getAttributes());
+        $routerMatch = RouterMatchDTO::as($this->request->getAttribute('routerMatch'));
 
-        $this->slug = $validationAttr->string('slug')->notEmpty()->val();
+        $this->slug = $this->validation($routerMatch->params)->string('slug')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]
@@ -50,7 +49,6 @@ class PostPublicReadBySlugController extends Controller
             $object->slug = $this->slug;
             $object->orThrow = true;
         }
-
 
         if ($object instanceof PostPublicReadBySlugView) {
             $object->post = $this->post ?? null;
@@ -66,5 +64,4 @@ class PostPublicReadBySlugController extends Controller
             $this->post = $object->post;
         }
     }
-
 }

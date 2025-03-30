@@ -4,18 +4,15 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\Controller;
 
+use SetCMS\UUID;
 use SetCMS\Controller;
 use SetCMS\Module\UserSession\DAO\UserSessionDeleteByIdDAO;
-use SetCMS\UUID;
-use SetCMS\Attribute\Http\Parameter\Cookies;
-use SetCMS\Attribute\Http\RequestMethod;
+use SetCMS\Module\User\View\UserPublicLogoutView;
 
-#[RequestMethod('GET')]
 class UserPublicLogoutController extends Controller
 {
 
-    #[Cookies('X-CSRF-Token')]
-    public UUID $token;
+    protected UUID $token;
 
     #[\Override]
     protected function domainUnits(): array
@@ -25,6 +22,23 @@ class UserPublicLogoutController extends Controller
         ];
     }
 
+    #[\Override]
+    protected function viewUnits(): array
+    {
+        return [
+            UserPublicLogoutView::class,
+        ];
+    }
+
+    #[\Override]
+    protected function process(): void
+    {
+        $validationCookies = $this->validation($this->request->getCookieParams());
+
+        $this->token = $validationCookies->uuid('X-CSRF-Token')->notEmpty()->notQuite()->val();
+    }
+
+    #[\Override]
     public function to(object $object): void
     {
         parent::to($object);

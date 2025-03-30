@@ -35,7 +35,7 @@ class PostPrivateUpdateController extends PostPrivateController
     }
 
     #[\Override]
-    protected function mapper(): void
+    protected function process(): void
     {
         $validation = $this->validation($this->request->getParsedBody());
 

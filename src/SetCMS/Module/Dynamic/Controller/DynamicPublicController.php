@@ -13,12 +13,4 @@ class DynamicPublicController extends DynamicBaseController
         return 'SetCMS\Module\{module}\Controller\{module}Public{action}Controller';
     }
 
-    #[\Override]
-    protected function classNameResponderViewPatterns(): array
-    {
-        return [
-            'SetCMS\Module\{module}\Responder\{module}Public{action}Responder',
-            'SetCMS\Module\{module}\View\{module}Public{action}View',
-        ];
-    }
 }

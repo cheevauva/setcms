@@ -9,6 +9,6 @@ class UserPasswordsNotEqualException extends UserException
 
     public function __construct()
     {
-        parent::__construct('Пароли не совпадаю');
+        parent::__construct('Пароли не совпадают');
     }
 }

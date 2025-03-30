@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 use AltoRouter;
 use SetCMS\UUID;
 
-abstract class Router implements RouterInterface, \UUA\ContainerConstructInterface
+class Router implements RouterInterface, \UUA\ContainerConstructInterface
 {
 
     use \UUA\Traits\BuildTrait;
@@ -16,7 +16,6 @@ abstract class Router implements RouterInterface, \UUA\ContainerConstructInterfa
 
     private AltoRouter $altoRouter;
     protected ContainerInterface $container;
-
 
     protected function init(): void
     {
@@ -31,8 +30,11 @@ abstract class Router implements RouterInterface, \UUA\ContainerConstructInterfa
             $this->altoRouter->map($route[0], $route[1], $controller, $route[2]);
         }
     }
-    
-    abstract protected function rules(): array;
+
+    protected function rules(): array
+    {
+        return $this->container->get('routes');
+    }
 
     public function generate(string $routeName, array $params = []): string
     {

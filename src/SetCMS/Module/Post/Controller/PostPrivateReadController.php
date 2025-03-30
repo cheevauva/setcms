@@ -7,10 +7,9 @@ namespace SetCMS\Module\Post\Controller;
 use SetCMS\UUID;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
+use SetCMS\Responder\ResponderBase;
 use SetCMS\Module\Post\View\PostPrivateReadView;
-use SetCMS\Attribute\Http\RequestMethod;
 
-#[RequestMethod('GET')]
 class PostPrivateReadController extends PostPrivateController
 {
 
@@ -29,13 +28,18 @@ class PostPrivateReadController extends PostPrivateController
     protected function viewUnits(): array
     {
         return [
+            ResponderBase::class,
             PostPrivateReadView::class,
         ];
     }
 
     #[\Override]
-    protected function mapper(): void
+    protected function process(): void
     {
+        if ($this->request->getMethod() != 'GET') {
+            throw new \Exception('GET');
+        }
+
         $this->id = $this->validation($this->request->getAttributes())->uuid('id')->notEmpty()->val();
     }
 

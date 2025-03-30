@@ -12,7 +12,7 @@ use SetCMS\Controller;
 use SetCMS\UUID;
 use SetCMS\DTO\SetCMSOutputDTO;
 use SetCMS\Event\AppErrorEvent;
-use SetCMS\Application\Router\RouterController;
+use SetCMS\Application\Router\Router;
 use SetCMS\Application\Router\RouterView;
 use SetCMS\Application\Router\Exception\RouterNotFoundException;
 use Laminas\Diactoros\Response;
@@ -206,7 +206,7 @@ abstract class ViewHtml extends \SetCMS\View
     #[\ReturnTypeWillChange]
     protected function scLink(string $route, array $params = [], array|string $query = []): string
     {
-        $link = RouterController::singleton($this->container)->generate($route, $params);
+        $link = Router::singleton($this->container)->generate($route, $params);
 
         if ($query) {
             if (is_string($query)) {

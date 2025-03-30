@@ -9,8 +9,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\Controller;
-use SetCMS\Application\Router\RouterController;
+use SetCMS\Application\Router\Router;
 use SetCMS\ResponseCollection;
+use SetCMS\View\ViewNoContent;
+use SetCMS\View\ViewNotFound;
 
 class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {
@@ -25,25 +27,31 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
         $method = $request->getMethod();
         $path = $request->getUri()->getPath();
 
-        $routerMatch = RouterController::singleton($this->container)->match($path, $method);
+        $routerMatch = Router::singleton($this->container)->match($path, $method);
 
         if (!$routerMatch) {
-            return $handler->handle($request);
+            $notFound = ViewNotFound::new($this->container);
+            $notFound->message = 'Маршрут не найден';
+            $notFound->serve();
+
+            return $notFound->response;
         }
-        
+
         $responseCollection = new ResponseCollection();
-        
+
         $className = $routerMatch->target;
 
         $controller = Controller::as($className::new($this->container));
         $controller->request = $request->withAttribute('routerMatch', $routerMatch);
-        $controller->responseCollection = $responseCollection;
         $controller->serve();
-        
-        if ($responseCollection->valid()) {
-            return $responseCollection->current();
+
+        if (!isset($controller->response)) {
+            $noContent = ViewNoContent::new($this->container);
+            $noContent->serve();
+
+            $responseCollection->attach($noContent->response);
         }
 
-        return $handler->handle($request->withAttribute('controller', $controller));
+        return $controller->response;
     }
 }

@@ -16,7 +16,7 @@ $routes['GET /~/[a:module]/[a:action] action_admin'] = DynamicPrivateController:
 $routes['POST /~/[a:module]/[a:action]/[g:id] do_action_record_admin'] = DynamicPrivateController::class;
 $routes['POST /~/[a:module]/[a:action] do_action_admin'] = DynamicPrivateController::class;
 
-foreach (glob(__DIR__ . '/controllers/*') as $file) {
+foreach (glob(__DIR__ . '/routes/*') as $file) {
     require $file;
 }
 

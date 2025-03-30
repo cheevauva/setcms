@@ -13,9 +13,8 @@ use SetCMS\Module\User\Exception\UserAlreadyExistsException;
 use SetCMS\Module\User\Servant\UserRegistrationServant;
 use SetCMS\Module\User\Exception\UserPasswordsNotEqualException;
 use SetCMS\Module\User\Exception\UserPasswordMustBeMoreThan8CharactersException;
-use SetCMS\Attribute\Http\RequestMethod;
+use SetCMS\Module\User\View\UserPublicDoRegistrationView;
 
-#[RequestMethod('POST')]
 class UserPublicDoRegistrationController extends Controller
 {
 
@@ -44,7 +43,15 @@ class UserPublicDoRegistrationController extends Controller
     }
 
     #[\Override]
-    protected function mapper(): void
+    protected function viewUnits(): array
+    {
+        return [
+            UserPublicDoRegistrationView::class,
+        ];
+    }
+
+    #[\Override]
+    protected function process(): void
     {
         $validation = $this->validation($this->request->getParsedBody());
 
@@ -91,23 +98,23 @@ class UserPublicDoRegistrationController extends Controller
     }
 
     #[\Override]
-    protected function catch(\Throwable $throwable): void
+    protected function catch(\Throwable $object): void
     {
-        if ($throwable instanceof UserPasswordsNotEqualException) {
-            $this->messages->attach($throwable, 'password');
-            $this->messages->attach($throwable, 'password2');
+        if ($object instanceof UserPasswordsNotEqualException) {
+            $this->messages->attach($object, 'password');
+            $this->messages->attach($object, 'password2');
         }
 
-        if ($throwable instanceof UserPasswordMustBeMoreThan8CharactersException) {
-            $this->messages->attach($throwable, 'password');
+        if ($object instanceof UserPasswordMustBeMoreThan8CharactersException) {
+            $this->messages->attach($object, 'password');
         }
 
-        if ($throwable instanceof CaptchaException) {
-            $this->messages->attach($throwable, 'captcha');
+        if ($object instanceof CaptchaException) {
+            $this->messages->attach($object, 'captcha');
         }
 
-        if ($throwable instanceof UserAlreadyExistsException) {
-            $this->messages->attach($throwable, 'username');
+        if ($object instanceof UserAlreadyExistsException) {
+            $this->messages->attach($object, 'username');
         }
     }
 }

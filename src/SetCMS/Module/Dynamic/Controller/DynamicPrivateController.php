@@ -12,13 +12,4 @@ class DynamicPrivateController extends DynamicBaseController
     {
         return 'SetCMS\Module\{module}\Controller\{module}Private{action}Controller';
     }
-
-    #[\Override]
-    protected function classNameResponderViewPatterns(): array
-    {
-        return [
-            'SetCMS\Module\{module}\Responder\{module}Private{action}Responder',
-            'SetCMS\Module\{module}\View\{module}Private{action}View',
-        ];
-    }
 }

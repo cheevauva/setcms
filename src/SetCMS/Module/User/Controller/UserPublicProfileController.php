@@ -22,7 +22,7 @@ class UserPublicProfileController extends Controller
     }
 
     #[\Override]
-    protected function mapper(): void
+    protected function process(): void
     {
         $this->user = $this->request->getAttribute('currentUser');
     }

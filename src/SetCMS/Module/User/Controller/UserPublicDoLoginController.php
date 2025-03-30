@@ -57,7 +57,7 @@ class UserPublicDoLoginController extends Controller
     }
 
     #[\Override]
-    protected function mapper(): void
+    protected function process(): void
     {
         $validationBody = $this->validation($this->request->getParsedBody());
         $validationHeaders = $this->validation([
@@ -92,8 +92,8 @@ class UserPublicDoLoginController extends Controller
             $object->device = $this->device;
         }
 
-        if ($object instanceof UserPublicDoLoginView) {
-            $object->sessionId = strval(UserSessionEntity::as($this->session)->id);
+        if ($object instanceof UserPublicDoLoginView && isset($this->session)) {
+            $object->sessionId = (string) UserSessionEntity::as($this->session)->id;
         }
     }
 
@@ -111,18 +111,20 @@ class UserPublicDoLoginController extends Controller
     }
 
     #[\Override]
-    protected function catch(\Throwable $throwable): void
+    protected function catch(\Throwable $object): void
     {
-        if ($throwable instanceof UserNotFoundException) {
-            $this->messages->attach($throwable, 'username');
+        parent::catch($object);
+
+        if ($object instanceof UserNotFoundException) {
+            $this->messages->attach($object, 'username');
         }
 
-        if ($throwable instanceof UserIncorrectPasswordException) {
-            $this->messages->attach($throwable, 'password');
+        if ($object instanceof UserIncorrectPasswordException) {
+            $this->messages->attach($object, 'password');
         }
 
-        if ($throwable instanceof CaptchaException) {
-            $this->messages->attach($throwable, 'captcha');
+        if ($object instanceof CaptchaException) {
+            $this->messages->attach($object, 'captcha');
         }
     }
 }

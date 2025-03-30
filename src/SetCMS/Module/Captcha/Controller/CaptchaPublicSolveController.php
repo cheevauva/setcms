@@ -40,7 +40,7 @@ class CaptchaPublicSolveController extends \SetCMS\Controller
     }
 
     #[\Override]
-    protected function mapper(): void
+    protected function process(): void
     {
         $validation = $this->validation($this->request->getQueryParams());
 
@@ -87,10 +87,10 @@ class CaptchaPublicSolveController extends \SetCMS\Controller
     }
 
     #[\Override]
-    protected function catch(\Throwable $throwable): void
+    protected function catch(\Throwable $object): void
     {
-        if ($throwable instanceof CaptchaException) {
-            $this->messages->attach($throwable, 'id');
+        if ($object instanceof CaptchaException) {
+            $this->messages->attach($object, 'id');
         }
     }
 }
