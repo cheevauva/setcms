@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Controller;
 
+use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Post\View\PostPrivateIndexView;
+use SetCMS\Module\Post\PostEntity;
 
-class PostPrivateIndexController extends PostPrivateController
+class PostPrivateIndexController extends ControllerViaPSR7
 {
 
+    /**
+     * @var PostEntity[]
+     */
     protected array $entities = [];
 
     #[\Override]
@@ -41,6 +46,8 @@ class PostPrivateIndexController extends PostPrivateController
     #[\Override]
     public function to(object $object): void
     {
+        parent::to($object);
+        
         if ($object instanceof PostPrivateIndexView) {
             $object->entities = $this->entities;
         }

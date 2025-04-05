@@ -7,12 +7,11 @@ namespace SetCMS\View;
 use Psr\Http\Message\ServerRequestInterface;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Uri;
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\UUID;
 use SetCMS\DTO\SetCMSOutputDTO;
 use SetCMS\Event\AppErrorEvent;
 use SetCMS\Application\Router\Router;
-use SetCMS\Application\Router\RouterView;
 use SetCMS\Application\Router\Exception\RouterNotFoundException;
 use Laminas\Diactoros\Response;
 
@@ -22,15 +21,16 @@ abstract class ViewHtml extends \SetCMS\View
     use \UUA\Traits\EnvTrait;
     use \UUA\Traits\EventDispatcherTrait;
 
+    public ?string $templateName = null;
+
     /**
-     * @var array<string,mixed>
+     * @var array<string, mixed>
      */
     public array $vars = [];
-    public ServerRequestInterface $request;
 
     protected function templateName(): ?string
     {
-        return null;
+        return $this->templateName;
     }
 
     public function serve(): void
@@ -41,7 +41,12 @@ abstract class ViewHtml extends \SetCMS\View
             throw new \Exception(sprintf('path %s not found', $templateName));
         }
 
+        if (!isset($this->currentUser)) {
+            throw new \Exception(sprintf('Не задан currentUser для %s', get_class($this)));
+        }
+        
         $this->assign('scope', $this);
+        $this->assign('currentUser', $this->currentUser);
 
         foreach (get_class_methods($this) as $method) {
             if (strpos($method, 'sc') === 0) {
@@ -85,42 +90,9 @@ abstract class ViewHtml extends \SetCMS\View
     protected function createRequestByPath(string $path, array $params = []): ServerRequestInterface
     {
         $request = (new ServerRequestFactory)->createServerRequest('GET', new Uri($path));
-        $request = $request->withAttribute('currentUser', $this->request->getAttribute('currentUser'));
-        $request = $request->withAttribute('parentRequest', $this->request);
         $request = $request->withQueryParams($params);
 
         return $request;
-    }
-
-    /**
-     * @param string $template
-     * @param mixed $value
-     * @param array<string, mixed> $vars
-     * @return mixed
-     */
-    #[\ReturnTypeWillChange]
-    protected function scRender(string $template, mixed $value = null, array $vars = []): mixed
-    {
-        try {
-            $htmlRender = static::new($this->container);
-            $htmlRender->request = $this->request;
-            $htmlRender->mixedValue = $value;
-            $htmlRender->templateName = $template;
-            $htmlRender->vars = $vars;
-            $htmlRender->serve();
-
-            return $htmlRender->html;
-        } catch (\Throwable $ex) {
-            (new AppErrorEvent($ex->getMessage(), [
-                __METHOD__,
-                $template,
-                $value,
-                $ex->getFile(),
-                $ex->getLine(),
-            ]))->dispatch($this->eventDispatcher());
-
-            return null;
-        }
     }
 
     /**
@@ -128,24 +100,33 @@ abstract class ViewHtml extends \SetCMS\View
      * @param array<string, mixed> $params
      * @return mixed
      */
-    protected function scCall(string $path, array $params = []): mixed
+    #[\ReturnTypeWillChange]
+    protected function scRender(string $path, ?array $params = []): mixed
     {
+        $params = $params ?? [];
+
         try {
-            $routerMatch = RouterView::singleton($this->container)->match($path, 'INTERNAL');
+            $routerMatch = Router::singleton($this->container)->match($path, 'SETCMS');
 
             if (!$routerMatch) {
-                throw new RouterNotFoundException(sprintf('Not found: INTERNAL %s', $path));
+                throw new RouterNotFoundException(sprintf('Not found: SETCMS %s', $path));
             }
 
             $request = $this->createRequestByPath($path, $params);
+            $request = $request->withAttribute('view', $this);
+            $request = $request->withAttribute('routerMatch', $routerMatch);
 
             $className = $routerMatch->target;
 
-            $controller = Controller::as($className::new($this->container));
-            $controller->from($request->withAttribute('routerMatch', $routerMatch));
+            $controller = ControllerViaPSR7::as($className::new($this->container));
+            $controller->currentUser = $this->currentUser;
+            $controller->request = $request;
             $controller->serve();
 
-            return $controller;
+            $body = $controller->response->getBody();
+            $body->rewind();
+
+            return $body->getContents();
         } catch (\Throwable $ex) {
             (new AppErrorEvent($ex->getMessage(), [
                 __METHOD__,
@@ -168,24 +149,17 @@ abstract class ViewHtml extends \SetCMS\View
     {
         $data = null;
 
-        try {
-            $output = new SetCMSOutputDTO();
-
-            $var = $this->scCall($path, $params);
-
-            if ($var instanceof Controller) {
-                $var->to($output);
-                $data = $output->data();
-            }
-        } catch (\Throwable $ex) {
-            (new AppErrorEvent($ex->getMessage(), [
-                __METHOD__,
-                $path,
-                $params,
-                $ex->getFile(),
-                $ex->getLine(),
-            ]))->dispatch($this->eventDispatcher());
-        }
+//        try {
+//            return $this->scCall($path, $params);
+//        } catch (\Throwable $ex) {
+//            (new AppErrorEvent($ex->getMessage(), [
+//                __METHOD__,
+//                $path,
+//                $params,
+//                $ex->getFile(),
+//                $ex->getLine(),
+//            ]))->dispatch($this->eventDispatcher());
+//        }
 
         return $data;
     }
@@ -263,10 +237,5 @@ abstract class ViewHtml extends \SetCMS\View
     protected function scBaseUrl(): string
     {
         return $this->env()['BASE_URL'] ?? '';
-    }
-
-    protected function scUser()
-    {
-        return $this->request->getAttribute('currentUser');
     }
 }

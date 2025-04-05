@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Controller;
 
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\Module\Post\View\PostPublicReadBySlugView;
 use SetCMS\Application\Router\RouterMatchDTO;
 
-class PostPublicReadBySlugController extends Controller
+class PostPublicReadBySlugController extends ControllerViaPSR7
 {
 
     protected string $slug;
@@ -52,6 +52,7 @@ class PostPublicReadBySlugController extends Controller
 
         if ($object instanceof PostPublicReadBySlugView) {
             $object->post = $this->post ?? null;
+            $object->currentUser = $this->currentUser;
         }
     }
 

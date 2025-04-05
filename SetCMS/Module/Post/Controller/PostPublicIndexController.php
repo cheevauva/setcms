@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Post\Controller;
 
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Post\View\PostPublicIndexView;
 use SetCMS\Module\Post\PostEntity;
 
-class PostPublicIndexController extends Controller
+class PostPublicIndexController extends ControllerViaPSR7
 {
 
     /**

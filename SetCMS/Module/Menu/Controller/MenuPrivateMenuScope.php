@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Menu\Controller;
 
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\Menu\Entity\MenuEntity;
 use SetCMS\UUID;
 
-class MenuPrivateMenuScope extends Controller
+class MenuPrivateMenuScope extends ControllerViaPSR7
 {
 
     public UUID $id;

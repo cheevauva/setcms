@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page\Controller;
 
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\Page\View\PagePrivateNewView;
 
-class PagePrivateNewController extends Controller
+class PagePrivateNewController extends ControllerViaPSR7
 {
 
     #[\Override]

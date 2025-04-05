@@ -12,7 +12,7 @@ use SetCMS\Module\Captcha\DAO\CaptchaSaveDAO;
 use SetCMS\Module\Captcha\CaptchaEntity;
 use SetCMS\Module\Captcha\View\CaptchaPublicSolveView;
 
-class CaptchaPublicSolveController extends \SetCMS\Controller
+class CaptchaPublicSolveController extends \SetCMS\ControllerViaPSR7
 {
 
     protected UUID $id;

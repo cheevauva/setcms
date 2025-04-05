@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Captcha\Controller;
 
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\Captcha\CaptchaEntity;
 use SetCMS\Module\Captcha\DAO\CaptchaSaveDAO;
 use SetCMS\Module\Captcha\View\CaptchaPublicGenerateView;
 
-class CaptchaPublicGenerateController extends Controller
+class CaptchaPublicGenerateController extends ControllerViaPSR7
 {
 
     protected CaptchaEntity $captcha;

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page\Scope;
 
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\UUID;
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\DAO\PageRetrieveByIdDAO;
 use SetCMS\Attribute\Http\Parameter\Attributes;
 
-class PagePublicReadScope extends Controller
+class PagePublicReadScope extends ControllerViaPSR7
 {
 
     protected ?PageEntity $entity = null;

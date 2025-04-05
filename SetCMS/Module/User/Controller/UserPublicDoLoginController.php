@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\Controller;
 
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\User\Servant\UserLoginServant;
 use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\Module\UserSession\UserSessionEntity;
@@ -16,7 +16,7 @@ use SetCMS\Module\User\Exception\UserIncorrectPasswordException;
 use SetCMS\Module\User\View\UserPublicDoLoginView;
 use SetCMS\UUID;
 
-class UserPublicDoLoginController extends Controller
+class UserPublicDoLoginController extends ControllerViaPSR7
 {
 
     protected string $username;

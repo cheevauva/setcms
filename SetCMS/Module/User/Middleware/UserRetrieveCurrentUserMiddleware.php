@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\Middleware;
 
-use SetCMS\RequestAttribute;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,8 +19,7 @@ class UserRetrieveCurrentUserMiddleware implements MiddlewareInterface, \UUA\Con
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $tokenName = RequestAttribute::accessToken->toString();
-        $token = $request->getCookieParams()[$tokenName] ?? $request->getHeaderLine(strtolower($tokenName));
+        $token = $request->getCookieParams()['X-CSRF-Token'] ?? $request->getHeaderLine(strtolower('X-CSRF-Token'));
 
         $retrieveUser = UserSessionRetrieveUserServant::new($this->container);
         $retrieveUser->token = $token;

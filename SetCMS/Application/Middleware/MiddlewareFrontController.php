@@ -8,11 +8,12 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\Application\Router\Router;
 use SetCMS\ResponseCollection;
 use SetCMS\View\ViewNoContent;
 use SetCMS\View\ViewNotFound;
+use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
 
 class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {
@@ -40,9 +41,16 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
         $responseCollection = new ResponseCollection();
 
         $className = $routerMatch->target;
+        
+        $controller = ControllerViaPSR7::as($className::new($this->container));
+        
+        $onBeforeServe = new ControllerOnBeforeServeEvent();
+        $onBeforeServe->controller = $controller;
+        $onBeforeServe->request = $request;
+        $onBeforeServe->dispatch($this->eventDispatcher());
 
-        $controller = Controller::as($className::new($this->container));
         $controller->request = $request->withAttribute('routerMatch', $routerMatch);
+        $controller->currentUser = $request->getAttribute('currentUser');
         $controller->serve();
 
         if (!isset($controller->response)) {

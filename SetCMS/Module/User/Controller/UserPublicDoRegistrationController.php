@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Module\User\Controller;
 
 use SetCMS\UUID;
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\Captcha\Servant\CaptchaUseResolvedCaptchaServant;
 use SetCMS\Module\Captcha\Exception\CaptchaException;
 use SetCMS\Module\User\Entity\UserEntity;
@@ -15,7 +15,7 @@ use SetCMS\Module\User\Exception\UserPasswordsNotEqualException;
 use SetCMS\Module\User\Exception\UserPasswordMustBeMoreThan8CharactersException;
 use SetCMS\Module\User\View\UserPublicDoRegistrationView;
 
-class UserPublicDoRegistrationController extends Controller
+class UserPublicDoRegistrationController extends ControllerViaPSR7
 {
 
     public string $username;

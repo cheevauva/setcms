@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace SetCMS\Module\Block\Scope;
 
 use SetCMS\Attribute\Http\Parameter\Attributes;
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\Block\DAO\BlockRetrieveManyBySectionDAO;
 
-class BlockPublicSectionScope extends Controller
+class BlockPublicSectionScope extends ControllerViaPSR7
 {
 
     #[Attributes('section')]

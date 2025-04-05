@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\DTO;
 
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 
 class SetCMSOutputDTO extends \UUA\DTO
 {
@@ -12,9 +12,9 @@ class SetCMSOutputDTO extends \UUA\DTO
     public bool $isSuccess = true;
     protected array $data = [];
     protected array $messages = [];
-    protected Controller $finalScope;
+    protected ControllerViaPSR7 $finalScope;
 
-    public function finalScope(?Controller $controller = null): ?Controller
+    public function finalScope(?ControllerViaPSR7 $controller = null): ?ControllerViaPSR7
     {
         if (is_null($controller)) {
             return $this->finalScope ?? null;

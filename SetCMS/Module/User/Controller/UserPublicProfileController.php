@@ -2,11 +2,11 @@
 
 namespace SetCMS\Module\User\Controller;
 
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\Module\User\View\UserPublicProfileView;
 
-class UserPublicProfileController extends Controller
+class UserPublicProfileController extends ControllerViaPSR7
 {
 
     protected UserEntity $user;

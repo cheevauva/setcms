@@ -12,6 +12,6 @@ class PostPrivateNewView extends ViewTwig
     #[\Override]
     protected function templateName(): ?string
     {
-        return 'PostPrivateEdit';
+        return parent::templateName() ?? 'PostPrivateEdit';
     }
 }

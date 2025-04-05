@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post\Servant;
 
 use SetCMS\Module\Menu\MenuAction\Entity\MenuActionEntity;
-use SetCMS\Module\Post\Controller\PostPublicReadBySlugController;
+use SetCMS\Module\Post\View\PostPublicReadBySlugView;
 use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
-use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\UUID;
+use SetCMS\Module\User\Entity\UserEntity;
 
 class PostMenuActionsByRequestServant extends \UUA\Servant
 {
 
-    public UserEntity $currentUser;
     public array $actions = [];
     public mixed $context;
 
@@ -21,13 +20,13 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
     {
         $context = $this->context;
 
-        if ($context instanceof PostPublicReadBySlugController) {
-            if ($this->currentUser->isAdmin()) {
-                $this->actions[] = $this->prepareEditAction($context->slug);
+        if ($context instanceof PostPublicReadBySlugView) {
+            if ($context->currentUser->isAdmin()) {
+                $this->actions[] = $this->prepareEditAction($context->post->slug);
             }
         }
 
-        if ($this->currentUser->isAdmin()) {
+        if (!empty($context->currentUser) && UserEntity::is($context->currentUser) && UserEntity::as($context->currentUser)->isAdmin()) {
             $this->actions[] = $this->prepareIndexAction();
             $this->actions[] = $this->prepareCreateAction();
         }

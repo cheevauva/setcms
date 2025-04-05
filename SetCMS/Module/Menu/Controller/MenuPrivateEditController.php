@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Menu\Controller;
 
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\UUID;
 use SetCMS\Attribute\Http\Parameter\Attributes;
 use SetCMS\Module\Menu\DAO\MenuRetrieveByIdDAO;
 use SetCMS\Module\Menu\Entity\MenuEntity;
 
-class MenuPrivateEditController extends Controller
+class MenuPrivateEditController extends ControllerViaPSR7
 {
 
     #[ResponderPassProperty('menu')]

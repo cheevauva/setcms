@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Menu\Controller;
 
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\Menu\DAO\MenuRetrieveManyDAO;
 use SetCMS\Module\Menu\Entity\MenuEntity;
 
-class MenuPrivateIndexController extends Controller
+class MenuPrivateIndexController extends ControllerViaPSR7
 {
 
     /**

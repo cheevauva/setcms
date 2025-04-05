@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace SetCMS\Module\User\Controller;
 
 use SetCMS\UUID;
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\UserSession\DAO\UserSessionDeleteByIdDAO;
 use SetCMS\Module\User\View\UserPublicLogoutView;
 
-class UserPublicLogoutController extends Controller
+class UserPublicLogoutController extends ControllerViaPSR7
 {
 
     protected UUID $token;
@@ -35,7 +35,7 @@ class UserPublicLogoutController extends Controller
     {
         $validationCookies = $this->validation($this->request->getCookieParams());
 
-        $this->token = $validationCookies->uuid('X-CSRF-Token')->notEmpty()->notQuite()->val();
+        $this->token = $validationCookies->uuid('X-CSRF-Token')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]

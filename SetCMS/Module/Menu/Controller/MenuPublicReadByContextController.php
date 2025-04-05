@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Menu\Controller;
 
-use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Module\Menu\MenuAction\Entity\MenuActionEntity;
-use SetCMS\Attribute\Http\Parameter\Request;
 use SetCMS\Module\Post\Servant\PostMenuActionsByRequestServant;
+use SetCMS\Module\Menu\View\MenuPublicActionsViaContextView;
 
-class MenuPublicReadByContextController extends \SetCMS\Controller
+class MenuPublicReadByContextController extends \SetCMS\ControllerViaPSR7
 {
 
     /**
@@ -22,6 +21,14 @@ class MenuPublicReadByContextController extends \SetCMS\Controller
     {
         return [
             PostMenuActionsByRequestServant::class,
+        ];
+    }
+
+    #[\Override]
+    protected function viewUnits(): array
+    {
+        return [
+            MenuPublicActionsViaContextView::class,
         ];
     }
 
@@ -41,17 +48,11 @@ class MenuPublicReadByContextController extends \SetCMS\Controller
         parent::to($object);
 
         if ($object instanceof PostMenuActionsByRequestServant) {
-            $object->currentUser = $this->request->getAttribute('currentUser');
-            $object->context = $this->getMainRequest($this->request)->getAttribute('output');
-        }
-    }
-
-    private function getMainRequest(ServerRequestInterface $request): ServerRequestInterface
-    {
-        if ($request->getAttribute('parentRequest') && $request->getAttribute('parentRequest') instanceof ServerRequestInterface) {
-            return $this->getMainRequest($request->getAttribute('parentRequest'));
+            $object->context = $this->request->getAttribute('view');
         }
 
-        return $request;
+        if ($object instanceof MenuPublicActionsViaContextView) {
+            $object->items = $this->items;
+        }
     }
 }

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Menu\Controller;
 
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
+use SetCMS\Module\Menu\View\MenuPrivateAdminMenuView;
 
-class MenuPublicAdminMenuController extends Controller
+class MenuPrivateAdminMenuController extends ControllerViaPSR7
 {
 
     /**
@@ -30,4 +31,22 @@ class MenuPublicAdminMenuController extends Controller
             'name' => 'Menu',
         ],
     ];
+
+    #[\Override]
+    protected function viewUnits(): array
+    {
+        return [
+            MenuPrivateAdminMenuView::class,
+        ];
+    }
+
+    #[\Override]
+    public function to(object $object): void
+    {
+        parent::to($object);
+
+        if ($object instanceof MenuPrivateAdminMenuView) {
+            $object->modules = $this->modules;
+        }
+    }
 }

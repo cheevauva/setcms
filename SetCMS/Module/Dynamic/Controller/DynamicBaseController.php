@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Dynamic\Controller;
 
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
 use SetCMS\Module\Dynamic\Exception\DynamicClassNotFoundException;
 use SetCMS\Module\Dynamic\Exception\DynamicExpectedAttributeNotDefinedException;
 use SetCMS\Application\Router\RouterMatchDTO;
 
-abstract class DynamicBaseController extends Controller
+abstract class DynamicBaseController extends ControllerViaPSR7
 {
 
-    protected Controller $controller;
+    protected ControllerViaPSR7 $controller;
 
     abstract protected function classNameControllerPattern(): string;
 
@@ -37,7 +37,7 @@ abstract class DynamicBaseController extends Controller
         $this->response = $this->controller()->response;
     }
 
-    protected function controller(): Controller
+    protected function controller(): ControllerViaPSR7
     {
         if (isset($this->controller)) {
             return $this->controller;
@@ -62,7 +62,8 @@ abstract class DynamicBaseController extends Controller
             throw new \RuntimeException('Oh my sweet summer child - you know noting');
         }
 
-        $controller = $this->controller = Controller::as($className::new($this->container));
+        $controller = $this->controller = ControllerViaPSR7::as($className::new($this->container));
+        $controller->currentUser = $this->currentUser;
         $controller->request = $this->request->withAttribute('module', $module)->withAttribute('action', $action)->withAttribute('id', $id);
 
         $onBeforeServe = new ControllerOnBeforeServeEvent();

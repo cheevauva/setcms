@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Configuration\Controller;
 
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 
-class ConfigurationPublicMainController extends Controller
+class ConfigurationPublicMainController extends ControllerViaPSR7
 {
 
     protected string $name = 'SetCMS';

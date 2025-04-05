@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Menu\Controller;
 
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\Menu\DAO\MenuSaveDAO;
 use SetCMS\Module\Menu\Entity\MenuEntity;
 use SetCMS\Attribute\Http\Parameter\Body;
 
-class MenuPrivateCreateController extends Controller
+class MenuPrivateCreateController extends ControllerViaPSR7
 {
 
     protected ?MenuEntity $entity = null;

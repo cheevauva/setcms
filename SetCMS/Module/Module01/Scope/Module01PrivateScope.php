@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Module01\Scope;
 
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 
-class Module01PrivateScope extends Controller
+class Module01PrivateScope extends ControllerViaPSR7
 {
     
 }

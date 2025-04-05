@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\Controller;
 
-use SetCMS\Controller;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\User\View\UserPublicLoginView;
 
-class UserPublicLoginController extends Controller
+class UserPublicLoginController extends ControllerViaPSR7
 {
 
     protected bool $useCaptcha;

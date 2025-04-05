@@ -5,13 +5,8 @@ declare(strict_types=1);
 namespace SetCMS;
 
 use SplObjectStorage;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
 use UUA\Unit;
 use UUA\ContainerConstructInterface;
-use SetCMS\View;
-use SetCMS\Responder;
-use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
 use SetCMS\Validation\Validation;
 use SetCMS\Controller\Exception\ControllerUnitMustBeInstanceofUnitException;
 
@@ -24,25 +19,17 @@ abstract class Controller extends Unit implements ContainerConstructInterface
     use \UUA\Traits\EventDispatcherTrait;
     use \UUA\Traits\EnvTrait;
 
-    public ServerRequestInterface $request;
-    public protected(set) ResponseInterface $response;
     protected SplObjectStorage $messages;
     protected SplObjectStorage $exceptions;
+    public protected(set) ?Unit $lastViewUnit;
+    public protected(set) ?Unit $lastDomainUnit;
 
-    protected function catch(\Throwable $object): void
-    {
-        
-    }
+    abstract protected function process(): void;
 
     protected function init(): void
     {
         $this->messages = new SplObjectStorage();
         $this->exceptions = new SplObjectStorage();
-    }
-
-    protected function process(): void
-    {
-        
     }
 
     protected function validation(mixed $data): Validation
@@ -56,24 +43,17 @@ abstract class Controller extends Unit implements ContainerConstructInterface
 
     public function from(object $object): void
     {
-        if ($object instanceof View && $object->response) {
-            $this->response = $object->response;
-        }
-
-        if ($object instanceof Responder && $object->response) {
-            $this->response = $object->response;
-        }
+        
     }
 
     public function to(object $object): void
     {
-        if ($object instanceof Responder) {
-            $object->messages = $this->messages;
-        }
+        
+    }
 
-        if ($object instanceof View) {
-            $object->messages = $this->messages;
-        }
+    protected function catch(\Throwable $object): void
+    {
+        
     }
 
     /**
@@ -96,11 +76,7 @@ abstract class Controller extends Unit implements ContainerConstructInterface
     public function serve(): void
     {
         try {
-            $onBeforeServe = new ControllerOnBeforeServeEvent();
-            $onBeforeServe->controller = $this;
-            $onBeforeServe->request = $this->request;
-            $onBeforeServe->dispatch($this->eventDispatcher());
-
+            $this->onBeforeServe();
             $this->process();
             $this->multiserveUnits($this->domainUnits());
         } catch (\Throwable $ex) {
@@ -110,6 +86,11 @@ abstract class Controller extends Unit implements ContainerConstructInterface
 
         $this->throwUncatchedExceptions();
         $this->multiserveUnits($this->viewUnits(), false);
+    }
+
+    protected function onBeforeServe(): void
+    {
+        
     }
 
     protected function throwUncatchedExceptions(): void
