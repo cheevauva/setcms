@@ -23,7 +23,7 @@ class PostPrivateEditController extends PostPrivateReadController
         parent::to($object);
 
         if ($object instanceof PostPrivateEditView) {
-            $object->post = $this->entity;
+            $object->post = $this->post;
         }
     }
 }

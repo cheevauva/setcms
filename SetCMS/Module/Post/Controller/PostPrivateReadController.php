@@ -13,7 +13,7 @@ use SetCMS\Module\Post\View\PostPrivateReadView;
 class PostPrivateReadController extends PostPrivateController
 {
 
-    protected PostEntity $entity;
+    protected PostEntity $post;
     protected UUID $id;
 
     #[\Override]
@@ -40,7 +40,7 @@ class PostPrivateReadController extends PostPrivateController
             throw new \Exception('GET');
         }
 
-        $this->id = $this->validation($this->request->getAttributes())->uuid('id')->notEmpty()->val();
+        $this->id = $this->validation($this->ctx)->uuid('id')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]
@@ -54,7 +54,7 @@ class PostPrivateReadController extends PostPrivateController
         }
 
         if ($object instanceof PostPrivateReadView) {
-            $object->post = $this->entity;
+            $object->post = $this->post;
         }
     }
 
@@ -64,7 +64,7 @@ class PostPrivateReadController extends PostPrivateController
         parent::from($object);
 
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
-            $this->entity = PostEntity::as($object->post);
+            $this->post = PostEntity::as($object->post);
         }
     }
 }

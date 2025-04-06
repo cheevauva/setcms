@@ -41,12 +41,8 @@ abstract class ViewHtml extends \SetCMS\View
             throw new \Exception(sprintf('path %s not found', $templateName));
         }
 
-        if (!isset($this->currentUser)) {
-            throw new \Exception(sprintf('Не задан currentUser для %s', get_class($this)));
-        }
-        
         $this->assign('scope', $this);
-        $this->assign('currentUser', $this->currentUser);
+        $this->assign('ctx', $this->ctx);
 
         foreach (get_class_methods($this) as $method) {
             if (strpos($method, 'sc') === 0) {
@@ -83,19 +79,6 @@ abstract class ViewHtml extends \SetCMS\View
     }
 
     /**
-     * @param string $path
-     * @param array<string,mixed> $params
-     * @return ServerRequestInterface
-     */
-    protected function createRequestByPath(string $path, array $params = []): ServerRequestInterface
-    {
-        $request = (new ServerRequestFactory)->createServerRequest('GET', new Uri($path));
-        $request = $request->withQueryParams($params);
-
-        return $request;
-    }
-
-    /**
      * @param string $path`
      * @param array<string, mixed> $params
      * @return mixed
@@ -112,14 +95,16 @@ abstract class ViewHtml extends \SetCMS\View
                 throw new RouterNotFoundException(sprintf('Not found: SETCMS %s', $path));
             }
 
-            $request = $this->createRequestByPath($path, $params);
-            $request = $request->withAttribute('view', $this);
-            $request = $request->withAttribute('routerMatch', $routerMatch);
+            $ctx = $this->ctx;
+            $ctx['view'] = $this;
+            $ctx['routerMatch'] = $routerMatch;
+            
+            $request = (new ServerRequestFactory)->createServerRequest('GET', new Uri($path))->withQueryParams($params);
 
             $className = $routerMatch->target;
 
             $controller = ControllerViaPSR7::as($className::new($this->container));
-            $controller->currentUser = $this->currentUser;
+            $controller->ctx = $ctx;
             $controller->request = $request;
             $controller->serve();
 

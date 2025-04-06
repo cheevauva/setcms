@@ -8,12 +8,10 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\View;
 use SetCMS\Responder;
-use SetCMS\Module\User\Entity\UserEntity;
 
 abstract class ControllerViaPSR7 extends Controller
 {
 
-    public UserEntity $currentUser;
     public ServerRequestInterface $request;
     public protected(set) ResponseInterface $response;
 
@@ -42,12 +40,12 @@ abstract class ControllerViaPSR7 extends Controller
         parent::to($object);
 
         if ($object instanceof Responder) {
-            $object->currentUser = $this->currentUser;
+            $object->ctx = $this->ctx;
             $object->messages = $this->messages;
         }
 
         if ($object instanceof View) {
-            $object->currentUser = $this->currentUser;
+            $object->ctx = $this->ctx;
             $object->messages = $this->messages;
         }
     }

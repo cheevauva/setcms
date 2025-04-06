@@ -14,6 +14,11 @@ class Validation
         
     }
 
+    public function object(string $path): Obj
+    {
+        return new Obj($this->data, $path, $this->messages);
+    }
+
     public function uuid(string $path): UUID
     {
         return new UUID($this->data, $path, $this->messages);

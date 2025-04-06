@@ -35,7 +35,7 @@ class PostPublicReadBySlugController extends ControllerViaPSR7
     #[\Override]
     protected function process(): void
     {
-        $routerMatch = RouterMatchDTO::as($this->request->getAttribute('routerMatch'));
+        $routerMatch = RouterMatchDTO::as($this->ctx['routerMatch']);
 
         $this->slug = $this->validation($routerMatch->params)->string('slug')->notEmpty()->notQuiet()->val();
     }
@@ -52,7 +52,6 @@ class PostPublicReadBySlugController extends ControllerViaPSR7
 
         if ($object instanceof PostPublicReadBySlugView) {
             $object->post = $this->post ?? null;
-            $object->currentUser = $this->currentUser;
         }
     }
 

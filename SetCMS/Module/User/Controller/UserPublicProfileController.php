@@ -22,7 +22,7 @@ class UserPublicProfileController extends ControllerViaPSR7
     #[\Override]
     protected function process(): void
     {
-        $this->user = $this->request->getAttribute('currentUser');
+        $this->user = UserEntity::as($this->validation($this->ctx)->object('currentUser')->notEmpty()->notQuiet()->val());
     }
 
     #[\Override]

@@ -14,19 +14,20 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
 {
 
     public array $actions = [];
-    public mixed $context;
+    public array $ctx;
 
     public function serve(): void
     {
-        $context = $this->context;
+        $currentUser = UserEntity::as($this->ctx['currentUser']);
+        $view = $this->ctx['view'] ?? null;
 
-        if ($context instanceof PostPublicReadBySlugView) {
-            if ($context->currentUser->isAdmin()) {
-                $this->actions[] = $this->prepareEditAction($context->post->slug);
+        if ($view instanceof PostPublicReadBySlugView) {
+            if ($currentUser->isAdmin()) {
+                $this->actions[] = $this->prepareEditAction($view->post->slug);
             }
         }
 
-        if (!empty($context->currentUser) && UserEntity::is($context->currentUser) && UserEntity::as($context->currentUser)->isAdmin()) {
+        if ($currentUser->isAdmin()) {
             $this->actions[] = $this->prepareIndexAction();
             $this->actions[] = $this->prepareCreateAction();
         }

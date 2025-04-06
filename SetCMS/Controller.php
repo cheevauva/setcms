@@ -19,10 +19,9 @@ abstract class Controller extends Unit implements ContainerConstructInterface
     use \UUA\Traits\EventDispatcherTrait;
     use \UUA\Traits\EnvTrait;
 
+    public array $ctx = [];
     protected SplObjectStorage $messages;
     protected SplObjectStorage $exceptions;
-    public protected(set) ?Unit $lastViewUnit;
-    public protected(set) ?Unit $lastDomainUnit;
 
     abstract protected function process(): void;
 

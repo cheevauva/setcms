@@ -1,20 +1,20 @@
 <div class="position-sticky">
     <div class="p-4 mb-3 bg-light rounded">
-        {% if currentUser.role.isAdmin() or currentUser.role.isUser()  %}
-            Вы авторизованы, как {{ currentUser.username }}
+        {% if ctx.currentUser.role.isAdmin() or ctx.currentUser.role.isUser()  %}
+            Вы авторизованы, как {{ ctx.currentUser.username }}
             <br/>
         {% endif %}
         <span class="navbar-text">
-            {% if currentUser.role.isAdmin() %}
+            {% if ctx.currentUser.role.isAdmin() %}
                 <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'profile'}) }}">Профиль</a>
                 <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('home_admin') }}">Администрирование</a>
                 <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'logout'}) }}">Выйти</a>
             {% endif %}    
-            {% if currentUser.role.isUser() %}
+            {% if ctx.currentUser.role.isUser() %}
                 <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'profile'}) }}">Профиль</a>
                 <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'logout'}) }}">Выйти</a>
             {% endif %}
-            {% if currentUser.role.isGuest() %}
+            {% if ctx.currentUser.role.isGuest() %}
                 <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'login'}) }}">Вход</a> 
                 <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'registration'}) }}">Регистрация</a>
             {% endif %}

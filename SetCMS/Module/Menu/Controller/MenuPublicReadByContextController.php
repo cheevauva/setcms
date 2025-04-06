@@ -48,7 +48,7 @@ class MenuPublicReadByContextController extends \SetCMS\ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof PostMenuActionsByRequestServant) {
-            $object->context = $this->request->getAttribute('view');
+            $object->ctx = $this->ctx;
         }
 
         if ($object instanceof MenuPublicActionsViaContextView) {

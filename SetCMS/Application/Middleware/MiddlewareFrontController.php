@@ -38,6 +38,9 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
             return $notFound->response;
         }
 
+        $ctx = $request->getAttributes();
+        $ctx['routerMatch'] = $routerMatch;
+        
         $responseCollection = new ResponseCollection();
 
         $className = $routerMatch->target;
@@ -48,9 +51,9 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
         $onBeforeServe->controller = $controller;
         $onBeforeServe->request = $request;
         $onBeforeServe->dispatch($this->eventDispatcher());
-
-        $controller->request = $request->withAttribute('routerMatch', $routerMatch);
-        $controller->currentUser = $request->getAttribute('currentUser');
+        
+        $controller->request = $request;
+        $controller->ctx = $ctx;
         $controller->serve();
 
         if (!isset($controller->response)) {

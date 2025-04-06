@@ -43,7 +43,7 @@ abstract class DynamicBaseController extends ControllerViaPSR7
             return $this->controller;
         }
 
-        $routerMatch = RouterMatchDTO::as($this->request->getAttribute('routerMatch'));
+        $routerMatch = RouterMatchDTO::as($this->ctx['routerMatch']);
 
         $module = $routerMatch->params['module'] ?? throw new DynamicExpectedAttributeNotDefinedException('module');
         $action = $routerMatch->params['action'] ?? throw new DynamicExpectedAttributeNotDefinedException('action');
@@ -61,10 +61,15 @@ abstract class DynamicBaseController extends ControllerViaPSR7
         if (is_a($className, __CLASS__, true)) {
             throw new \RuntimeException('Oh my sweet summer child - you know noting');
         }
+        
+        $ctx = $this->ctx;
+        $ctx['module'] = $module;
+        $ctx['action'] = $action;
+        $ctx['id'] = $id;
 
         $controller = $this->controller = ControllerViaPSR7::as($className::new($this->container));
-        $controller->currentUser = $this->currentUser;
-        $controller->request = $this->request->withAttribute('module', $module)->withAttribute('action', $action)->withAttribute('id', $id);
+        $controller->ctx = $ctx;
+        $controller->request = $this->request;
 
         $onBeforeServe = new ControllerOnBeforeServeEvent();
         $onBeforeServe->controller = $controller;
