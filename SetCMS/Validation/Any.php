@@ -10,15 +10,17 @@ use SetCMS\Validation\Exception\ValidationNotEmptyException;
 class Any
 {
 
-    protected string $path;
     protected mixed $value;
     protected bool $notEmpty = false;
     protected bool $quiet = true;
-    protected SplObjectStorage $messages;
 
-    public function __construct(array $data, string $path, SplObjectStorage $messages)
+    /**
+     * @param array<int|string|mixed> $data
+     * @param string $path
+     * @param SplObjectStorage<\Throwable> $messages
+     */
+    public function __construct(array $data, protected string $path, protected SplObjectStorage $messages)
     {
-
         $paths = explode('.', $path);
         $result = $data;
 
@@ -31,15 +33,13 @@ class Any
             $result = $result[$key];
         }
 
-        $this->path = $path;
         $this->value = $result;
-        $this->messages = $messages;
     }
 
     public function validate(): void
     {
         if ($this->notEmpty && empty($this->value)) {
-            $this->throw(new ValidationNotEmptyException($this->path));
+            $this->throw(new ValidationNotEmptyException());
         }
     }
 

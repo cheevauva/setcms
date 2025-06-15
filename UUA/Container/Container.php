@@ -9,11 +9,13 @@ use UUA\Container\Exception\ContainerNotFoundException;
 class Container implements \Psr\Container\ContainerInterface
 {
 
-    protected array $assets = [];
-
-    public function __construct(array $assets)
+    /**
+     * 
+     * @param array<string|mixed> $assets
+     */
+    public function __construct(protected array $assets)
     {
-        $this->assets = $assets;
+        
     }
 
     #[\Override]

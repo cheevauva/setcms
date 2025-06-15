@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Page\Scope;
+namespace SetCMS\Module\Page\Controller;
 
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\DAO\PageSaveDAO;
 use SetCMS\Attribute\Http\Parameter\Body;
 
-class PagePrivateCreateScope extends PagePrivateScope
+class PagePrivateCreateController extends PagePrivateScope
 {
 
     protected ?PageEntity $entity = null;

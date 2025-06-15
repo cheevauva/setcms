@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Validation;
 
-class Float extends Any
+class Flt extends Any
 {
 
     public function val(): float

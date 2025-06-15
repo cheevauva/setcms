@@ -14,6 +14,10 @@ trait BuildTrait
     final public static function new(ContainerInterface $container): static
     {
         $className = ($container->get('fake') ?: [])[static::class] ?? static::class;
+        
+        if (is_callable($className)) { 
+            return static::as($className($container));
+        }
 
         return static::as(new $className($container));
     }

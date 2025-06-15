@@ -9,6 +9,10 @@ use SplObjectStorage;
 class Validation
 {
 
+    /**
+     * @param array<int|string, mixed> $data
+     * @param \SplObjectStorage<\Throwable,string> $messages
+     */
     public function __construct(protected array $data, protected SplObjectStorage $messages)
     {
         
@@ -34,18 +38,18 @@ class Validation
         return new Str($this->data, $path, $this->messages);
     }
 
-    public function bool(string $path): Bool
+    public function bool(string $path): Bln
     {
-        return new Bool($this->data, $path, $this->messages);
+        return new Bln($this->data, $path, $this->messages);
     }
 
-    public function int(string $path): Int
+    public function int(string $path): Integer
     {
-        return new Int($this->data, $path, $this->messages);
+        return new Integer($this->data, $path, $this->messages);
     }
 
-    public function float(string $path): Float
+    public function float(string $path): Flt
     {
-        return new Float($this->data, $path, $this->messages);
+        return new Flt($this->data, $path, $this->messages);
     }
 }

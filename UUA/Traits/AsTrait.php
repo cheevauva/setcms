@@ -10,7 +10,13 @@ trait AsTrait
     public static function as(?object $self): static
     {
         if (is_null($self)) {
-            throw new \Exception(sprintf('Ожидался %s, а пришел null. Вызывал %s (%s)', static::class, debug_backtrace(2)[0]['file'], debug_backtrace(2)[0]['line']));
+            $backtrace = debug_backtrace(2);
+            
+            if (isset($backtrace[0]['file'], $backtrace[0]['line'])) {
+                throw new \Exception(sprintf('Ожидался %s, а пришел null. Вызывал %s (%s)', static::class, $backtrace[0]['file'], $backtrace[0]['line']));
+            }
+            
+            throw new \Exception(sprintf('Ожидался %s, а пришел null', static::class));
         }
 
         if (!($self instanceof static)) {

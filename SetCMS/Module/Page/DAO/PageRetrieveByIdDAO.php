@@ -24,6 +24,6 @@ class PageRetrieveByIdDAO extends EntityRetrieveByIdDAO
             throw new PageNotFoundException;
         }
 
-        $this->page = $this->entity;
+        $this->page = $this->first;
     }
 }

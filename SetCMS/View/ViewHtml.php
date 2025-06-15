@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace SetCMS\View;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Uri;
 use SetCMS\ControllerViaPSR7;
 use SetCMS\UUID;
-use SetCMS\DTO\SetCMSOutputDTO;
 use SetCMS\Event\AppErrorEvent;
 use SetCMS\Application\Router\Router;
 use SetCMS\Application\Router\Exception\RouterNotFoundException;
@@ -98,7 +96,7 @@ abstract class ViewHtml extends \SetCMS\View
             $ctx = $this->ctx;
             $ctx['view'] = $this;
             $ctx['routerMatch'] = $routerMatch;
-            
+
             $request = (new ServerRequestFactory)->createServerRequest('GET', new Uri($path))->withQueryParams($params);
 
             $className = $routerMatch->target;
@@ -195,11 +193,6 @@ abstract class ViewHtml extends \SetCMS\View
         return $shortName;
     }
 
-    protected function scUriPath(): string
-    {
-        return $this->request->getUri()->getPath();
-    }
-
     protected function scShortPath(string $name): string
     {
         if (str_contains($name, '@')) {
@@ -216,7 +209,7 @@ abstract class ViewHtml extends \SetCMS\View
 
     protected function theme(): string
     {
-        return $this->env()['TEMPLATE'];
+        return $this->env()['TEMPLATE'] ?? throw new \Exception('TEMPLATE нужно указать в переменных окружения');
     }
 
     protected function scBaseUrl(): string

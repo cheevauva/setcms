@@ -21,12 +21,23 @@ class ViewJson extends View
             'messages' => $this->prepareMessages(),
         ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 
+        if (!is_string($json)) {
+            if (json_last_error_msg()) {
+                throw new \Exception(json_last_error_msg());
+            } else {
+                throw new \Exception('json must be string');
+            }
+        }
+
         $response = (new Response())->withStatus(200)->withHeader('Content-Type', 'application/json');
         $response->getBody()->write($json);
 
         $this->response = $response;
     }
 
+    /**
+     * @return array<int|array<string|mixed>>
+     */
     protected function prepareMessages(): array
     {
         $messages = [];
@@ -52,10 +63,14 @@ class ViewJson extends View
         return $messages;
     }
 
+    /**
+     * @return array<string|mixed>
+     */
     protected function data(): array
     {
         $vars = get_object_vars($this);
 
+        unset($vars['ctx']);
         unset($vars['container']);
         unset($vars['messages']);
         unset($vars['response']);

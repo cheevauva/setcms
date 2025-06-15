@@ -7,6 +7,9 @@ namespace SetCMS\Validation;
 class Arr extends Any
 {
 
+    /**
+     * @return array<int|string|mixed>
+     */
     public function val(): array
     {
         $this->validate();

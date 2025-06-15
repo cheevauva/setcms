@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Validation;
 
-class Int extends Any
+class Integer extends Any
 {
 
     public function val(): int

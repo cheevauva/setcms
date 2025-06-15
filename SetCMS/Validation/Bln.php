@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Validation;
 
-class Bool extends Any
+class Bln extends Any
 {
 
     #[\Override]

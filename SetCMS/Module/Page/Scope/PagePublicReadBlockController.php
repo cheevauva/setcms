@@ -2,35 +2,31 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Module\Page\Scope;
+namespace SetCMS\Module\Page\Controller;
 
-use SetCMS\UUID;
+use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\Page\PageEntity;
-use SetCMS\Module\Page\DAO\PageRetrieveByIdDAO;
+use SetCMS\Module\Page\DAO\PageRetrieveBySlugDAO;
 use SetCMS\Attribute\Http\Parameter\Attributes;
 
-class PagePrivateReadScope extends PagePrivateScope
+class PagePublicReadBlockScope extends ControllerViaPSR7
 {
 
     protected ?PageEntity $entity = null;
 
-    #[Attributes('id')]
-    public UUID $id;
+    #[Attributes('slug')]
+    public string $slug;
 
     public function to(object $object): void
     {
-        parent::to($object);
-
-        if ($object instanceof PageRetrieveByIdDAO) {
-            $object->id = $this->id;
+        if ($object instanceof PageRetrieveBySlugDAO) {
+            $object->slug = $this->slug;
         }
     }
 
     public function from(object $object): void
     {
-        parent::from($object);
-
-        if ($object instanceof PageRetrieveByIdDAO) {
+        if ($object instanceof PageRetrieveBySlugDAO) {
             $this->entity = $object->page;
         }
     }

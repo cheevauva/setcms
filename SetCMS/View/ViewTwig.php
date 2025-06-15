@@ -48,9 +48,9 @@ class ViewTwig extends ViewHtml
     }
 
     #[\Override]
-    protected function scRender(string $template, mixed $value = null, array $vars = []): mixed
+    protected function scRender(string $path, ?array $params = []): mixed
     {
-        return new Markup(parent::scRender($template, $value, $vars), 'UTF-8');
+        return new Markup(parent::scRender($path, $params), 'UTF-8');
     }
 
     #[\Override]
