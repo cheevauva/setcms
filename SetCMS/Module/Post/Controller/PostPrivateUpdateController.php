@@ -55,7 +55,6 @@ class PostPrivateUpdateController extends PostPrivateController
         }
 
         if ($object instanceof PostUpdateServant) {
-
             $object->post = $this->post;
         }
 

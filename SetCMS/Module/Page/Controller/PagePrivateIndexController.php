@@ -6,7 +6,7 @@ namespace SetCMS\Module\Page\Controller;
 
 use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\Page\PageEntity;
-use SetCMS\Module\Page\DAO\PageRetrieveManyDAO;
+use SetCMS\Module\Page\DAO\PageRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Page\View\PagePrivateIndexView;
 
 class PagePrivateIndexController extends ControllerViaPSR7
@@ -21,7 +21,7 @@ class PagePrivateIndexController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
-            PageRetrieveManyDAO::class,
+            PageRetrieveManyByCriteriaDAO::class,
         ];
     }
 
@@ -38,8 +38,8 @@ class PagePrivateIndexController extends ControllerViaPSR7
     {
         parent::from($object);
 
-        if ($object instanceof PageRetrieveManyDAO) {
-            $this->pages = $object->entities;
+        if ($object instanceof PageRetrieveManyByCriteriaDAO) {
+            $this->pages = $object->pages;
         }
     }
 

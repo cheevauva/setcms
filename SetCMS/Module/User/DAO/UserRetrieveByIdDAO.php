@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Module\User\DAO;
 
 use SetCMS\Module\User\Entity\UserEntity;
-use SetCMS\Common\DAO\Entity\EntityRetrieveManyByCriteriaDAO;
+use SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO;
 
 class UserRetrieveByIdDAO extends EntityRetrieveManyByCriteriaDAO
 {

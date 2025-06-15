@@ -82,6 +82,16 @@
                                 }
                             },
                             {
+                                label: 'Просмотр 2',
+                                route: 'page_read_by_slug',
+                                params: {
+                                    module: 'Page', 
+                                    action: 'read',
+                                    id: entity.id,
+                                    slug: entity.slug
+                                }
+                            },
+                            {
                                 label: 'Редактировать',
                                 route: 'action_record_admin',
                                 params: {

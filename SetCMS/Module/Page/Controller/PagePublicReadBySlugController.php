@@ -4,17 +4,16 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\Page\Controller;
 
-use SetCMS\ControllerViaPSR7;
-use SetCMS\UUID;
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\DAO\PageRetrieveManyByCriteriaDAO;
-use SetCMS\Module\Page\View\PagePrivateReadView;
+use SetCMS\Module\Page\View\PagePublicReadView;
+use SetCMS\Application\Router\RouterMatchDTO;
 
-class PagePrivateReadController extends ControllerViaPSR7
+class PagePublicReadBySlugController extends \SetCMS\ControllerViaPSR7
 {
 
-    protected ?PageEntity $page = null;
-    protected UUID $id;
+    protected string $slug;
+    protected PageEntity $page;
 
     #[\Override]
     protected function domainUnits(): array
@@ -28,18 +27,16 @@ class PagePrivateReadController extends ControllerViaPSR7
     protected function viewUnits(): array
     {
         return [
-            PagePrivateReadView::class,
+            PagePublicReadView::class,
         ];
     }
 
     #[\Override]
     protected function process(): void
     {
-        if ($this->request->getMethod() != 'GET') {
-            throw new \Exception('GET');
-        }
+        $routerMatch = RouterMatchDTO::as($this->ctx['routerMatch']);
 
-        $this->id = $this->validation($this->ctx)->uuid('id')->notEmpty()->notQuiet()->val();
+        $this->slug = $this->validation($routerMatch->params)->string('slug')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]
@@ -48,11 +45,12 @@ class PagePrivateReadController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof PageRetrieveManyByCriteriaDAO) {
-            $object->id = $this->id;
+            $object->orThrow = true;
+            $object->slug = $this->slug;
             $object->limit = 1;
         }
 
-        if ($object instanceof PagePrivateReadView) {
+        if ($object instanceof PagePublicReadView) {
             $object->page = $this->page;
         }
     }

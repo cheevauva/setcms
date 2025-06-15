@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\DAO;
 
-class UserRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\Entity\EntityRetrieveManyByCriteriaDAO
+class UserRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO
 {
 
     public string $username;

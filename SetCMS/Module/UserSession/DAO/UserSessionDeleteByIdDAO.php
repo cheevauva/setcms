@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\UserSession\DAO;
 
-use SetCMS\Common\DAO\Entity\EntityCommonDAO;
+use SetCMS\Common\DAO\EntityCommonDAO;
 use SetCMS\Module\UserSession\UserSessionConstrants;
 use SetCMS\Module\UserSession\UserSessionEntity;
 use SetCMS\UUID;

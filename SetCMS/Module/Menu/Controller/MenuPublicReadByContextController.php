@@ -6,6 +6,7 @@ namespace SetCMS\Module\Menu\Controller;
 
 use SetCMS\Module\Menu\MenuAction\Entity\MenuActionEntity;
 use SetCMS\Module\Post\Servant\PostMenuActionsByRequestServant;
+use SetCMS\Module\Page\Servant\PageMenuActionsByRequestServant;
 use SetCMS\Module\Menu\View\MenuPublicActionsViaContextView;
 
 class MenuPublicReadByContextController extends \SetCMS\ControllerViaPSR7
@@ -21,6 +22,7 @@ class MenuPublicReadByContextController extends \SetCMS\ControllerViaPSR7
     {
         return [
             PostMenuActionsByRequestServant::class,
+            PageMenuActionsByRequestServant::class,
         ];
     }
 
@@ -38,8 +40,17 @@ class MenuPublicReadByContextController extends \SetCMS\ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PostMenuActionsByRequestServant) {
-            $this->items += $object->actions;
+            $this->appendActions($object->actions);
         }
+
+        if ($object instanceof PageMenuActionsByRequestServant) {
+            $this->appendActions($object->actions);
+        }
+    }
+
+    protected function appendActions(array $actions): void
+    {
+        $this->items = array_merge($this->items, $actions);
     }
 
     #[\Override]
@@ -48,6 +59,10 @@ class MenuPublicReadByContextController extends \SetCMS\ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof PostMenuActionsByRequestServant) {
+            $object->ctx = $this->ctx;
+        }
+
+        if ($object instanceof PageMenuActionsByRequestServant) {
             $object->ctx = $this->ctx;
         }
 

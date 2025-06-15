@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Test;
 
 use PHPUnit\Framework\TestCase;
-use SetCMS\Common\DAO\Entity\EntitySaveDAO;
+use SetCMS\Common\DAO\EntitySaveDAO;
 use SetCMS\Common\Mapper\EntityMapper;
 use SetCMS\Common\Entity\Entity;
 use Psr\Container\ContainerInterface;
@@ -19,6 +19,7 @@ class EntitySaveDAOTest extends TestCase
      * @var array<string, mixed>
      */
     public static array $results = [];
+    public static Entity $entity;
 
     protected function newEntity(): Entity
     {
@@ -29,10 +30,9 @@ class EntitySaveDAOTest extends TestCase
 
     public function testQueries(): void
     {
-        $entity = $this->newEntity();
+        $entity = self::$entity = $this->newEntity();
 
         $save = EntitySaveDAO::new($this->container());
-        $save->entity = $entity;
         $save->serve();
 
         $this->assertEquals('SELECT id FROM tests WHERE id = :id LIMIT 1', self::$results['has'][0]);
@@ -65,6 +65,8 @@ class EntitySaveDAOTest extends TestCase
             },
             EntitySaveDAO::class => new class($container) extends EntitySaveDAO {
 
+                public Entity $testEntity;
+
                 use \SetCMS\Traits\DatabaseMainConnectionTrait;
 
                 #[\Override]
@@ -82,6 +84,8 @@ class EntitySaveDAOTest extends TestCase
                 #[\Override]
                 public function serve(): void
                 {
+                    $this->entity = EntitySaveDAOTest::$entity;
+
                     EntitySaveDAOTest::$results['has'] = [$this->has()->getSQL(), $this->has()->getParameters()];
                     EntitySaveDAOTest::$results['insert'] = [$this->insert()->getSQL(), $this->insert()->getParameters()];
                     EntitySaveDAOTest::$results['update'] = [$this->update()->getSQL(), $this->update()->getParameters()];

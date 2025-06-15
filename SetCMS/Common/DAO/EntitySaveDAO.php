@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Common\DAO\Entity;
+namespace SetCMS\Common\DAO;
 
 use SetCMS\Common\Entity\Entity;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -10,7 +10,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
 abstract class EntitySaveDAO extends EntityCommonDAO
 {
 
-    public Entity $entity;
+    protected Entity $entity;
 
     protected function has(): QueryBuilder
     {

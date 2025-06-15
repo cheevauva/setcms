@@ -6,13 +6,14 @@ namespace SetCMS\Module\Post\DAO;
 
 use SetCMS\Module\Post\PostEntity;
 
-class PostRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\Entity\EntityRetrieveManyByCriteriaDAO
+class PostRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO
 {
 
     use PostGenericDAO;
 
     public string $slug;
-    public ?PostEntity $post;
+    public array $posts;
+    public ?PostEntity $post = null;
 
     #[\Override]
     public function serve(): void
@@ -27,6 +28,7 @@ class PostRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\Entity\EntityRetr
 
         parent::serve();
 
+        $this->posts = $this->entities;
         $this->post = $this->first;
     }
 }
