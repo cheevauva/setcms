@@ -9,5 +9,5 @@ use SetCMS\Common\Entity\Entity;
 class Entity01Entity extends Entity
 {
 
-    public $field01;
+    public string $field01;
 }

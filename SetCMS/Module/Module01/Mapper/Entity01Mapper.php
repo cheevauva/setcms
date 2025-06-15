@@ -6,6 +6,7 @@ namespace SetCMS\Module\Module01\Mapper;
 
 use SetCMS\Common\Mapper\EntityMapper;
 use SetCMS\Module\Module01\Entity\Entity01Entity;
+use SetCMS\Module\Module01\Exception\Entity01MapperException;
 
 class Entity01Mapper extends EntityMapper
 {
@@ -26,6 +27,6 @@ class Entity01Mapper extends EntityMapper
         parent::entity4row();
 
         $entity = Entity01Entity::as($this->entity);
-        $entity->field01 = $this->row['field01'];
+        $entity->field01 = strval($this->row['field01'] ?? throw new Entity01MapperException('row.field01 обязателен'));
     }
 }

@@ -36,7 +36,7 @@ class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherI
             if ($event instanceof StoppableEventInterface && $event->isPropagationStopped()) {
                 break;
             }
-
+            
             $unit = $listener[0]::new($this->container);
 
             if (!($unit instanceof UnitInterface)) {
