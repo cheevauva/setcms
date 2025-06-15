@@ -22,15 +22,15 @@ class PageDeleteServant extends \UUA\Servant
         $pageById->id = $this->page->id ?? ($this->id ?? throw new \RuntimeException('id is not defined'));
         $pageById->serve();
 
-        if (!$pageById->first) {
+        if (!$pageById->page) {
             throw new PageNotFoundException;
         }
 
-        $page = PageEntity::as($pageById->first);
+        $page = PageEntity::as($pageById->page);
         $page->deleted = true;
 
         $save = PageSaveDAO::new($this->container);
-        $save->entity = $page;
+        $save->page = $page;
         $save->serve();
 
         $this->page = $page;

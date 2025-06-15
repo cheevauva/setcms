@@ -48,6 +48,11 @@
                     {% block content %}{% endblock %}
                 </div>
                 <div class="col-md-4">
+                    <div class="position-sticky">
+                        <div class="p-4 mb-3 bg-light rounded">
+                            {{ scRender('/page/block/demo') }}
+                        </div>
+                    </div>
                     {{ scRender('/menu/for/actions') }}
                     {{ scRender('/menu/for/context') }}
                 </div>

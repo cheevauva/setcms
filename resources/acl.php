@@ -29,7 +29,7 @@ $acl = [
                 \SetCMS\Module\Post\Controller\PostPublicIndexController::class => true,
                 \SetCMS\Module\Post\Controller\PostPublicReadBySlugController::class => true,
                 // Page
-                \SetCMS\Module\Page\Controller\PagePublicReadBlockController::class => true,
+                \SetCMS\Module\Page\Controller\PagePublicReadBlockBySlugController::class => true,
                 \SetCMS\Module\Page\Controller\PagePublicReadBySlugController::class => true,
             ],
         ],

@@ -6,10 +6,10 @@ namespace SetCMS\Module\Page\Controller;
 
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\DAO\PageRetrieveManyByCriteriaDAO;
-use SetCMS\Module\Page\View\PagePublicReadView;
+use SetCMS\Module\Page\View\PagePublicReadBlockView;
 use SetCMS\Application\Router\RouterMatchDTO;
 
-class PagePublicReadBySlugController extends \SetCMS\ControllerViaPSR7
+class PagePublicReadBlockBySlugController extends \SetCMS\ControllerViaPSR7
 {
 
     protected string $slug;
@@ -27,7 +27,7 @@ class PagePublicReadBySlugController extends \SetCMS\ControllerViaPSR7
     protected function viewUnits(): array
     {
         return [
-            PagePublicReadView::class,
+            PagePublicReadBlockView::class,
         ];
     }
 
@@ -50,7 +50,7 @@ class PagePublicReadBySlugController extends \SetCMS\ControllerViaPSR7
             $object->limit = 1;
         }
 
-        if ($object instanceof PagePublicReadView) {
+        if ($object instanceof PagePublicReadBlockView) {
             $object->page = $this->page;
         }
     }

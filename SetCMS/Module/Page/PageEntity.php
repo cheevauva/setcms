@@ -9,7 +9,7 @@ use SetCMS\Common\Entity\Entity;
 class PageEntity extends Entity
 {
 
-    public $slug;
-    public $title;
-    public $content;
+    public string $slug;
+    public string $title;
+    public string $content;
 }

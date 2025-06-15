@@ -9,11 +9,19 @@ use SetCMS\Module\Page\View\PagePublicReadView;
 use SetCMS\Module\Page\DAO\PageRetrieveManyByCriteriaDAO;
 use SetCMS\UUID;
 use SetCMS\Module\User\Entity\UserEntity;
+use SetCMS\Module\Page\PageEntity;
 
 class PageMenuActionsByRequestServant extends \UUA\Servant
 {
 
+    /**
+     * @var MenuActionEntity[]
+     */
     public array $actions = [];
+    
+    /**
+     * @var array<string, mixed>
+     */
     public array $ctx;
 
     public function serve(): void
@@ -58,7 +66,7 @@ class PageMenuActionsByRequestServant extends \UUA\Servant
         $editAction->params = [
             'module' => 'Page',
             'action' => 'edit',
-            'id' => $retrieveBySlug->page->id->uuid,
+            'id' => PageEntity::as($retrieveBySlug->page)->id->uuid,
         ];
 
         return $editAction;

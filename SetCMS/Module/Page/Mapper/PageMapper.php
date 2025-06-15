@@ -6,6 +6,7 @@ namespace SetCMS\Module\Page\Mapper;
 
 use SetCMS\Common\Mapper\EntityMapper;
 use SetCMS\Module\Page\PageEntity;
+use SetCMS\Module\Page\Exception\PageMapperException;
 
 class PageMapper extends EntityMapper
 {
@@ -26,8 +27,8 @@ class PageMapper extends EntityMapper
         parent::entity4row();
 
         $entity = PageEntity::as($this->entity);
-        $entity->slug = $this->row['slug'];
-        $entity->title = $this->row['title'];
-        $entity->content = $this->row['content'];
+        $entity->slug = strval($this->row['slug'] ?? throw new PageMapperException('row.slug обязателен'));
+        $entity->title = strval($this->row['title'] ?? throw new PageMapperException('row.title обязателен'));
+        $entity->content = strval($this->row['content'] ?? throw new PageMapperException('row.content обязателен'));
     }
 }
