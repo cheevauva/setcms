@@ -7,15 +7,24 @@ namespace SetCMS\Module\Post\Servant;
 use SetCMS\Module\Menu\MenuAction\Entity\MenuActionEntity;
 use SetCMS\Module\Post\View\PostPublicReadBySlugView;
 use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
+use SetCMS\Module\Post\PostEntity;
 use SetCMS\UUID;
 use SetCMS\Module\User\Entity\UserEntity;
 
 class PostMenuActionsByRequestServant extends \UUA\Servant
 {
 
+    /**
+     * @var MenuActionEntity[]
+     */
     public array $actions = [];
+
+    /**
+     * @var array<string, mixed>
+     */
     public array $ctx;
 
+    #[\Override]
     public function serve(): void
     {
         $currentUser = UserEntity::as($this->ctx['currentUser']);
@@ -35,7 +44,7 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
 
     private function prepareIndexAction(): MenuActionEntity
     {
-        $indexAction = new MenuActionEntity;
+        $indexAction = new MenuActionEntity();
         $indexAction->label = 'Список постов';
         $indexAction->route = 'action_admin';
         $indexAction->params = [
@@ -52,13 +61,13 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
         $retrieveBySlug->slug = $slug;
         $retrieveBySlug->serve();
 
-        $editAction = new MenuActionEntity;
+        $editAction = new MenuActionEntity();
         $editAction->label = 'Редактировать пост';
         $editAction->route = 'action_record_admin';
         $editAction->params = [
             'module' => 'Post',
             'action' => 'edit',
-            'id' => $retrieveBySlug->first->id->uuid,
+            'id' => PostEntity::as($retrieveBySlug->post)->id->uuid,
         ];
 
         return $editAction;
@@ -66,7 +75,7 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
 
     private function prepareCreateAction(): MenuActionEntity
     {
-        $createAction = new MenuActionEntity;
+        $createAction = new MenuActionEntity();
         $createAction->label = 'Создать пост';
         $createAction->route = 'action_record_admin';
         $createAction->params = [

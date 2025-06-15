@@ -51,7 +51,7 @@ class PostPublicReadBySlugController extends ControllerViaPSR7
         }
 
         if ($object instanceof PostPublicReadBySlugView) {
-            $object->post = $this->post ?? null;
+            $object->post = $this->post;
         }
     }
 
@@ -61,7 +61,7 @@ class PostPublicReadBySlugController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
-            $this->post = $object->post;
+            $this->post = PostEntity::as($object->post);
         }
     }
 }

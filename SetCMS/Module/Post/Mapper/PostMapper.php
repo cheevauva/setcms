@@ -6,10 +6,12 @@ namespace SetCMS\Module\Post\Mapper;
 
 use SetCMS\Common\Mapper\EntityMapper;
 use SetCMS\Module\Post\PostEntity;
+use SetCMS\Module\Post\Exception\PostMapperException;
 
 class PostMapper extends EntityMapper
 {
 
+    #[\Override]
     protected function entity2row(): void
     {
         parent::entity2row();
@@ -21,13 +23,14 @@ class PostMapper extends EntityMapper
         $this->row['title'] = $entity->title;
     }
 
+    #[\Override]
     protected function entity4row(): void
     {
         parent::entity4row();
 
         $entity = PostEntity::as($this->entity);
-        $entity->message = $this->row['message'];
-        $entity->title = $this->row['title'];
-        $entity->slug = $this->row['slug'];
+        $entity->message = strval($this->row['message'] ?? throw new PostMapperException('row.message обязательный'));
+        $entity->title = strval($this->row['title'] ?? throw new PostMapperException('row.title обязательный'));
+        $entity->slug = strval($this->row['slug'] ?? throw new PostMapperException('row.slug обязательный'));
     }
 }

@@ -12,6 +12,10 @@ class PostRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveMan
     use PostGenericDAO;
 
     public string $slug;
+
+    /**
+     * @var PostEntity[]
+     */
     public array $posts;
     public ?PostEntity $post = null;
 
@@ -29,6 +33,6 @@ class PostRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveMan
         parent::serve();
 
         $this->posts = $this->entities;
-        $this->post = $this->first;
+        $this->post = $this->first ? PostEntity::as($this->first) : null;
     }
 }

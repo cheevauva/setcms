@@ -22,15 +22,15 @@ class PostDeleteServant extends \UUA\Servant
         $postById->id = $this->id ?? ($this->post->id ?? throw new \RuntimeException('id is undefined'));
         $postById->serve();
 
-        if (!$postById->first) {
+        if (!$postById->post) {
             throw new PostNotFoundException;
         }
 
-        $post = PostEntity::as($postById->first);
+        $post = PostEntity::as($postById->post);
         $post->deleted = true;
 
         $save = PostSaveDAO::new($this->container);
-        $save->entity = $post;
+        $save->post = $post;
         $save->serve();
 
         $this->post = $post;
