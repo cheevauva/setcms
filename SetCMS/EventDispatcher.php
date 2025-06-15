@@ -8,14 +8,15 @@ use UUA\UnitInterface;
 use UUA\SymbiontCustomizer;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\EventDispatcher as SymfonyEventDispatcher;
 use Psr\EventDispatcher\StoppableEventInterface;
 
-class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherInterface, \UUA\ContainerConstructInterface
+class EventDispatcher implements EventDispatcherInterface, \UUA\ContainerConstructInterface
 {
 
     use \UUA\Traits\AsTrait;
     use \UUA\Traits\ContainerTrait;
+
+    protected array $listeners = [];
 
     #[\Override]
     public function __construct(ContainerInterface $container)
@@ -24,19 +25,18 @@ class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherI
 
         foreach ($container->get('events') as $event => $eventListeners) {
             foreach ($eventListeners as $priority => $eventListener) {
-                $this->addListener($event, $eventListener, 999999 - $priority);
+                $this->listeners[$event][999999 - $priority] = $eventListener;
             }
         }
     }
 
-    #[\Override]
     protected function callListeners(iterable $listeners, string $eventName, object $event): void
     {
         foreach ($listeners as $listener) {
             if ($event instanceof StoppableEventInterface && $event->isPropagationStopped()) {
                 break;
             }
-            
+
             $unit = $listener[0]::new($this->container);
 
             if (!($unit instanceof UnitInterface)) {
@@ -60,5 +60,13 @@ class EventDispatcher extends SymfonyEventDispatcher implements EventDispatcherI
     public static function instance(): self
     {
         return static::$instance;
+    }
+
+    #[\Override]
+    public function dispatch(object $event): object
+    {
+        $this->callListeners($this->listeners[get_class($event)], get_class($event), $event);
+        
+        return $event;
     }
 }
