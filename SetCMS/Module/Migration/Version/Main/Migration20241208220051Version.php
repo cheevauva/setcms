@@ -36,8 +36,8 @@ final class Migration20241208220051Version extends AbstractMigration
             'admin',
             'c5e35038-4d12-4d90-be57-f4eb1a45fe35',	
             'SetCMS\Module\User\Entity\UserEntity',
-            NOW(),
-            NOW(),
+            '2025-01-01 00:00:00',
+            '2025-01-01 00:00:00',
             'f'
         )
         ";

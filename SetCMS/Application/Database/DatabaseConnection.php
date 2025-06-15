@@ -6,6 +6,7 @@ namespace SetCMS\Application\Database;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
+use PDO;
 
 abstract class DatabaseConnection implements \UUA\ContainerConstructInterface
 {
