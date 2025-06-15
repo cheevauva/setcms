@@ -76,7 +76,7 @@ class CaptchaPublicSolveController extends \SetCMS\ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof CaptchaException) {
-            $this->catch('id', $object);
+            $this->catch($object);
         }
 
         if ($object instanceof CaptchaRetrieveManyByCriteriaDAO) {

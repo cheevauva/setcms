@@ -15,8 +15,16 @@ class CaptchaPublicGenerateView extends ViewJson
 
     public bool $includeLines = true;
     public bool $includePixels = true;
-    private int $width = 100;
-    private int $height = 50;
+
+    /**
+     * @var int<1, max>
+     */
+    protected int $width = 100;
+
+    /**
+     * @var int<1, max>
+     */
+    protected int $height = 50;
     public CaptchaEntity $captcha;
 
     #[\Override]
@@ -33,11 +41,21 @@ class CaptchaPublicGenerateView extends ViewJson
     {
         $file = fopen('php://memory', 'r+');
 
+        if (!is_resource($file)) {
+            throw new \Exception('невозможно открыть файл в памяти');
+        }
+
         imagepng($this->createImage($this->captcha->text), $file);
 
         rewind($file);
 
-        return stream_get_contents($file);
+        $content = stream_get_contents($file);
+
+        if (!is_string($content)) {
+            throw new \Exception('не удалось получить содержимое из ресурса в памяти');
+        }
+
+        return $content;
     }
 
     protected function createImage(string $text): \GdImage
@@ -51,6 +69,22 @@ class CaptchaPublicGenerateView extends ViewJson
         $imageColorLine = imagecolorallocate($image, 64, 64, 64);
         $imageColorPixel = imagecolorallocate($image, 0, 0, 255);
         $imageColorText = imagecolorallocate($image, ...$colorText);
+
+        if (!$imageColorBackground) {
+            throw new \Exception('Не получилось сформировать imageColorBackground');
+        }
+
+        if (!$imageColorLine) {
+            throw new \Exception('Не получилось сформировать imageColorLine');
+        }
+
+        if (!$imageColorPixel) {
+            throw new \Exception('Не получилось сформировать imageColorPixel');
+        }
+
+        if (!$imageColorText) {
+            throw new \Exception('Не получилось сформировать imageColorText');
+        }
 
         imagefilledrectangle($image, 0, 0, $this->width, $this->height, $imageColorBackground);
 
@@ -104,9 +138,9 @@ class CaptchaPublicGenerateView extends ViewJson
                 if ($color == 255 && $colorX == 255 && $colorY == 255 && $colorXY == 255) {
                     continue;
                 } else if ($color == 0 && $colorX == 0 && $colorY == 0 && $colorXY == 0) {
-                    $newred = $colorText[0];
-                    $newgreen = $colorText[1];
-                    $newblue = $colorText[2];
+                    $newred = $this->intColor($colorText[0]);
+                    $newgreen = $this->intColor($colorText[1]);
+                    $newblue = $this->intColor($colorText[2]);
                 } else {
                     $frsx = $sinX - floor($sinX);
                     $frsy = $sinY - floor($sinY);
@@ -122,15 +156,25 @@ class CaptchaPublicGenerateView extends ViewJson
                     $newColor = $newColor / 255;
                     $newColor0 = 1 - $newColor;
 
-                    $newred = intval($newColor0 * $colorText[0] + $newColor * $colorBackground[0]);
-                    $newgreen = intval($newColor0 * $colorText[1] + $newColor * $colorBackground[1]);
-                    $newblue = intval($newColor0 * $colorText[2] + $newColor * $colorBackground[2]);
+                    $newred = $this->intColor($newColor0 * $colorText[0] + $newColor * $colorBackground[0]);
+                    $newgreen = $this->intColor($newColor0 * $colorText[1] + $newColor * $colorBackground[1]);
+                    $newblue = $this->intColor($newColor0 * $colorText[2] + $newColor * $colorBackground[2]);
                 }
 
-                imagesetpixel($img, $x, $y, imagecolorallocate($img, $newred, $newgreen, $newblue));
+                imagesetpixel($img, $x, $y, imagecolorallocate($img, $newred, $newgreen, $newblue) ?: throw new \Exception('Не удалось получить imagecolorallocate'));
             }
         }
 
         return $img;
     }
+
+    /**
+     * @param mixed $value
+     * @return int<0, 255>
+     */
+    protected function intColor(mixed $value): int
+    {
+        return $value;
+    }
+
 }
