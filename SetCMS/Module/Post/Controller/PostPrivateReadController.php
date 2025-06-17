@@ -7,7 +7,6 @@ namespace SetCMS\Module\Post\Controller;
 use SetCMS\UUID;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
-use SetCMS\Responder\ResponderBase;
 use SetCMS\Module\Post\View\PostPrivateReadView;
 
 class PostPrivateReadController extends PostPrivateController
@@ -28,7 +27,6 @@ class PostPrivateReadController extends PostPrivateController
     protected function viewUnits(): array
     {
         return [
-            ResponderBase::class,
             PostPrivateReadView::class,
         ];
     }

@@ -174,6 +174,8 @@ class CaptchaPublicGenerateView extends ViewJson
      */
     protected function intColor(mixed $value): int
     {
+        $value = (int) $value;
+        
         return $value;
     }
 

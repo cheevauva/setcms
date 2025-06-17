@@ -4,23 +4,42 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\Controller;
 
-use SetCMS\Module\User\DAO\UserRetrieveManyDAO;
+use SetCMS\Module\User\DAO\UserRetrieveManyByCriteriaDAO;
 use SetCMS\Module\User\Entity\UserEntity;
+use SetCMS\Module\User\View\UserPrivateIndexView;
 
 class UserPrivateIndexController extends UserPrivateController
 {
 
     /**
-     * @var array<UserEntity>
+     * @var UserEntity[]
      */
-    protected array $entities = [];
+    protected array $users = [];
 
     #[\Override]
     protected function domainUnits(): array
     {
         return [
-            UserRetrieveManyDAO::class,
+            UserRetrieveManyByCriteriaDAO::class,
         ];
+    }
+
+    #[\Override]
+    protected function viewUnits(): array
+    {
+        return [
+            UserPrivateIndexView::class,
+        ];
+    }
+
+    #[\Override]
+    public function to(object $object): void
+    {
+        parent::to($object);
+        
+        if ($object instanceof UserPrivateIndexView) {
+            $object->users = $this->users;
+        }
     }
 
     #[\Override]
@@ -28,8 +47,8 @@ class UserPrivateIndexController extends UserPrivateController
     {
         parent::from($object);
 
-        if ($object instanceof UserRetrieveManyDAO) {
-            $this->entities = $object->entities;
+        if ($object instanceof UserRetrieveManyByCriteriaDAO) {
+            $this->users = $object->users;
         }
     }
 }

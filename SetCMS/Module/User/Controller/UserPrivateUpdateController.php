@@ -4,28 +4,43 @@ declare(strict_types=1);
 
 namespace SetCMS\Module\User\Controller;
 
-use SetCMS\Attribute\Http\Parameter\Body;
-use SetCMS\Module\User\Controller\UserPrivateUserScope;
-use SetCMS\Module\User\DAO\UserRetrieveByIdDAO;
+use SetCMS\Module\User\DAO\UserRetrieveManyByCriteriaDAO;
 use SetCMS\Module\User\DAO\UserSaveDAO;
 use SetCMS\Module\User\Entity\UserEntity;
+use SetCMS\Module\User\View\UserPrivateUpdateView;
+use SetCMS\Module\User\Enum\UserRoleEnum;
 
 class UserPrivateUpdateController extends UserPrivateController
 {
 
-    #[ResponderPassProperty('user')]
-    private UserEntity $entity;
-
-    #[Body('user')]
-    public UserPrivateUserScope $user;
+    protected UserEntity $user;
+    protected UserEntity $newUser;
 
     #[\Override]
     protected function domainUnits(): array
     {
         return [
-            UserRetrieveByIdDAO::class,
+            UserRetrieveManyByCriteriaDAO::class,
             UserSaveDAO::class,
         ];
+    }
+
+    #[\Override]
+    protected function viewUnits(): array
+    {
+        return [
+            UserPrivateUpdateView::class,
+        ];
+    }
+
+    #[\Override]
+    protected function process(): void
+    {
+        $validation = $this->validation($this->request->getParsedBody());
+
+        $this->newUser = new UserEntity();
+        $this->newUser->id = $validation->uuid('user.id')->notEmpty()->val();
+        $this->newUser->role = UserRoleEnum::from($validation->string('user.role')->notEmpty()->val());
     }
 
     #[\Override]
@@ -33,8 +48,9 @@ class UserPrivateUpdateController extends UserPrivateController
     {
         parent::from($object);
 
-        if ($object instanceof UserRetrieveByIdDAO) {
-            $this->entity = $object->user;
+        if ($object instanceof UserRetrieveManyByCriteriaDAO) {
+            $this->user = $object->user;
+            $this->user->role = $this->newUser->role;
         }
     }
 
@@ -43,15 +59,16 @@ class UserPrivateUpdateController extends UserPrivateController
     {
         parent::to($object);
 
-        if ($object instanceof UserRetrieveByIdDAO) {
-            $object->orThrow = true;
-            $object->id = $this->user->id;
+        if ($object instanceof UserRetrieveManyByCriteriaDAO) {
+            $object->id = $this->newUser->id;
         }
 
+        if ($object instanceof UserPrivateUpdateView) {
+            $object->user = UserEntity::as($this->user);
+        }
 
         if ($object instanceof UserSaveDAO) {
-            $this->user->to($this->entity);
-            $object->user = $this->entity;
+            $object->user = $this->user;
         }
     }
 }

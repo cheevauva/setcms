@@ -5,25 +5,40 @@ declare(strict_types=1);
 namespace SetCMS\Module\User\Controller;
 
 use SetCMS\UUID;
-use SetCMS\Attribute\Http\Parameter\Attributes;
-use SetCMS\Module\User\DAO\UserRetrieveByIdDAO;
+use SetCMS\Module\User\DAO\UserRetrieveManyByCriteriaDAO;
 use SetCMS\Module\User\Entity\UserEntity;
 
 class UserPrivateReadController extends UserPrivateController
 {
 
     protected UserEntity $user;
+    protected UUID $id;
 
-    #[Attributes('id')]
-    public UUID $id;
+    #[\Override]
+    protected function domainUnits(): array
+    {
+        return [
+            UserRetrieveManyByCriteriaDAO::class,
+        ];
+    }
+
+    #[\Override]
+    protected function process(): void
+    {
+        if ($this->request->getMethod() != 'GET') {
+            throw new \Exception('GET');
+        }
+
+        $this->id = $this->validation($this->ctx)->uuid('id')->notEmpty()->notQuiet()->val();
+    }
 
     #[\Override]
     public function from(object $object): void
     {
         parent::from($object);
 
-        if ($object instanceof UserRetrieveByIdDAO) {
-            $this->user = $object->user;
+        if ($object instanceof UserRetrieveManyByCriteriaDAO) {
+            $this->user = UserEntity::as($object->user);
         }
     }
 
@@ -32,8 +47,9 @@ class UserPrivateReadController extends UserPrivateController
     {
         parent::to($object);
 
-        if ($object instanceof UserRetrieveByIdDAO) {
+        if ($object instanceof UserRetrieveManyByCriteriaDAO) {
             $object->id = $this->id;
+            $object->limit = 1;
             $object->orThrow = true;
         }
     }

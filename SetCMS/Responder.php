@@ -14,6 +14,10 @@ abstract class Responder extends \UUA\Responder
      * @var array<string|object>
      */
     public array $ctx;
+
+    /**
+     * @var SplObjectStorage<object, mixed>
+     */
     public SplObjectStorage $messages;
     public protected(set) ?ResponseInterface $response = null;
 }

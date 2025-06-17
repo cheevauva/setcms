@@ -41,12 +41,8 @@ abstract class ViewHtml extends \SetCMS\View
 
         $this->assign('scope', $this);
         $this->assign('ctx', $this->ctx);
-
-        foreach (get_class_methods($this) as $method) {
-            if (strpos($method, 'sc') === 0) {
-                $this->addFunction($method, \Closure::fromCallable([$this, $method]));
-            }
-        }
+        
+        $this->registerFunctions();
 
         foreach ($this->vars as $v => $vv) {
             $this->assign($v, $vv);
@@ -59,6 +55,17 @@ abstract class ViewHtml extends \SetCMS\View
         $response->getBody()->write($html);
 
         $this->response = $response;
+    }
+
+    protected function registerFunctions(): void
+    {
+        $this->addFunction('scRender', \Closure::fromCallable([$this, 'scRender']));
+        $this->addFunction('scFetch', \Closure::fromCallable([$this, 'scFetch']));
+        $this->addFunction('scUUID', \Closure::fromCallable([$this, 'scUUID']));
+        $this->addFunction('scLink', \Closure::fromCallable([$this, 'scLink']));
+        $this->addFunction('scLongPath', \Closure::fromCallable([$this, 'scLongPath']));
+        $this->addFunction('scShortPath', \Closure::fromCallable([$this, 'scShortPath']));
+        $this->addFunction('scBaseUrl', \Closure::fromCallable([$this, 'scBaseUrl']));
     }
 
     abstract protected function assign(string $name, mixed $value): void;

@@ -10,10 +10,14 @@ use SetCMS\Application\Contract\ContractNotAllow;
 use SetCMS\Application\Contract\ContractNotFound;
 use SetCMS\Application\Contract\ContractForbidden;
 use SetCMS\View\ViewInternalServerError;
+use SetCMS\View\ViewNotFound;
+use SetCMS\View\ViewNotAllow;
+use SetCMS\View\ViewForbidden;
 
 class ResponderBase extends Responder
 {
 
+    #[\Override]
     public function serve(): void
     {
         if (!$this->messages->valid()) {
@@ -22,8 +26,14 @@ class ResponderBase extends Responder
 
         $this->messages->rewind();
 
+        $response = null;
+
         while ($this->messages->valid()) {
-            $response = $this->catch($this->messages->current());
+            $message = $this->messages->current();
+
+            if ($message instanceof \Throwable) {
+                $response = $this->catch($message);
+            }
 
             if ($response) {
                 $this->response = $response;
@@ -35,17 +45,24 @@ class ResponderBase extends Responder
 
         $this->messages->rewind();
 
-        $internalServerError = ViewInternalServerError::new($this->container);
-        $internalServerError->message = $this->messages->current()->getMessage();
-        $internalServerError->serve();
+        $message = $this->messages->current();
 
-        $this->response = $internalServerError->response;
+        if ($message instanceof \Throwable) {
+            $internalServerError = ViewInternalServerError::new($this->container);
+            $internalServerError->message = $message->getMessage();
+            $internalServerError->serve();
+
+            $this->response = $internalServerError->response;
+        }
     }
 
     protected function catch(\Throwable $ex): ?ResponseInterface
     {
         if ($ex instanceof ContractNotAllow) {
-            return $response->withStatus(405);
+            $notAllow = ViewNotAllow::new($this->container);
+            $notAllow->serve();
+
+            return $notAllow->response;
         }
         if ($ex instanceof ContractNotFound) {
             $notFound = ViewNotFound::new($this->container);
@@ -55,7 +72,10 @@ class ResponderBase extends Responder
         }
 
         if ($ex instanceof ContractForbidden) {
-            return $response->withStatus(403);
+            $forbidden = ViewForbidden::new($this->container);
+            $forbidden->serve();
+
+            return $forbidden->response;
         }
 
         return null;
