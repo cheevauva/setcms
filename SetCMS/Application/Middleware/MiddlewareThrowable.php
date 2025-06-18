@@ -18,7 +18,6 @@ class MiddlewareThrowable implements MiddlewareInterface, \UUA\ContainerConstruc
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-
         try {
             return $handler->handle($request);
         } catch (\Throwable $ex) {

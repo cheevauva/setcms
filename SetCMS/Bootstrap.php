@@ -29,6 +29,9 @@ class Bootstrap
         return dirname(__DIR__);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function env(): array
     {
         return Dotenv::createArrayBacked($this->rootPath(), ['.env', '.env.dist'])->load();
@@ -39,7 +42,7 @@ class Bootstrap
         $container = new Container([
             EventDispatcherInterface::class => fn(Container $container) => new EventDispatcher($container),
             'fake' => require $this->rootPath() . '/resources/fake.php',
-            'basePath' => __DIR__,
+            'basePath' => $this->rootPath(),
             'env' => $this->env(),
             'events' => require $this->rootPath() . '/resources/events.php',
             'acl' => require $this->rootPath() . '/resources/acl.php',

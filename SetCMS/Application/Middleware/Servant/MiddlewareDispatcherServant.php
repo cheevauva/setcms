@@ -13,6 +13,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 class MiddlewareDispatcherServant extends Servant implements RequestHandlerInterface
 {
 
+    /**
+     * @var string[]
+     */
     public array $middlewares = [];
     protected int $index = -1;
     public ResponseInterface $response;

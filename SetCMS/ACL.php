@@ -16,7 +16,10 @@ class ACL extends LaminasAcl implements \UUA\ContainerConstructInterface
         $this->setup($container->get('acl'));
     }
 
-    private function setup(array $setup)
+    /**
+     * @param array<string, mixed> $setup
+     */
+    private function setup(array $setup): void
     {
         foreach ($setup['roles'] as $role => $parents) {
             $this->addRole($role, $parents);

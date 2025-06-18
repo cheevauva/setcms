@@ -25,11 +25,11 @@ abstract class ControllerViaPSR7 extends Controller
     {
         parent::from($object);
 
-        if ($object instanceof View && $object->response) {
+        if ($object instanceof View && isset($object->response)) {
             $this->response = $object->response;
         }
 
-        if ($object instanceof Responder && $object->response) {
+        if ($object instanceof Responder && isset($object->response)) {
             $this->response = $object->response;
         }
     }

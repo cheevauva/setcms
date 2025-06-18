@@ -125,7 +125,7 @@ abstract class Controller extends Unit implements ContainerConstructInterface
             }
 
             if (!($unit instanceof Unit)) {
-                throw new ControllerUnitMustBeInstanceofUnitException($unit);
+                throw new ControllerUnitMustBeInstanceofUnitException(sprintf('%s должен быть наследником %s', get_class($unit), Unit::class));
             }
 
             $this->to($unit);

@@ -19,5 +19,5 @@ abstract class View extends \UUA\View
      * @var SplObjectStorage<object, mixed>
      */
     public SplObjectStorage $messages;
-    public protected(set) ?ResponseInterface $response = null;
+    public protected(set) ResponseInterface $response;
 }

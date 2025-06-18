@@ -31,6 +31,10 @@ class Router implements RouterInterface, \UUA\ContainerConstructInterface
         }
     }
 
+    /**
+     * 
+     * @return array<string, string>
+     */
     protected function rules(): array
     {
         return $this->container->get('routes');

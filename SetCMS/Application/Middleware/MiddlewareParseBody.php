@@ -17,7 +17,7 @@ class MiddlewareParseBody implements MiddlewareInterface, \UUA\ContainerConstruc
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $contentType = $request->getHeaderLine('Content-type') ?? '';
+        $contentType = $request->getHeaderLine('Content-type');
         $content = $request->getBody()->getContents();
 
         if (str_contains($contentType, 'application/json') && $content) {

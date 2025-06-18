@@ -10,7 +10,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\ControllerViaPSR7;
 use SetCMS\Application\Router\Router;
-use SetCMS\ResponseCollection;
 use SetCMS\View\ViewNoContent;
 use SetCMS\View\ViewNotFound;
 use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
