@@ -1,0 +1,17 @@
+{% extends scShortPath('layout.twig') %}
+{% import scShortPath('macros/forms.twig') as forms %}
+
+{% block content %}
+    <form class="setcms-form row g-0" 
+          setcms-action="{{ scLink('do_action', {module: 'User', action: 'doRegistration'}) }}" 
+          setcms-redirect="{{ scLink('home') }}"
+          >
+        {{ forms.input({entity: entity, name: 'username', type: 'text', label: 'Электронная почта'}) }}
+        {{ forms.input({entity: entity, name: 'password', type: 'password', label: 'Пароль'}) }}
+        {{ forms.input({entity: entity, name: 'password2', type: 'password', label: 'Пароль (еще раз)'}) }}
+        {% if useCaptcha %}
+            {{ forms.captcha({name: 'captcha', label: 'Код с картинки'}) }}
+        {% endif %}
+        {{ forms.submit({label: 'Зарегистрироваться'}) }}
+    </form>
+{% endblock %}

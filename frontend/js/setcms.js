@@ -18,7 +18,7 @@ jQuery().ready(function () {
     var handlers = {
         login: function (data) {
             if (data.result) {
-                setCookie('X-CSRF-Token', data.data.session, {
+                setCookie('X-CSRF-Token', data.data.sessionId, {
                     secure: true,
                     "max-age": 3600 * 24 * 365
                 });

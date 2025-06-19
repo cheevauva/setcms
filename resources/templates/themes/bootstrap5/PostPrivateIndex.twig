@@ -1,0 +1,112 @@
+{% extends scShortPath('layout_admin.twig') %}
+{% import scShortPath('macros/crud.twig') as crud %}
+
+{% block content_toolbar %}
+    <a href="{{ scLink('action_record_admin', {module: 'Post', action: 'new', 'id': scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
+{% endblock %}
+
+{% block content_title %}Посты{% endblock %}
+
+{% block content %}
+    {%  
+        set rows = [
+            {
+                type: 'header',
+                columns: [
+                    {
+                        type: 'checkbox',
+                        name: 'id',
+                        value: 'selectall',
+                        data: {test: 1}
+                    },
+                    {
+                        type: 'text',
+                        value: 'Алиас'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Тема'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Дата создания'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Дата изменения'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Действия'
+                    },
+                ]
+            }
+        ]
+    %}
+    {% for entity in posts %}
+        {%  
+            set rows = rows|merge([{
+                type: 'row',
+                columns: [
+                    {
+                        name: 'id[]',
+                        type: 'checkbox',
+                        value: entity.id.uuid,
+                        data: {test: 1}
+                    },
+                    {
+                        type: 'text',
+                        value: entity.slug
+                    },
+                    {
+                        type: 'text',
+                        value: entity.title
+                    },
+                    {
+                        type: 'text',
+                        value: entity.dateCreated.format('d.m.Y H:i:s')
+                    },
+                    {
+                        type: 'text',
+                        value: entity.dateModified.format('d.m.Y H:i:s')
+                    },
+                    {
+                        name: 'actions',
+                        type: 'actions',
+                        actions: [
+                            {
+                                label: 'Просмотр',
+                                route: 'action_record_admin',
+                                params: {
+                                    module: 'Post', 
+                                    action: 'read',
+                                    id: entity.id
+                                }
+                            },
+                            {
+                                label: 'Просмотр 2',
+                                route: 'post_read_by_slug',
+                                params: {
+                                    module: 'Post', 
+                                    action: 'readBySlug',
+                                    slug: entity.slug
+                                }
+                            },
+                            {
+                                label: 'Редактировать',
+                                route: 'action_record_admin',
+                                params: {
+                                    module: 'Post', 
+                                    action: 'edit',
+                                    id: entity.id
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }])
+        %}
+    {% endfor %}
+
+    {{ crud.listview({rows: rows})  }}
+{% endblock %}

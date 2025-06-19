@@ -18,6 +18,6 @@ while (true) {
 require_once ROOT_PATH . '/bootstrap.php';
 $namespace = (new \ReflectionClass(Migration20220430204715Version::class))->getNamespaceName();
 $directory = dirname((new \ReflectionClass(Migration20220430204715Version::class))->getFileName());
-$connection = $container->get(DatabaseMainConnection::class);
+$connection = DatabaseMainConnection::singleton($container)->getConnection();
 
 require __DIR__ . '/migrations.php';

@@ -2,9 +2,16 @@
 
 declare(strict_types=1);
 
-use SetCMS\Module\Menu\Controller\MenuPublicController;
-use SetCMS\Module\Menu\Controller\MenuPrivateController;
+use SetCMS\Module\Menu\Controller\MenuPublicReadByContextController;
+use SetCMS\Module\Menu\Controller\MenuPublicReadBySlugController;
+use SetCMS\Module\Menu\Controller\MenuPrivateAdminMenuController;
+use SetCMS\Module\Menu\Controller\MenuPublicMainController;
+use SetCMS\Module\Menu\Controller\MenuPublicMainSubController;
+use SetCMS\Module\Menu\Controller\MenuPublicActionsController;
 
-$routes['menu_read_by_context'] = MenuPublicController::toRoute('GET', '/menu/for/context')->readByContext();
-$routes['menu_read_by_slug'] = MenuPublicController::toRoute('GET', '/menu/for/[a:slug]')->readBySlug();
-$routes['admin_menu'] = MenuPrivateController::toRoute('GET', '/~/menu')->adminMemu();
+$routes['SETCMS /menu/for/context menu_read_by_context'] = MenuPublicReadByContextController::class;
+$routes['SETCMS /menu/for/main menuMain'] = MenuPublicMainController::class;
+$routes['SETCMS /menu/for/submain menuMainSub'] = MenuPublicMainSubController::class;
+$routes['SETCMS /menu/for/actions menuActions'] = MenuPublicActionsController::class;
+$routes['SETCMS /menu/for/[a:slug] menu_read_by_slug'] = MenuPublicReadBySlugController::class;
+$routes['SETCMS /~/menu admin_menu'] = MenuPrivateAdminMenuController::class;

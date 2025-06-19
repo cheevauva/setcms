@@ -1,0 +1,101 @@
+{% extends scShortPath('layout_admin.twig') %}
+{% import scShortPath('macros/crud.twig') as crud %}
+
+{% block content_toolbar %}
+
+{% endblock %}
+
+{% block content_title %}Пользователи{% endblock %}
+
+{% block content %}
+    {%  
+        set rows = [
+            {
+                type: 'header',
+                columns: [
+                    {
+                        type: 'checkbox',
+                        name: 'id',
+                        value: 'selectall'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Имя'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Роль'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Дата создания'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Дата изменения'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Действия'
+                    },
+                ]
+            }
+        ]
+    %}
+    {% for entity in users %}
+        {%  
+            set rows = rows|merge([{
+                type: 'row',
+                columns: [
+                    {
+                        name: 'id[]',
+                        type: 'checkbox',
+                        value: entity.id.uuid
+                    },
+                    {
+                        type: 'text',
+                        value: entity.username
+                    },
+                    {
+                        type: 'text',
+                        value: entity.role.value
+                    },
+                    {
+                        type: 'text',
+                        value: entity.dateCreated.format('d.m.Y H:i:s')
+                    },
+                    {
+                        type: 'text',
+                        value: entity.dateModified.format('d.m.Y H:i:s')
+                    },
+                    {
+                        name: 'actions',
+                        type: 'actions',
+                        actions: [
+                            {
+                                label: 'Просмотр',
+                                route: 'action_record_admin',
+                                params: {
+                                    module: 'User', 
+                                    action: 'read',
+                                    id: entity.id
+                                }
+                            },
+                            {
+                                label: 'Редактировать',
+                                route: 'action_record_admin',
+                                params: {
+                                    module: 'User', 
+                                    action: 'edit',
+                                    id: entity.id
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }])
+        %}
+    {% endfor %}
+
+    {{ crud.listview({rows: rows})  }}
+{% endblock %}

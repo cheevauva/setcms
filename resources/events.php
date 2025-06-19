@@ -1,22 +1,13 @@
 <?php
 
 $events = [
-    SetCMS\Controller\Hook\ParseBodyHook::class => [
-        SetCMS\Servant\ParseBodyRequestServant::class,
-    ],
     SetCMS\Module\User\Event\UserRegistrationEvent::class => [
     ],
-    SetCMS\Controller\Hook\ScopeProtectionHook::class => [
-        \SetCMS\Module\User\Servant\UserProtectScopeServant::class,
+    SetCMS\Controller\Event\ControllerOnBeforeServeEvent::class => [
+        [SetCMS\Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant::class, \SetCMS\Module\ACL\Symbiont\ACLUserScopeProtectionSymbiont::class],
     ],
-    \SetCMS\Controller\Hook\FrontControllerResolveHook::class => [
-        \SetCMS\Module\User\Servant\UserGuestServant::class,
-        \SetCMS\Module\UserSession\Servant\UserSessionRetrieveUserServant::class,
-    ],
-    SetCMS\View\Hook\ViewRenderHook::class => [
-        \SetCMS\Servant\ViewCompositeRender::class,
-        \SetCMS\Servant\ViewTwigRender::class,
-        \SetCMS\Servant\ViewJsonRender::class,
+    \SetCMS\Event\AppErrorEvent::class => [
+        [\SetCMS\Logger\Servant\LoggerServant::class, \SetCMS\Logger\Symbiont\LoggerAppErrorSymbiont::class],
     ]
 ];
 

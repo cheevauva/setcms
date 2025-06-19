@@ -36,11 +36,11 @@
                                 <span class="navbar-toggler-icon"></span>
                             </button>
                         {% endif %}
-                        {{ scRender('/block/PublicMainMenu.twig', scCall('/menu/for/main')) }}
+                        {{ scRender('/menu/for/main') }}
                     </div>
                 </nav>
             </header>
-            {{ scRender('/block/PublicSubMainMenu.twig', scCall('/menu/for/submain')) }}
+            {{ scRender('/menu/for/submain') }}
         </div>
         <main class="container">
             <div class="row g-5">
@@ -48,8 +48,13 @@
                     {% block content %}{% endblock %}
                 </div>
                 <div class="col-md-4">
-                    {{ scRender('/block/PublicActionMenu.twig', scCall('/menu/for/main')) }}
-                    {{ scRender('/block/PublicContextActions.twig', scCall('/menu/for/context')) }}
+                    <div class="position-sticky">
+                        <div class="p-4 mb-3 bg-light rounded">
+                            {{ scRender('/page/block/demo') }}
+                        </div>
+                    </div>
+                    {{ scRender('/menu/for/actions') }}
+                    {{ scRender('/menu/for/context') }}
                 </div>
             </div>
         </main>
