@@ -19,8 +19,19 @@ abstract class Controller extends Unit implements ContainerConstructInterface
     use \UUA\Traits\EventDispatcherTrait;
     use \UUA\Traits\EnvTrait;
 
+    /**
+     * @var array<string, mixed|object>
+     */
     public array $ctx = [];
+
+    /**
+     * @var SplObjectStorage<\Throwable|object, mixed>
+     */
     protected SplObjectStorage $messages;
+
+    /**
+     * @var SplObjectStorage<\Throwable, mixed>
+     */
     protected SplObjectStorage $exceptions;
 
     abstract protected function process(): void;

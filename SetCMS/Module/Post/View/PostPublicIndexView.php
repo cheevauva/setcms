@@ -12,5 +12,5 @@ class PostPublicIndexView extends ViewTwig
     /**
      * @var \SetCMS\Module\Post\PostEntity[]
      */
-    public array $entities = [];
+    public array $posts = [];
 }

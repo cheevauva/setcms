@@ -10,6 +10,10 @@ class LoggerServant extends \UUA\Servant
     public string $loggerChannel;
     public string $loggerLevel;
     public string $message;
+
+    /**
+     * @var array<int|string, mixed>
+     */
     public array $context = [];
 
     #[\Override]

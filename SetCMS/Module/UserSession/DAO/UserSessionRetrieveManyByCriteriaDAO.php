@@ -15,14 +15,14 @@ class UserSessionRetrieveManyByCriteriaDAO extends EntityRetrieveManyByCriteriaD
     /**
      * @var UserSessionEntity[]
      */
-    public array $sessions;
+    public array $sessions; 
     public ?UserSessionEntity $session;
 
     public function serve(): void
     {
         parent::serve();
 
-        $this->sessions = $this->entities;
         $this->session = $this->first ? UserSessionEntity::as($this->first) : null;
+        $this->sessions = UserSessionEntity::manyAs($this->entities);
     }
 }

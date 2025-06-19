@@ -11,13 +11,21 @@ use SetCMS\UUID;
 abstract class EntityRetrieveManyByCriteriaDAO extends EntityCommonDAO
 {
 
+    /**
+     * @var array<string, mixed>
+     */
     protected array $criteria = [];
     public ?Entity $first = null;
+
+    /**
+     * @var array<Entity>
+     */
     public array $entities = [];
     public UUID $id;
     public bool $deleted;
     public bool $orThrow = false;
 
+    #[\Override]
     public function serve(): void
     {
         $rows = $this->createQuery()->fetchAllAssociative();
@@ -30,6 +38,7 @@ abstract class EntityRetrieveManyByCriteriaDAO extends EntityCommonDAO
         $this->first = $this->entities[0] ?? null;
     }
 
+    #[\Override]
     protected function createQuery(): QueryBuilder
     {
         $qb = parent::createQuery();

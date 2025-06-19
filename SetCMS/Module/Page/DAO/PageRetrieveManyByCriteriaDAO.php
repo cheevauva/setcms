@@ -25,7 +25,7 @@ class PageRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveMan
     {
         parent::serve();
 
-        $this->pages = $this->entities;
+        $this->pages = PageEntity::manyAs($this->entities);
         $this->page = $this->first ? PageEntity::as($this->first): null;
     }
 

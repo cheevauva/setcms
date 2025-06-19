@@ -32,7 +32,7 @@ class PostRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveMan
 
         parent::serve();
 
-        $this->posts = $this->entities;
+        $this->posts = PostEntity::manyAs($this->entities);
         $this->post = $this->first ? PostEntity::as($this->first) : null;
     }
 }

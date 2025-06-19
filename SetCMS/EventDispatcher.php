@@ -16,6 +16,10 @@ class EventDispatcher implements EventDispatcherInterface, \UUA\ContainerConstru
     use \UUA\Traits\AsTrait;
     use \UUA\Traits\ContainerTrait;
 
+    /**
+     * 
+     * @var array<string, array<string>>
+     */
     protected array $listeners = [];
 
     #[\Override]
@@ -30,8 +34,10 @@ class EventDispatcher implements EventDispatcherInterface, \UUA\ContainerConstru
         }
     }
 
-    protected function callListeners(iterable $listeners, string $eventName, object $event): void
+    protected function callListeners(string $eventName, object $event): void
     {
+        $listeners = $this->listeners[get_class($event)] ?? [];
+        
         foreach ($listeners as $listener) {
             if ($event instanceof StoppableEventInterface && $event->isPropagationStopped()) {
                 break;
@@ -57,15 +63,10 @@ class EventDispatcher implements EventDispatcherInterface, \UUA\ContainerConstru
         }
     }
 
-    public static function instance(): self
-    {
-        return static::$instance;
-    }
-
     #[\Override]
     public function dispatch(object $event): object
     {
-        $this->callListeners($this->listeners[get_class($event)], get_class($event), $event);
+        $this->callListeners(get_class($event), $event);
         
         return $event;
     }

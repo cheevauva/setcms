@@ -8,6 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\View;
 use SetCMS\Responder;
+use UUA\Unit;
 
 abstract class ControllerViaPSR7 extends Controller
 {
@@ -51,7 +52,7 @@ abstract class ControllerViaPSR7 extends Controller
     }
 
     /**
-     * @return string[]
+     * @return array<string|Unit>
      */
     protected function domainUnits(): array
     {
@@ -59,7 +60,7 @@ abstract class ControllerViaPSR7 extends Controller
     }
 
     /**
-     * @return string[]
+     * @return array<string|Unit>
      */
     protected function viewUnits(): array
     {

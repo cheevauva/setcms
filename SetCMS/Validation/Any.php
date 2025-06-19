@@ -17,7 +17,7 @@ class Any
     /**
      * @param array<int|string|mixed> $data
      * @param string $path
-     * @param SplObjectStorage<\Throwable, mixed> $messages
+     * @param SplObjectStorage<\Throwable|object, mixed> $messages
      */
     public function __construct(array $data, protected string $path, protected SplObjectStorage $messages)
     {

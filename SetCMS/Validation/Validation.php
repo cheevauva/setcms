@@ -11,7 +11,7 @@ class Validation
 
     /**
      * @param array<int|string, mixed> $data
-     * @param \SplObjectStorage<\Throwable,string> $messages
+     * @param \SplObjectStorage<\Throwable|object, mixed> $messages
      */
     public function __construct(protected array $data, protected SplObjectStorage $messages)
     {

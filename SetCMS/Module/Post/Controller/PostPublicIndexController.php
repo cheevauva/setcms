@@ -15,7 +15,7 @@ class PostPublicIndexController extends ControllerViaPSR7
     /**
      * @var PostEntity[]
      */
-    protected array $entities = [];
+    protected array $posts = [];
 
     #[\Override]
     protected function domainUnits(): array
@@ -39,7 +39,7 @@ class PostPublicIndexController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
-            $this->entities = $object->entities;
+            $this->posts = $object->posts;
         }
     }
 
@@ -49,7 +49,7 @@ class PostPublicIndexController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof PostPublicIndexView) {
-            $object->entities = $this->entities;
+            $object->posts = $this->posts;
         }
     }
 }

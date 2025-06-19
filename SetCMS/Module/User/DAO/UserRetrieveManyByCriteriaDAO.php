@@ -27,7 +27,7 @@ class UserRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveMan
 
         parent::serve();
 
-        $this->users = $this->entities;
+        $this->users = UserEntity::manyAs($this->entities);
         $this->user = $this->first ? UserEntity::as($this->first) : null;
     }
 }

@@ -24,6 +24,6 @@ class MenuRetrieveManyByCriteriaDAO extends EntityRetrieveByIdDAO
         parent::serve();
 
         $this->menu = $this->first ? MenuEntity::as($this->first) : null;
-        $this->menus = $this->entities;
+        $this->menus = MenuEntity::manyAs($this->entities);
     }
 }

@@ -22,7 +22,7 @@ class Entity01RetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetriev
     {
         parent::serve();
 
-        $this->Entity01LCs = $this->entities;
+        $this->Entity01LCs = Entity01Entity::manyAs($this->entities);
         $this->Entity01LC = $this->first ? Entity01Entity::as($this->first) : null;
     }
 }
