@@ -176,6 +176,10 @@ class CaptchaPublicGenerateView extends ViewJson
     {
         $value = (int) $value;
         
+        if ($value < 0 || $value > 255) {
+            throw new \RuntimeException('int<0, 255>');
+        }
+        
         return $value;
     }
 
