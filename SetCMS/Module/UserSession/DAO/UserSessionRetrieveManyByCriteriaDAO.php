@@ -7,17 +7,22 @@ namespace SetCMS\Module\UserSession\DAO;
 use SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO;
 use SetCMS\Module\UserSession\UserSessionEntity;
 
-class UserSessionRetrieveByIdDAO extends EntityRetrieveManyByCriteriaDAO
+class UserSessionRetrieveManyByCriteriaDAO extends EntityRetrieveManyByCriteriaDAO
 {
 
     use UserSessionGenericDAO;
 
+    /**
+     * @var UserSessionEntity[]
+     */
+    public array $sessions;
     public ?UserSessionEntity $session;
 
     public function serve(): void
     {
         parent::serve();
 
-        $this->session = $this->first;
+        $this->sessions = $this->entities;
+        $this->session = $this->first ? UserSessionEntity::as($this->first) : null;
     }
 }

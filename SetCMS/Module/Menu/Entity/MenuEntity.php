@@ -11,5 +11,8 @@ class MenuEntity extends Entity
 
     public string $label;
     public string $route;
+    /**
+     * @var array<string|int, mixed>
+     */
     public array $params = [];
 }

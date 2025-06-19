@@ -7,6 +7,7 @@ namespace SetCMS\Module\Menu\Controller;
 use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\Menu\Entity\MenuEntity;
 use SetCMS\UUID;
+use SetCMS\Module\Menu\Exception\MenuParamsInvalidJsonException;
 
 class MenuPrivateMenuScope extends ControllerViaPSR7
 {
@@ -29,12 +30,20 @@ class MenuPrivateMenuScope extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function validate(): \Iterator
+    protected function process(): void
     {
         if (!json_validate($this->params)) {
-            yield ['params', 'Невалидный json'];
+            throw new MenuParamsInvalidJsonException('Невалидный json');
         }
+    }
 
-        yield from parent::validate();
+    #[\Override]
+    protected function catch(\Throwable $object): void
+    {
+        parent::catch($object);
+
+        if ($object instanceof MenuParamsInvalidJsonException) {
+            $this->messages->attach($object, 'params');
+        }
     }
 }

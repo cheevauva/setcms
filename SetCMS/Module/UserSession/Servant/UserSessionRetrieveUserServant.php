@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace SetCMS\Module\UserSession\Servant;
 
 use SetCMS\UUID;
-use SetCMS\Module\UserSession\DAO\UserSessionRetrieveByIdDAO;
-use SetCMS\Module\User\DAO\UserRetrieveByIdDAO;
+use SetCMS\Module\UserSession\DAO\UserSessionRetrieveManyByCriteriaDAO;
+use SetCMS\Module\User\DAO\UserRetrieveManyByCriteriaDAO;
 use SetCMS\Module\UserSession\UserSessionEntity;
 use SetCMS\Module\User\Entity\UserEntity;
 
@@ -25,7 +25,7 @@ class UserSessionRetrieveUserServant extends \UUA\Servant
             return;
         }
 
-        $retrieveSession = UserSessionRetrieveByIdDAO::new($this->container);
+        $retrieveSession = UserSessionRetrieveManyByCriteriaDAO::new($this->container);
         $retrieveSession->id = $sessionId;
         $retrieveSession->serve();
 
@@ -33,7 +33,7 @@ class UserSessionRetrieveUserServant extends \UUA\Servant
             return;
         }
 
-        $retrieveUser = UserRetrieveByIdDAO::new($this->container);
+        $retrieveUser = UserRetrieveManyByCriteriaDAO::new($this->container);
         $retrieveUser->id = $retrieveSession->session->userId;
         $retrieveUser->serve();
 

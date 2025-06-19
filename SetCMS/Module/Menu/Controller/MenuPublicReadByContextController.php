@@ -48,6 +48,10 @@ class MenuPublicReadByContextController extends \SetCMS\ControllerViaPSR7
         }
     }
 
+    /**
+     * @param MenuActionEntity[] $actions
+     * @return void
+     */
     protected function appendActions(array $actions): void
     {
         $this->items = array_merge($this->items, $actions);

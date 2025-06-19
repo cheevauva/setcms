@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Module\Menu\Controller;
 
 use SetCMS\ControllerViaPSR7;
-use SetCMS\Module\Menu\DAO\MenuRetrieveManyDAO;
+use SetCMS\Module\Menu\DAO\MenuRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Menu\Entity\MenuEntity;
 
 class MenuPrivateIndexController extends ControllerViaPSR7
@@ -20,7 +20,7 @@ class MenuPrivateIndexController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
-            MenuRetrieveManyDAO::class,
+            MenuRetrieveManyByCriteriaDAO::class,
         ];
     }
 
@@ -29,8 +29,8 @@ class MenuPrivateIndexController extends ControllerViaPSR7
     {
         parent::from($object);
 
-        if ($object instanceof MenuRetrieveManyDAO) {
-            $this->entities = $object->entities;
+        if ($object instanceof MenuRetrieveManyByCriteriaDAO) {
+            $this->entities = $object->menus;
         }
     }
 }

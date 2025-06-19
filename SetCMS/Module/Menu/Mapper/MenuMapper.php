@@ -6,6 +6,7 @@ namespace SetCMS\Module\Menu\Mapper;
 
 use SetCMS\Common\Mapper\EntityMapper;
 use SetCMS\Module\Menu\Entity\MenuEntity;
+use SetCMS\Module\Menu\Exception\MenuMapperException;
 
 class MenuMapper extends EntityMapper
 {
@@ -28,8 +29,8 @@ class MenuMapper extends EntityMapper
         parent::entity4row();
 
         $entity = MenuEntity::as($this->entity);
-        $entity->label = $this->row['label'];
-        $entity->route = $this->row['route'];
-        $entity->params = json_decode($this->row['params'], true);
+        $entity->label = strval($this->row['label'] ?? throw new MenuMapperException('row.label обязателен'));
+        $entity->route = strval($this->row['route'] ?? throw new MenuMapperException('row.route обязателен'));
+        $entity->params = json_decode($this->row['params'] ?? throw new MenuMapperException('row.params обязателен'), true);
     }
 }

@@ -49,7 +49,7 @@ class UserPrivateUpdateController extends UserPrivateController
         parent::from($object);
 
         if ($object instanceof UserRetrieveManyByCriteriaDAO) {
-            $this->user = $object->user;
+            $this->user = UserEntity::as($object->user);
             $this->user->role = $this->newUser->role;
         }
     }

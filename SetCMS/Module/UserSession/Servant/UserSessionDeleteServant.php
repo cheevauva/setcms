@@ -6,7 +6,7 @@ namespace SetCMS\Module\UserSession\Servant;
 
 use SetCMS\UUID;
 use SetCMS\Module\UserSession\UserSessionEntity;
-use SetCMS\Module\UserSession\DAO\UserSessionRetrieveByIdDAO;
+use SetCMS\Module\UserSession\DAO\UserSessionRetrieveManyByCriteriaDAO;
 use SetCMS\Module\UserSession\DAO\UserSessionSaveDAO;
 use SetCMS\Module\UserSession\Exception\UserSessionNotFoundException;
 
@@ -24,7 +24,7 @@ class UserSessionDeleteServant extends \UUA\Servant
             throw new \RuntimeException('sessionId не определён');
         }
 
-        $retrieveById = UserSessionRetrieveByIdDAO::new($this->container);
+        $retrieveById = UserSessionRetrieveManyByCriteriaDAO::new($this->container);
         $retrieveById->id = $sessionId;
         $retrieveById->serve();
 
