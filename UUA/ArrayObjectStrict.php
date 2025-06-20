@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace UUA;
 
 /**
- *  @extends \ArrayObject<string, string>
+ * @extends \ArrayObject<string, string>
  */
 class ArrayObjectStrict extends \ArrayObject
 {

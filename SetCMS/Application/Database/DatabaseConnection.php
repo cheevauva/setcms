@@ -6,13 +6,13 @@ namespace SetCMS\Application\Database;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use PDO;
 
 abstract class DatabaseConnection implements \UUA\ContainerConstructInterface
 {
 
     use \UUA\Traits\BuildTrait;
     use \UUA\Traits\ContainerTrait;
+    use \UUA\Traits\EnvTrait;
 
     protected Connection $connection;
 
@@ -23,24 +23,25 @@ abstract class DatabaseConnection implements \UUA\ContainerConstructInterface
         }
 
         $prefix = mb_strtoupper((new \ReflectionClass($this))->getShortName()) . '_';
-        $env = new \UUA\ArrayObjectStrict($this->container->get('env'));
+        $env = $this->env();
+        $driver = strval($env[$prefix . 'DRIVER']);
 
-        switch ($env[$prefix . 'DRIVER']) {
+        switch ($driver) {
             case 'pdo_sqlite':
                 $params = [
                     'path' => sprintf('%s/%s', $this->container->get('basePath'), $env[$prefix . 'PATH']),
-                    'driver' => $env[$prefix . 'DRIVER'],
+                    'driver' => $driver,
                     'charset' => 'UTF8',
                 ];
                 break;
             case 'pdo_pgsql':
             case 'pdo_mysql':
                 $params = [
-                    'dbname' => $env[$prefix . 'DBNAME'],
-                    'user' => $env[$prefix . 'USER'],
-                    'password' => $env[$prefix . 'PASSWORD'],
-                    'host' => $env[$prefix . 'HOST'],
-                    'driver' => $env[$prefix . 'DRIVER'],
+                    'dbname' => strval($env[$prefix . 'DBNAME']),
+                    'user' => strval($env[$prefix . 'USER']),
+                    'password' => strval($env[$prefix . 'PASSWORD']),
+                    'host' => strval($env[$prefix . 'HOST']),
+                    'driver' => $driver,
                     'charset' => 'UTF8',
                 ];
                 break;
