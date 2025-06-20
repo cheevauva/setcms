@@ -72,6 +72,8 @@ $acl = [
                 \SetCMS\Module\Menu\Controller\MenuPrivateIndexController::class => true,
                 \SetCMS\Module\Menu\Controller\MenuPrivateEditController::class => true,
                 \SetCMS\Module\Menu\Controller\MenuPrivateCreateController::class => true,
+                \SetCMS\Module\Menu\Controller\MenuPrivateNewController::class => true,
+                \SetCMS\Module\Menu\Controller\MenuPrivateUpdateController::class => true,
                 \SetCMS\Module\Menu\Controller\MenuPublicReadByContextController::class => true,
             ],
         ],

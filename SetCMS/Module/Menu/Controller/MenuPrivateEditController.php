@@ -6,7 +6,6 @@ namespace SetCMS\Module\Menu\Controller;
 
 use SetCMS\ControllerViaPSR7;
 use SetCMS\UUID;
-use SetCMS\Attribute\Http\Parameter\Attributes;
 use SetCMS\Module\Menu\DAO\MenuRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Menu\Entity\MenuEntity;
 
@@ -15,7 +14,6 @@ class MenuPrivateEditController extends ControllerViaPSR7
 
     protected MenuEntity $menu;
 
-    #[Attributes('id')]
     public UUID $id;
 
     #[\Override]
