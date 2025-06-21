@@ -37,6 +37,7 @@ final class Migration20220430204715Version extends AbstractMigration
         $users->addColumn('username', 'string')->setLength(30);
         $users->addColumn('password', 'string')->setLength(255);
         $users->addColumn('role', 'string')->setLength(50);
+        $users->addColumn('extra', Types::JSON)->setDefault('{}');
 
         $this->addDefaultColumns($users);
 

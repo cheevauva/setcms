@@ -31,13 +31,14 @@ abstract class EntityRetrieveManyByCriteriaDAO extends EntityCommonDAO
         $rows = $this->createQuery()->fetchAllAssociative();
 
         if ($this->orThrow && empty($rows)) {
-            throw new \RuntimeException('Запись не найдена');
+            throw $this->notFoundExcecption();
         }
 
         $this->entities = $this->asEntities($rows);
         $this->first = $this->entities[0] ?? null;
     }
-    
+
+    abstract protected function notFoundExcecption(): \Throwable;
 
     #[\Override]
     protected function createQuery(): QueryBuilder

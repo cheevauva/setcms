@@ -6,6 +6,7 @@ namespace SetCMS\Module\UserSession\DAO;
 
 use SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO;
 use SetCMS\Module\UserSession\UserSessionEntity;
+use SetCMS\Module\UserSession\Exception\UserSessionNotFoundException;
 
 class UserSessionRetrieveManyByCriteriaDAO extends EntityRetrieveManyByCriteriaDAO
 {
@@ -24,5 +25,11 @@ class UserSessionRetrieveManyByCriteriaDAO extends EntityRetrieveManyByCriteriaD
 
         $this->session = $this->first ? UserSessionEntity::as($this->first) : null;
         $this->sessions = UserSessionEntity::manyAs($this->entities);
+    }
+
+    #[\Override]
+    protected function notFoundExcecption(): \Throwable
+    {
+        throw new UserSessionNotFoundException();
     }
 }

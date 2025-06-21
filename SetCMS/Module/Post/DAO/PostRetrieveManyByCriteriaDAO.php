@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Module\Post\DAO;
 
 use SetCMS\Module\Post\PostEntity;
+use SetCMS\Module\Post\Exception\PostNotFoundException;
 
 class PostRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO
 {
@@ -34,5 +35,11 @@ class PostRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveMan
 
         $this->posts = PostEntity::manyAs($this->entities);
         $this->post = $this->first ? PostEntity::as($this->first) : null;
+    }
+    
+    #[\Override]
+    protected function notFoundExcecption(): \Throwable
+    {
+        return new PostNotFoundException();
     }
 }

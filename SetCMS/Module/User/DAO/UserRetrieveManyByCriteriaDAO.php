@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace SetCMS\Module\User\DAO;
 
 use SetCMS\Module\User\Entity\UserEntity;
+use SetCMS\Module\User\Exception\UserNotFoundException;
 
 class UserRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO
 {
+
+    use UserCommonDAO;
 
     public string $email;
     public string $username;
@@ -18,8 +21,7 @@ class UserRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveMan
     public array $users;
     public ?UserEntity $user;
 
-    use UserCommonDAO;
-
+    #[\Override]
     public function serve(): void
     {
         if (isset($this->username)) {
@@ -34,5 +36,11 @@ class UserRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveMan
 
         $this->users = UserEntity::manyAs($this->entities);
         $this->user = $this->first ? UserEntity::as($this->first) : null;
+    }
+
+    #[\Override]
+    protected function notFoundExcecption(): UserNotFoundException
+    {
+        return new UserNotFoundException();
     }
 }

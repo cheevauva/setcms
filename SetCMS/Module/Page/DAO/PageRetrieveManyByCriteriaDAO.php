@@ -6,6 +6,7 @@ namespace SetCMS\Module\Page\DAO;
 
 use SetCMS\Module\Page\PageEntity;
 use Doctrine\DBAL\Query\QueryBuilder;
+use SetCMS\Module\Page\Exception\PageNotFoundException;
 
 class PageRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO
 {
@@ -26,7 +27,7 @@ class PageRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveMan
         parent::serve();
 
         $this->pages = PageEntity::manyAs($this->entities);
-        $this->page = $this->first ? PageEntity::as($this->first): null;
+        $this->page = $this->first ? PageEntity::as($this->first) : null;
     }
 
     #[\Override]
@@ -40,5 +41,11 @@ class PageRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveMan
         }
 
         return $qb;
+    }
+
+    #[\Override]
+    protected function notFoundExcecption(): \Throwable
+    {
+        return new PageNotFoundException();
     }
 }
