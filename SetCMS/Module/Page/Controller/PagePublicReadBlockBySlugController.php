@@ -13,7 +13,7 @@ class PagePublicReadBlockBySlugController extends \SetCMS\ControllerViaPSR7
 {
 
     protected string $slug;
-    protected PageEntity $page;
+    protected ?PageEntity $page = null;
 
     #[\Override]
     protected function domainUnits(): array
@@ -45,13 +45,14 @@ class PagePublicReadBlockBySlugController extends \SetCMS\ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof PageRetrieveManyByCriteriaDAO) {
-            $object->orThrow = true;
+            $object->orThrow = false;
             $object->slug = $this->slug;
             $object->limit = 1;
         }
 
         if ($object instanceof PagePublicReadBlockView) {
             $object->page = $this->page;
+            $object->slug = $this->slug;
         }
     }
 
@@ -61,7 +62,7 @@ class PagePublicReadBlockBySlugController extends \SetCMS\ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PageRetrieveManyByCriteriaDAO) {
-            $this->page = PageEntity::as($object->page);
+            $this->page = $object->page;
         }
     }
 }
