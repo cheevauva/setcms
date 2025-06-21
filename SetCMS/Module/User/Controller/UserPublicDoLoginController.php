@@ -21,6 +21,7 @@ class UserPublicDoLoginController extends ControllerViaPSR7
 
     protected string $username;
     protected string $password;
+    protected string $email;
     protected UUID $captcha;
     protected string $device;
     protected UserEntity $user;
@@ -62,7 +63,7 @@ class UserPublicDoLoginController extends ControllerViaPSR7
             'device' => $this->request->getHeaderLine('user-agent')
         ]);
 
-        $this->username = $validationBody->string('username')->notEmpty()->val();
+        $this->email = $validationBody->string('email')->notEmpty()->val();
         $this->password = $validationBody->string('password')->notEmpty()->val();
         $this->device = $validationHeaders->string('device')->notEmpty()->val();
 
@@ -82,7 +83,7 @@ class UserPublicDoLoginController extends ControllerViaPSR7
 
         if ($object instanceof UserLoginServant) {
             $object->password = $this->password;
-            $object->username = $this->username;
+            $object->email = $this->email;
         }
 
         if ($object instanceof UserSessionCreateByUserServant) {
@@ -103,6 +104,7 @@ class UserPublicDoLoginController extends ControllerViaPSR7
         if ($object instanceof UserLoginServant) {
             $this->user = $object->user;
         }
+        
         if ($object instanceof UserSessionCreateByUserServant) {
             $this->session = $object->session;
         }
@@ -114,7 +116,7 @@ class UserPublicDoLoginController extends ControllerViaPSR7
         parent::catch($object);
 
         if ($object instanceof UserNotFoundException) {
-            $this->messages->attach($object, 'username');
+            $this->messages->attach($object, 'email');
         }
 
         if ($object instanceof UserIncorrectPasswordException) {

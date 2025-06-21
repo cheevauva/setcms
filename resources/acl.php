@@ -25,6 +25,8 @@ $acl = [
                 \SetCMS\Module\User\Controller\UserPublicDoRegistrationController::class => true,
                 \SetCMS\Module\User\Controller\UserPublicProfileController::class => false,
                 \SetCMS\Module\User\Controller\UserInfoController::class => false,
+                \SetCMS\Module\User\Controller\UserPublicRestoreController::class => true,
+                \SetCMS\Module\User\Controller\UserPublicDoRestoreController::class => true,
                 // Post
                 \SetCMS\Module\Post\Controller\PostPublicIndexController::class => true,
                 \SetCMS\Module\Post\Controller\PostPublicReadBySlugController::class => true,
@@ -42,6 +44,8 @@ $acl = [
                 \SetCMS\Module\User\Controller\UserPublicLogoutController::class => true,
                 \SetCMS\Module\User\Controller\UserPublicLoginController::class => false,
                 \SetCMS\Module\User\Controller\UserPublicDoLoginController::class => false,
+                \SetCMS\Module\User\Controller\UserPublicRestoreController::class => false,
+                \SetCMS\Module\User\Controller\UserPublicDoRestoreController::class => false,
             ],
         ],
         UserRoleEnum::ADMIN->toString() => [

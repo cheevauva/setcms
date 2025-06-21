@@ -21,6 +21,7 @@ final class Migration20241208220051Version extends AbstractMigration
         INSERT INTO users 
         (
             username,
+            email,
             password, 
             role,
             id,
@@ -32,6 +33,7 @@ final class Migration20241208220051Version extends AbstractMigration
         VALUES 
         (
             'admin',
+            'admin@admin',
             '$2y$12$5tfZoh2e0GCjShqeVybxsOJI7PdPRGdge8sxz2q0MNiwTNjRimoqO',
             'admin',
             'c5e35038-4d12-4d90-be57-f4eb1a45fe35',	

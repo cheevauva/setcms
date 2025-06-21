@@ -6,11 +6,11 @@
           setcms-action="{{ scLink('do_action', {module: 'User', action: 'doRegistration'}) }}" 
           setcms-redirect="{{ scLink('home') }}"
           >
-        {{ forms.input({entity: entity, name: 'username', type: 'text', label: 'Электронная почта'}) }}
-        {{ forms.input({entity: entity, name: 'password', type: 'password', label: 'Пароль'}) }}
-        {{ forms.input({entity: entity, name: 'password2', type: 'password', label: 'Пароль (еще раз)'}) }}
+        {{ forms.input({entity: entity, name: 'email', type: 'text', placeholder: 'Электронная почта'}) }}
+        {{ forms.input({entity: entity, name: 'password', type: 'password', placeholder: 'Пароль'}) }}
+        {{ forms.input({entity: entity, name: 'password2', type: 'password', placeholder: 'Пароль (еще раз)'}) }}
         {% if useCaptcha %}
-            {{ forms.captcha({name: 'captcha', label: 'Код с картинки'}) }}
+            {{ forms.captcha({name: 'captcha', placeholder: 'Код с картинки'}) }}
         {% endif %}
         {{ forms.submit({label: 'Зарегистрироваться'}) }}
     </form>

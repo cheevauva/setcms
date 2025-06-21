@@ -19,6 +19,7 @@ class UserMapper extends \SetCMS\Common\Mapper\EntityMapper
         $this->row['username'] = $entity->username;
         $this->row['password'] = $entity->password;
         $this->row['role'] = $entity->role->value;
+        $this->row['email'] = $entity->email;
     }
 
     protected function entity4row(): void
@@ -28,6 +29,7 @@ class UserMapper extends \SetCMS\Common\Mapper\EntityMapper
         $entity = UserEntity::as($this->entity);
         $entity->username = strval($this->row['username'] ?? throw new \Exception('row.username not defined'));
         $entity->password = strval($this->row['password'] ?? throw new \Exception('row.password not defined'));
+        $entity->email = strval($this->row['email'] ?? throw new \Exception('row.email not defined'));
         $entity->role = UserRoleEnum::from(strval($this->row['role'] ?? throw new \Exception('row.role not defined')));
     }
 }

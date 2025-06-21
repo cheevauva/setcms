@@ -8,31 +8,31 @@ use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\Module\User\DAO\UserSaveDAO;
 use SetCMS\Module\User\DAO\UserRetrieveManyByCriteriaDAO;
 use SetCMS\Module\User\Event\UserRegistrationEvent;
-use SetCMS\Module\User\Enum\UserRoleEnum;
 use SetCMS\Module\User\Exception\UserAlreadyExistsException;
 
 class UserRegistrationServant extends \UUA\Servant
 {
 
-    public string $username;
+    public string $email;
     public string $password;
     public UserEntity $user;
 
     public function serve(): void
     {
-        $retrieveByUsername = UserRetrieveManyByCriteriaDAO::new($this->container);
-        $retrieveByUsername->limit = 1;
-        $retrieveByUsername->username = $this->username;
-        $retrieveByUsername->serve();
+        $retrieveUser = UserRetrieveManyByCriteriaDAO::new($this->container);
+        $retrieveUser->limit = 1;
+        $retrieveUser->email = $this->email;
+        $retrieveUser->serve();
 
-        if (!empty($retrieveByUsername->first)) {
-            throw new UserAlreadyExistsException;
+        if (!empty($retrieveUser->user)) {
+            throw new UserAlreadyExistsException();
         }
 
-        $user = new UserEntity;
-        $user->username = $this->username;
+        $user = new UserEntity();
+        $user->email = $this->email;
+        $user->username = sprintf('user_%s_%s', date('YmdHis'), rand(100, 1000));
         $user->password = password_hash($this->password, PASSWORD_DEFAULT);
-        $user->role = UserRoleEnum::USER;
+        $user->role = $user->role::USER;
 
         $saveUser = UserSaveDAO::new($this->container);
         $saveUser->user = $user;

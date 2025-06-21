@@ -9,6 +9,7 @@ use SetCMS\Module\User\Entity\UserEntity;
 class UserRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO
 {
 
+    public string $email;
     public string $username;
 
     /**
@@ -23,6 +24,10 @@ class UserRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveMan
     {
         if (isset($this->username)) {
             $this->criteria['username'] = $this->username;
+        }
+
+        if (isset($this->email)) {
+            $this->criteria['email'] = $this->email;
         }
 
         parent::serve();

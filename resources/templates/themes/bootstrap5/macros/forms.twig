@@ -12,6 +12,7 @@
                value="{{ value }}"
                class="form-control {% if params.model and not params.model.isValidField(params.name) %}is-invalid{% endif %}"  
                size="{{ params.size }}" 
+               title="{{ params.placeholder }}"
                placeholder="{{ params.placeholder }}" 
                data-data="{{ params.data|json_encode() }}"
                {% if params.disabled %}disabled="disabled"{% endif %}
@@ -49,7 +50,7 @@
     {% endif %}
     <div class="mb-2">
         {% if params.hiddenValue %}
-        <input name="{{ params.name }}" class="form-check-input" type="hidden" value="{{ params.hiddenValue|default('0') }}">
+            <input name="{{ params.name }}" class="form-check-input" type="hidden" value="{{ params.hiddenValue|default('0') }}">
         {% endif %}
         <input 
             name="{{ params.name }}" 
@@ -114,18 +115,22 @@
 {% endmacro %}
 
 {% macro captcha(params) %}
-    <div class="mb-2">
-        <div class="setcms-captcha row ml-0 pl-0">
-            <div class="col-md-8 ml-0 pl-0">
+    <div class="setcms-captcha">
+        <div class="mb-2">
+            <div class="row ml-0 pl-0">
+                <div class="col-md-8 mb-2">
+                    <img class="setcms-captcha-image" setcms-action="{{ scLink('do_action', {module: 'Captcha', action: 'generate'}) }}">
+                    <label class="form-label setcms-captcha-image-reload">⟳</label>
+                </div>
+            </div>
+        </div>
+        <div class="mb-2">
+            {% if params.label %}
                 <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
-                <input name="{{ params.name }}" type="hidden" value="" class="setcms-captcha-captcha-id" setcms-action="{{ scLink('do_action', {module: 'Captcha', action: 'solve'}) }}">
-                <input class="form-control setcms-captcha-solvedtext" data-data="{{ params.data|json_encode() }}"  type="text">
-                <div class="invalid-feedback"></div>
-            </div>
-            <div class="col-md-4 mb-2">
-                <label  class="form-label">Нажми на картинку чтобы обновить</label>
-                <img class="setcms-captcha-image" setcms-action="{{ scLink('do_action', {module: 'Captcha', action: 'generate'}) }}">
-            </div>
+            {% endif %}
+            <input name="{{ params.name }}" type="hidden" value="" class="setcms-captcha-captcha-id" setcms-action="{{ scLink('do_action', {module: 'Captcha', action: 'solve'}) }}">
+            <input class="form-control setcms-captcha-solvedtext" title="{{ params.placeholder }}" placeholder="{{ params.placeholder }}"  data-data="{{ params.data|json_encode() }}" type="text">
+            <div class="invalid-feedback"></div>
         </div>
     </div>
 {% endmacro %}

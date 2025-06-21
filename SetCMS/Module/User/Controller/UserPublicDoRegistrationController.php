@@ -18,7 +18,7 @@ use SetCMS\Module\User\View\UserPublicDoRegistrationView;
 class UserPublicDoRegistrationController extends ControllerViaPSR7
 {
 
-    public string $username;
+    public string $email;
     public string $password;
     public string $password2;
     public UUID $captcha;
@@ -55,7 +55,7 @@ class UserPublicDoRegistrationController extends ControllerViaPSR7
     {
         $validation = $this->validation($this->request->getParsedBody());
 
-        $this->username = $validation->string('username')->notEmpty()->val();
+        $this->email = $validation->string('email')->notEmpty()->val();
         $this->password = $validation->string('password')->notEmpty()->val();
         $this->password2 = $validation->string('password2')->notEmpty()->val();
 
@@ -82,7 +82,7 @@ class UserPublicDoRegistrationController extends ControllerViaPSR7
         }
 
         if ($object instanceof UserRegistrationServant) {
-            $object->username = $this->username;
+            $object->email = $this->email;
             $object->password = $this->password;
         }
     }
@@ -114,7 +114,7 @@ class UserPublicDoRegistrationController extends ControllerViaPSR7
         }
 
         if ($object instanceof UserAlreadyExistsException) {
-            $this->messages->attach($object, 'username');
+            $this->messages->attach($object, 'email');
         }
     }
 }

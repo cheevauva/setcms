@@ -33,6 +33,7 @@ final class Migration20220430204715Version extends AbstractMigration
         $this->addDefaultColumns($posts);
 
         $users = $schema->createTable(UserContstants::TABLE_NAME);
+        $users->addColumn('email', 'string')->setLength(254);
         $users->addColumn('username', 'string')->setLength(30);
         $users->addColumn('password', 'string')->setLength(255);
         $users->addColumn('role', 'string')->setLength(50);

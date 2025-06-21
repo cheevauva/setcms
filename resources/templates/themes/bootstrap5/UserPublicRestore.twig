@@ -3,18 +3,14 @@
 
 {% block content %}
     <form class="setcms-form row g-1" 
-          setcms-action="{{ scLink('do_action', {module: 'User', action: 'doLogin'}) }}"
-          setcms-redirect="{{ scLink('action', {module: 'User', action: 'profile'}) }}"
+          setcms-action="{{ scLink('do_action', {module: 'User', action: 'doRestore'}) }}"
+          setcms-redirect="{{ scLink('action', {module: 'User', action: 'doLogin'}) }}"
           setcms-handler="login"
           >
         {{ forms.input({name: 'email', placeholder: 'Электронная почта'}) }}
-        {{ forms.input({name: 'password', placeholder: 'Пароль', type: 'password'}) }}
         {% if useCaptcha %}
             {{ forms.captcha({name: 'captcha', label: 'Код с картинки'}) }}
         {% endif %}
-        <div class="mb-2">
-            <a href="{{ scLink('do_action', {module: 'User', action: 'restore'}) }}">Забыли пароль?</a>
-        </div>
         {{ forms.submit({label: 'Отправить'}) }}
     </form>
 {% endblock %}

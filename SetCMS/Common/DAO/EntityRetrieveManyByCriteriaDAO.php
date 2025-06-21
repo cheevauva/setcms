@@ -37,6 +37,7 @@ abstract class EntityRetrieveManyByCriteriaDAO extends EntityCommonDAO
         $this->entities = $this->asEntities($rows);
         $this->first = $this->entities[0] ?? null;
     }
+    
 
     #[\Override]
     protected function createQuery(): QueryBuilder

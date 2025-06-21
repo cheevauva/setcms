@@ -73,6 +73,7 @@ jQuery().ready(function () {
     $('.setcms-captcha').each(function (index, el) {
         var $captcha = $(el);
         var $image = $captcha.find('.setcms-captcha-image');
+        var $reload = $captcha.find('.setcms-captcha-image-reload');
         var $captchaId = $captcha.find('.setcms-captcha-captcha-id');
         var $captchaSolvedText = $captcha.find('.setcms-captcha-solvedtext');
 
@@ -91,6 +92,10 @@ jQuery().ready(function () {
                     }
                 });
             }
+        });
+        
+        $reload.on('click', function () {
+            $image.trigger('click');
         });
 
         $image.on('click', function () {

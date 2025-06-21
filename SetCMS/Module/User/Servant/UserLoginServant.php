@@ -12,22 +12,23 @@ use SetCMS\Module\User\Entity\UserEntity;
 class UserLoginServant extends \UUA\Servant
 {
 
+    public string $email;
     public string $username;
     public string $password;
     public UserEntity $user;
 
     public function serve(): void
     {
-        $retrieveByUsername = UserRetrieveManyByCriteriaDAO::new($this->container);
-        $retrieveByUsername->limit = 1;
-        $retrieveByUsername->username = $this->username;
-        $retrieveByUsername->serve();
+        $retriveUser = UserRetrieveManyByCriteriaDAO::new($this->container);
+        $retriveUser->limit = 1;
+        $retriveUser->email = $this->email;
+        $retriveUser->serve();
 
-        if (empty($retrieveByUsername->first)) {
-            throw new UserNotFoundException;
+        if (empty($retriveUser->user)) {
+            throw new UserNotFoundException();
         }
 
-        $user = UserEntity::as($retrieveByUsername->first);
+        $user = UserEntity::as($retriveUser->user);
 
         if (!password_verify($this->password, $user->password)) {
             throw new UserIncorrectPasswordException;
