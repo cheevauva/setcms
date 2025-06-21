@@ -1,4 +1,4 @@
-{% extends scShortPath('layout_admin.twig') %}
+{% extends scShortPath(layout ?? 'layout_admin.twig') %}
 {% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_title %}{% if Entity01LC.id %}Редактировать{% else %}Создать{% endif %} страницу{% endblock %}

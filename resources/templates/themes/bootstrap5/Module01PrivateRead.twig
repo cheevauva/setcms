@@ -1,4 +1,4 @@
-{% extends scShortPath('layout_admin.twig') %}
+{% extends scShortPath(layout ?? 'layout_admin.twig') %}
 
 {% block title %}{{ options.title }} - {{ Entity01LC.title }}{% endblock %}
 

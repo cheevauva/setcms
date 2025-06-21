@@ -1,4 +1,4 @@
-{% extends scShortPath('layout.twig') %}
+{% extends scShortPath(layout ?? 'layout.twig') %}
 {% import scShortPath('macros/forms.twig') as forms %}
 
 {% block content %}
@@ -9,7 +9,7 @@
           >
         {{ forms.input({name: 'email', placeholder: 'Электронная почта'}) }}
         {% if useCaptcha %}
-            {{ forms.captcha({name: 'captcha', label: 'Код с картинки'}) }}
+            {{ forms.captcha({name: 'captcha', placeholder: 'Код с картинки'}) }}
         {% endif %}
         {{ forms.submit({label: 'Отправить'}) }}
     </form>

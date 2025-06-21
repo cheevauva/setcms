@@ -1,4 +1,4 @@
-{% extends scShortPath('layout_admin.twig') %}
+{% extends scShortPath(layout ?? 'layout_admin.twig') %}
 {% import scShortPath('macros/forms.twig') as forms %}
 
 {% block content_title %}{{ page.title }}{% endblock %}
