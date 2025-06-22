@@ -18,10 +18,10 @@ use SetCMS\Module\User\View\UserPublicDoRegistrationView;
 class UserPublicDoRegistrationController extends ControllerViaPSR7
 {
 
-    public string $email;
-    public string $password;
-    public string $password2;
-    public UUID $captcha;
+    protected string $email;
+    protected string $password;
+    protected string $password2;
+    protected UUID $captcha;
     protected UserEntity $user;
     protected bool $useCaptcha;
 

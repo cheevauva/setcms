@@ -13,8 +13,8 @@ use SetCMS\Module\Menu\Exception\MenuParamsInvalidJsonException;
 class MenuPrivateUpdateController extends \SetCMS\ControllerViaPSR7
 {
 
-    public MenuEntity $menu;
-    public MenuEntity $newMenu;
+    protected MenuEntity $menu;
+    protected MenuEntity $newMenu;
 
     #[\Override]
     protected function domainUnits(): array

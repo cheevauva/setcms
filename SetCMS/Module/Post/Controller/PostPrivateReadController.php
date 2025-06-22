@@ -35,10 +35,9 @@ class PostPrivateReadController extends PostPrivateController
     #[\Override]
     protected function process(): void
     {
+        $validation = $this->validation(RouterMatchDTO::as($this->ctx['routerMatch'])->params);
 
-        $routerMatch = RouterMatchDTO::as($this->ctx['routerMatch']);
-
-        $this->id = $this->validation($routerMatch->params)->uuid('id')->notEmpty()->notQuiet()->val();
+        $this->id = $validation->uuid('id')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]

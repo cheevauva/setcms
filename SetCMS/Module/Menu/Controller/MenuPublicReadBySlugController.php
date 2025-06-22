@@ -9,7 +9,7 @@ use SetCMS\Module\Menu\DAO\MenuRetrieveManyBySlugDAO;
 class MenuPublicReadBySlugController extends \SetCMS\ControllerViaPSR7
 {
 
-    public string $slug;
+    protected string $slug;
 
     /**
      * @var array<mixed>
