@@ -19,8 +19,10 @@
             </button>
             <ul class="dropdown-menu">
                 {% for action in column.actions %}
-                    <li><a class="dropdown-item"  href="{{ scLink(action.route, action.params) }}">{{ action.label }}</a></li>
+                    {% if scHasAccess(action.route) %}
+                        <li><a class="dropdown-item"  href="{{ scLink(action.route, action.params) }}">{{ action.label }}</a></li>
 
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>

@@ -53,7 +53,7 @@ class Entity01PrivateCreateController extends ControllerViaPSR7
         }
 
         if ($object instanceof Entity01PrivateCreateView) {
-            $object->entity01LC = $this->Entity01LC;
+            $object->Entity01LC = $this->Entity01LC;
         }
     }
 }

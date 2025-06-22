@@ -2,6 +2,15 @@
 
 {% block title %}{{ options.title }} - {{ Entity01LC.title }}{% endblock %}
 
+{% block content_toolbar %}
+    {% if scHasAccess('AdminModule01Index') %}
+        <a href="{{ scLink('AdminModule01Index') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    {% endif %}
+    {% if scHasAccess('AdminModule01Edit') %}
+        <a href="{{ scLink('AdminModule01Edit', {id: Entity01LC.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    {% endif %}
+{% endblock %}
+
 {% block content %}
     {% if Entity01LC %}
         <article class="blog-Entity01LC">

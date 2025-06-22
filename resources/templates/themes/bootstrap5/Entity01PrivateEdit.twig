@@ -1,12 +1,12 @@
 {% extends scShortPath(layout ?? 'layout_admin.twig') %}
 {% import scShortPath('macros/crud.twig') as crud %}
 
-{% block content_title %}{% if Entity01LC.id %}Редактировать{% else %}Создать{% endif %} страницу{% endblock %}
+{% block content_title %}{% if Entity01LC.id %}Редактировать{% else %}Создать{% endif %}{% endblock %}
 {% block content %}
     {{ 
         crud.editview({
-            action: scLink(Entity01LC.id ? 'AdminModule01Update' : 'AdminModule01Create', {id: Entity01LC ? Entity01LC.id : scUUID() }),
-            redirect: scLink('AdminModule01Read', {'id': '${Entity01LC.id.uuid}'}),
+            action: scLink(Entity01LC.id ? 'AdminModule01Update' : 'AdminModule01Create', {id: (Entity01LC ? Entity01LC.id : scUUID()) }),
+            redirect: scLink('AdminModule01Read', {id: '${Entity01LC.id.uuid}'}),
             actions: {
                 fields: [
                     {
