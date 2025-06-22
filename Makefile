@@ -11,3 +11,4 @@ ps:;docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV
 phpstan:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php ../vendor/bin/phpstan analyse $(ARGS) -c ../phpstan.neon --memory-limit=2000M --no-progress
 phpstan_baseline:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php ../vendor/bin/phpstan analyse -c ../phpstan.neon --generate-baseline --memory-limit=512M -vv
 phpunit:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php ../vendor/phpunit/phpunit/phpunit -c ../phpunit.xml
+mig:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php php ../bin/migrations-main.php migrations:migrate

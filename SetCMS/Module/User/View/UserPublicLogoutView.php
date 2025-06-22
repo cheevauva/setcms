@@ -14,6 +14,6 @@ class UserPublicLogoutView extends View
     #[\Override]
     public function serve(): void
     {
-        $this->response = (new Response)->withStatus(302)->withHeader('Location', Router::singleton($this->container)->generate('home'));
+        $this->response = (new Response)->withStatus(302)->withHeader('Location', Router::singleton($this->container)->generate('Home'));
     }
 }

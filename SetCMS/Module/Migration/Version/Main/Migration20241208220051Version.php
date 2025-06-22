@@ -12,7 +12,7 @@ final class Migration20241208220051Version extends AbstractMigration
 
     public function getDescription(): string
     {
-        return 'admin:administrator';
+        return 'admin@admin:admin';
     }
 
     public function up(Schema $schema): void

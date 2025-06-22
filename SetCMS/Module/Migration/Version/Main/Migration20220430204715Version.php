@@ -10,6 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use SetCMS\Module\Post\PostConstrants;
 use SetCMS\Module\Page\PageConstrants;
 use SetCMS\Module\User\UserContstants;
+use SetCMS\Module\UserResetToken\UserResetTokenConstants;
 use SetCMS\Module\UserSession\UserSessionConstrants;
 
 final class Migration20220430204715Version extends AbstractMigration
@@ -40,6 +41,13 @@ final class Migration20220430204715Version extends AbstractMigration
         $users->addColumn('extra', Types::JSON)->setDefault('{}');
 
         $this->addDefaultColumns($users);
+
+        $usersResetToken = $schema->createTable(UserResetTokenConstants::TABLE_NAME);
+        $usersResetToken->addColumn('user_id', Types::GUID)->setNotnull(true);
+        $usersResetToken->addColumn('token', Types::GUID)->setNotnull(true);
+        $usersResetToken->addColumn('date_expired', Types::DATETIME_MUTABLE);
+
+        $this->addDefaultColumns($usersResetToken);
 
         $pages = $schema->createTable(PageConstrants::TABLE_NAME);
         $pages->addColumn('slug', 'string')->setLength(255);
