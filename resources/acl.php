@@ -15,7 +15,6 @@ $acl = [
     'rules' => [
         UserRoleEnum::GUEST->toString() => [
             'scope' => [
-                \SetCMS\Module\Dynamic\Controller\DynamicPublicController::class => true,
                 \SetCMS\Module\Captcha\Controller\CaptchaPublicGenerateController::class => true,
                 \SetCMS\Module\Captcha\Controller\CaptchaPublicSolveController::class => true,
                 // User
@@ -50,7 +49,6 @@ $acl = [
         ],
         UserRoleEnum::ADMIN->toString() => [
             'scope' => [
-                \SetCMS\Module\Dynamic\Controller\DynamicPrivateController::class => true,
                 //page
                 \SetCMS\Module\Page\Controller\PagePrivateNewController::class => true,
                 \SetCMS\Module\Page\Controller\PagePrivateCreateController::class => true,
