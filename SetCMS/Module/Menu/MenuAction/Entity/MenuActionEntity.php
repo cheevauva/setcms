@@ -13,5 +13,5 @@ class MenuActionEntity extends \SetCMS\Common\Entity\Entity
     /**
      * @var array<string, mixed>
      */
-    public array $params;
+    public array $params = [];
 }

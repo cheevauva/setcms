@@ -7,7 +7,7 @@
             Привет, {{ user.username }}!
         </div>
         <div class="mb-0">
-            <a href="{{ scLink('action', {module: 'User', action: 'logout'}) }}" class="btn btn-primary">Выйти</a>
+            <a href="{{ scLink('UserLogout') }}" class="btn btn-primary">Выйти</a>
         </div>
     </div>
 {% endblock %}

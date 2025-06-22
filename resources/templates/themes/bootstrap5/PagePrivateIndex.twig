@@ -2,7 +2,7 @@
 {% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_toolbar %}
-    <a href="{{ scLink('action_admin', {module: 'Page', action:'new'}) }}" class="btn btn-sm btn-outline-secondary">Создать страницу</a>
+    <a href="{{ scLink('AdminPageNew', {id: scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать страницу</a>
 {% endblock %}
 
 {% block content_title %}Страницы{% endblock %}
@@ -74,10 +74,8 @@
                         actions: [
                             {
                                 label: 'Просмотр',
-                                route: 'action_record_admin',
+                                route: 'AdminPageRead',
                                 params: {
-                                    module: 'Page', 
-                                    action: 'read',
                                     id: entity.id
                                 }
                             },
@@ -93,10 +91,8 @@
                             },
                             {
                                 label: 'Редактировать',
-                                route: 'action_record_admin',
+                                route: 'AdminPageEdit',
                                 params: {
-                                    module: 'Page', 
-                                    action: 'edit',
                                     id: entity.id
                                 }
                             }

@@ -74,19 +74,15 @@
                         actions: [
                             {
                                 label: 'Просмотр',
-                                route: 'action_record_admin',
+                                route: 'AdminUserRead',
                                 params: {
-                                    module: 'User', 
-                                    action: 'read',
                                     id: entity.id
                                 }
                             },
                             {
                                 label: 'Редактировать',
-                                route: 'action_record_admin',
+                                route: 'AdminUserEdit',
                                 params: {
-                                    module: 'User', 
-                                    action: 'edit',
                                     id: entity.id
                                 }
                             }

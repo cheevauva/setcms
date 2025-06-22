@@ -12,6 +12,8 @@ use SetCMS\Event\AppErrorEvent;
 use SetCMS\Application\Router\Router;
 use SetCMS\Application\Router\Exception\RouterNotFoundException;
 use Laminas\Diactoros\Response;
+use SetCMS\Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
+use SetCMS\Module\User\Entity\UserEntity;
 
 abstract class ViewHtml extends \SetCMS\View
 {
@@ -41,7 +43,7 @@ abstract class ViewHtml extends \SetCMS\View
 
         $this->assign('scope', $this);
         $this->assign('ctx', $this->ctx);
-        
+
         $this->registerFunctions();
 
         foreach ($this->vars as $v => $vv) {
@@ -66,6 +68,7 @@ abstract class ViewHtml extends \SetCMS\View
         $this->addFunction('scLongPath', \Closure::fromCallable([$this, 'scLongPath']));
         $this->addFunction('scShortPath', \Closure::fromCallable([$this, 'scShortPath']));
         $this->addFunction('scBaseUrl', \Closure::fromCallable([$this, 'scBaseUrl']));
+        $this->addFunction('scHasAccess', \Closure::fromCallable([$this, 'scHasAccess']));
     }
 
     abstract protected function assign(string $name, mixed $value): void;
@@ -207,6 +210,17 @@ abstract class ViewHtml extends \SetCMS\View
         }
 
         return sprintf('themes/%s/%s', $this->theme(), $name);
+    }
+
+    protected function scHasAccess(string $route): bool
+    {
+        $checkRole = ACLCheckByRoleAndPrivilegeServant::new($this->container);
+        $checkRole->role = UserEntity::as($this->ctx['currentUser'])->role->value;
+        $checkRole->throwExceptions = false;
+        $checkRole->privilege = Router::singleton($this->container)->controllerByRoute($route);
+        $checkRole->serve();
+        
+        return $checkRole->isAllow;
     }
 
     protected function basePath(): string

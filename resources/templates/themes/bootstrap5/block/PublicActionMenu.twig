@@ -1,24 +1,25 @@
 <div class="position-sticky">
     <div class="p-4 mb-3 bg-light rounded">
-        {% if ctx.currentUser.role.isAdmin() or ctx.currentUser.role.isUser()  %}
+        {% if scHasAccess('UserProfile') %}
             Вы авторизованы, как {{ ctx.currentUser.username }}
             <br/>
         {% endif %}
         <span class="navbar-text">
-            {% if ctx.currentUser.role.isAdmin() %}
-                <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'profile'}) }}">Профиль</a>
+            {% if scHasAccess('UserLogin') %}
+                <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('UserLogin') }}">Вход</a>
+            {% endif %}
+            {% if scHasAccess('UserRegistration') %}
+                <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('UserRegistration') }}">Регистрация</a>
+            {% endif %}
+            {% if scHasAccess('UserProfile') %}
+                <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('UserProfile') }}">Профиль</a>
+            {% endif %}
+            {% if scHasAccess('home_admin') %}
                 <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('home_admin') }}">Администрирование</a>
-                <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'logout'}) }}">Выйти</a>
-            {% endif %}    
-            {% if ctx.currentUser.role.isUser() %}
-                <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'profile'}) }}">Профиль</a>
-                <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'logout'}) }}">Выйти</a>
             {% endif %}
-            {% if ctx.currentUser.role.isGuest() %}
-                <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'login'}) }}">Вход</a> 
-                <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('action', {module: 'User', action: 'registration'}) }}">Регистрация</a>
+            {% if scHasAccess('UserLogout') %}
+                <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('UserLogout') }}">Выйти</a>
             {% endif %}
-
         </span>
     </div>
 </div>

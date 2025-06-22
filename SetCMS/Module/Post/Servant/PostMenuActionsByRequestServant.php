@@ -10,6 +10,8 @@ use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\UUID;
 use SetCMS\Module\User\Entity\UserEntity;
+use SetCMS\Application\Router\Router;
+use SetCMS\Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
 
 class PostMenuActionsByRequestServant extends \UUA\Servant
 {
@@ -27,18 +29,19 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
     #[\Override]
     public function serve(): void
     {
-        $currentUser = UserEntity::as($this->ctx['currentUser']);
         $view = $this->ctx['view'] ?? null;
 
         if ($view instanceof PostPublicReadBySlugView) {
-            if ($currentUser->isAdmin()) {
-                $this->actions[] = $this->prepareEditAction($view->post->slug);
-            }
+            $this->actions[] = $this->prepareEditAction($view->post->slug);
         }
 
-        if ($currentUser->isAdmin()) {
-            $this->actions[] = $this->prepareIndexAction();
-            $this->actions[] = $this->prepareCreateAction();
+        $this->actions[] = $this->prepareIndexAction();
+        $this->actions[] = $this->prepareCreateAction();
+
+        foreach ($this->actions as $index => $action) {
+            if (!$this->hasAccess($action->route)) {
+                unset($this->actions[$index]);
+            }
         }
     }
 
@@ -46,11 +49,7 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
     {
         $indexAction = new MenuActionEntity();
         $indexAction->label = 'Список постов';
-        $indexAction->route = 'action_admin';
-        $indexAction->params = [
-            'module' => 'Post',
-            'action' => 'index',
-        ];
+        $indexAction->route = 'AdminPostIndex';
 
         return $indexAction;
     }
@@ -63,10 +62,8 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
 
         $editAction = new MenuActionEntity();
         $editAction->label = 'Редактировать пост';
-        $editAction->route = 'action_record_admin';
+        $editAction->route = 'AdminPostEdit';
         $editAction->params = [
-            'module' => 'Post',
-            'action' => 'edit',
             'id' => PostEntity::as($retrieveBySlug->post)->id->uuid,
         ];
 
@@ -77,13 +74,22 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
     {
         $createAction = new MenuActionEntity();
         $createAction->label = 'Создать пост';
-        $createAction->route = 'action_record_admin';
+        $createAction->route = 'AdminPostNew';
         $createAction->params = [
-            'module' => 'Post',
-            'action' => 'new',
             'id' => new UUID(),
         ];
 
         return $createAction;
+    }
+
+    protected function hasAccess(string $route): bool
+    {
+        $checkRole = ACLCheckByRoleAndPrivilegeServant::new($this->container);
+        $checkRole->role = UserEntity::as($this->ctx['currentUser'])->role->value;
+        $checkRole->throwExceptions = false;
+        $checkRole->privilege = Router::singleton($this->container)->controllerByRoute($route);
+        $checkRole->serve();
+
+        return $checkRole->isAllow;
     }
 }

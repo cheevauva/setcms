@@ -15,3 +15,4 @@ $routes['SETCMS /menu/for/submain menuMainSub'] = MenuPublicMainSubController::c
 $routes['SETCMS /menu/for/actions menuActions'] = MenuPublicActionsController::class;
 $routes['SETCMS /menu/for/[a:slug] menu_read_by_slug'] = MenuPublicReadBySlugController::class;
 $routes['SETCMS /~/menu admin_menu'] = MenuPrivateAdminMenuController::class;
+$routes['GET /~/menu/index AdminMenuIndex'] = \SetCMS\Module\Menu\Controller\MenuPrivateIndexController::class;

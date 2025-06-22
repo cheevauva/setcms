@@ -3,8 +3,8 @@
 
 {% block content %}
     <form class="setcms-form row g-0" 
-          setcms-action="{{ scLink('do_action', {module: 'User', action: 'doRegistration'}) }}" 
-          setcms-redirect="{{ scLink('home') }}"
+          setcms-action="{{ scLink('UserDoRegistration') }}" 
+          setcms-redirect="{{ scLink('UserDoLogin') }}"
           >
         {{ forms.input({entity: entity, name: 'email', type: 'text', placeholder: 'Электронная почта'}) }}
         {{ forms.input({entity: entity, name: 'password', type: 'password', placeholder: 'Пароль'}) }}

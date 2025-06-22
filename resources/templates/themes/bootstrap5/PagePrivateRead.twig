@@ -4,8 +4,8 @@
 {% block content_title %}{{ page.title }}{% endblock %}
 
 {% block content_toolbar %}
-    <a href="{{ scLink('action_admin', {module: 'Page', action: 'index'}) }}" class="btn btn-sm btn-outline-secondary">Список</a> 
-    <a href="{{ scLink('action_record_admin', {module: 'Page', action: 'edit', id: page.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    <a href="{{ scLink('AdminPageIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    <a href="{{ scLink('AdminPageEdit', {id: page.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
 {% endblock %}
 
 {% block content %}

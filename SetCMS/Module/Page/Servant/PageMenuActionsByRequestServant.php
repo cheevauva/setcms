@@ -10,6 +10,8 @@ use SetCMS\Module\Page\DAO\PageRetrieveManyByCriteriaDAO;
 use SetCMS\UUID;
 use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\Module\Page\PageEntity;
+use SetCMS\Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
+use SetCMS\Application\Router\Router;
 
 class PageMenuActionsByRequestServant extends \UUA\Servant
 {
@@ -18,7 +20,7 @@ class PageMenuActionsByRequestServant extends \UUA\Servant
      * @var MenuActionEntity[]
      */
     public array $actions = [];
-    
+
     /**
      * @var array<string, mixed>
      */
@@ -26,18 +28,19 @@ class PageMenuActionsByRequestServant extends \UUA\Servant
 
     public function serve(): void
     {
-        $currentUser = UserEntity::as($this->ctx['currentUser']);
         $view = $this->ctx['view'] ?? null;
 
         if ($view instanceof PagePublicReadView) {
-            if ($currentUser->isAdmin()) {
-                $this->actions[] = $this->prepareEditAction($view->page->slug);
-            }
+            $this->actions[] = $this->prepareEditAction($view->page->slug);
         }
 
-        if ($currentUser->isAdmin()) {
-            $this->actions[] = $this->prepareIndexAction();
-            $this->actions[] = $this->prepareCreateAction();
+        $this->actions[] = $this->prepareIndexAction();
+        $this->actions[] = $this->prepareCreateAction();
+        
+        foreach ($this->actions as $index => $action) {
+            if (!$this->hasAccess($action->route)) {
+                unset($this->actions[$index]);
+            }
         }
     }
 
@@ -45,11 +48,7 @@ class PageMenuActionsByRequestServant extends \UUA\Servant
     {
         $indexAction = new MenuActionEntity();
         $indexAction->label = 'Список страниц';
-        $indexAction->route = 'action_admin';
-        $indexAction->params = [
-            'module' => 'Page',
-            'action' => 'index',
-        ];
+        $indexAction->route = 'AdminPageIndex';
 
         return $indexAction;
     }
@@ -62,10 +61,8 @@ class PageMenuActionsByRequestServant extends \UUA\Servant
 
         $editAction = new MenuActionEntity();
         $editAction->label = 'Редактировать страницу';
-        $editAction->route = 'action_record_admin';
+        $editAction->route = 'AdminPageEdit';
         $editAction->params = [
-            'module' => 'Page',
-            'action' => 'edit',
             'id' => PageEntity::as($retrieveBySlug->page)->id->uuid,
         ];
 
@@ -76,13 +73,22 @@ class PageMenuActionsByRequestServant extends \UUA\Servant
     {
         $createAction = new MenuActionEntity();
         $createAction->label = 'Создать страницу';
-        $createAction->route = 'action_record_admin';
+        $createAction->route = 'AdminPageNew';
         $createAction->params = [
-            'module' => 'Page',
-            'action' => 'new',
             'id' => new UUID(),
         ];
 
         return $createAction;
+    }
+
+    protected function hasAccess(string $route): bool
+    {
+        $checkRole = ACLCheckByRoleAndPrivilegeServant::new($this->container);
+        $checkRole->role = UserEntity::as($this->ctx['currentUser'])->role->value;
+        $checkRole->throwExceptions = false;
+        $checkRole->privilege = Router::singleton($this->container)->controllerByRoute($route);
+        $checkRole->serve();
+
+        return $checkRole->isAllow;
     }
 }

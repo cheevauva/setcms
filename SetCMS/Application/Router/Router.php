@@ -16,6 +16,11 @@ class Router implements RouterInterface, \UUA\ContainerConstructInterface
 
     private AltoRouter $altoRouter;
     protected ContainerInterface $container;
+    
+    /**
+     * @var array<string, string>
+     */
+    protected array $routes = [];
 
     protected function init(): void
     {
@@ -28,6 +33,7 @@ class Router implements RouterInterface, \UUA\ContainerConstructInterface
         foreach ($this->rules() as $rule => $controller) {
             $route = explode(' ', $rule);
             $this->altoRouter->map($route[0], $route[1], $controller, $route[2]);
+            $this->routes[$route[2]] = $controller;
         }
     }
 
@@ -59,5 +65,10 @@ class Router implements RouterInterface, \UUA\ContainerConstructInterface
         $routerMatch->name = strval($result['name'] ?? throw new \RuntimeException('name is undefined'));
 
         return $routerMatch;
+    }
+
+    public function controllerByRoute(string $route): string
+    {
+        return $this->routes[$route] ?? throw new \RuntimeException(sprintf('%s не определен', $route));
     }
 }

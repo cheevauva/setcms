@@ -4,8 +4,8 @@
 {% block content_title %}{{ post.title }}{% endblock %}
 
 {% block content_toolbar %}
-    <a href="{{ scLink('action_admin', {module: 'Post', action: 'index'}) }}" class="btn btn-sm btn-outline-secondary">Список</a> 
-    <a href="{{ scLink('action_record_admin', {module: 'Post', action: 'edit', id: post.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    <a href="{{ scLink('AdminPostIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    <a href="{{ scLink('AdminPostEdit', {id: post.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
 {% endblock %}
 
 {% block content %}

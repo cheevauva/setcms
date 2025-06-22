@@ -11,7 +11,7 @@ abstract class View extends \UUA\View
 {
 
     /**
-     * @var array<string|object>
+     * @var array<string, mixed|object>
      */
     public array $ctx;
 

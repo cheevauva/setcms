@@ -5,8 +5,8 @@
 {% block content %}
     {{ 
         crud.editview({
-            action: scLink(page.id ? 'action_record_admin' : 'action_admin', {module: 'Page', action: page ? 'update': 'create', id: page.id}),
-            redirect: scLink('action_record_admin', {module: 'Page', action: 'read', 'id': '${page.id.uuid}'}),
+            action: scLink(page.id ? 'AdminPageUpdate' : 'AdminPageCreate', {id: page ? page.id : scUUID()}),
+            redirect: scLink('AdminPageRead', {'id': '${page.id.uuid}'}),
             actions: {
                 fields: [
                     {

@@ -119,7 +119,7 @@
         <div class="mb-2">
             <div class="row ml-0 pl-0">
                 <div class="col-md-8 mb-2">
-                    <img class="setcms-captcha-image" setcms-action="{{ scLink('do_action', {module: 'Captcha', action: 'generate'}) }}">
+                    <img class="setcms-captcha-image" setcms-action="{{ scLink('CaptchaGenerate') }}">
                     <label class="form-label setcms-captcha-image-reload">⟳</label>
                 </div>
             </div>
@@ -128,7 +128,7 @@
             {% if params.label %}
                 <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
             {% endif %}
-            <input name="{{ params.name }}" type="hidden" value="" class="setcms-captcha-captcha-id" setcms-action="{{ scLink('do_action', {module: 'Captcha', action: 'solve'}) }}">
+            <input name="{{ params.name }}" type="hidden" value="" class="setcms-captcha-captcha-id" setcms-action="{{ scLink('CaptchaSolve') }}">
             <input class="form-control setcms-captcha-solvedtext" title="{{ params.placeholder }}" placeholder="{{ params.placeholder }}"  data-data="{{ params.data|json_encode() }}" type="text">
             <div class="invalid-feedback"></div>
         </div>
