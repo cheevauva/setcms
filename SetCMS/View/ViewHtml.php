@@ -217,7 +217,7 @@ abstract class ViewHtml extends \SetCMS\View
         $checkRole = ACLCheckByRoleAndPrivilegeServant::new($this->container);
         $checkRole->role = UserEntity::as($this->ctx['currentUser'])->role->value;
         $checkRole->throwExceptions = false;
-        $checkRole->privilege = Router::singleton($this->container)->controllerByRoute($route);
+        $checkRole->privilege = $route;
         $checkRole->serve();
         
         return $checkRole->isAllow;

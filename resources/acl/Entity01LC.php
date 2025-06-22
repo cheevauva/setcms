@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use SetCMS\Module\User\Enum\UserRoleEnum;
+use SetCMS\Module\User\UserRoleConstants;
 
-$acl['rules'][UserRoleEnum::ADMIN->toString()]['scope'][\SetCMS\Module\Module01\Scope\Module01PrivateIndexScope::class] = true;
-$acl['rules'][UserRoleEnum::ADMIN->toString()]['scope'][\SetCMS\Module\Module01\Scope\Module01PrivateEditScope::class] = true;
-$acl['rules'][UserRoleEnum::ADMIN->toString()]['scope'][\SetCMS\Module\Module01\Scope\Module01PrivateReadScope::class] = true;
-$acl['rules'][UserRoleEnum::ADMIN->toString()]['scope'][\SetCMS\Module\Module01\Scope\Module01PrivateUpdateScope::class] = true;
-$acl['rules'][UserRoleEnum::ADMIN->toString()]['scope'][\SetCMS\Module\Module01\Scope\Module01PrivateCreateScope::class] = true;
+$acl['rules'][UserRoleConstants::ADMIN]['routes']['AdminModule01Index'] = true;
+$acl['rules'][UserRoleConstants::ADMIN]['routes']['AdminModule01Edit'] = true;
+$acl['rules'][UserRoleConstants::ADMIN]['routes']['AdminModule01Read'] = true;
+$acl['rules'][UserRoleConstants::ADMIN]['routes']['AdminModule01Update'] = true;
+$acl['rules'][UserRoleConstants::ADMIN]['routes']['AdminModule01Create'] = true;

@@ -14,8 +14,8 @@
             {% if scHasAccess('UserProfile') %}
                 <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('UserProfile') }}">Профиль</a>
             {% endif %}
-            {% if scHasAccess('homeAdmin') %}
-                <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('homeAdmin') }}">Администрирование</a>
+            {% if scHasAccess('AdminHome') %}
+                <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('AdminHome') }}">Администрирование</a>
             {% endif %}
             {% if scHasAccess('UserLogout') %}
                 <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('UserLogout') }}">Выйти</a>

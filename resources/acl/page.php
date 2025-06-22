@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use SetCMS\Module\User\Enum\UserRoleEnum;
+use SetCMS\Module\User\UserRoleConstants;
 
-$acl['rules'][UserRoleEnum::ADMIN->toString()]['scope'][\SetCMS\Module\Page\Controller\PagePrivateIndexController::class] = true;
-$acl['rules'][UserRoleEnum::ADMIN->toString()]['scope'][\SetCMS\Module\Page\Controller\PagePrivateCreateController::class] = true;
-$acl['rules'][UserRoleEnum::ADMIN->toString()]['scope'][\SetCMS\Module\Page\Controller\PagePrivateUpdateController::class] = true;
-$acl['rules'][UserRoleEnum::ADMIN->toString()]['scope'][\SetCMS\Module\Page\Controller\PagePrivateEditController::class] = true;
-$acl['rules'][UserRoleEnum::ADMIN->toString()]['scope'][\SetCMS\Module\Page\Controller\PagePrivateReadController::class] = true;
+$acl['rules'][UserRoleConstants::ADMIN]['routes']['AdminPageIndex'] = true;
+$acl['rules'][UserRoleConstants::ADMIN]['routes']['AdminPageCreate'] = true;
+$acl['rules'][UserRoleConstants::ADMIN]['routes']['AdminPageUpdate'] = true;
+$acl['rules'][UserRoleConstants::ADMIN]['routes']['AdminPageEdit'] = true;
+$acl['rules'][UserRoleConstants::ADMIN]['routes']['AdminPageRead'] = true;

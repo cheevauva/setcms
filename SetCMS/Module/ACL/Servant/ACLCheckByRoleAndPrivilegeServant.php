@@ -34,12 +34,13 @@ class ACLCheckByRoleAndPrivilegeServant extends \UUA\Servant
     {
         $acl = ACL::singleton($this->container);
 
-        if (!$acl->hasResource('scope')) {
-            throw new \RuntimeException(sprintf('Не найден ресурс "scope"'));
+        if (!$acl->hasResource('routes')) {
+            throw new \RuntimeException(sprintf('Не найден ресурс "routes"'));
         }
 
-        if (!$acl->isAllowed($this->role, 'scope', $this->privilege)) {
-            throw new \RuntimeException(sprintf('Для роли "%s" не разрешен доступ к привелегии "%s" ресурса "scope"', $this->role, $this->privilege));
+
+        if (!$acl->isAllowed($this->role, 'routes', $this->privilege)) {
+            throw new \RuntimeException(sprintf('Для роли "%s" не разрешен доступ к привелегии "%s" ресурса "routes"', $this->role, $this->privilege));
         }
     }
 }

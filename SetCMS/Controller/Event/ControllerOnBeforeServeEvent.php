@@ -12,4 +12,5 @@ class ControllerOnBeforeServeEvent extends \UUA\Event
 
     public ControllerViaPSR7 $controller;
     public ServerRequestInterface $request;
+    public string $route;
 }

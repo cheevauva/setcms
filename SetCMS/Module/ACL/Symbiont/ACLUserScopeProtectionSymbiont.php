@@ -19,7 +19,7 @@ class ACLUserScopeProtectionSymbiont extends \UUA\SymbiontCustomizer
             $master = ControllerOnBeforeServeEvent::as($this->master);
             $object->role = UserEntity::as($master->request->getAttribute('currentUser'))->role->value;
             $object->throwExceptions = true;
-            $object->privilege = get_class($master->controller);
+            $object->privilege = $master->route;
         }
     }
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$routes['GET /page-[*:slug] page_read_by_slug'] = \SetCMS\Module\Page\Controller\PagePublicReadBySlugController::class;
+$routes['GET /page-[*:slug] PageReadBySlug'] = \SetCMS\Module\Page\Controller\PagePublicReadBySlugController::class;
 $routes['GET /~/page/index AdminPageIndex'] = \SetCMS\Module\Page\Controller\PagePrivateIndexController::class;
 $routes['GET /~/page/read/[g:id] AdminPageRead'] = \SetCMS\Module\Page\Controller\PagePrivateReadController::class;
 $routes['GET /~/page/new/[g:id] AdminPageNew'] = \SetCMS\Module\Page\Controller\PagePrivateNewController::class;

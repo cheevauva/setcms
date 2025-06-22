@@ -47,6 +47,7 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
         $onBeforeServe = new ControllerOnBeforeServeEvent();
         $onBeforeServe->controller = $controller;
         $onBeforeServe->request = $request;
+        $onBeforeServe->route = $routerMatch->name;
         $onBeforeServe->dispatch($this->eventDispatcher());
 
         $controller->request = $request;

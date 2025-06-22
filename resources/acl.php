@@ -1,82 +1,76 @@
 <?php
 
-use SetCMS\Module\User\Enum\UserRoleEnum;
+use SetCMS\Module\User\UserRoleConstants;
 
 $acl = [
     'roles' => [
-        UserRoleEnum::GUEST->toString() => [],
-        UserRoleEnum::USER->toString() => [
-            UserRoleEnum::GUEST->toString()
+        UserRoleConstants::GUEST => [],
+        UserRoleConstants::USER => [
+            UserRoleConstants::GUEST
         ],
-        UserRoleEnum::ADMIN->toString() => [
-            UserRoleEnum::USER->toString()
+        UserRoleConstants::ADMIN => [
+            UserRoleConstants::USER
         ],
     ],
     'rules' => [
-        UserRoleEnum::GUEST->toString() => [
-            'scope' => [
-                \SetCMS\Module\Captcha\Controller\CaptchaPublicGenerateController::class => true,
-                \SetCMS\Module\Captcha\Controller\CaptchaPublicSolveController::class => true,
+        UserRoleConstants::GUEST => [
+            'routes' => [
+                'Home' => true,
+                'CaptchaGenerate' => true,
+                'CaptchaSolve' => true,
                 // User
-                \SetCMS\Module\User\Controller\UserPublicLoginController::class => true,
-                \SetCMS\Module\User\Controller\UserPublicDoLoginController::class => true,
-                \SetCMS\Module\User\Controller\UserPublicRegistrationController::class => true,
-                \SetCMS\Module\User\Controller\UserPublicDoRegistrationController::class => true,
-                \SetCMS\Module\User\Controller\UserPublicProfileController::class => false,
-                \SetCMS\Module\User\Controller\UserInfoController::class => false,
-                \SetCMS\Module\User\Controller\UserPublicRestoreController::class => true,
-                \SetCMS\Module\User\Controller\UserPublicDoRestoreController::class => true,
+                'UserLogin' => true,
+                'UserDoLogin' => true,
+                'UserRegistration' => true,
+                'UserDoRegistration' => true,
+                'UserProfile' => false,
+                'UserUserInfo' => false,
+                'UserRestore' => true,
+                'UserDoRestore' => true,
                 // Post
-                \SetCMS\Module\Post\Controller\PostPublicIndexController::class => true,
-                \SetCMS\Module\Post\Controller\PostPublicReadBySlugController::class => true,
+                'PostroutesIndex' => true,
+                'PostReadBySlug' => true,
                 // Page
-                \SetCMS\Module\Page\Controller\PagePublicReadBlockBySlugController::class => true,
-                \SetCMS\Module\Page\Controller\PagePublicReadBySlugController::class => true,
+                'PageReadBlockBySlug' => true,
+                'PageReadBySlug' => true,
             ],
         ],
-        UserRoleEnum::USER->toString() => [
-            'scope' => [
-                \SetCMS\Module\User\Controller\UserPublicProfileController::class => true,
-                \SetCMS\Module\User\Controller\UserPublicRegistrationController::class => false,
-                \SetCMS\Module\User\Controller\UserInfoController::class => true,
-                \SetCMS\Module\User\Controller\UserPublicDoRegistrationController::class => false,
-                \SetCMS\Module\User\Controller\UserPublicLogoutController::class => true,
-                \SetCMS\Module\User\Controller\UserPublicLoginController::class => false,
-                \SetCMS\Module\User\Controller\UserPublicDoLoginController::class => false,
-                \SetCMS\Module\User\Controller\UserPublicRestoreController::class => false,
-                \SetCMS\Module\User\Controller\UserPublicDoRestoreController::class => false,
+        UserRoleConstants::USER => [
+            'routes' => [
+                'UserProfile' => true,
+                'UserRegistration' => false,
+                'UserUserInfo' => true,
+                'UserDoRegistration' => false,
+                'UserLogout' => true,
+                'UserLogin' => false,
+                'UserDoLogin' => false,
+                'UserRestore' => false,
+                'UserDoRestore' => false,
             ],
         ],
-        UserRoleEnum::ADMIN->toString() => [
-            'scope' => [
+        UserRoleConstants::ADMIN => [
+            'routes' => [
+                'AdminHome' => true,
                 //page
-                \SetCMS\Module\Page\Controller\PagePrivateNewController::class => true,
-                \SetCMS\Module\Page\Controller\PagePrivateCreateController::class => true,
+                'AdminPageNew' => true,
+                'AdminPageCreate' => true,
                 //post
-                \SetCMS\Module\Post\Controller\PostPrivateNewController::class => true,
+                'AdminPostNew' => true,
                 // user
-                \SetCMS\Module\User\Controller\UserPrivateIndexController::class => true,
-                \SetCMS\Module\User\Controller\UserPrivateEditController::class => true,
-                \SetCMS\Module\User\Controller\UserPrivateUpdateController::class => true,
-                \SetCMS\Module\User\Controller\UserPrivateReadController::class => true,
-                // block
-                \SetCMS\Module\Block\Controller\BlockPrivateIndexController::class => true,
-                \SetCMS\Module\Block\Controller\BlockPrivateEditController::class => true,
-                \SetCMS\Module\Block\Controller\BlockPrivateSaveController::class => true,
-                \SetCMS\Module\Block\Controller\BlockPrivateReadController::class => true,
-                \SetCMS\Module\Block\Controller\BlockPrivateCreateController::class => true,
-                \SetCMS\Module\Block\Controller\BlockPrivateUpdateController::class => true,
-                \SetCMS\Module\Block\Controller\BlockPublicSectionController::class => true,
+                'AdminUserIndex' => true,
+                'AdminUserEdit' => true,
+                'AdminUserUpdate' => true,
+                'AdminUserRead' => true,
                 //
-                \SetCMS\Module\Configuration\Controller\ConfigurationPublicAdminMenuController::class => true,
-                \SetCMS\Module\Configuration\Controller\ConfigurationPublicMainController::class => true,
+                'ConfigurationAdminMenu' => true,
+                'ConfigurationMain' => true,
                 //
-                \SetCMS\Module\Menu\Controller\MenuPrivateIndexController::class => true,
-                \SetCMS\Module\Menu\Controller\MenuPrivateEditController::class => true,
-                \SetCMS\Module\Menu\Controller\MenuPrivateCreateController::class => true,
-                \SetCMS\Module\Menu\Controller\MenuPrivateNewController::class => true,
-                \SetCMS\Module\Menu\Controller\MenuPrivateUpdateController::class => true,
-                \SetCMS\Module\Menu\Controller\MenuPublicReadByContextController::class => true,
+                'AdminMenuIndex' => true,
+                'AdminMenuEdit' => true,
+                'AdminMenuCreate' => true,
+                'AdminMenuNew' => true,
+                'AdminMenuUpdate' => true,
+                'AdminMenuReadByContext' => true,
             ],
         ],
     ],

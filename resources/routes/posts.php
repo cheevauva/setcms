@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$routes['GET /post-[a:slug] post_read_by_slug'] = \SetCMS\Module\Post\Controller\PostPublicReadBySlugController::class;
+$routes['GET /post-[a:slug] PostReadBySlug'] = \SetCMS\Module\Post\Controller\PostPublicReadBySlugController::class;
 $routes['GET /~/post/index AdminPostIndex'] = \SetCMS\Module\Post\Controller\PostPrivateIndexController::class;
 $routes['GET /~/post/read/[g:id] AdminPostRead'] = \SetCMS\Module\Post\Controller\PostPrivateReadController::class;
 $routes['GET /~/post/new/[g:id] AdminPostNew'] = \SetCMS\Module\Post\Controller\PostPrivateNewController::class;
