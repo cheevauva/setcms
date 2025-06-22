@@ -5,8 +5,8 @@
 {% block content %}
     {{ 
         crud.editview({
-            action: scLink(Entity01LC.id ? 'action_record_admin' : 'action_admin', {module: 'Module01', action: Entity01LC ? 'update': 'create', id: Entity01LC.id}),
-            redirect: scLink('action_record_admin', {module: 'Module01', action: 'read', 'id': '${Entity01LC.id.uuid}'}),
+            action: scLink(Entity01LC.id ? 'AdminModule01Update' : 'AdminModule01Create', {id: Entity01LC ? Entity01LC.id : scUUID() }),
+            redirect: scLink('AdminModule01Read', {'id': '${Entity01LC.id.uuid}'}),
             actions: {
                 fields: [
                     {

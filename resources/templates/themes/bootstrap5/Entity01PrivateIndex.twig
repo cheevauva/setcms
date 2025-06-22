@@ -2,7 +2,7 @@
 {% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_toolbar %}
-    <a href="{{ scLink('action_record_admin', {module: 'Module01', action: 'new', 'id': scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать</a>
+    <a href="{{ scLink('AdminModule01New', {'id': scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать</a>
 {% endblock %}
 
 {% block content_title %}Module01{% endblock %}
@@ -30,7 +30,7 @@
             }
         ]
     %}
-    {% for entity in entities %}
+    {% for entity in Entity01LCs %}
         {%  
             set rows = rows|merge([{
                 type: 'row',
@@ -50,19 +50,15 @@
                         actions: [
                             {
                                 label: 'Просмотр',
-                                route: 'action_record_admin',
+                                route: 'AdminModule01Read',
                                 params: {
-                                    module: 'Module01', 
-                                    action: 'read',
                                     id: entity.id
                                 }
                             },
                             {
                                 label: 'Редактировать',
-                                route: 'action_record_admin',
+                                route: 'AdminModule01Edit',
                                 params: {
-                                    module: 'Module01', 
-                                    action: 'edit',
                                     id: entity.id
                                 }
                             }

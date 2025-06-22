@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
-define('ROOT_PATH', dirname(__DIR__));
+require '../bootstrap.php';
+
+$rootPath = \SetCMS\Bootstrap::instance()->rootPath() ;
 
 function getFiles(string $directory, array $files = [])
 {
@@ -20,12 +22,14 @@ function getFiles(string $directory, array $files = [])
     return $files;
 }
 
-$files = getFiles(sprintf('%s/src/SetCMS/Module/Module01/', ROOT_PATH));
-$files[] = sprintf('%s/resources/acl/Entity01LC.php', ROOT_PATH);
-$files[] = sprintf('%s/src/SetCMS/Module/Migration/Version/Main/MigrationYmdhisVersion.php', ROOT_PATH);
-$files[] = sprintf('%s/resources/templates/themes/bootstrap5/Module01PrivateIndexScope.twig', ROOT_PATH);
-$files[] = sprintf('%s/resources/templates/themes/bootstrap5/Module01PrivateEditScope.twig', ROOT_PATH);
-$files[] = sprintf('%s/resources/templates/themes/bootstrap5/Module01PrivateReadScope.twig', ROOT_PATH);
+$files = getFiles(sprintf('%s/SetCMS/Module/Module01/', $rootPath));
+$files[] = sprintf('%s/resources/acl/Entity01LC.php', $rootPath);
+$files[] = sprintf('%s/resources/routes/Entity01LC.php', $rootPath);
+$files[] = sprintf('%s/SetCMS/Module/Migration/Version/Main/MigrationYmdhisVersion.php', $rootPath);
+$files[] = sprintf('%s/resources/templates/themes/bootstrap5/Entity01PrivateIndex.twig', $rootPath);
+$files[] = sprintf('%s/resources/templates/themes/bootstrap5/Entity01PrivateEdit.twig', $rootPath);
+$files[] = sprintf('%s/resources/templates/themes/bootstrap5/Entity01PrivateRead.twig', $rootPath);
+
 $module = $argv[1] ?? null;
 $entity = $argv[2] ?? null;
 $table = $argv[3] ?? null;
