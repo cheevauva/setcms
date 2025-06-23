@@ -31,9 +31,13 @@ class MenuPrivateAdminMenuController extends ControllerViaPSR7
             'name' => 'Menu',
         ],
         [
+            'label' => 'Шаблоны',
+            'name' => 'Template',
+        ],
+        [
             'label' => 'Модуль01',
             'name' => 'Module01',
-        ]
+        ],
     ];
 
     #[\Override]

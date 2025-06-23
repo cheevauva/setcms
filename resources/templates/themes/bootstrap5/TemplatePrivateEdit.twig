@@ -1,0 +1,57 @@
+{% extends scShortPath(layout ?? 'layout_admin.twig') %}
+{% import scShortPath('macros/crud.twig') as crud %}
+
+{% block content_title %}{% if template.id %}Редактировать{% else %}Создать{% endif %}{% endblock %}
+{% block content %}
+    {{ 
+        crud.editview({
+            action: scLink(template.id ? 'AdminTemplateUpdate' : 'AdminTemplateCreate', {id: (template ? template.id : scUUID()) }),
+            redirect: scLink('AdminTemplateRead', {id: '${template.id.uuid}'}),
+            actions: {
+                fields: [
+                    {
+                        type: 'submit',
+                        label: 'Сохранить',
+                    },
+                ],
+            },
+            panels: [
+                {
+                    name: 'default',
+                    label: 'Основные данные',
+                    active: true,
+                    fields: [
+                        {
+                            type: 'hidden',
+                            name: 'template.id',
+                            value: template.id|default(scUUID())
+                        },
+                        {name: 'template.slug', value: template.slug, type: 'input', label: 'Алиас'},
+                        {name: 'template.title', value: template.title, type: 'input', label: 'Заголовок'},
+                        {name: 'template.template', value: template.template, type: 'textarea', label: 'Шаблон'},
+                    ]
+                }, 
+                {
+                    name: 'services',
+                    label: 'Служебные данные',
+                    fields: [
+                        {
+                            name: 'template.dateCreated',
+                            value: template.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата создания',
+                            disabled: true
+                        },
+                        {
+                            name: 'template.dateModified',
+                            value: template.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата изменения',
+                            disabled: true
+                        },
+                    ]
+                }
+            ]
+        }) 
+    }}
+{% endblock %}
