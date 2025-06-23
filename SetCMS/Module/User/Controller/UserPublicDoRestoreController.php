@@ -9,10 +9,9 @@ use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\Captcha\Servant\CaptchaUseResolvedCaptchaServant;
 use SetCMS\Module\Captcha\Exception\CaptchaException;
 use SetCMS\Module\User\View\UserPublicDoRestoreView;
-use SetCMS\Module\User\DAO\UserRetrieveManyByCriteriaDAO;
 use SetCMS\Module\User\Exception\UserException;
 use SetCMS\Module\User\Entity\UserEntity;
-use SetCMS\Module\User\Servant\UserResetPasswordLinkServitor;
+use SetCMS\Module\UserResetToken\Servant\UserResetTokenLinkServant;
 
 class UserPublicDoRestoreController extends ControllerViaPSR7
 {
@@ -21,6 +20,7 @@ class UserPublicDoRestoreController extends ControllerViaPSR7
     protected string $email;
     protected UUID $captcha;
     protected UserEntity $user;
+    protected ?string $customTemplate = null;
 
     #[\Override]
     protected function init(): void
@@ -35,7 +35,7 @@ class UserPublicDoRestoreController extends ControllerViaPSR7
     {
         return array_filter([
             $this->useCaptcha ? CaptchaUseResolvedCaptchaServant::class : null,
-            UserResetPasswordLinkServitor::class,
+            UserResetTokenLinkServant::class,
         ]);
     }
 
@@ -56,7 +56,7 @@ class UserPublicDoRestoreController extends ControllerViaPSR7
             $object->captcha = $this->captcha;
         }
 
-        if ($object instanceof UserResetPasswordLinkServitor) {
+        if ($object instanceof UserResetTokenLinkServant) {
             $object->email = $this->email;
         }
     }

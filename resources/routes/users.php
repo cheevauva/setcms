@@ -6,6 +6,7 @@ $routes['GET /user/profile UserProfile'] = \SetCMS\Module\User\Controller\UserPu
 $routes['GET /user/login UserLogin'] = \SetCMS\Module\User\Controller\UserPublicLoginController::class;
 $routes['POST /user/doLogin UserDoLogin'] = \SetCMS\Module\User\Controller\UserPublicDoLoginController::class;
 $routes['GET /user/restore UserRestore'] = \SetCMS\Module\User\Controller\UserPublicRestoreController::class;
+$routes['GET /user/resetPassword/[a:token] UserResetPassword'] = \SetCMS\Module\User\Controller\UserPublicResetPasswordController::class;
 $routes['POST /user/doRestore UserDoRestore'] = \SetCMS\Module\User\Controller\UserPublicDoRestoreController::class;
 $routes['GET /user/registration UserRegistration'] = \SetCMS\Module\User\Controller\UserPublicRegistrationController::class;
 $routes['POST /user/doRegistration UserDoRegistration'] = \SetCMS\Module\User\Controller\UserPublicDoRegistrationController::class;

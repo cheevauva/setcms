@@ -13,6 +13,7 @@ class ViewTwig extends ViewHtml
 {
 
     private Environment $twig;
+    public ?string $customTemplate = null;
 
     protected function twig(): Environment
     {
@@ -20,11 +21,20 @@ class ViewTwig extends ViewHtml
             return $this->twig;
         }
 
-        $loader = new FilesystemLoader(sprintf('%s/resources/templates', $this->basePath()));
-        $this->twig = new Environment($loader, [
-            'cache' => sprintf('%s/cache/twig', $this->basePath()),
-            'auto_reload' => true,
-        ]);
+        if ($this->customTemplate) {
+            $loader = new \Twig\Loader\ArrayLoader([
+                'template' => $this->customTemplate,
+            ]);
+            $this->twig = new \Twig\Environment($loader, [
+                'cache' => false
+            ]);
+        } else {
+            $loader = new FilesystemLoader(sprintf('%s/resources/templates', $this->basePath()));
+            $this->twig = new Environment($loader, [
+                'cache' => sprintf('%s/cache/twig', $this->basePath()),
+                'auto_reload' => true,
+            ]);
+        }
 
         return $this->twig;
     }
