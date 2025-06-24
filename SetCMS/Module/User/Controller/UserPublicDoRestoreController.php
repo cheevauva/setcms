@@ -11,7 +11,7 @@ use SetCMS\Module\Captcha\Exception\CaptchaException;
 use SetCMS\Module\User\View\UserPublicDoRestoreView;
 use SetCMS\Module\User\Exception\UserException;
 use SetCMS\Module\User\Entity\UserEntity;
-use SetCMS\Module\UserResetToken\Servant\UserResetTokenLinkServant;
+use SetCMS\Module\UserResetToken\Servant\UserResetTokenSendToEmailServant;
 
 class UserPublicDoRestoreController extends ControllerViaPSR7
 {
@@ -35,7 +35,7 @@ class UserPublicDoRestoreController extends ControllerViaPSR7
     {
         return array_filter([
             $this->useCaptcha ? CaptchaUseResolvedCaptchaServant::class : null,
-            UserResetTokenLinkServant::class,
+            UserResetTokenSendToEmailServant::class,
         ]);
     }
 
@@ -56,7 +56,7 @@ class UserPublicDoRestoreController extends ControllerViaPSR7
             $object->captcha = $this->captcha;
         }
 
-        if ($object instanceof UserResetTokenLinkServant) {
+        if ($object instanceof UserResetTokenSendToEmailServant) {
             $object->email = $this->email;
         }
     }
