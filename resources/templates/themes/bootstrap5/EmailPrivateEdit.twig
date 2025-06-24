@@ -1,0 +1,55 @@
+{% extends scShortPath(layout ?? 'layout_admin.twig') %}
+{% import scShortPath('macros/crud.twig') as crud %}
+
+{% block content_title %}{% if email.id %}Редактировать{% else %}Создать{% endif %}{% endblock %}
+{% block content %}
+    {{ 
+        crud.editview({
+            action: scLink(email.id ? 'AdminEmailUpdate' : 'AdminEmailCreate', {id: (email ? email.id : scUUID()) }),
+            redirect: scLink('AdminEmailRead', {id: '${email.id.uuid}'}),
+            actions: {
+                fields: [
+                    {
+                        type: 'submit',
+                        label: 'Сохранить',
+                    },
+                ],
+            },
+            panels: [
+                {
+                    name: 'default',
+                    label: 'Основные данные',
+                    active: true,
+                    fields: [
+                        {
+                            type: 'hidden',
+                            name: 'email.id',
+                            value: email.id|default(scUUID())
+                        },
+                        {name: 'email.subject', value: email.subject, type: 'input', label: 'subject'},
+                    ]
+                }, 
+                {
+                    name: 'services',
+                    label: 'Служебные данные',
+                    fields: [
+                        {
+                            name: 'email.dateCreated',
+                            value: email.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата создания',
+                            disabled: true
+                        },
+                        {
+                            name: 'email.dateModified',
+                            value: email.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата изменения',
+                            disabled: true
+                        },
+                    ]
+                }
+            ]
+        }) 
+    }}
+{% endblock %}

@@ -35,6 +35,10 @@ class MenuPrivateAdminMenuController extends ControllerViaPSR7
             'name' => 'Template',
         ],
         [
+            'label' => 'Письма',
+            'name' => 'Email',
+        ],
+        [
             'label' => 'Модуль01',
             'name' => 'Module01',
         ],

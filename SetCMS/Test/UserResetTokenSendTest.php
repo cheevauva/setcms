@@ -16,6 +16,8 @@ use SetCMS\Module\UserResetToken\DAO\UserResetTokenRetrieveManyByCriteriaDAO;
 use SetCMS\Module\UserResetToken\DAO\UserResetTokenSaveDAO;
 use SetCMS\Module\Template\Servant\TemplateRenderUserResetPasswordServant;
 use SetCMS\Module\Template\VO\TemplateRenderedVO;
+use SetCMS\Module\Email\Servant\EmailSendServant;
+use SetCMS\Module\Email\Entity\EmailEntity;
 
 class UserResetTokenSendTest extends TestCase
 {
@@ -28,6 +30,7 @@ class UserResetTokenSendTest extends TestCase
     public static string $userResetTokenId = '4662e5e9-7f55-42ad-afe5-0fb50b7c37ce';
     public static ?UserResetTokenEntity $userResetTokenSaved = null;
     public static ?UserResetTokenEntity $userResetTokenRetrived = null;
+    public static ?EmailEntity $sendedEmail = null;
 
     public function testNotExistUser(): void
     {
@@ -47,23 +50,39 @@ class UserResetTokenSendTest extends TestCase
         UserResetTokenSendTest::$userResetTokenRefreshExists = true;
         UserResetTokenSendTest::$userResetTokenRetrived = null;
         UserResetTokenSendTest::$userResetTokenSaved = null;
+        UserResetTokenSendTest::$sendedEmail = null;
 
         $sendToUser = UserResetTokenSendToUserServant::new($this->container($this->mocks()));
         $sendToUser->user = self::newUser();
         $sendToUser->serve();
 
         $this->assertEquals(UserResetTokenSendTest::$userResetTokenRetrived, UserResetTokenSendTest::$userResetTokenSaved);
-        $this->assertEquals(UserResetTokenSendTest::$userResetTokenSaved->dateExpired->format('Y-m-d H:i:s'), (new \DateTime('+120 seconds'))->format('Y-m-d H:i:s'));
+        $this->assertEquals((new \DateTime('+120 seconds'))->format('Y-m-d H:i:s'), UserResetTokenEntity::as(UserResetTokenSendTest::$userResetTokenSaved)->dateExpired->format('Y-m-d H:i:s'));
+
+        $sendedEmail = EmailEntity::as(self::$sendedEmail);
+
+        $this->assertEquals('test@test', $sendedEmail->from);
+        $this->assertEquals('admin@admin', $sendedEmail->to);
+        $this->assertEquals(UserResetTokenSendTest::$userId, $sendedEmail->subject);
+        $this->assertEquals(UserResetTokenSendTest::$userResetTokenId, $sendedEmail->body);
 
         UserResetTokenSendTest::$userResetTokenRefreshExists = false;
         UserResetTokenSendTest::$userResetTokenRetrived = null;
         UserResetTokenSendTest::$userResetTokenSaved = null;
+        UserResetTokenSendTest::$sendedEmail = null;
 
         $sendToUser2 = UserResetTokenSendToUserServant::new($this->container($this->mocks()));
         $sendToUser2->user = self::newUser();
         $sendToUser2->serve();
 
         $this->assertNotEquals(UserResetTokenSendTest::$userResetTokenRetrived, UserResetTokenSendTest::$userResetTokenSaved);
+
+        $sendedEmail = EmailEntity::as(self::$sendedEmail);
+
+        $this->assertEquals('test@test', $sendedEmail->from);
+        $this->assertEquals('admin@admin', $sendedEmail->to);
+        $this->assertEquals(UserResetTokenSendTest::$userId, $sendedEmail->subject);
+        $this->assertNotEquals(UserResetTokenSendTest::$userResetTokenId, $sendedEmail->body);
     }
 
     public static function newUser(): UserEntity
@@ -89,9 +108,18 @@ class UserResetTokenSendTest extends TestCase
     {
         return fn(ContainerInterface $container) => [
             'env' => [
+                'EMAIL_ADDRESS_FOR_SENDING_SERVICE_MESSAGES' => 'test@test',
                 'USER_RESET_TOKEN_REFRESH_EXISTS' => UserResetTokenSendTest::$userResetTokenRefreshExists,
                 'USER_RESET_TOKEN_EXPIRED_SECONDS' => 120,
             ],
+            EmailSendServant::class => new class($container) extends EmailSendServant {
+
+                #[\Override]
+                public function serve(): void
+                {
+                    UserResetTokenSendTest::$sendedEmail = $this->email;
+                }
+            },
             TemplateRenderUserResetPasswordServant::class => new class($container) extends TemplateRenderUserResetPasswordServant {
 
                 #[\Override]
@@ -99,7 +127,7 @@ class UserResetTokenSendTest extends TestCase
                 {
                     $this->templateRendered = new TemplateRenderedVO();
                     $this->templateRendered->title = $this->user->id->uuid;
-                    $this->templateRendered->content = $this->userResetToken->userId->uuid;
+                    $this->templateRendered->content = $this->userResetToken->id->uuid;
                 }
             },
             UserResetTokenSaveDAO::class => fn($container) => new class($container) extends UserResetTokenSaveDAO {

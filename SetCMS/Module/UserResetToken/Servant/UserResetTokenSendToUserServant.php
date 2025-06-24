@@ -10,6 +10,8 @@ use SetCMS\Module\UserResetToken\DAO\UserResetTokenRetrieveManyByCriteriaDAO;
 use SetCMS\Module\UserResetToken\Entity\UserResetTokenEntity;
 use SetCMS\Module\UserResetToken\DAO\UserResetTokenSaveDAO;
 use SetCMS\Module\Template\Servant\TemplateRenderUserResetPasswordServant;
+use SetCMS\Module\Email\Servant\EmailSendServant;
+use SetCMS\Module\Email\Entity\EmailEntity;
 
 class UserResetTokenSendToUserServant extends \UUA\Servant
 {
@@ -48,6 +50,17 @@ class UserResetTokenSendToUserServant extends \UUA\Servant
         $template->userResetToken = $userResetToken;
         $template->user = $this->user;
         $template->serve();
+
+        $email = new EmailEntity();
+        $email->subject = $template->templateRendered->title;
+        $email->body = $template->templateRendered->content;
+        $email->to = $this->user->email;
+        $email->from = strval($this->env()['EMAIL_ADDRESS_FOR_SENDING_SERVICE_MESSAGES']);
+
+        $sendEmail = EmailSendServant::new($this->container);
+        $sendEmail->email = $email;
+        $sendEmail->immediate = false;
+        $sendEmail->serve();
     }
 
     protected function dateExpired(): \DateTimeImmutable
