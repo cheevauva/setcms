@@ -5,59 +5,48 @@ declare(strict_types=1);
 namespace SetCMS\Test;
 
 use Psr\Container\ContainerInterface;
-use SetCMS\Bootstrap;
+use UUA\Container\Container;
 
 trait TestTrait
 {
 
-    protected function container(): ContainerInterface
+    protected function container(\Closure $mocks): ContainerInterface
     {
-        $container = Bootstrap::instance()->newContainer();
-
-        $customContainer = new class($container) implements ContainerInterface {
+        $customContainer = new class([]) extends Container {
 
             /**
              * @var array<string, mixed>
              */
-            public array $alias = [];
-
-            public function __construct(protected ContainerInterface $container)
-            {
-                
-            }
+            public array $mocks = [];
 
             #[\Override]
             public function get(string $id): mixed
             {
                 if ($id === 'fake') {
-                    return $this->alias;
+                    return $this->mocks;
                 }
 
-                return $this->container->get($id);
+                if (isset($this->mocks[$id]) && !isset($this->assets[$id])) {
+                    $this->assets[$id] = $this->mocks[$id];
+                }
+
+                return parent::get($id);
             }
 
             #[\Override]
             public function has(string $id): bool
             {
-                if (isset($this->alias[$id])) {
+                if (isset($this->mocks[$id])) {
                     return true;
                 }
 
-                return $this->container->has($id);
+                return parent::has($id);
             }
         };
 
-        $customContainer->alias = $this->alias($customContainer);
+        $customContainer->mocks = $mocks($customContainer);
 
         return $customContainer;
     }
-
-    /**
-     * @param ContainerInterface $container
-     * @return array<string, mixed>
-     */
-    protected function alias(ContainerInterface $container): array
-    {
-        return [];
-    }
+    
 }

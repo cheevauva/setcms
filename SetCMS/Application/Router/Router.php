@@ -25,7 +25,6 @@ class Router implements RouterInterface, \UUA\ContainerConstructInterface
     protected function init(): void
     {
         $this->altoRouter = new AltoRouter;
-        $this->altoRouter->setBasePath($this->container->get('env')['BASE_URL'] ?? '');
         $this->altoRouter->addMatchTypes([
             'g' => sprintf('(%s)++', UUID::REGEX),
         ]);

@@ -9,6 +9,7 @@ use SetCMS\Common\DAO\EntitySaveDAO;
 use SetCMS\Common\Mapper\EntityMapper;
 use SetCMS\Common\Entity\Entity;
 use Psr\Container\ContainerInterface;
+use Doctrine\DBAL\DriverManager;
 
 class EntitySaveDAOTest extends TestCase
 {
@@ -32,7 +33,7 @@ class EntitySaveDAOTest extends TestCase
     {
         $entity = self::$entity = $this->newEntity();
 
-        $save = EntitySaveDAO::new($this->container());
+        $save = EntitySaveDAO::new($this->container($this->mocks()));
         $save->serve();
 
         $this->assertEquals('SELECT id FROM tests WHERE id = :id LIMIT 1', self::$results['has'][0]);
@@ -54,20 +55,22 @@ class EntitySaveDAOTest extends TestCase
     }
 
     /**
-     * @param ContainerInterface $container
-     * @return array<string, mixed>
+     * @return \Closure
      */
-    protected function alias(ContainerInterface $container): array
+    protected function mocks(): \Closure
     {
-        return [
+        return fn(ContainerInterface $container) => [
             EntityMapper::class => new class($container) extends EntityMapper {
                 
             },
             EntitySaveDAO::class => new class($container) extends EntitySaveDAO {
 
+                use \UUA\Traits\ContainerTrait;
+                use TestDatabaseConnectionTrait;
+
                 public Entity $testEntity;
 
-                use \SetCMS\Traits\DatabaseMainConnectionTrait;
+
 
                 #[\Override]
                 protected function mapper(): EntityMapper

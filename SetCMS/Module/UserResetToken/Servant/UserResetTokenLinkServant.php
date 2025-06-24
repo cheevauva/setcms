@@ -16,6 +16,7 @@ class UserResetTokenLinkServant extends \UUA\Servant
     use \UUA\Traits\EnvTrait;
 
     public string $email;
+    public protected(set) ?UserResetTokenEntity $userResetToken = null;
 
     #[\Override]
     public function serve(): void
@@ -47,7 +48,9 @@ class UserResetTokenLinkServant extends \UUA\Servant
         $userResetToken->userId = $user->id;
         $userResetToken->dateExpired = $this->dateExpired();
         $userResetToken->token = (new \SetCMS\UUID)->uuid;
-
+        
+        $this->userResetToken = $userResetToken;
+        
         $saveUserResetToken = UserResetTokenSaveDAO::new($this->container);
         $saveUserResetToken->userResetToken = $userResetToken;
         $saveUserResetToken->serve();
@@ -56,8 +59,6 @@ class UserResetTokenLinkServant extends \UUA\Servant
         $template->userResetToken = $userResetToken;
         $template->user = $user;
         $template->serve();
-        
-        print_r($template->templateRendered);die;
     }
 
     protected function dateExpired(): \DateTimeImmutable

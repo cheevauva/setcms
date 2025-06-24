@@ -14,6 +14,7 @@ use SetCMS\Application\Router\Router;
 
 abstract class TemplateRenderServant extends \UUA\Servant
 {
+    use \UUA\Traits\EnvTrait;
 
     protected string $slug;
     public TemplateRenderedVO $templateRendered;
@@ -30,6 +31,11 @@ abstract class TemplateRenderServant extends \UUA\Servant
         $this->templateRendered = $templateRendered;
     }
 
+    /**
+     * @param string $template
+     * @param array<string, mixed> $context
+     * @return string
+     */
     protected function twig(string $template, array $context = []): string
     {
         $twig = (new Environment(...[
@@ -54,7 +60,10 @@ abstract class TemplateRenderServant extends \UUA\Servant
 
             return $link;
         }));
-        
+        $twig->addFunction(new TwigFunction('scBaseUrl', function () {
+            return $this->env()['BASE_URL'] ?? '';
+        }));
+
         return $twig->render('template', $context);
     }
 
@@ -66,6 +75,6 @@ abstract class TemplateRenderServant extends \UUA\Servant
         $templateByAlias->orThrow = true;
         $templateByAlias->serve();
 
-        return $templateByAlias->template;
+        return TemplateEntity::as($templateByAlias->template);
     }
 }

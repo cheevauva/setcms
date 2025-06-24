@@ -26,6 +26,7 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
     {
         $method = $request->getMethod();
         $path = $request->getUri()->getPath();
+        
 
         $routerMatch = Router::singleton($this->container)->match($path, $method);
 
