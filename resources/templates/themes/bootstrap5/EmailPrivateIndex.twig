@@ -36,7 +36,11 @@
                     },
                     {
                         type: 'text',
-                        value: 'Дата отправки'
+                        value: 'Отправлено'
+                    },
+                     {
+                        type: 'text',
+                        value: 'Создано'
                     },
                     {
                         type: 'text',
@@ -75,6 +79,10 @@
                     {
                         type: 'text',
                         value: entity.dateSent.format('Y-m-d H:i:s')
+                    },
+                    {
+                        type: 'text',
+                        value: entity.dateCreated.format('Y-m-d H:i:s')
                     },
                     {
                         name: 'actions',

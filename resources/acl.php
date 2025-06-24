@@ -27,6 +27,7 @@ $acl = [
                 'UserUserInfo' => false,
                 'UserRestore' => true,
                 'UserDoRestore' => true,
+                'UserResetPasswordByToken' => true,
                 // Post
                 'PostroutesIndex' => true,
                 'PostReadBySlug' => true,
@@ -46,6 +47,7 @@ $acl = [
                 'UserDoLogin' => false,
                 'UserRestore' => false,
                 'UserDoRestore' => false,
+                'UserResetPassword' => false,
             ],
         ],
         UserRoleConstants::ADMIN => [

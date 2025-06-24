@@ -30,7 +30,7 @@ class TemplateRenderUserResetPasswordTest extends TestCase
         $render->serve();
 
         $this->assertEquals('admin, ваша ссылка для сброса пароля', $render->templateRendered->title);
-        $this->assertEquals('admin, ваша ссылка для сброса пароля http://test.ru/user/resetPassword/' . $userResetToken->token, $render->templateRendered->content);
+        $this->assertEquals('admin, ваша ссылка для сброса пароля http://test.ru/user/resetPasswordByToken/' . $userResetToken->token, $render->templateRendered->content);
     }
 
     /**
@@ -40,7 +40,7 @@ class TemplateRenderUserResetPasswordTest extends TestCase
     {
         return fn(ContainerInterface $container) => [
             'routes' => [
-                'GET /user/resetPassword/[a:token] UserResetPassword' => \SetCMS\Module\User\Controller\UserPublicResetPasswordController::class,
+                'GET /user/resetPasswordByToken/[*:token] UserResetPasswordByToken' => \SetCMS\Module\User\Controller\UserPublicResetPasswordByTokenController::class,
             ],
             'env' => [
                 'BASE_URL' => 'http://test.ru',
@@ -53,7 +53,7 @@ class TemplateRenderUserResetPasswordTest extends TestCase
                     $template = new TemplateEntity();
                     $template->slug = 'resetPassword';
                     $template->title = '{{ user.username }}, ваша ссылка для сброса пароля';
-                    $template->template = "{{ user.username }}, ваша ссылка для сброса пароля {{ scBaseUrl() }}{{ scLink('UserResetPassword', {token: userResetToken.token}) }}";
+                    $template->template = "{{ user.username }}, ваша ссылка для сброса пароля {{ scBaseUrl() }}{{ scLink('UserResetPasswordByToken', {token: userResetToken.token}) }}";
 
                     return $template;
                 }
