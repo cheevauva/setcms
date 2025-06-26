@@ -1,10 +1,11 @@
 {% macro listview_column(column) %}
     {% import scShortPath('macros/forms.twig') as controls %}
-
+    {% if column.type == 'link' %}
+        {{  controls.link(column) }}
+    {% endif %}
     {% if column.type == 'bool' %}
         {{  controls.boolean(column) }}
     {% endif %}
-
     {% if column.type == 'checkbox' %}
         {{  controls.checkbox(column) }}
     {% endif %}

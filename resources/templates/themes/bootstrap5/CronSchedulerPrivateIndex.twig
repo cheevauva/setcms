@@ -61,8 +61,10 @@
                         value: entity.id.uuid
                     },
                     {
-                        type: 'text',
-                        value: entity.job
+                        type: 'link',
+                        label: entity.job,
+                        route: 'AdminCronSchedulerRead',
+                        params: {id: entity.id},
                     },
                     {
                         type: 'text',
@@ -91,13 +93,6 @@
                             {
                                 label: 'Редактировать',
                                 route: 'AdminCronSchedulerEdit',
-                                params: {
-                                    id: entity.id
-                                }
-                            },
-                            {
-                                label: 'Просмотр',
-                                route: 'AdminCronSchedulerRead',
                                 params: {
                                     id: entity.id
                                 }
