@@ -1,0 +1,114 @@
+{% extends scShortPath(layout ?? 'layout_admin.twig') %}
+{% import scShortPath('macros/crud.twig') as crud %}
+
+{% block content_toolbar %}
+    <a href="{{ scLink('AdminCronSchedulerNew', {'id': scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать</a>
+{% endblock %}
+
+{% block content_title %}CronScheduler{% endblock %}
+
+{% block content %}
+    {%  
+        set rows = [
+            {
+                type: 'header',
+                columns: [
+                    {
+                        type: 'checkbox',
+                        name: 'id',
+                        value: 'selectall'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Работа'
+                    },
+                    {
+                        type: 'text',
+                        value: 'План'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Активность'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Безопасный запуск'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Дата начала'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Дата окончания'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Действия'
+                    },
+                ]
+            }
+        ]
+    %}
+    {% for entity in cronSchedulers %}
+        {%  
+            set rows = rows|merge([{
+                type: 'row',
+                columns: [
+                    {
+                        name: 'id[]',
+                        type: 'checkbox',
+                        value: entity.id.uuid
+                    },
+                    {
+                        type: 'text',
+                        value: entity.job
+                    },
+                    {
+                        type: 'text',
+                        value: entity.cronExpression
+                    },
+                    {
+                        type: 'boolean',
+                        value: entity.isActive
+                    },
+                    {
+                        type: 'boolean',
+                        value: entity.isSafeRun
+                    },
+                    {
+                        type: 'text',
+                        value: entity.dateStart.format('Y-m-d')
+                    },
+                    {
+                        type: 'text',
+                        value: entity.dateEnd.format('Y-m-d')
+                    },
+                    {
+                        name: 'actions',
+                        type: 'actions',
+                        actions: [
+                            {
+                                label: 'Редактировать',
+                                route: 'AdminCronSchedulerEdit',
+                                params: {
+                                    id: entity.id
+                                }
+                            },
+                            {
+                                label: 'Просмотр',
+                                route: 'AdminCronSchedulerRead',
+                                params: {
+                                    id: entity.id
+                                }
+                            },
+                        ]
+
+                    }
+                ]
+            }])
+        %}
+    {% endfor %}
+
+    {{ crud.listview({rows: rows})  }}
+{% endblock %}

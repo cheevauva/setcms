@@ -8,6 +8,9 @@
     {% if column.type == 'checkbox' %}
         {{  controls.checkbox(column) }}
     {% endif %}
+    {% if column.type == 'boolean' %}
+        {{  controls.checkbox(column) }}
+    {% endif %}
     {% if column.type == 'text' %}
 
         {{ column.value }}
@@ -107,8 +110,17 @@
                         {% if field.type == 'input' %}
                             {{ form.input(field) }}
                         {% endif %}
+                       {% if field.type == 'checkbox' %}
+                            {{ form.checkbox(field) }}
+                        {% endif %}
+                       {% if field.type == 'boolean' %}
+                            {{ form.boolean(field) }}
+                        {% endif %}
                         {% if field.type == 'textarea' %}
                             {{ form.textarea(field) }}
+                        {% endif %}
+                        {% if field.type == 'date' %}
+                            {{ form.input(field) }}
                         {% endif %}
                     {% endfor %}
                 </div>

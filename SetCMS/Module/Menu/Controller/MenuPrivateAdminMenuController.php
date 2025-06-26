@@ -39,6 +39,10 @@ class MenuPrivateAdminMenuController extends ControllerViaPSR7
             'name' => 'Email',
         ],
         [
+            'label' => 'Планировщик CRON',
+            'name' => 'CronScheduler',
+        ],
+        [
             'label' => 'Модуль01',
             'name' => 'Module01',
         ],
