@@ -1,11 +1,15 @@
 {% macro listview_column(column) %}
     {% import scShortPath('macros/forms.twig') as controls %}
-
+    {% if column.type == 'link' %}
+        {{  controls.link(column) }}
+    {% endif %}
     {% if column.type == 'bool' %}
         {{  controls.boolean(column) }}
     {% endif %}
-
     {% if column.type == 'checkbox' %}
+        {{  controls.checkbox(column) }}
+    {% endif %}
+    {% if column.type == 'boolean' %}
         {{  controls.checkbox(column) }}
     {% endif %}
     {% if column.type == 'text' %}
@@ -107,8 +111,17 @@
                         {% if field.type == 'input' %}
                             {{ form.input(field) }}
                         {% endif %}
+                       {% if field.type == 'checkbox' %}
+                            {{ form.checkbox(field) }}
+                        {% endif %}
+                       {% if field.type == 'boolean' %}
+                            {{ form.boolean(field) }}
+                        {% endif %}
                         {% if field.type == 'textarea' %}
                             {{ form.textarea(field) }}
+                        {% endif %}
+                        {% if field.type == 'date' %}
+                            {{ form.input(field) }}
                         {% endif %}
                     {% endfor %}
                 </div>

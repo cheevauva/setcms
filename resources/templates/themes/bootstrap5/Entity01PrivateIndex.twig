@@ -30,7 +30,7 @@
             }
         ]
     %}
-    {% for entity in Entity01LCs %}
+    {% for Entity01LC in Entity01LCs %}
         {%  
             set rows = rows|merge([{
                 type: 'row',
@@ -38,28 +38,23 @@
                     {
                         name: 'id[]',
                         type: 'checkbox',
-                        value: entity.id.uuid
+                        value: Entity01LC.id.uuid
                     },
                     {
-                        type: 'text',
-                        value: entity.field01
+                        type: 'link',
+                        label: Entity01LC.field01,
+                        route: 'AdminModule01Read',
+                        params: {id: Entity01LC.id},
                     },
                     {
                         name: 'actions',
                         type: 'actions',
                         actions: [
                             {
-                                label: 'Просмотр',
-                                route: 'AdminModule01Read',
-                                params: {
-                                    id: entity.id
-                                }
-                            },
-                            {
                                 label: 'Редактировать',
                                 route: 'AdminModule01Edit',
                                 params: {
-                                    id: entity.id
+                                    id: Entity01LC.id
                                 }
                             }
                         ]

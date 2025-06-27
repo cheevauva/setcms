@@ -1,0 +1,24 @@
+{% extends scShortPath(layout ?? 'layout_admin.twig') %}
+
+{% block title %}{{ options.title }} - {{ cronScheduler.title }}{% endblock %}
+
+{% block content_toolbar %}
+    {% if scHasAccess('AdminCronSchedulerIndex') %}
+        <a href="{{ scLink('AdminCronSchedulerIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    {% endif %}
+    {% if scHasAccess('AdminCronSchedulerEdit') %}
+        <a href="{{ scLink('AdminCronSchedulerEdit', {id: cronScheduler.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if cronScheduler %}
+        <article class="blog-cronScheduler">
+            <h2 class="blog-cronScheduler-title">{{ cronScheduler.title }}</h2>
+            <p class="blog-cronScheduler-meta"><a href="#">Admin</a> опубликовал в {{ cronScheduler.dateCreated.format('H:i') }} {{ cronScheduler.dateCreated.format('d.m.Y') }}</p>
+            <p>
+                {{ cronScheduler.job }}
+            </p>
+        </article>
+    {% endif %}
+{% endblock %}
