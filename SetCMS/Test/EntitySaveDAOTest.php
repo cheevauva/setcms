@@ -9,7 +9,6 @@ use SetCMS\Common\DAO\EntitySaveDAO;
 use SetCMS\Common\Mapper\EntityMapper;
 use SetCMS\Common\Entity\Entity;
 use Psr\Container\ContainerInterface;
-use Doctrine\DBAL\DriverManager;
 
 class EntitySaveDAOTest extends TestCase
 {
@@ -60,17 +59,15 @@ class EntitySaveDAOTest extends TestCase
     protected function mocks(): \Closure
     {
         return fn(ContainerInterface $container) => [
-            EntityMapper::class => new class($container) extends EntityMapper {
+            EntityMapper::class => fn($container) => new class($container) extends EntityMapper {
                 
             },
-            EntitySaveDAO::class => new class($container) extends EntitySaveDAO {
+            EntitySaveDAO::class => fn($container) => new class($container) extends EntitySaveDAO {
 
                 use \UUA\Traits\ContainerTrait;
                 use TestDatabaseConnectionTrait;
 
                 public Entity $testEntity;
-
-
 
                 #[\Override]
                 protected function mapper(): EntityMapper

@@ -45,7 +45,7 @@ class TemplateRenderUserResetPasswordTest extends TestCase
             'env' => [
                 'BASE_URL' => 'http://test.ru',
             ],
-            TemplateRenderUserResetPasswordServant::class => new class($container) extends TemplateRenderUserResetPasswordServant {
+            TemplateRenderUserResetPasswordServant::class => fn($container) => new class($container) extends TemplateRenderUserResetPasswordServant {
 
                 #[\Override]
                 protected function template(): TemplateEntity
