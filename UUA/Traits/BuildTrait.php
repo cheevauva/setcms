@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace UUA\Traits;
 
 use Psr\Container\ContainerInterface;
+use UUA\FactoryInterface;
 
 trait BuildTrait
 {
@@ -13,13 +14,17 @@ trait BuildTrait
 
     final public static function new(ContainerInterface $container): static
     {
-        $className = ($container->get('fake') ?: [])[static::class] ?? static::class;
-        
-        if (is_callable($className)) { 
-            return static::as($className($container));
+        $factory = $container->get(FactoryInterface::class);
+
+        if (!is_object($factory)) {
+            throw new \RuntimeException(sprintf('Ожидался объект для зависимости %s', FactoryInterface::class));
         }
 
-        return static::as(new $className($container));
+        if (!($factory instanceof FactoryInterface)) {
+            throw new \RuntimeException(sprintf('Ожидался %s для зависимости %s', FactoryInterface::class, get_class($factory)));
+        }
+
+        return static::as($factory->make(static::class));
     }
 
     public static function singleton(ContainerInterface $container): static

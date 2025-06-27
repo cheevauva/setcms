@@ -39,9 +39,8 @@ class Bootstrap
 
     public function newContainer(): ContainerInterface
     {
-        $container = new Container([
+        $container = new Container(fn(Container $container) => [
             EventDispatcherInterface::class => fn(Container $container) => new EventDispatcher($container),
-            'fake' => require $this->rootPath() . '/resources/fake.php',
             'basePath' => $this->rootPath(),
             'env' => $this->env(),
             'events' => require $this->rootPath() . '/resources/events.php',
