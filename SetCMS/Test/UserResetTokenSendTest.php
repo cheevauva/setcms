@@ -77,12 +77,12 @@ class UserResetTokenSendTest extends TestCase
 
         $this->assertNotEquals(UserResetTokenSendTest::$userResetTokenRetrived, UserResetTokenSendTest::$userResetTokenSaved);
 
-        $sendedEmail = EmailEntity::as(self::$sendedEmail);
+        $sendedEmail2 = EmailEntity::as(self::$sendedEmail);
 
-        $this->assertEquals('test@test', $sendedEmail->from);
-        $this->assertEquals('admin@admin', $sendedEmail->to);
-        $this->assertEquals(UserResetTokenSendTest::$userId, $sendedEmail->subject);
-        $this->assertNotEquals(UserResetTokenSendTest::$userResetTokenId, $sendedEmail->body);
+        $this->assertEquals('test@test', $sendedEmail2->from);
+        $this->assertEquals('admin@admin', $sendedEmail2->to);
+        $this->assertEquals(UserResetTokenSendTest::$userId, $sendedEmail2->subject);
+        $this->assertNotEquals(UserResetTokenSendTest::$userResetTokenId, $sendedEmail2->body);
     }
 
     public static function newUser(): UserEntity
@@ -112,7 +112,7 @@ class UserResetTokenSendTest extends TestCase
                 'USER_RESET_TOKEN_REFRESH_EXISTS' => UserResetTokenSendTest::$userResetTokenRefreshExists,
                 'USER_RESET_TOKEN_EXPIRED_SECONDS' => 120,
             ],
-            EmailSendServant::class => new class($container) extends EmailSendServant {
+            EmailSendServant::class => fn($container) => new class($container) extends EmailSendServant {
 
                 #[\Override]
                 public function serve(): void
@@ -120,7 +120,7 @@ class UserResetTokenSendTest extends TestCase
                     UserResetTokenSendTest::$sendedEmail = $this->email;
                 }
             },
-            TemplateRenderUserResetPasswordServant::class => new class($container) extends TemplateRenderUserResetPasswordServant {
+            TemplateRenderUserResetPasswordServant::class => fn($container) => new class($container) extends TemplateRenderUserResetPasswordServant {
 
                 #[\Override]
                 public function serve(): void
