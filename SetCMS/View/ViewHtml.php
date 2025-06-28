@@ -6,6 +6,7 @@ namespace SetCMS\View;
 
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Uri;
+use SetCMS\ControllerViaEmbedded;
 use SetCMS\ControllerViaPSR7;
 use SetCMS\UUID;
 use SetCMS\Event\AppErrorEvent;
@@ -92,15 +93,15 @@ abstract class ViewHtml extends \SetCMS\View
      * @return mixed
      */
     #[\ReturnTypeWillChange]
-    protected function scRender(string $path, ?array $params = []): mixed
+    protected function scRender(string $path, ?array $params = null): mixed
     {
-        $params = $params ?? [];
+        $params ??= [];
 
         try {
             $routerMatch = Router::singleton($this->container)->match($path, 'SETCMS');
 
             if (!$routerMatch) {
-                throw new RouterNotFoundException(sprintf('Not found: SETCMS %s', $path));
+                throw new RouterNotFoundException(sprintf('SETCMS %s', $path));
             }
 
             $ctx = $this->ctx;
@@ -135,32 +136,51 @@ abstract class ViewHtml extends \SetCMS\View
 
     /**
      * @param string $path
-     * @param array<string,mixed> $params
      * @return mixed
      */
-    protected function scFetch(string $path, array $params = []): mixed
+    protected function scFetch(string $path): mixed
     {
-        $data = null;
+        $embedded = new \ArrayObject();
 
-//        try {
-//            return $this->scCall($path, $params);
-//        } catch (\Throwable $ex) {
-//            (new AppErrorEvent($ex->getMessage(), [
-//                __METHOD__,
-//                $path,
-//                $params,
-//                $ex->getFile(),
-//                $ex->getLine(),
-//            ]))->dispatch($this->eventDispatcher());
-//        }
+        try {
+            $ctx = $this->ctx;
+            $ctx['view'] = $this;
 
-        return $data;
+            try {
+                $className = Router::singleton($this->container)->controllerByRoute($path);
+            } catch (RouterNotFoundException $ex) {
+                $routerMatch = Router::singleton($this->container)->match($path, 'SETCMS');
+
+                if (!$routerMatch) {
+                    throw new RouterNotFoundException(sprintf('SETCMS %s', $path));
+                }
+
+                $className = $routerMatch->target;
+
+                $ctx['routerMatch'] = $routerMatch;
+            }
+
+
+            $controller = ControllerViaEmbedded::as($className::new($this->container));
+            $controller->ctx = $ctx;
+            $controller->embedded = $embedded;
+            $controller->serve();
+        } catch (\Throwable $ex) {
+            (new AppErrorEvent($ex->getMessage(), [
+                __METHOD__,
+                $path,
+                $ex->getFile(),
+                $ex->getLine(),
+            ]))->dispatch($this->eventDispatcher());
+        }
+
+        return $embedded;
     }
 
     #[\ReturnTypeWillChange]
     protected function scUUID(): string
     {
-        return strval(new UUID);
+        return (new UUID())->uuid;
     }
 
     /**
@@ -219,7 +239,7 @@ abstract class ViewHtml extends \SetCMS\View
         $checkRole->throwExceptions = false;
         $checkRole->privilege = $route;
         $checkRole->serve();
-        
+
         return $checkRole->isAllow;
     }
 

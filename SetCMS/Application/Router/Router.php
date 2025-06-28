@@ -4,6 +4,7 @@ namespace SetCMS\Application\Router;
 
 use SetCMS\Application\Contract\ContractRouterInterface as RouterInterface;
 use SetCMS\Application\Router\RouterMatchDTO;
+use SetCMS\Application\Router\Exception\RouterNotFoundException;
 use Psr\Container\ContainerInterface;
 use AltoRouter;
 use SetCMS\UUID;
@@ -68,6 +69,6 @@ class Router implements RouterInterface, \UUA\ContainerConstructInterface
 
     public function controllerByRoute(string $route): string
     {
-        return $this->routes[$route] ?? throw new \RuntimeException(sprintf('%s не определен', $route));
+        return $this->routes[$route] ?? throw new RouterNotFoundException(sprintf('%s не определен', $route));
     }
 }

@@ -26,7 +26,7 @@
                             name: 'cronScheduler.id',
                             value: cronScheduler.id|default(scUUID())
                         },
-                        {name: 'cronScheduler.job', value: cronScheduler.job, type: 'input', label: 'job'},
+                        {name: 'cronScheduler.job', value: cronScheduler.job, type: 'select', options: scFetch('AdminCronSchedulerJobs'), label: 'Задание'},
                         {name: 'cronScheduler.cronExpression', value: cronScheduler.cronExpression, type: 'input', label: 'Правило запуска'},
                         {name: 'cronScheduler.isActive', value: cronScheduler.isActive, type: 'boolean', label: 'Активная работа'},
                         {name: 'cronScheduler.isSafeRun', value: cronScheduler.isSafeRun, type: 'boolean', label: 'Безопасный запуск'},

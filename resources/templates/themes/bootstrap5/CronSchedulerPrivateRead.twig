@@ -1,4 +1,5 @@
 {% extends scShortPath(layout ?? 'layout_admin.twig') %}
+{% import scShortPath('macros/crud.twig') as crud %}
 
 {% block title %}{{ options.title }} - {{ cronScheduler.title }}{% endblock %}
 
@@ -12,13 +13,44 @@
 {% endblock %}
 
 {% block content %}
-    {% if cronScheduler %}
-        <article class="blog-cronScheduler">
-            <h2 class="blog-cronScheduler-title">{{ cronScheduler.title }}</h2>
-            <p class="blog-cronScheduler-meta"><a href="#">Admin</a> опубликовал в {{ cronScheduler.dateCreated.format('H:i') }} {{ cronScheduler.dateCreated.format('d.m.Y') }}</p>
-            <p>
-                {{ cronScheduler.job }}
-            </p>
-        </article>
-    {% endif %}
+    {{ 
+        crud.detailview({
+            panels: [
+                {
+                    name: 'default',
+                    label: 'Основные данные',
+                    active: true,
+                    fields: [
+                        {name: 'cronScheduler.id', value: cronScheduler.id|default(scUUID()), type: 'hidden'},
+                        {name: 'cronScheduler.job', value: cronScheduler.job, type: 'select', options: scFetch('AdminCronSchedulerJobs'), label: 'Задание'},
+                        {name: 'cronScheduler.cronExpression', value: cronScheduler.cronExpression, type: 'input', label: 'Правило запуска'},
+                        {name: 'cronScheduler.isActive', value: cronScheduler.isActive, type: 'boolean', label: 'Активная работа'},
+                        {name: 'cronScheduler.isSafeRun', value: cronScheduler.isSafeRun, type: 'boolean', label: 'Безопасный запуск'},
+                        {name: 'cronScheduler.dateStart', value: cronScheduler.dateStart.format('Y-m-d'), type: 'date', label: 'Дата начала выполнения'},
+                        {name: 'cronScheduler.dateEnd', value: cronScheduler.dateEnd.format('Y-m-d'), type: 'date', label: 'Дата окончания выполнения'},
+                    ]
+                }, 
+                {
+                    name: 'services',
+                    label: 'Служебные данные',
+                    fields: [
+                        {
+                            name: 'cronScheduler.dateCreated',
+                            value: cronScheduler.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата создания',
+                            disabled: true
+                        },
+                        {
+                            name: 'cronScheduler.dateModified',
+                            value: cronScheduler.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата изменения',
+                            disabled: true
+                        },
+                    ]
+                }
+            ]
+        })
+    }}
 {% endblock %}

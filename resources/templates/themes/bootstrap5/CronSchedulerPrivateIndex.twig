@@ -62,7 +62,7 @@
                     },
                     {
                         type: 'link',
-                        label: entity.job,
+                        label: scFetch('AdminCronSchedulerJobs')[entity.job],
                         route: 'AdminCronSchedulerRead',
                         params: {id: entity.id},
                     },

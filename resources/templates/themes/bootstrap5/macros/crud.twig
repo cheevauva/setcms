@@ -71,6 +71,67 @@
     </div>
 {% endmacro %}
 
+{% macro detailview(params) %}
+    <form>
+        {% import scShortPath('macros/forms.twig') as form %}
+
+        <ul class="nav nav-tabs flex-column flex-sm-row" id="myTab" role="tablist">
+            {% for panel in params.panels %}
+                <li class="nav-item" role="presentation">
+                    <button
+                        class="nav-link {% if panel.active %}active{% endif %}" 
+                        id="{{ panel.name }}-tab" 
+                        data-bs-toggle="tab"
+                        data-bs-target="#{{ panel.name }}" 
+                        type="button" role="tab" 
+                        aria-controls="{{ panel.name }}" 
+                        aria-selected="true"
+                        >
+                        {{ panel.label }}
+                    </button>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            {% for panel in params.panels %}
+                <div 
+                    class="tab-pane fade show {% if panel.active %}active{% endif %}" 
+                    id="{{ panel.name }}" 
+                    role="tabpanel" 
+                    aria-labelledby="{{ panel.name }}-tab"
+                    >
+                    {% for field in panel.fields %}
+                        {% if field.type == 'select' %}
+                            {{ form.text({label: field.label, type: 'text', value: field.options[field.value]}) }}
+                        {% endif %}
+                        {% if field.type == 'hidden' %}
+                            {{ form.hidden(field) }}
+                        {% endif %}
+                        {% if field.type == 'input' %}
+                            {{ form.text(field) }}
+                        {% endif %}
+                        {% if field.type == 'checkbox' %}
+                            {% set field = field|merge({disabled: true}) %}
+                            {{ form.checkbox(field) }}
+                        {% endif %}
+                        {% if field.type == 'boolean' %}
+                            {% set field = field|merge({disabled: true}) %}
+                            {{ form.boolean(field) }}
+                        {% endif %}
+                        {% if field.type == 'textarea' %}
+                            {{ form.text(field) }}
+                        {% endif %}
+                        {% if field.type == 'date' %}
+                            {{ form.text(field) }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endfor %}
+
+
+    </form>
+{% endmacro %}
+
 {% macro editview(params) %}
     {% import scShortPath('macros/forms.twig') as form %}
 
@@ -105,16 +166,19 @@
                     aria-labelledby="{{ panel.name }}-tab"
                     >
                     {% for field in panel.fields %}
+                        {% if field.type == 'select' %}
+                            {{ form.select(field) }}
+                        {% endif %}
                         {% if field.type == 'hidden' %}
                             {{ form.hidden(field) }}
                         {% endif %}
                         {% if field.type == 'input' %}
                             {{ form.input(field) }}
                         {% endif %}
-                       {% if field.type == 'checkbox' %}
+                        {% if field.type == 'checkbox' %}
                             {{ form.checkbox(field) }}
                         {% endif %}
-                       {% if field.type == 'boolean' %}
+                        {% if field.type == 'boolean' %}
                             {{ form.boolean(field) }}
                         {% endif %}
                         {% if field.type == 'textarea' %}

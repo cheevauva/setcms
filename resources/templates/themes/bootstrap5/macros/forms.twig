@@ -8,6 +8,15 @@
     </div>
 {% endmacro %}
 
+{% macro text(params) %}
+    <div class="mb-2">
+        {% if params.label %}
+            <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
+        {% endif %}
+        <div class="form-text">{{ params.value }}</div>
+    </div>
+{% endmacro %}
+
 {% macro input(params) %}
     <div class="mb-2">
         {% if params.label %}

@@ -2,4 +2,7 @@
 
 declare(strict_types=1);
 
-$jobs['CaptchaClearExpired'] = \SetCMS\Module\Captcha\Controller\CaptchaCronClearExpiredController::class;
+$jobs[\SetCMS\Module\Captcha\Controller\CaptchaCronClearExpiredController::class] = [
+    'CaptchaClearExpiredJob',
+    'Работа по очистке устаревших записей каптчи'
+];

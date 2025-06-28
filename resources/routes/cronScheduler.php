@@ -8,3 +8,4 @@ $routes['GET /~/cronScheduler/new/[g:id] AdminCronSchedulerNew'] = \SetCMS\Modul
 $routes['GET /~/cronScheduler/edit/[g:id] AdminCronSchedulerEdit'] = \SetCMS\Module\CronScheduler\Controller\CronSchedulerPrivateEditController::class;
 $routes['POST /~/cronScheduler/update/[g:id] AdminCronSchedulerUpdate'] = \SetCMS\Module\CronScheduler\Controller\CronSchedulerPrivateUpdateController::class;
 $routes['POST /~/cronScheduler/create/[g:id] AdminCronSchedulerCreate'] = \SetCMS\Module\CronScheduler\Controller\CronSchedulerPrivateCreateController::class;
+$routes['SETCMS /~/cronScheduler/jobs AdminCronSchedulerJobs'] = \SetCMS\Module\CronScheduler\Controller\CronSchedulerPrivateJobsController::class;
