@@ -11,10 +11,13 @@ class CronSchedulerJobRetrieveManyDAO extends \UUA\DAO
 
     use \UUA\Traits\ContainerTrait;
 
+    public string $name;
+
     /**
      * @var CronSchedulerJobVO[]
      */
     public array $jobs;
+    public ?CronSchedulerJobVO $job = null;
 
     #[\Override]
     public function serve(): void
@@ -29,7 +32,13 @@ class CronSchedulerJobRetrieveManyDAO extends \UUA\DAO
             $job->label = $meta[1] ?? $meta[0];
             $job->className = $className;
             
+            if (isset($this->name) && $job->name !== $this->name) {
+                continue;
+            }
+
             $this->jobs[] = $job;
         }
+        
+        $this->job = $this->jobs[0] ?? null;
     }
 }

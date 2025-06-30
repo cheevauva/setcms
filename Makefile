@@ -15,3 +15,4 @@ phpstan_baseline:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-fil
 phpunit:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php ../vendor/phpunit/phpunit/phpunit -c ../phpunit.xml
 mig:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php php ../bin/migrations-main.php migrations:migrate
 rad:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php php ../bin/rad.php $(Arguments)
+cron:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php php ../bin/cron.php $(Arguments) >> /dev/null 2>&1
