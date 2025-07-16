@@ -23,6 +23,10 @@ final class Migration20250629124815Version extends AbstractMigration
     {
         $table = $schema->createTable(CronSchedulerWorkConstrants::TABLE_NAME);
         $table->addColumn('status', Types::STRING)->setLength(255);
+        $table->addColumn('error', Types::STRING)->setLength(255)->setNotnull(false);
+        $table->addColumn('date_start', Types::DATETIME_MUTABLE)->setNotnull(false);
+        $table->addColumn('date_end', Types::DATETIME_MUTABLE)->setNotnull(false);
+        $table->addColumn('cronscheduler_id', Types::GUID);
 
         $this->addDefaultColumns($table);
     }

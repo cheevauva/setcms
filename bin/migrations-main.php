@@ -15,7 +15,7 @@ while (true) {
     }
 }
 
-require_once ROOT_PATH . '/bootstrap.php';
+$container = require_once ROOT_PATH . '/bootstrap.php';
 $namespace = (new \ReflectionClass(Migration20220430204715Version::class))->getNamespaceName();
 $directory = dirname((new \ReflectionClass(Migration20220430204715Version::class))->getFileName());
 $connection = DatabaseMainConnection::singleton($container)->getConnection();

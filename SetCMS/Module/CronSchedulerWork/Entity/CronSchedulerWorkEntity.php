@@ -13,8 +13,8 @@ class CronSchedulerWorkEntity extends Entity
 
     public UUID $cronSchedulerId;
     public CronSchedulerWorkStatusEnum $status = CronSchedulerWorkStatusEnum::_New;
-    public \DateTimeImmutable $dateStart;
-    public \DateTimeImmutable $dateEnd;
+    public ?\DateTimeImmutable $dateStart = null;
+    public ?\DateTimeImmutable $dateEnd = null;
     public ?string $error = null;
 
     public function start(): void

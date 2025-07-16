@@ -2,7 +2,7 @@
 
 $start = microtime(true);
 
-require_once '../bootstrap.php';
+$container = require_once '../bootstrap.php';
 
 use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 use Laminas\Diactoros\ServerRequestFactory;

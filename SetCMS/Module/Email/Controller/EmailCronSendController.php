@@ -6,5 +6,9 @@ namespace SetCMS\Module\Email\Controller;
 
 class EmailCronSendController extends \SetCMS\Controller
 {
-    //put your code here
+    #[\Override]
+    public function serve(): void
+    {
+        throw new \Exception('Ошибка');
+    }
 }

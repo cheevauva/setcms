@@ -12,6 +12,7 @@ use SetCMS\Module\CronScheduler\Entity\CronSchedulerEntity;
 use SetCMS\Module\CronScheduler\DAO\CronSchedulerJobRetrieveManyDAO;
 use SetCMS\Module\CronScheduler\VO\CronSchedulerJobVO;
 use UUA\Servant;
+use UUA\Unit;
 
 class CronSchedulerWorkRunServant extends Servant
 {
@@ -22,11 +23,11 @@ class CronSchedulerWorkRunServant extends Servant
     #[\Override]
     public function serve(): void
     {
-        $retriveById = CronSchedulerRetrieveManyByCriteriaDAO::new($this->container);
-        $retriveById->id = $this->cronSchedulerId;
-        $retriveById->serve();
+        $cronSchedulerById = CronSchedulerRetrieveManyByCriteriaDAO::new($this->container);
+        $cronSchedulerById->id = $this->cronSchedulerId;
+        $cronSchedulerById->serve();
 
-        $cronScheduler = CronSchedulerEntity::as($retriveById->cronScheduler);
+        $cronScheduler = CronSchedulerEntity::as($cronSchedulerById->cronScheduler);
 
         $work = $this->cronSchedulerWork = new CronSchedulerWorkEntity();
         $work->cronSchedulerId = $cronScheduler->id;
@@ -41,7 +42,7 @@ class CronSchedulerWorkRunServant extends Servant
         $job = CronSchedulerJobVO::as($retriveJob->job);
 
         try {
-            $servant = Servant::as($job->className::new($this->container));
+            $servant = Unit::as($job->className::new($this->container));
             $servant->serve();
 
             $work->end();
