@@ -15,3 +15,5 @@ phpstan_baseline:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-fil
 phpunit:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php ../vendor/phpunit/phpunit/phpunit -c ../phpunit.xml
 mig:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php php ../bin/migrations-main.php migrations:migrate
 rad:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php php ../bin/rad.php $(Arguments)
+
+setup:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php php -d phar.readonly=0 bin/make-setup.php

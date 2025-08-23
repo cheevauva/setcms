@@ -29,7 +29,7 @@ abstract class DatabaseConnection implements \UUA\ContainerConstructInterface
         switch ($driver) {
             case 'pdo_sqlite':
                 $params = [
-                    'path' => sprintf('%s/%s', $this->container->get('basePath'), $env[$prefix . 'PATH']),
+                    'path' => $env[$prefix . 'PATH'],
                     'driver' => $driver,
                     'charset' => 'UTF8',
                 ];
@@ -51,4 +51,5 @@ abstract class DatabaseConnection implements \UUA\ContainerConstructInterface
 
         return $this->connection = DriverManager::getConnection($params);
     }
+
 }

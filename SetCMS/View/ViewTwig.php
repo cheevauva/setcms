@@ -29,9 +29,9 @@ class ViewTwig extends ViewHtml
                 'cache' => false
             ]);
         } else {
-            $loader = new FilesystemLoader(sprintf('%s/resources/templates', $this->basePath()));
+            $loader = new FilesystemLoader(sprintf('%s/resources/templates', $this->rootPath()));
             $this->twig = new Environment($loader, [
-                'cache' => sprintf('%s/cache/twig', $this->basePath()),
+                'cache' => sprintf('%s/cache/twig', $this->rootPath()),
                 'auto_reload' => true,
             ]);
         }

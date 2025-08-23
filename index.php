@@ -2,7 +2,7 @@
 
 $start = microtime(true);
 
-require_once '../bootstrap.php';
+require_once 'bootstrap.php';
 
 use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 use Laminas\Diactoros\ServerRequestFactory;
@@ -10,7 +10,7 @@ use Laminas\Diactoros\Response;
 use SetCMS\Application\Middleware\Servant\MiddlewareDispatcherServant;
 
 $middlewareDispatcher = MiddlewareDispatcherServant::new($container);
-$middlewareDispatcher->middlewares = require_once '../resources/middlewares.php';
+$middlewareDispatcher->middlewares = $container->get('middlewares');
 $middlewareDispatcher->request = ServerRequestFactory::fromGlobals();
 $middlewareDispatcher->response = new Response;
 $middlewareDispatcher->serve();
