@@ -42,9 +42,19 @@ $connection->executeQuery(file_get_contents($basePath . 'u.migrations.sql'));
 $migrations = $connection->fetchAllKeyValue('SELECT version, executed_at  FROM migrations ORDER BY version ASC');
 $files = glob($basePath . 'u.*.*.sql');
 
-switch ($argv[1] ?? null) {
-    case 'down':
+$argv[1] ?? throw new \Exception('Не указан параметр действия');
+
+switch ($argv[1]) {
+    case 'generate':
+        $id = $argv[2] ?? throw new \Exception('Не указан параметр названия миграции');
         
+        file_put_contents(sprintf($basePath . 'u.%s.%s.sql', gmdate('YmdHis'), $id), '');
+        file_put_contents(sprintf($basePath . 'd.%s.%s.sql', gmdate('YmdHis'), $id), '');
+        chmod(sprintf($basePath . 'u.%s.%s.sql', gmdate('YmdHis'), $id), 0777);
+        chmod(sprintf($basePath . 'd.%s.%s.sql', gmdate('YmdHis'), $id), 0777);
+        break;
+    case 'down':
+
         break;
     case 'up':
         foreach ($files as $file) {
@@ -58,9 +68,9 @@ switch ($argv[1] ?? null) {
 
             try {
                 $start = microtime(true);
-                
+
                 $connection->executeQuery(file_get_contents($file));
-                
+
                 $qb = $connection->createQueryBuilder();
                 $qb->insert('migrations');
                 $qb->values([
