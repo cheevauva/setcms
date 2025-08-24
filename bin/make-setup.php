@@ -12,6 +12,7 @@ mkdir(__DIR__ . '/../cache/ez', 0777);
 $composerJson = json_decode(file_get_contents(__DIR__ . '/../composer.json'), true);
 
 unset($composerJson['require-dev']);
+unset($composerJson['autoload-dev']);
 
 file_put_contents(__DIR__ . '/../cache/ez/composer.json', json_encode($composerJson, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 

@@ -28,7 +28,7 @@ services:
             context: ./migrations
         volumes:
             - ../../:/setcms
-        command: php /setcms/bin/migrations-main.php migrations:migrate --no-interaction
+        command: php /setcms/bin/migrations-main.php up
         env_file:
             - ../../.env
     postgres:

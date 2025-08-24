@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Test;
+namespace SetCMS\Tests;
 
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Connection;

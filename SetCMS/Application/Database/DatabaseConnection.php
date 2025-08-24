@@ -51,5 +51,4 @@ abstract class DatabaseConnection implements \UUA\ContainerConstructInterface
 
         return $this->connection = DriverManager::getConnection($params);
     }
-
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Test;
+namespace SetCMS\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;

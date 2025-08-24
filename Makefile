@@ -10,10 +10,10 @@ php:;docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_EN
 mysql:;docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec mysql mysql -uroot -proot
 logs:;docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) logs -f
 ps:;docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) ps
-phpstan:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php ../vendor/bin/phpstan analyse $(ARGS) -c ../phpstan.neon --memory-limit=2000M --no-progress
-phpstan_baseline:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php ../vendor/bin/phpstan analyse -c ../phpstan.neon --generate-baseline --memory-limit=512M -vv
-phpunit:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php ../vendor/phpunit/phpunit/phpunit -c ../phpunit.xml
-mig:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php php ../bin/migrations-main.php migrations:migrate
-rad:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php php ../bin/rad.php $(Arguments)
+phpstan:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php vendor/bin/phpstan analyse $(ARGS) -c phpstan.neon --memory-limit=2000M --no-progress
+phpstan_baseline:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php vendor/bin/phpstan analyse -c phpstan.neon --generate-baseline --memory-limit=512M -vv
+phpunit:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php vendor/phpunit/phpunit/phpunit -c phpunit.xml
+mig:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php php bin/migrations-main.php up
+rad:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php php bin/rad.php $(Arguments)
 
 setup:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php php -d phar.readonly=0 bin/make-setup.php

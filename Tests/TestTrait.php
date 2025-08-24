@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Test;
+namespace SetCMS\Tests;
 
 use Psr\Container\ContainerInterface;
 use UUA\Container\Container;

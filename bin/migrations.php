@@ -2,19 +2,11 @@
 
 declare(strict_types=1);
 
-use Doctrine\Migrations\DependencyFactory;
-use Doctrine\Migrations\Generator\ClassNameGenerator;
-use Doctrine\Migrations\Finder\MigrationFinder;
-use Doctrine\Migrations\Configuration\Configuration;
-use Doctrine\Migrations\Configuration\Connection\ExistingConnection;
-use Doctrine\Migrations\Metadata\Storage\TableMetadataStorageConfiguration;
-use Doctrine\Migrations\Tools\Console\Command;
-use Doctrine\Migrations\Configuration\Migration\ExistingConfiguration;
-use SetCMS\Module\Migration\Doctrine\MigrationDoctrineClassNameGenerator;
-use SetCMS\Module\Migration\Doctrine\MigrationDoctrineCustomGlobFinder;
-use Symfony\Component\Console\Application;
+use Doctrine\DBAL\Driver\PDO\SQLite\Driver as SQLiteDriver;
+use Doctrine\DBAL\Driver\PDO\MySQL\Driver as MysqlDriver;
+use Doctrine\DBAL\Driver\PDO\PgSQL\Driver as PgSQLDriver;
 
-if (empty($directory) || empty($namespace) || empty($connection)) {
+if (empty($connection) || empty($name)) {
     echo "Один или несколько обязательных переменных не инициализированы\n";
     exit(1);
 }
@@ -31,36 +23,66 @@ while (true) {
     }
 }
 
-if (!is_dir($directory)) {
-    mkdir($directory);
+if ($connection->getDriver() instanceof SQLiteDriver) {
+    $type = 'sqlite';
 }
 
-$configuration = new Configuration($connection);
-$configuration->addMigrationsDirectory($namespace, $directory);
-$configuration->setAllOrNothing(true);
-$configuration->setCheckDatabasePlatform(false);
+if ($connection->getDriver() instanceof MysqlDriver) {
+    $type = 'mysql';
+}
 
-$storageConfiguration = new TableMetadataStorageConfiguration();
-$storageConfiguration->setTableName('migrations');
+if ($connection->getDriver() instanceof PgSQLDriver) {
+    $type = 'pgsql';
+}
 
-$configuration->setMetadataStorageConfiguration($storageConfiguration);
+$basePath = sprintf('resources/migrations/%s/%s/', $type, $name);
 
-$dependencyFactory = DependencyFactory::fromConnection(new ExistingConfiguration($configuration), new ExistingConnection($connection));
-$dependencyFactory->setDefinition(ClassNameGenerator::class, fn(): MigrationDoctrineClassNameGenerator => new MigrationDoctrineClassNameGenerator());
-$dependencyFactory->setDefinition(MigrationFinder::class, fn(): MigrationDoctrineCustomGlobFinder => new MigrationDoctrineCustomGlobFinder());
+$connection->executeQuery(file_get_contents($basePath . 'u.migrations.sql'));
 
-$cli = new Application(sprintf('Doctrine Migrations %s', $namespace));
-$cli->setCatchExceptions(true);
-$cli->addCommands([
-    new Command\DumpSchemaCommand($dependencyFactory),
-    new Command\ExecuteCommand($dependencyFactory),
-    new Command\GenerateCommand($dependencyFactory),
-    new Command\LatestCommand($dependencyFactory),
-    new Command\ListCommand($dependencyFactory),
-    new Command\MigrateCommand($dependencyFactory),
-    new Command\RollupCommand($dependencyFactory),
-    new Command\StatusCommand($dependencyFactory),
-    new Command\SyncMetadataCommand($dependencyFactory),
-    new Command\VersionCommand($dependencyFactory),
-]);
-$cli->run();
+$migrations = $connection->fetchAllKeyValue('SELECT version, executed_at  FROM migrations ORDER BY version ASC');
+$files = glob($basePath . 'u.*.*.sql');
+
+switch ($argv[1] ?? null) {
+    case 'down':
+        
+        break;
+    case 'up':
+        foreach ($files as $file) {
+            $version = basename($file);
+
+            if (isset($migrations[$version])) {
+                continue;
+            }
+
+            $connection->beginTransaction();
+
+            try {
+                $start = microtime(true);
+                
+                $connection->executeQuery(file_get_contents($file));
+                
+                $qb = $connection->createQueryBuilder();
+                $qb->insert('migrations');
+                $qb->values([
+                    'version' => ':version',
+                    'executed_at' => ':executedAt',
+                    'execution_time' => ':executionTime',
+                ]);
+                $qb->setParameters([
+                    'version' => $version,
+                    'executedAt' => gmdate('Y-m-d H:i:s'),
+                    'executionTime' => intval(microtime(true) - $start),
+                ]);
+                $qb->executeQuery();
+
+                $connection->commit();
+                echo 'Done: ' . $file . "\n";
+            } catch (Exception $ex) {
+                $connection->rollBack();
+                echo 'Failed (' . $file . '): ' . $ex->getMessage() . "\n";
+            }
+        }
+        break;
+    default:
+        throw new \Exception($argv[1] . ' неизвестная команда');
+}
