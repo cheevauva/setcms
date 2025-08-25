@@ -2,18 +2,33 @@
 
 declare(strict_types=1);
 
-use Doctrine\DBAL\Driver\PDO\SQLite\Driver as SQLiteDriver;
-use Doctrine\DBAL\Driver\PDO\MySQL\Driver as MysqlDriver;
-use Doctrine\DBAL\Driver\PDO\PgSQL\Driver as PgSQLDriver;
+use SetCMS\Database\DatabaseFactory;
+use SetCMS\Module\Migration\DAO\MigrationRetrieveManyByCriteriaDAO;
+use SetCMS\Module\Migration\DAO\MigrationRunDAO;
+use SetCMS\Module\Migration\DAO\MigrationSaveDAO;
+use SetCMS\Module\Migration\Entity\MigrationEntity;
+use SetCMS\Database\Servant\DatabaseTransactionServant;
+use SetCMS\Module\Migration\Servant\MigrationUpServant;
+use SetCMS\Module\Migration\VO\MigrationCandidateVO;
 
-if (empty($connection) || empty($name)) {
-    echo "Один или несколько обязательных переменных не инициализированы\n";
-    exit(1);
-}
+define('ROOT_PATH', dirname(__DIR__));
 
 while (true) {
-    assert($connection instanceof \Doctrine\DBAL\Connection);
+    if (file_exists(ROOT_PATH . '/vendor/autoload.php')) {
+        break;
+    } else {
+        sleep(1);
+    }
+}
 
+require ROOT_PATH . '/bootstrap.php';
+
+$action = strval($argv[1] ?? throw new \Exception('Не указан параметр действия'));
+$name = strval($argv[2] ?? throw new \Exception('Не указан параметр бд'));
+
+$connection = DatabaseFactory::singleton($container)->make($name);
+
+while (true) {
     try {
         // ждем пока бд подниментся (на деве, на проде уже должно быть все подня)
         $connection->executeQuery('SELECT 1');
@@ -23,31 +38,10 @@ while (true) {
     }
 }
 
-if ($connection->getDriver() instanceof SQLiteDriver) {
-    $type = 'sqlite';
-}
-
-if ($connection->getDriver() instanceof MysqlDriver) {
-    $type = 'mysql';
-}
-
-if ($connection->getDriver() instanceof PgSQLDriver) {
-    $type = 'pgsql';
-}
-
-$basePath = sprintf('resources/migrations/%s/%s/', $type, $name);
-
-$connection->executeQuery(file_get_contents($basePath . 'u.migrations.sql'));
-
-$migrations = $connection->fetchAllKeyValue('SELECT version, executed_at  FROM migrations ORDER BY version ASC');
-$files = glob($basePath . 'u.*.*.sql');
-
-$argv[1] ?? throw new \Exception('Не указан параметр действия');
-
-switch ($argv[1]) {
+switch ($action) {
     case 'generate':
         $id = $argv[2] ?? throw new \Exception('Не указан параметр названия миграции');
-        
+
         file_put_contents(sprintf($basePath . 'u.%s.%s.sql', gmdate('YmdHis'), $id), '');
         file_put_contents(sprintf($basePath . 'd.%s.%s.sql', gmdate('YmdHis'), $id), '');
         chmod(sprintf($basePath . 'u.%s.%s.sql', gmdate('YmdHis'), $id), 0777);
@@ -57,40 +51,19 @@ switch ($argv[1]) {
 
         break;
     case 'up':
-        foreach ($files as $file) {
-            $version = basename($file);
+        $up = MigrationUpServant::new($container);
+        $up->dbName = $name;
+        $up->serve();
 
-            if (isset($migrations[$version])) {
-                continue;
-            }
-
-            $connection->beginTransaction();
-
-            try {
-                $start = microtime(true);
-
-                $connection->executeQuery(file_get_contents($file));
-
-                $qb = $connection->createQueryBuilder();
-                $qb->insert('migrations');
-                $qb->values([
-                    'version' => ':version',
-                    'executed_at' => ':executedAt',
-                    'execution_time' => ':executionTime',
-                ]);
-                $qb->setParameters([
-                    'version' => $version,
-                    'executedAt' => gmdate('Y-m-d H:i:s'),
-                    'executionTime' => intval(microtime(true) - $start),
-                ]);
-                $qb->executeQuery();
-
-                $connection->commit();
-                echo 'Done: ' . $file . "\n";
-            } catch (Exception $ex) {
-                $connection->rollBack();
-                echo 'Failed (' . $file . '): ' . $ex->getMessage() . "\n";
-            }
+        foreach ($up->executedNew as $candidate) {
+            $candidate = MigrationCandidateVO::as($candidate);
+            
+            echo 'Done: ' . $candidate->file . "\n";
+        }
+        foreach ($up->failded as $candidate) {
+            $candidate = MigrationCandidateVO::as($candidate);
+            
+            echo sprintf("Failed (%s): %s(%s): %s\n", $candidate->file, $candidate->error->getFile(), $candidate->error->getLine(), $candidate->error->getMessage());
         }
         break;
     default:

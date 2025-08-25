@@ -10,7 +10,7 @@ use SetCMS\Module\UserSession\UserSessionConstrants;
 trait UserSessionGenericDAO
 {
 
-    use \SetCMS\Traits\DatabaseMainConnectionTrait;
+    use \SetCMS\Traits\DatabaseMainTrait;
 
     protected function mapper(): UserSessionMapper
     {

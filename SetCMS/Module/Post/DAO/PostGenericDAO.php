@@ -10,7 +10,7 @@ use SetCMS\Module\Post\PostConstrants;
 trait PostGenericDAO
 {
 
-    use \SetCMS\Traits\DatabaseMainConnectionTrait;
+    use \SetCMS\Traits\DatabaseMainTrait;
 
     protected function mapper(): PostMapper
     {

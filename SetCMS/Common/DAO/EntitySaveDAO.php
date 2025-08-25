@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace SetCMS\Common\DAO;
 
 use SetCMS\Common\Entity\Entity;
-use Doctrine\DBAL\Query\QueryBuilder;
+use SetCMS\Database\DatabaseQueryBuilder;
 
 abstract class EntitySaveDAO extends EntityCommonDAO
 {
 
     protected Entity $entity;
 
-    protected function has(): QueryBuilder
+    protected function has(): DatabaseQueryBuilder
     {
         $qb = $this->db()->createQueryBuilder();
         $qb->select('id');
@@ -24,7 +24,7 @@ abstract class EntitySaveDAO extends EntityCommonDAO
         return $qb;
     }
 
-    protected function update(): QueryBuilder
+    protected function update(): DatabaseQueryBuilder
     {
         $qb = $this->db()->createQueryBuilder();
         $qb->update($this->table());
@@ -40,7 +40,7 @@ abstract class EntitySaveDAO extends EntityCommonDAO
         return $qb;
     }
 
-    protected function insert(): QueryBuilder
+    protected function insert(): DatabaseQueryBuilder
     {
         $qb = $this->db()->createQueryBuilder();
         $qb->insert($this->table());

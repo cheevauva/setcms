@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Common\DAO;
 
-use Doctrine\DBAL\Query\QueryBuilder;
+use SetCMS\Database\DatabaseQueryBuilder;
 use SetCMS\Common\Entity\Entity;
 use SetCMS\UUID;
 
@@ -41,7 +41,7 @@ abstract class EntityRetrieveManyByCriteriaDAO extends EntityCommonDAO
     abstract protected function notFoundExcecption(): \Throwable;
 
     #[\Override]
-    protected function createQuery(): QueryBuilder
+    protected function createQuery(): DatabaseQueryBuilder
     {
         $qb = parent::createQuery();
 

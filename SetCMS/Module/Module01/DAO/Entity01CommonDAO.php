@@ -10,7 +10,7 @@ use SetCMS\Module\Module01\Module01Constrants;
 trait Entity01CommonDAO
 {
 
-    use \SetCMS\Traits\DatabaseMainConnectionTrait;
+    use \SetCMS\Traits\DatabaseMainTrait;
 
     protected function mapper(): Entity01Mapper
     {
