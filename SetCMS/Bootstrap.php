@@ -45,7 +45,6 @@ class Bootstrap
             'events' => require $this->rootPath() . '/resources/events.php',
             'acl' => require $this->rootPath() . '/resources/acl.php',
             'routes' => require $this->rootPath() . '/resources/routes.php',
-            'modules' => require $this->rootPath() . '/resources/modules.php',
             'themes' => require $this->rootPath() . '/resources/themes.php',
             'middlewares' => require $this->rootPath() . '/resources/middlewares.php',
         ]);

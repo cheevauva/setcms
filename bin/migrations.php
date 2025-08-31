@@ -3,12 +3,8 @@
 declare(strict_types=1);
 
 use SetCMS\Database\DatabaseFactory;
-use SetCMS\Module\Migration\DAO\MigrationRetrieveManyByCriteriaDAO;
-use SetCMS\Module\Migration\DAO\MigrationRunDAO;
-use SetCMS\Module\Migration\DAO\MigrationSaveDAO;
-use SetCMS\Module\Migration\Entity\MigrationEntity;
-use SetCMS\Database\Servant\DatabaseTransactionServant;
 use SetCMS\Module\Migration\Servant\MigrationUpServant;
+use SetCMS\Module\Migration\Servant\MigrationDownServant;
 use SetCMS\Module\Migration\VO\MigrationCandidateVO;
 
 define('ROOT_PATH', dirname(__DIR__));
@@ -48,7 +44,9 @@ switch ($action) {
         chmod(sprintf($basePath . 'd.%s.%s.sql', gmdate('YmdHis'), $id), 0777);
         break;
     case 'down':
-
+        $down = MigrationUpServant::new($container);
+        $down->dbName = $name;
+        $down->serve();
         break;
     case 'up':
         $up = MigrationUpServant::new($container);
@@ -57,14 +55,16 @@ switch ($action) {
 
         foreach ($up->executedNew as $candidate) {
             $candidate = MigrationCandidateVO::as($candidate);
-            
+
             echo 'Done: ' . $candidate->file . "\n";
         }
         foreach ($up->failded as $candidate) {
             $candidate = MigrationCandidateVO::as($candidate);
-            
+
             echo sprintf("Failed (%s): %s(%s): %s\n", $candidate->file, $candidate->error->getFile(), $candidate->error->getLine(), $candidate->error->getMessage());
         }
+
+        exit(intval(!empty($up->failded)));
         break;
     default:
         throw new \Exception($argv[1] . ' неизвестная команда');

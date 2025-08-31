@@ -11,14 +11,27 @@ use SetCMS\Module\Migration\DAO\MigrationRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Migration\DAO\MigrationCandidateRetrieveManyDAO;
 use SetCMS\Module\Migration\VO\MigrationCandidateVO;
 use SetCMS\Module\Migration\Servant\MigrationUpdateServant;
+use SetCMS\Module\Migration\Entity\MigrationEntity;
 
 class MigrationUpServant extends Servant
 {
 
     public string $dbName;
-    public array $executedNew;
-    public array $executedOld;
-    public array $failded;
+
+    /**
+     * @var array<int, MigrationCandidateVO>
+     */
+    public protected(set) array $executedNew;
+
+    /**
+     * @var array<string, MigrationEntity>
+     */
+    public protected(set) array $executedOld;
+
+    /**
+     * @var array<int, MigrationCandidateVO>
+     */
+    public protected(set) array $failded;
 
     #[\Override]
     public function serve(): void
@@ -60,7 +73,7 @@ class MigrationUpServant extends Servant
                 $this->executedNew[] = $candidate;
             } catch (\Throwable $ex) {
                 $candidate->error = $ex;
-                
+
                 $this->failded[] = $candidate;
             }
         }

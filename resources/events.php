@@ -9,7 +9,7 @@ $events = [
     ]
 ];
 
-foreach (glob(__DIR__ . '/events/*') as $file) {
+foreach (glob(__DIR__ . '/events/*') ?: [] as $file) {
     require $file;
 }
 
