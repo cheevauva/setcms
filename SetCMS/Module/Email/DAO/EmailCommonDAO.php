@@ -10,7 +10,7 @@ use SetCMS\Module\Email\EmailConstrants;
 trait EmailCommonDAO
 {
 
-    use \SetCMS\Traits\DatabaseMainConnectionTrait;
+    use \SetCMS\Traits\DatabaseMainTrait;
 
     protected function mapper(): EmailMapper
     {

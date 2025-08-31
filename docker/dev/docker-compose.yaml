@@ -1,17 +1,15 @@
-version: "3.3"
-
 services:
     nginx:
         image: setcms_dev_nginx:latest
         build:
             context: ./nginx
         volumes:
-            - ../../frontend:/setcms/frontend
+            - ../../:/setcms
         ports:
             - "${NGINX_PORT}:80"
         links:
             - php
-    compose:
+    composer:
         build:
             context: ./composer
         volumes:
@@ -23,12 +21,16 @@ services:
             context: ./php
         volumes:
             - ../../:/setcms
+        env_file:
+            - ../../.env
     migration_main:
         build:
             context: ./migrations
         volumes:
             - ../../:/setcms
-        command: php /setcms/bin/migrations-main.php migrations:migrate --no-interaction
+        command: php /setcms/bin/migrations-main.php up
+        env_file:
+            - ../../.env
     postgres:
         image: postgres:latest
         ports:

@@ -1,0 +1,1 @@
+DELETE FROM templates WHERE id = '2bd21112-b9b8-4b9e-9706-adc6c4c7414e'

@@ -1,5 +1,5 @@
 FROM nginx:1.21.5
 
-WORKDIR /setcms/frontend
+WORKDIR /setcms
 
 COPY nginx.conf /etc/nginx/conf.d/default.conf

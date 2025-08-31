@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Module\User\View;
 
 use SetCMS\View;
-use GuzzleHttp\Psr7\Response;
+use Laminas\Diactoros\Response;
 use SetCMS\Application\Router\Router;
 
 class UserPublicLogoutView extends View

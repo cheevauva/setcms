@@ -1,13 +1,13 @@
 includes:
     - phpstan-baseline.neon
-
 parameters:
     level: 8
     paths:
         - SetCMS
         - UUA
+        - resources
     reportUnmatchedIgnoredErrors: false
 
     bootstrapFiles:
-        - vendor/autoload.php  # Автозагрузка классов через Composer
+        - vendor/autoload.php
 

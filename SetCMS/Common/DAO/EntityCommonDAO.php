@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace SetCMS\Common\DAO;
 
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Query\QueryBuilder;
+use SetCMS\Database\Database;
+use SetCMS\Database\DatabaseQueryBuilder;
 use SetCMS\Common\Entity\Entity;
 use SetCMS\Common\Mapper\EntityMapper;
 
@@ -15,13 +15,13 @@ abstract class EntityCommonDAO extends \UUA\DAO
     public ?int $limit = null;
     protected int $offset = 0;
 
-    abstract protected function db(): Connection;
+    abstract protected function db(): Database;
 
     abstract protected function mapper(): EntityMapper;
 
     abstract protected function table(): string;
 
-    protected function createQuery(): QueryBuilder
+    protected function createQuery(): DatabaseQueryBuilder
     {
         $qb = $this->db()->createQueryBuilder();
         $qb->select('*');

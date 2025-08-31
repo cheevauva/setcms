@@ -1,8 +1,10 @@
 FROM php:8.4-fpm
 
-WORKDIR /setcms/backend
+WORKDIR /setcms
 
 RUN apt-get update
+
+COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 RUN apt-get install -y zlib1g-dev
 RUN apt-get install -y libpq-dev

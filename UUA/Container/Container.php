@@ -5,40 +5,50 @@ declare(strict_types=1);
 namespace UUA\Container;
 
 use UUA\Container\Exception\ContainerNotFoundException;
+use UUA\FactoryInterface;
+use UUA\Factory;
 
 class Container implements \Psr\Container\ContainerInterface
 {
 
     /**
-     * 
-     * @param array<string|mixed> $assets
+     * @var array<string, mixed>
      */
-    public function __construct(protected array $assets)
+    protected array $assetsResolved = [];
+
+    public function __construct(\Closure $assets)
     {
-        
+        $this->assetsResolved[spl_object_hash($this)] = $assets($this);
+        $this->assetsResolved[FactoryInterface::class] = new Factory($this);
     }
 
     #[\Override]
     public function get(string $id): mixed
     {
-        if (isset($this->assets[$id]) && ($this->assets[$id] instanceof \Closure)) {
-            $this->assets[$id] = $this->assets[$id]($this);
+        if (!isset($this->assetsResolved[$id])) {
+            if (class_exists($id, true) || interface_exists($id, true)) {
+                $this->assetsResolved[$id] = $this->factory()->make($id);
+            } else {
+                $this->assetsResolved[$id] = $this->assetsResolved[spl_object_hash($this)][$id] ?? null;
+            }
         }
 
-        if (!isset($this->assets[$id]) && class_exists($id, true)) {
-            $this->assets[$id] = new $id($this);
-        }
 
-        if (!isset($this->assets[$id])) {
+        if (!isset($this->assetsResolved[$id])) {
             throw new ContainerNotFoundException($id);
         }
 
-        return $this->assets[$id];
+        return $this->assetsResolved[$id];
+    }
+
+    protected function factory(): FactoryInterface
+    {
+        return $this->get(FactoryInterface::class);
     }
 
     #[\Override]
     public function has(string $id): bool
     {
-        return isset($this->assets[$id]);
+        return isset($this->assets[$id]) || isset($this->assetsResolved[spl_object_hash($this)][$id]);
     }
 }

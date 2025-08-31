@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Module\Page\DAO;
 
 use SetCMS\Module\Page\PageEntity;
-use Doctrine\DBAL\Query\QueryBuilder;
+use SetCMS\Database\DatabaseQueryBuilder;
 use SetCMS\Module\Page\Exception\PageNotFoundException;
 
 class PageRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO
@@ -31,7 +31,7 @@ class PageRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveMan
     }
 
     #[\Override]
-    protected function createQuery(): QueryBuilder
+    protected function createQuery(): DatabaseQueryBuilder
     {
         $qb = parent::createQuery();
 

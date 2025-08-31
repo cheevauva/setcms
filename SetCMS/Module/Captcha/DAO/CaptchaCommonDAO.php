@@ -10,7 +10,7 @@ use SetCMS\Module\Captcha\CaptchaConstants;
 trait CaptchaCommonDAO
 {
 
-    use \SetCMS\Traits\DatabaseMainConnectionTrait;
+    use \SetCMS\Traits\DatabaseMainTrait;
 
     protected function table(): string
     {

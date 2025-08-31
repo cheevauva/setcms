@@ -10,7 +10,7 @@ use SetCMS\Module\Menu\MenuConstrants;
 trait MenuCommonDAO
 {
 
-    use \SetCMS\Traits\DatabaseMainConnectionTrait;
+    use \SetCMS\Traits\DatabaseMainTrait;
 
     #[\Override]
     protected function mapper(): MenuMapper
