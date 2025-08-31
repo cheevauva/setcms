@@ -26,7 +26,7 @@ class Container implements \Psr\Container\ContainerInterface
     public function get(string $id): mixed
     {
         if (!isset($this->assetsResolved[$id])) {
-            if (class_exists($id, true) ||  interface_exists($id, true)) {
+            if (class_exists($id, true) || interface_exists($id, true)) {
                 $this->assetsResolved[$id] = $this->factory()->make($id);
             } else {
                 $this->assetsResolved[$id] = $this->assetsResolved[spl_object_hash($this)][$id] ?? null;

@@ -10,7 +10,7 @@ use SetCMS\Module\User\UserContstants;
 trait UserCommonDAO
 {
 
-    use \SetCMS\Traits\DatabaseMainConnectionTrait;
+    use \SetCMS\Traits\DatabaseMainTrait;
 
     protected function mapper(): UserMapper
     {

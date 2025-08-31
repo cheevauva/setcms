@@ -9,7 +9,7 @@ use SetCMS\Module\Menu\Entity\MenuEntity;
 class MenuRetrieveManyBySlugDAO extends \UUA\DAO
 {
 
-    use \SetCMS\Traits\DatabaseMainConnectionTrait;
+    use \SetCMS\Traits\DatabaseMainTrait;
 
     public string $slug;
 

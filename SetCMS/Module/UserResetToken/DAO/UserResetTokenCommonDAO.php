@@ -10,7 +10,7 @@ use SetCMS\Module\UserResetToken\Mapper\UserResetTokenMapper;
 trait UserResetTokenCommonDAO
 {
 
-    use \SetCMS\Traits\DatabaseMainConnectionTrait;
+    use \SetCMS\Traits\DatabaseMainTrait;
 
     #[\Override]
     protected function mapper(): UserResetTokenMapper

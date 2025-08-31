@@ -10,7 +10,7 @@ use SetCMS\Module\Page\PageConstrants;
 trait PageCommonDAO
 {
 
-    use \SetCMS\Traits\DatabaseMainConnectionTrait;
+    use \SetCMS\Traits\DatabaseMainTrait;
 
     protected function mapper(): PageMapper
     {
