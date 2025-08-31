@@ -1,4 +1,5 @@
 {% extends scShortPath(layout ?? 'layout_admin.twig') %}
+{% import scShortPath('macros/crud.twig') as crud %}
 
 {% block title %}{{ options.title }} - {{ Entity01LC.title }}{% endblock %}
 
@@ -12,13 +13,39 @@
 {% endblock %}
 
 {% block content %}
-    {% if Entity01LC %}
-        <article class="blog-Entity01LC">
-            <h2 class="blog-Entity01LC-title">{{ Entity01LC.title }}</h2>
-            <p class="blog-Entity01LC-meta"><a href="#">Admin</a> опубликовал в {{ Entity01LC.dateCreated.format('H:i') }} {{ Entity01LC.dateCreated.format('d.m.Y') }}</p>
-            <p>
-                {{ Entity01LC.field01 }}
-            </p>
-        </article>
-    {% endif %}
+    {{ 
+        crud.detailview({
+            panels: [
+                {
+                    name: 'default',
+                    label: 'Основные данные',
+                    active: true,
+                    fields: [
+                        {name: 'Entity01LC.id', value: Entity01LC.id|default(scUUID()), type: 'hidden'},
+                        {name: 'Entity01LC.field01', value: Entity01LC.field01, type: 'input', label: 'field01'},
+                    ]
+                }, 
+                {
+                    name: 'services',
+                    label: 'Служебные данные',
+                    fields: [
+                        {
+                            name: 'Entity01LC.dateCreated',
+                            value: Entity01LC.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата создания',
+                            disabled: true
+                        },
+                        {
+                            name: 'Entity01LC.dateModified',
+                            value: Entity01LC.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата изменения',
+                            disabled: true
+                        },
+                    ]
+                }
+            ]
+        })
+    }}
 {% endblock %}

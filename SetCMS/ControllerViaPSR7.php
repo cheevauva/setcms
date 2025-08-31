@@ -17,11 +17,6 @@ abstract class ControllerViaPSR7 extends Controller
     public protected(set) ResponseInterface $response;
 
     #[\Override]
-    protected function process(): void
-    {
-        // use $this->validate($this->request->getParsedBody() ?: [])
-    }
-
     public function from(object $object): void
     {
         parent::from($object);
@@ -33,7 +28,7 @@ abstract class ControllerViaPSR7 extends Controller
         if ($object instanceof Responder && isset($object->response)) {
             $this->response = $object->response;
         }
-    }
+    } 
 
     #[\Override]
     public function to(object $object): void
@@ -54,6 +49,7 @@ abstract class ControllerViaPSR7 extends Controller
     /**
      * @return array<string|Unit>
      */
+    #[\Override]
     protected function domainUnits(): array
     {
         return [];
@@ -62,6 +58,7 @@ abstract class ControllerViaPSR7 extends Controller
     /**
      * @return array<string|Unit>
      */
+    #[\Override]
     protected function viewUnits(): array
     {
         return [];

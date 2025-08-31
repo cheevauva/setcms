@@ -13,7 +13,8 @@
         "laminas/laminas-httphandlerrunner": "2.11.0",
         "psr/http-server-handler": "1.0.2",
         "psr/http-server-middleware": "1.0.2",
-        "psr/container": "2.0.0"
+        "psr/container": "2.0.0",
+        "dragonmantank/cron-expression": "v3.4.0"
     },
     "require-dev": {
         "phpstan/phpstan": "2.1.17",

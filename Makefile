@@ -18,3 +18,4 @@ mig-down:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMP
 mig-gen:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php php bin/migrations.php generate $(Arguments)
 rad:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php php bin/rad.php $(Arguments)
 setup:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php php -d phar.readonly=0 bin/make-setup.php
+cron:; docker compose -p $(COMPOSE_NAME) -f $(COMPOSE_DEV) --env-file $(COMPOSE_ENV) exec -T php php ../bin/cron.php $(Arguments) >> /dev/null 2>&1

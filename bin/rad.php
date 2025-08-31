@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-require '../bootstrap.php';
+$container = require '../bootstrap.php';
 
 $rootPath = \SetCMS\Bootstrap::instance()->rootPath() ;
 

@@ -1,0 +1,51 @@
+{% extends scShortPath(layout ?? 'layout_admin.twig') %}
+{% import scShortPath('macros/crud.twig') as crud %}
+
+{% block title %}{{ options.title }} - {{ cronSchedulerWork.title }}{% endblock %}
+
+{% block content_toolbar %}
+    {% if scHasAccess('AdminCronSchedulerWorkIndex') %}
+        <a href="{{ scLink('AdminCronSchedulerWorkIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    {% endif %}
+    {% if scHasAccess('AdminCronSchedulerWorkEdit') %}
+        <a href="{{ scLink('AdminCronSchedulerWorkEdit', {id: cronSchedulerWork.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {{ 
+        crud.detailview({
+            panels: [
+                {
+                    name: 'default',
+                    label: 'Основные данные',
+                    active: true,
+                    fields: [
+                        {name: 'cronSchedulerWork.id', value: cronSchedulerWork.id|default(scUUID()), type: 'hidden'},
+                        {name: 'cronSchedulerWork.status', value: cronSchedulerWork.status, type: 'input', label: 'status'},
+                    ]
+                }, 
+                {
+                    name: 'services',
+                    label: 'Служебные данные',
+                    fields: [
+                        {
+                            name: 'cronSchedulerWork.dateCreated',
+                            value: cronSchedulerWork.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата создания',
+                            disabled: true
+                        },
+                        {
+                            name: 'cronSchedulerWork.dateModified',
+                            value: cronSchedulerWork.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата изменения',
+                            disabled: true
+                        },
+                    ]
+                }
+            ]
+        })
+    }}
+{% endblock %}

@@ -34,7 +34,10 @@ abstract class Controller extends Unit implements ContainerConstructInterface
      */
     protected SplObjectStorage $exceptions;
 
-    abstract protected function process(): void;
+    protected function process(): void
+    {
+        
+    }
 
     protected function init(): void
     {
