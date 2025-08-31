@@ -1,8 +1,6 @@
 <?php
 
 $events = [
-    SetCMS\Module\User\Event\UserRegistrationEvent::class => [
-    ],
     SetCMS\Controller\Event\ControllerOnBeforeServeEvent::class => [
         [SetCMS\Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant::class, \SetCMS\Module\ACL\Symbiont\ACLUserScopeProtectionSymbiont::class],
     ],
@@ -11,7 +9,7 @@ $events = [
     ]
 ];
 
-foreach (glob(__DIR__ . '/hooks/*') as $file) {
+foreach (glob(__DIR__ . '/events/*') ?: [] as $file) {
     require $file;
 }
 

@@ -6,5 +6,8 @@ namespace UUA;
 
 class VO
 {
-    use Traits\AsTrait;
+
+    use \UUA\Traits\AsTrait;
+    
+    
 }

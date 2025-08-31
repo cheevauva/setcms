@@ -10,7 +10,7 @@ use SetCMS\Module\Template\TemplateConstrants;
 trait TemplateCommonDAO
 {
 
-    use \SetCMS\Traits\DatabaseMainConnectionTrait;
+    use \SetCMS\Traits\DatabaseMainTrait;
 
     protected function mapper(): TemplateMapper
     {

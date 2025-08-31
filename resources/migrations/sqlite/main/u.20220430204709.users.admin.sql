@@ -1,0 +1,26 @@
+INSERT INTO users 
+(
+    id, 
+    entity_type, 
+    date_created,
+    date_modified,
+    deleted,
+    email,
+    username,
+    password, 
+    "role",
+    extra
+) 
+VALUES 
+(
+    'c5e35038-4d12-4d90-be57-f4eb1a45fe35', 
+    'SetCMS\Module\User\Entity\UserEntity', 
+    '2025-01-01', 
+    '2025-01-01', 
+    'f',
+    'admin@admin',
+    'admin', 
+    '$2y$12$5tfZoh2e0GCjShqeVybxsOJI7PdPRGdge8sxz2q0MNiwTNjRimoqO', 
+    'admin', 
+    '{}'
+);

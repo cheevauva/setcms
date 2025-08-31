@@ -209,7 +209,7 @@ abstract class ViewHtml extends \SetCMS\View
 
     protected function scLongPath(string $name): string
     {
-        return sprintf('%s/resources/templates/%s', $this->basePath(), $this->scShortPath($name));
+        return sprintf('%s/resources/templates/%s', $this->rootPath(), $this->scShortPath($name));
     }
 
     private function templateNameByClass(): string
@@ -243,9 +243,9 @@ abstract class ViewHtml extends \SetCMS\View
         return $checkRole->isAllow;
     }
 
-    protected function basePath(): string
+    protected function rootPath(): string
     {
-        return $this->container->get('basePath');
+        return $this->container->get('rootPath');
     }
 
     protected function theme(): string
@@ -257,4 +257,5 @@ abstract class ViewHtml extends \SetCMS\View
     {
         return $this->env()['BASE_URL'] ?? '';
     }
+
 }
