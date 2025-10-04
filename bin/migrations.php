@@ -17,7 +17,7 @@ while (true) {
     }
 }
 
-require ROOT_PATH . '/bootstrap.php';
+$container = require ROOT_PATH . '/bootstrap.php';
 
 $action = strval($argv[1] ?? throw new \Exception('Не указан параметр действия'));
 $name = strval($argv[2] ?? throw new \Exception('Не указан параметр бд'));

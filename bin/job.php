@@ -1,11 +1,11 @@
 <?php
 
-use SetCMS\Module\CronSchedulerWork\Servant\CronSchedulerWorkRunServant;
+use SetCMS\Module\SchedulerJob\Servant\SchedulerJobRunServant;
 use SetCMS\UUID;
 
 $container = require_once '../bootstrap.php';
 
-$run = CronSchedulerWorkRunServant::new($container);
+$run = SchedulerJobRunServant::new($container);
 $run->cronSchedulerId = new UUID($argv[1] ?? '!!!');
 $run->serve();
 

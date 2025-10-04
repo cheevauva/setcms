@@ -1,1 +1,1 @@
-DROP TABLE users_reset_token;
+DROP TABLE schedulers;

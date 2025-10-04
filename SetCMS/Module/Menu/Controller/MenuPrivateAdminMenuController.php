@@ -40,7 +40,7 @@ class MenuPrivateAdminMenuController extends ControllerViaPSR7
         ],
         [
             'label' => 'Планировщик CRON',
-            'name' => 'CronScheduler',
+            'name' => 'Scheduler',
         ],
         [
             'label' => 'Модуль01',
