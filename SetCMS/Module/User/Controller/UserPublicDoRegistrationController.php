@@ -6,7 +6,7 @@ namespace SetCMS\Module\User\Controller;
 
 use SetCMS\UUID;
 use SetCMS\ControllerViaPSR7;
-use SetCMS\Module\Captcha\Servant\CaptchaUseResolvedCaptchaServant;
+use SetCMS\Module\Captcha\Mediator\CaptchaUseResolvedCaptchaMediator;
 use SetCMS\Module\Captcha\Exception\CaptchaException;
 use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\Module\User\Exception\UserAlreadyExistsException;
@@ -37,7 +37,7 @@ class UserPublicDoRegistrationController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return array_filter([
-            $this->useCaptcha ? CaptchaUseResolvedCaptchaServant::class : null,
+            $this->useCaptcha ? CaptchaUseResolvedCaptchaMediator::class : null,
             UserRegistrationServant::class,
         ]);
     }
@@ -77,7 +77,7 @@ class UserPublicDoRegistrationController extends ControllerViaPSR7
     {
         parent::to($object);
 
-        if ($object instanceof CaptchaUseResolvedCaptchaServant) {
+        if ($object instanceof CaptchaUseResolvedCaptchaMediator) {
             $object->captcha = $this->captcha;
         }
 

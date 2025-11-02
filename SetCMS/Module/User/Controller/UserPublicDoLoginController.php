@@ -8,7 +8,7 @@ use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\User\Servant\UserLoginServant;
 use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\Module\UserSession\UserSessionEntity;
-use SetCMS\Module\Captcha\Servant\CaptchaUseResolvedCaptchaServant;
+use SetCMS\Module\Captcha\Mediator\CaptchaUseResolvedCaptchaMediator;
 use SetCMS\Module\UserSession\Servant\UserSessionCreateByUserServant;
 use SetCMS\Module\Captcha\Exception\CaptchaException;
 use SetCMS\Module\User\Exception\UserNotFoundException;
@@ -41,7 +41,7 @@ class UserPublicDoLoginController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return array_filter([
-            $this->useCaptcha ? CaptchaUseResolvedCaptchaServant::class : null,
+            $this->useCaptcha ? CaptchaUseResolvedCaptchaMediator::class : null,
             UserLoginServant::class,
             UserSessionCreateByUserServant::class,
         ]);
@@ -77,7 +77,7 @@ class UserPublicDoLoginController extends ControllerViaPSR7
     {
         parent::to($object);
 
-        if ($object instanceof CaptchaUseResolvedCaptchaServant) {
+        if ($object instanceof CaptchaUseResolvedCaptchaMediator) {
             $object->captcha = $this->captcha;
         }
 
