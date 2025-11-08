@@ -13,6 +13,7 @@ use UUA\Unit;
 abstract class ControllerViaPSR7 extends Controller
 {
 
+    public bool $hasACLCheck = true;
     public ServerRequestInterface $request;
     public protected(set) ResponseInterface $response;
 

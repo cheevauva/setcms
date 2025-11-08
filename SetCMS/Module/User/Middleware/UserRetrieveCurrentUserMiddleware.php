@@ -10,7 +10,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\Module\UserSession\Servant\UserSessionRetrieveUserServant;
 use SetCMS\Module\User\Entity\UserEntity;
-use Exception;
 
 class UserRetrieveCurrentUserMiddleware implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {
@@ -18,29 +17,19 @@ class UserRetrieveCurrentUserMiddleware implements MiddlewareInterface, \UUA\Con
     use \UUA\Traits\BuildTrait;
     use \UUA\Traits\ContainerTrait;
 
+    #[\Override]
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $token = $request->getCookieParams()['X-CSRF-Token'] ?? $request->getHeaderLine(strtolower('X-CSRF-Token'));
-
-        try {
-            $retrieveUser = UserSessionRetrieveUserServant::new($this->container);
-            $retrieveUser->token = $token;
-            $retrieveUser->serve();
-        } catch (Exception $ex) {
-            $request = $request->withAttribute('currentUser', new UserEntity);
+        $user = new \ReflectionClass(UserEntity::class)->newLazyProxy(function () use ($request): UserEntity {
+            $token = $request->getCookieParams()['X-CSRF-Token'] ?? $request->getHeaderLine(strtolower('X-CSRF-Token'));
             
-            return $handler->handle($request);
-            // @todo надо логировать, потому что не гоже при исключениях всех воспринимать как гостей
-        }
+            $useByToken = UserSessionRetrieveUserServant::new($this->container);
+            $useByToken->token = $token;
+            $useByToken->serve();
+            
+            return $useByToken->user ?? new UserEntity;
+        });
 
-
-        if (!empty($retrieveUser->user)) {
-            $request = $request->withAttribute('currentUser', $retrieveUser->user);
-            $request = $request->withAttribute('currentUserSession', $retrieveUser->session);
-        } else {
-            $request = $request->withAttribute('currentUser', new UserEntity);
-        }
-
-        return $handler->handle($request);
+        return $handler->handle($request->withAttribute('currentUser', $user));
     }
 }
