@@ -17,9 +17,13 @@ class ACLUserScopeProtectionSymbiont extends \UUA\SymbiontCustomizer
     {
         if ($object instanceof ACLCheckByRoleAndPrivilegeServant) {
             $master = ControllerOnBeforeServeEvent::as($this->master);
-            $object->role = UserEntity::as($master->request->getAttribute('currentUser'))->role->value;
+            //
             $object->throwExceptions = true;
+            $object->skip = !$master->controller->hasACLCheck;
             $object->privilege = $master->route;
+            $object->role = function () use ($master) {
+                return UserEntity::as($master->request->getAttribute('currentUser'))->role->value;
+            };
         }
     }
 

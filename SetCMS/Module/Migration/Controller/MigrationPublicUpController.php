@@ -10,6 +10,8 @@ use SetCMS\Module\Migration\View\MigrationPublicUpView;
 class MigrationPublicUpController extends ControllerViaPSR7
 {
 
+    public bool $hasACLCheck = false;
+
     #[\Override]
     protected function viewUnits(): array
     {

@@ -13,6 +13,8 @@ use SetCMS\Exception\SecretKeyException;
 class MigrationPublicDoUpController extends ControllerViaPSR7
 {
 
+    public bool $hasACLCheck = false;
+    //
     protected string $dbName;
     protected string $secretKey;
 
@@ -67,7 +69,7 @@ class MigrationPublicDoUpController extends ControllerViaPSR7
         if ($object instanceof SecretKeyException) {
             $this->messages->attach($object, 'secretKey');
         }
-        
+
         if ($object instanceof \RuntimeException) {
             $this->messages->attach($object, 'dbName');
         }

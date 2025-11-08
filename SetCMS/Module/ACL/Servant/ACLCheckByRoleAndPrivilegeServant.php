@@ -9,7 +9,8 @@ use SetCMS\ACL;
 class ACLCheckByRoleAndPrivilegeServant extends \UUA\Servant
 {
 
-    public public(set)string $role;
+    public bool $skip = false;
+    public public(set) string|\Closure $role;
     public public(set) string $privilege;
     public protected(set) bool $isAllow = false;
     public public(set) bool $throwExceptions = false;
@@ -17,6 +18,11 @@ class ACLCheckByRoleAndPrivilegeServant extends \UUA\Servant
 
     public function serve(): void
     {
+        if ($this->skip) {
+            $this->isAllow = true;
+            return;
+        }
+
         try {
             $this->process();
             $this->isAllow = true;
@@ -34,13 +40,19 @@ class ACLCheckByRoleAndPrivilegeServant extends \UUA\Servant
     {
         $acl = ACL::singleton($this->container);
 
+        $role = $this->role;
+
+        if ($role instanceof \Closure) {
+            $role = $role();
+        }
+
         if (!$acl->hasResource('routes')) {
             throw new \RuntimeException(sprintf('Не найден ресурс "routes"'));
         }
 
 
-        if (!$acl->isAllowed($this->role, 'routes', $this->privilege)) {
-            throw new \RuntimeException(sprintf('Для роли "%s" не разрешен доступ к привелегии "%s" ресурса "routes"', $this->role, $this->privilege));
+        if (!$acl->isAllowed($role, 'routes', $this->privilege)) {
+            throw new \RuntimeException(sprintf('Для роли "%s" не разрешен доступ к привелегии "%s" ресурса "routes"', $role, $this->privilege));
         }
     }
 }
