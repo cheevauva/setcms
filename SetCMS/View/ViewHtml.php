@@ -108,6 +108,7 @@ abstract class ViewHtml extends \SetCMS\View
             $ctx['routerMatch'] = $routerMatch;
 
             $request = (new ServerRequestFactory)->createServerRequest('GET', new Uri($path))->withQueryParams($params);
+            $request = $request->withAttribute('currentUser', $ctx['currentUser']);
 
             $className = $routerMatch->target;
 

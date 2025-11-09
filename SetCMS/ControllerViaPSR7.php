@@ -9,11 +9,13 @@ use Psr\Http\Message\ResponseInterface;
 use SetCMS\View;
 use SetCMS\Responder;
 use UUA\Unit;
+use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
+use SetCMS\Application\Router\RouterMatchDTO;
 
 abstract class ControllerViaPSR7 extends Controller
 {
 
-    public bool $hasACLCheck = true;
+    public protected(set) bool $hasACLCheck = true;
     public ServerRequestInterface $request;
     public protected(set) ResponseInterface $response;
 
@@ -50,6 +52,16 @@ abstract class ControllerViaPSR7 extends Controller
             $object->ctx = $this->ctx;
             $object->messages = $this->messages;
         }
+    }
+
+    #[\Override]
+    protected function onBeforeServe(): void
+    {
+        $onBeforeServe = new ControllerOnBeforeServeEvent();
+        $onBeforeServe->controller = $this;
+        $onBeforeServe->request = $this->request;
+        $onBeforeServe->route = RouterMatchDTO::as($this->ctx['routerMatch'])->name;
+        $onBeforeServe->dispatch($this->eventDispatcher());
     }
 
     /**

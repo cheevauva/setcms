@@ -12,7 +12,6 @@ use SetCMS\ControllerViaPSR7;
 use SetCMS\Application\Router\Router;
 use SetCMS\View\ViewNoContent;
 use SetCMS\View\ViewNotFound;
-use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
 
 class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {
@@ -44,13 +43,6 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
         $className = $routerMatch->target;
 
         $controller = ControllerViaPSR7::as($className::new($this->container));
-
-        $onBeforeServe = new ControllerOnBeforeServeEvent();
-        $onBeforeServe->controller = $controller;
-        $onBeforeServe->request = $request;
-        $onBeforeServe->route = $routerMatch->name;
-        $onBeforeServe->dispatch($this->eventDispatcher());
-
         $controller->request = $request;
         $controller->ctx = $ctx;
         $controller->serve();
