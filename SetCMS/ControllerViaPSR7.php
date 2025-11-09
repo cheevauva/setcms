@@ -10,12 +10,10 @@ use SetCMS\View;
 use SetCMS\Responder;
 use UUA\Unit;
 use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
-use SetCMS\Application\Router\RouterMatchDTO;
 
 abstract class ControllerViaPSR7 extends Controller
 {
 
-    public protected(set) bool $hasACLCheck = true;
     public ServerRequestInterface $request;
     public protected(set) ResponseInterface $response;
 
@@ -25,6 +23,7 @@ abstract class ControllerViaPSR7 extends Controller
         // use $this->validate($this->request->getParsedBody() ?: [])
     }
 
+    #[\Override]
     public function from(object $object): void
     {
         parent::from($object);
@@ -59,14 +58,15 @@ abstract class ControllerViaPSR7 extends Controller
     {
         $onBeforeServe = new ControllerOnBeforeServeEvent();
         $onBeforeServe->controller = $this;
-        $onBeforeServe->request = $this->request;
-        $onBeforeServe->route = RouterMatchDTO::as($this->ctx['routerMatch'])->name;
+        $onBeforeServe->ctx = $this->ctx;
+        $onBeforeServe->route = $this->name;
         $onBeforeServe->dispatch($this->eventDispatcher());
     }
 
     /**
      * @return array<string|Unit>
      */
+    #[\Override]
     protected function domainUnits(): array
     {
         return [];
@@ -75,6 +75,7 @@ abstract class ControllerViaPSR7 extends Controller
     /**
      * @return array<string|Unit>
      */
+    #[\Override]
     protected function viewUnits(): array
     {
         return [];

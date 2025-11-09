@@ -25,7 +25,6 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
     {
         $method = $request->getMethod();
         $path = $request->getUri()->getPath();
-        
 
         $routerMatch = Router::singleton($this->container)->match($path, $method);
 
@@ -38,11 +37,12 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
         }
 
         $ctx = $request->getAttributes();
-        $ctx['routerMatch'] = $routerMatch;
 
         $className = $routerMatch->target;
 
         $controller = ControllerViaPSR7::as($className::new($this->container));
+        $controller->name = $routerMatch->name;
+        $controller->params = $routerMatch->params;
         $controller->request = $request;
         $controller->ctx = $ctx;
         $controller->serve();

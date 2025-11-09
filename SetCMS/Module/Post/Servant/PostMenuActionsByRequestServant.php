@@ -9,8 +9,6 @@ use SetCMS\Module\Post\View\PostPublicReadBySlugView;
 use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\UUID;
-use SetCMS\Module\User\Entity\UserEntity;
-use SetCMS\Application\Router\Router;
 use SetCMS\Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
 
 class PostMenuActionsByRequestServant extends \UUA\Servant
@@ -85,7 +83,7 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
     protected function hasAccess(string $route): bool
     {
         $checkRole = ACLCheckByRoleAndPrivilegeServant::new($this->container);
-        $checkRole->role = UserEntity::as($this->ctx['currentUser'])->role->value;
+        $checkRole->role = $this->ctx['currentUserRole'];
         $checkRole->throwExceptions = false;
         $checkRole->privilege = $route;
         $checkRole->serve();

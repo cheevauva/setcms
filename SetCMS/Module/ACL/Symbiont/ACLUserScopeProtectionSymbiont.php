@@ -7,7 +7,6 @@ namespace SetCMS\Module\ACL\Symbiont;
 use SetCMS\Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
 use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
 use SetCMS\Module\User\Exception\UserForbiddenException;
-use SetCMS\Module\User\Entity\UserEntity;
 
 class ACLUserScopeProtectionSymbiont extends \UUA\SymbiontCustomizer
 {
@@ -21,9 +20,7 @@ class ACLUserScopeProtectionSymbiont extends \UUA\SymbiontCustomizer
             $object->throwExceptions = true;
             $object->skip = !$master->controller->hasACLCheck;
             $object->privilege = $master->route;
-            $object->role = function () use ($master) {
-                return UserEntity::as($master->request->getAttribute('currentUser'))->role->value;
-            };
+            $object->role = $master->ctx['currentUserRole'];
         }
     }
 

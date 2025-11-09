@@ -8,7 +8,6 @@ use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\Module\Post\View\PostPublicReadBySlugView;
-use SetCMS\Application\Router\RouterMatchDTO;
 
 class PostPublicReadBySlugController extends ControllerViaPSR7
 {
@@ -35,9 +34,7 @@ class PostPublicReadBySlugController extends ControllerViaPSR7
     #[\Override]
     protected function process(): void
     {
-        $routerMatch = RouterMatchDTO::as($this->ctx['routerMatch']);
-
-        $this->slug = $this->validation($routerMatch->params)->string('slug')->notEmpty()->notQuiet()->val();
+        $this->slug = $this->validation($this->params)->string('slug')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]

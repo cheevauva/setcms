@@ -8,10 +8,8 @@ use SetCMS\Module\Menu\MenuAction\Entity\MenuActionEntity;
 use SetCMS\Module\Page\View\PagePublicReadView;
 use SetCMS\Module\Page\DAO\PageRetrieveManyByCriteriaDAO;
 use SetCMS\UUID;
-use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
-use SetCMS\Application\Router\Router;
 
 class PageMenuActionsByRequestServant extends \UUA\Servant
 {
@@ -84,7 +82,7 @@ class PageMenuActionsByRequestServant extends \UUA\Servant
     protected function hasAccess(string $route): bool
     {
         $checkRole = ACLCheckByRoleAndPrivilegeServant::new($this->container);
-        $checkRole->role = UserEntity::as($this->ctx['currentUser'])->role->value;
+        $checkRole->role = $this->ctx['currentUserRole'];
         $checkRole->throwExceptions = false;
         $checkRole->privilege = $route;
         $checkRole->serve();

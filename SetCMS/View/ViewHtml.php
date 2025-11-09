@@ -13,7 +13,6 @@ use SetCMS\Application\Router\Router;
 use SetCMS\Application\Router\Exception\RouterNotFoundException;
 use Laminas\Diactoros\Response;
 use SetCMS\Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
-use SetCMS\Module\User\Entity\UserEntity;
 
 abstract class ViewHtml extends \SetCMS\View
 {
@@ -94,27 +93,25 @@ abstract class ViewHtml extends \SetCMS\View
     #[\ReturnTypeWillChange]
     protected function scRender(string $path, ?array $params = []): mixed
     {
-        $params = $params ?? [];
+        $params ??= [];
 
         try {
             $routerMatch = Router::singleton($this->container)->match($path, 'SETCMS');
 
             if (!$routerMatch) {
-                throw new RouterNotFoundException(sprintf('Not found: SETCMS %s', $path));
+                throw new RouterNotFoundException(sprintf('Не найден маршрут: SETCMS %s', $path));
             }
 
             $ctx = $this->ctx;
             $ctx['view'] = $this;
-            $ctx['routerMatch'] = $routerMatch;
-
-            $request = (new ServerRequestFactory)->createServerRequest('GET', new Uri($path))->withQueryParams($params);
-            $request = $request->withAttribute('currentUser', $ctx['currentUser']);
 
             $className = $routerMatch->target;
 
             $controller = ControllerViaPSR7::as($className::new($this->container));
+            $controller->name = $routerMatch->name;
+            $controller->params = $routerMatch->params;
             $controller->ctx = $ctx;
-            $controller->request = $request;
+            $controller->request = (new ServerRequestFactory)->createServerRequest('GET', new Uri($path))->withQueryParams($params);
             $controller->serve();
 
             $body = $controller->response->getBody();
@@ -216,7 +213,7 @@ abstract class ViewHtml extends \SetCMS\View
     protected function scHasAccess(string $route): bool
     {
         $checkRole = ACLCheckByRoleAndPrivilegeServant::new($this->container);
-        $checkRole->role = UserEntity::as($this->ctx['currentUser'])->role->value;
+        $checkRole->role = $this->ctx['currentUserRole'];
         $checkRole->throwExceptions = false;
         $checkRole->privilege = $route;
         $checkRole->serve();
@@ -238,5 +235,4 @@ abstract class ViewHtml extends \SetCMS\View
     {
         return $this->env()['BASE_URL'] ?? '';
     }
-
 }

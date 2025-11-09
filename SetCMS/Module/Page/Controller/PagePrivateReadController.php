@@ -9,7 +9,6 @@ use SetCMS\UUID;
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\DAO\PageRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Page\View\PagePrivateReadView;
-use SetCMS\Application\Router\RouterMatchDTO;
 
 class PagePrivateReadController extends ControllerViaPSR7
 {
@@ -36,9 +35,7 @@ class PagePrivateReadController extends ControllerViaPSR7
     #[\Override]
     protected function process(): void
     {
-        $routerMatch = RouterMatchDTO::as($this->ctx['routerMatch']);
-
-        $this->id = $this->validation($routerMatch->params)->uuid('id')->notEmpty()->notQuiet()->val();
+        $this->id = $this->validation($this->params)->uuid('id')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]

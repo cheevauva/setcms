@@ -9,7 +9,6 @@ use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\Module01\Entity\Entity01Entity;
 use SetCMS\Module\Module01\DAO\Entity01RetrieveManyByCriteriaDAO;
 use SetCMS\Module\Module01\View\Entity01PrivateReadView;
-use SetCMS\Application\Router\RouterMatchDTO;
 
 class Entity01PrivateReadController extends ControllerViaPSR7
 {
@@ -36,7 +35,7 @@ class Entity01PrivateReadController extends ControllerViaPSR7
     #[\Override]
     protected function process(): void
     {
-        $validation = $this->validation(RouterMatchDTO::as($this->ctx['routerMatch'])->params);
+        $validation = $this->validation($this->params);
 
         $this->id = $validation->uuid('id')->notEmpty()->notQuiet()->val();
     }

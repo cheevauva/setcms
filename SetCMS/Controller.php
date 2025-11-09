@@ -7,7 +7,6 @@ namespace SetCMS;
 use SplObjectStorage;
 use UUA\Unit;
 use UUA\ContainerConstructInterface;
-use SetCMS\Validation\Validation;
 use SetCMS\Controller\Exception\ControllerUnitMustBeInstanceofUnitException;
 
 abstract class Controller extends Unit implements ContainerConstructInterface
@@ -18,6 +17,15 @@ abstract class Controller extends Unit implements ContainerConstructInterface
     use \UUA\Traits\BuildTrait;
     use \UUA\Traits\EventDispatcherTrait;
     use \UUA\Traits\EnvTrait;
+    use \SetCMS\Traits\ValidationTrait;
+
+    public string $name;
+
+    /**
+     * @var array<string, mixed>
+     */
+    public array $params = [];
+    public protected(set) bool $hasACLCheck = true;
 
     /**
      * @var array<string, mixed|object>
@@ -40,15 +48,6 @@ abstract class Controller extends Unit implements ContainerConstructInterface
     {
         $this->messages = new SplObjectStorage();
         $this->exceptions = new SplObjectStorage();
-    }
-
-    protected function validation(mixed $data): Validation
-    {
-        if (!is_array($data)) {
-            throw new \Exception('Ожидался array, а пришел ' . gettype($data));
-        }
-
-        return new Validation($data, $this->messages);
     }
 
     public function from(object $object): void
@@ -78,6 +77,14 @@ abstract class Controller extends Unit implements ContainerConstructInterface
      * @return string[]
      */
     protected function viewUnits(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function mixtures(): array
     {
         return [];
     }
@@ -147,5 +154,16 @@ abstract class Controller extends Unit implements ContainerConstructInterface
                 return;
             }
         }
+    }
+
+    #[\Override]
+    protected function getMessages(): SplObjectStorage
+    {
+        return $this->messages;
+    }
+
+    protected function ctx(): array
+    {
+        return $this->ctx;
     }
 }

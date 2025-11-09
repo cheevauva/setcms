@@ -8,7 +8,6 @@ use SetCMS\UUID;
 use SetCMS\Module\Post\PostEntity;
 use SetCMS\Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Post\View\PostPrivateReadView;
-use SetCMS\Application\Router\RouterMatchDTO;
 
 class PostPrivateReadController extends PostPrivateController
 {
@@ -35,7 +34,7 @@ class PostPrivateReadController extends PostPrivateController
     #[\Override]
     protected function process(): void
     {
-        $validation = $this->validation(RouterMatchDTO::as($this->ctx['routerMatch'])->params);
+        $validation = $this->validation($this->params);
 
         $this->id = $validation->uuid('id')->notEmpty()->notQuiet()->val();
     }

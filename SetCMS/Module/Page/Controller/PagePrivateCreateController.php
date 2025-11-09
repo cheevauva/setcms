@@ -12,6 +12,8 @@ use SetCMS\Module\Page\DAO\PageSaveDAO;
 class PagePrivateCreateController extends ControllerViaPSR7
 {
 
+    use \SetCMS\Module\User\Traits\UserCurrentTrait;
+
     protected PageEntity $page;
 
     #[\Override]
@@ -43,8 +45,9 @@ class PagePrivateCreateController extends ControllerViaPSR7
         $this->page->title = $validation->string('page.title')->notEmpty()->val();
         $this->page->slug = $validation->string('page.slug')->notEmpty()->val();
         $this->page->content = $validation->string('page.content')->notEmpty()->val();
+        $this->page->createdUserId = $this->currentUser()->id;
     }
-    
+
     #[\Override]
     public function to(object $object): void
     {

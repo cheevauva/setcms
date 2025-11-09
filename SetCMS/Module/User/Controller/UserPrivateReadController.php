@@ -7,7 +7,6 @@ namespace SetCMS\Module\User\Controller;
 use SetCMS\UUID;
 use SetCMS\Module\User\DAO\UserRetrieveManyByCriteriaDAO;
 use SetCMS\Module\User\Entity\UserEntity;
-use SetCMS\Application\Router\RouterMatchDTO;
 
 class UserPrivateReadController extends UserPrivateController
 {
@@ -26,7 +25,7 @@ class UserPrivateReadController extends UserPrivateController
     #[\Override]
     protected function process(): void
     {
-        $validation = $this->validation(RouterMatchDTO::as($this->ctx['routerMatch'])->params);
+        $validation = $this->validation($this->params);
         
         $this->id = $validation->uuid('id')->notEmpty()->notQuiet()->val();
     }

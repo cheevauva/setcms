@@ -3,13 +3,12 @@
 namespace SetCMS\Module\User\Controller;
 
 use SetCMS\ControllerViaPSR7;
-use SetCMS\Module\User\Entity\UserEntity;
 use SetCMS\Module\User\View\UserPublicProfileView;
 
 class UserPublicProfileController extends ControllerViaPSR7
 {
 
-    protected UserEntity $user;
+    use \SetCMS\Module\User\Traits\UserCurrentTrait;
 
     #[\Override]
     protected function viewUnits(): array
@@ -20,18 +19,12 @@ class UserPublicProfileController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
-    {
-        $this->user = UserEntity::as($this->validation($this->ctx)->object('currentUser')->notEmpty()->notQuiet()->val());
-    }
-
-    #[\Override]
     public function to(object $object): void
     {
         parent::to($object);
 
         if ($object instanceof UserPublicProfileView) {
-            $object->user = $this->user;
+            $object->user = $this->currentUser();
         }
     }
 }
