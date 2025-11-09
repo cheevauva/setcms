@@ -9,7 +9,7 @@ use SetCMS\ControllerViaPSR7;
 class ConfigurationPublicMainController extends ControllerViaPSR7
 {
 
-    protected string $name = 'SetCMS';
+    protected string $name1 = 'SetCMS';
     protected string $title = 'SetCMS';
     protected string $description = 'SetCMS - система управления сайтом';
     protected string $keywords = 'cms, setcms, setcms4, система управления сайтом';

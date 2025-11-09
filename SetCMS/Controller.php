@@ -156,12 +156,18 @@ abstract class Controller extends Unit implements ContainerConstructInterface
         }
     }
 
+    /**
+     * @return SplObjectStorage<\Throwable|object, mixed>
+     */
     #[\Override]
     protected function getMessages(): SplObjectStorage
     {
         return $this->messages;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     protected function ctx(): array
     {
         return $this->ctx;
