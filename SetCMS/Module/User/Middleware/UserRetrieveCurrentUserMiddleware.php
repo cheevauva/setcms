@@ -22,14 +22,16 @@ class UserRetrieveCurrentUserMiddleware implements MiddlewareInterface, \UUA\Con
     {
         $user = new \ReflectionClass(UserEntity::class)->newLazyProxy(function () use ($request): UserEntity {
             $token = $request->getCookieParams()['X-CSRF-Token'] ?? $request->getHeaderLine(strtolower('X-CSRF-Token'));
-            
+
             $useByToken = UserSessionRetrieveUserServant::new($this->container);
             $useByToken->token = $token;
             $useByToken->serve();
-            
+
             return $useByToken->user ?? new UserEntity;
         });
 
-        return $handler->handle($request->withAttribute('currentUser', $user));
+        return $handler->handle($request->withAttribute('currentUser', $user)->withAttribute('currentUserRole', function () use ($user) {
+            return UserEntity::as($user)->role->value;
+        }));
     }
 }

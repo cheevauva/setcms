@@ -9,11 +9,11 @@ use Psr\Http\Message\ResponseInterface;
 use SetCMS\View;
 use SetCMS\Responder;
 use UUA\Unit;
+use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
 
 abstract class ControllerViaPSR7 extends Controller
 {
 
-    public bool $hasACLCheck = true;
     public ServerRequestInterface $request;
     public protected(set) ResponseInterface $response;
 
@@ -23,6 +23,7 @@ abstract class ControllerViaPSR7 extends Controller
         // use $this->validate($this->request->getParsedBody() ?: [])
     }
 
+    #[\Override]
     public function from(object $object): void
     {
         parent::from($object);
@@ -52,9 +53,20 @@ abstract class ControllerViaPSR7 extends Controller
         }
     }
 
+    #[\Override]
+    protected function onBeforeServe(): void
+    {
+        $onBeforeServe = new ControllerOnBeforeServeEvent();
+        $onBeforeServe->controller = $this;
+        $onBeforeServe->ctx = $this->ctx;
+        $onBeforeServe->route = $this->name;
+        $onBeforeServe->dispatch($this->eventDispatcher());
+    }
+
     /**
      * @return array<string|Unit>
      */
+    #[\Override]
     protected function domainUnits(): array
     {
         return [];
@@ -63,6 +75,7 @@ abstract class ControllerViaPSR7 extends Controller
     /**
      * @return array<string|Unit>
      */
+    #[\Override]
     protected function viewUnits(): array
     {
         return [];

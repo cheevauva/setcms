@@ -11,6 +11,8 @@ use SetCMS\Module\Post\View\PostPrivateCreateView;
 class PostPrivateCreateController extends PostPrivateController
 {
 
+    use \SetCMS\Module\User\Traits\UserCurrentTrait;
+    
     protected PostEntity $post;
 
     #[\Override]
@@ -42,6 +44,7 @@ class PostPrivateCreateController extends PostPrivateController
         $this->post->title = $validation->string('post.title')->notEmpty()->val();
         $this->post->slug = $validation->string('post.slug')->notEmpty()->val();
         $this->post->message = $validation->string('post.message')->notEmpty()->val();
+        $this->post->createdUserId = $this->currentUser()->id;
     }
 
     public function to(object $object): void

@@ -8,11 +8,13 @@ use SetCMS\Module\User\Entity\UserEntity;
 class UserInfoController extends ControllerViaPSR7
 {
 
+    use \SetCMS\Module\User\Traits\UserCurrentTrait;
+
     protected UserEntity $user;
 
     #[\Override]
     protected function process(): void
     {
-        $this->user = UserEntity::as($this->validation($this->ctx)->object('currentUser')->notEmpty()->notQuiet()->val());
+        $this->user = $this->currentUser();
     }
 }

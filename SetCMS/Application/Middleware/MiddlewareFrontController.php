@@ -12,7 +12,6 @@ use SetCMS\ControllerViaPSR7;
 use SetCMS\Application\Router\Router;
 use SetCMS\View\ViewNoContent;
 use SetCMS\View\ViewNotFound;
-use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
 
 class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {
@@ -26,7 +25,6 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
     {
         $method = $request->getMethod();
         $path = $request->getUri()->getPath();
-        
 
         $routerMatch = Router::singleton($this->container)->match($path, $method);
 
@@ -39,18 +37,12 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
         }
 
         $ctx = $request->getAttributes();
-        $ctx['routerMatch'] = $routerMatch;
 
         $className = $routerMatch->target;
 
         $controller = ControllerViaPSR7::as($className::new($this->container));
-
-        $onBeforeServe = new ControllerOnBeforeServeEvent();
-        $onBeforeServe->controller = $controller;
-        $onBeforeServe->request = $request;
-        $onBeforeServe->route = $routerMatch->name;
-        $onBeforeServe->dispatch($this->eventDispatcher());
-
+        $controller->name = $routerMatch->name;
+        $controller->params = $routerMatch->params;
         $controller->request = $request;
         $controller->ctx = $ctx;
         $controller->serve();
@@ -58,6 +50,8 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
         if (!isset($controller->response)) {
             $noContent = ViewNoContent::new($this->container);
             $noContent->serve();
+
+            return $noContent->response;
         }
 
         return $controller->response;

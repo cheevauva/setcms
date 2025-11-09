@@ -7,7 +7,6 @@ namespace SetCMS\Module\Page\Controller;
 use SetCMS\Module\Page\PageEntity;
 use SetCMS\Module\Page\DAO\PageRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Page\View\PagePublicReadBlockView;
-use SetCMS\Application\Router\RouterMatchDTO;
 
 class PagePublicReadBlockBySlugController extends \SetCMS\ControllerViaPSR7
 {
@@ -34,9 +33,7 @@ class PagePublicReadBlockBySlugController extends \SetCMS\ControllerViaPSR7
     #[\Override]
     protected function process(): void
     {
-        $routerMatch = RouterMatchDTO::as($this->ctx['routerMatch']);
-
-        $this->slug = $this->validation($routerMatch->params)->string('slug')->notEmpty()->notQuiet()->val();
+        $this->slug = $this->validation($this->params)->string('slug')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]

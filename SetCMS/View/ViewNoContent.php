@@ -13,6 +13,10 @@ class ViewNoContent extends View
     #[\Override]
     public function serve(): void
     {
-        $this->response = (new Response)->withStatus(204);
+        $response = new Response;
+        $response->getBody()->write('No content');
+        $response->getBody()->rewind();
+
+        $this->response = $response->withStatus(204);
     }
 }

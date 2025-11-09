@@ -9,7 +9,6 @@ use SetCMS\ControllerViaPSR7;
 use SetCMS\Module\Email\Entity\EmailEntity;
 use SetCMS\Module\Email\DAO\EmailRetrieveManyByCriteriaDAO;
 use SetCMS\Module\Email\View\EmailPrivateReadView;
-use SetCMS\Application\Router\RouterMatchDTO;
 
 class EmailPrivateReadController extends ControllerViaPSR7
 {
@@ -36,7 +35,7 @@ class EmailPrivateReadController extends ControllerViaPSR7
     #[\Override]
     protected function process(): void
     {
-        $validation = $this->validation(RouterMatchDTO::as($this->ctx['routerMatch'])->params);
+        $validation = $this->validation($this->params);
 
         $this->id = $validation->uuid('id')->notEmpty()->notQuiet()->val();
     }
