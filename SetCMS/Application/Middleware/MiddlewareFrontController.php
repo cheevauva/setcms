@@ -50,6 +50,8 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
         if (!isset($controller->response)) {
             $noContent = ViewNoContent::new($this->container);
             $noContent->serve();
+
+            return $noContent->response;
         }
 
         return $controller->response;
