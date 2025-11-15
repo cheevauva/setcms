@@ -6,10 +6,10 @@ namespace SetCMS\View;
 
 use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\View\View;
-use Laminas\Diactoros\Response;
 
 class ViewJson extends View
 {
+    use \SetCMS\Traits\ResponseTrait;
 
     public public(set) ServerRequestInterface $request;
 
@@ -29,7 +29,7 @@ class ViewJson extends View
             }
         }
 
-        $response = (new Response())->withStatus(200)->withHeader('Content-Type', 'application/json');
+        $response = $this->newResponse()->withStatus(200)->withHeader('Content-Type', 'application/json');
         $response->getBody()->write($json);
 
         $this->response = $response;

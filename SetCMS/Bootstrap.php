@@ -47,6 +47,7 @@ class Bootstrap
             'routes' => require $this->rootPath() . '/resources/routes.php',
             'themes' => require $this->rootPath() . '/resources/themes.php',
             'middlewares' => require $this->rootPath() . '/resources/middlewares.php',
+            'exceptionHandlers' => require $this->rootPath() . '/resources/exceptionHandlers.php',
         ]);
 
         return $container;
