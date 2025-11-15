@@ -6,7 +6,7 @@ namespace Module\Captcha\DAO;
 
 use Module\Captcha\CaptchaEntity;
 
-class CaptchaSaveDAO extends \SetCMS\Common\DAO\EntitySaveDAO
+class CaptchaSaveDAO extends \SetCMS\DAO\EntitySaveDAO
 {
 
     use CaptchaCommonDAO;

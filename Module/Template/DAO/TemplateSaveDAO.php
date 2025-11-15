@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Template\DAO;
 
-use SetCMS\Common\DAO\EntitySaveDAO;
+use SetCMS\DAO\EntitySaveDAO;
 use Module\Template\Entity\TemplateEntity;
 
 class TemplateSaveDAO extends EntitySaveDAO

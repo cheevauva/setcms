@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Page\DAO;
 
-use SetCMS\Common\DAO\EntitySaveDAO;
+use SetCMS\DAO\EntitySaveDAO;
 use Module\Page\PageEntity;
 
 class PageSaveDAO extends EntitySaveDAO

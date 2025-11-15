@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Page;
 
-use SetCMS\Common\Entity\Entity;
+use SetCMS\Entity\Entity;
 use SetCMS\UUID;
 
 class PageEntity extends Entity

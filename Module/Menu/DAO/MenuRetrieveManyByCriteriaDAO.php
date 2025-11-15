@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Menu\DAO;
 
-use SetCMS\Common\DAO\EntityRetrieveByIdDAO;
+use SetCMS\DAO\EntityRetrieveByIdDAO;
 use Module\Menu\Entity\MenuEntity;
 use Module\Menu\Exception\MenuNotFoundException;
 

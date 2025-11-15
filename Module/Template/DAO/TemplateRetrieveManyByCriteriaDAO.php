@@ -7,7 +7,7 @@ namespace Module\Template\DAO;
 use Module\Template\Entity\TemplateEntity;
 use Module\Template\Exception\TemplateNotFoundException;
 
-class TemplateRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO
+class TemplateRetrieveManyByCriteriaDAO extends \SetCMS\DAO\EntityRetrieveManyByCriteriaDAO
 {
 
     use TemplateCommonDAO;

@@ -10,7 +10,7 @@ use Module\Captcha\Exception\CaptchaUnsolvedException;
 use Module\Captcha\Exception\CaptchaAlreadySolvedException;
 use Module\Captcha\Exception\CaptchaTooMuchSolveAttemptsException;
 
-class CaptchaEntity extends \SetCMS\Common\Entity\Entity
+class CaptchaEntity extends \SetCMS\Entity\Entity
 {
 
     public bool $isSolved = false;

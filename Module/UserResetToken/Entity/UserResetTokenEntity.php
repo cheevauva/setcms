@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\UserResetToken\Entity;
 
-use SetCMS\Common\Entity\Entity;
+use SetCMS\Entity\Entity;
 use SetCMS\UUID;
 
 class UserResetTokenEntity extends Entity

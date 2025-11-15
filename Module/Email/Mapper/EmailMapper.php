@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Email\Mapper;
 
-use SetCMS\Common\Mapper\EntityMapper;
+use SetCMS\Mapper\EntityMapper;
 use Module\Email\Entity\EmailEntity;
 use Module\Email\Enum\EmailStatusEnum;
 use Module\Email\Exception\EmailMapperException;

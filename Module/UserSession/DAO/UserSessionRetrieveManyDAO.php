@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\UserSession\DAO;
 
-use SetCMS\Common\DAO\EntityRetrieveManyDAO;
+use SetCMS\DAO\EntityRetrieveManyDAO;
 
 class UserSessionRetrieveManyDAO extends EntityRetrieveManyDAO
 {

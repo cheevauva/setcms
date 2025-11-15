@@ -7,7 +7,7 @@ namespace Module\Migration\Mapper;
 use SetCMS\UUID;
 use Module\Migration\Entity\MigrationEntity;
 
-class MigrationMapper extends \SetCMS\Common\Mapper\EntityMapper
+class MigrationMapper extends \SetCMS\Mapper\EntityMapper
 {
 
     #[\Override]

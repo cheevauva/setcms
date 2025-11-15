@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests;
 
 use PHPUnit\Framework\TestCase;
-use SetCMS\Common\DAO\EntitySaveDAO;
-use SetCMS\Common\Mapper\EntityMapper;
-use SetCMS\Common\Entity\Entity;
+use SetCMS\DAO\EntitySaveDAO;
+use SetCMS\Mapper\EntityMapper;
+use SetCMS\Entity\Entity;
 use Psr\Container\ContainerInterface;
 
 class EntitySaveDAOTest extends TestCase

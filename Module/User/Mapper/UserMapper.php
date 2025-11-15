@@ -8,7 +8,7 @@ use Module\User\Entity\UserEntity;
 use Module\User\Enum\UserRoleEnum;
 use Module\User\Exception\UserMapperException;
 
-class UserMapper extends \SetCMS\Common\Mapper\EntityMapper
+class UserMapper extends \SetCMS\Mapper\EntityMapper
 {
 
     #[\Override]

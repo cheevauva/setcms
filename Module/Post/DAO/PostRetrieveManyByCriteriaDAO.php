@@ -7,7 +7,7 @@ namespace Module\Post\DAO;
 use Module\Post\PostEntity;
 use Module\Post\Exception\PostNotFoundException;
 
-class PostRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO
+class PostRetrieveManyByCriteriaDAO extends \SetCMS\DAO\EntityRetrieveManyByCriteriaDAO
 {
 
     use PostGenericDAO;

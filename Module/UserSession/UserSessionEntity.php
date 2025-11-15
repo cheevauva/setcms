@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\UserSession;
 
-use SetCMS\Common\Entity\Entity;
+use SetCMS\Entity\Entity;
 use SetCMS\UUID;
 
 class UserSessionEntity extends Entity

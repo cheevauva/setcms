@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Page\Mapper;
 
-use SetCMS\Common\Mapper\EntityMapper;
+use SetCMS\Mapper\EntityMapper;
 use Module\Page\PageEntity;
 use Module\Page\Exception\PageMapperException;
 

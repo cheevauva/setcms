@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Menu\Mapper;
 
-use SetCMS\Common\Mapper\EntityMapper;
+use SetCMS\Mapper\EntityMapper;
 use Module\Menu\Entity\MenuEntity;
 use Module\Menu\Exception\MenuMapperException;
 

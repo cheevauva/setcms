@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Template\Mapper;
 
-use SetCMS\Common\Mapper\EntityMapper;
+use SetCMS\Mapper\EntityMapper;
 use Module\Template\Entity\TemplateEntity;
 use Module\Template\Exception\TemplateMapperException;
 

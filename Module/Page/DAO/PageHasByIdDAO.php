@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Page\DAO;
 
-use SetCMS\Common\DAO\EntityHasByIdDAO;
+use SetCMS\DAO\EntityHasByIdDAO;
 
 class PageHasByIdDAO extends EntityHasByIdDAO
 {

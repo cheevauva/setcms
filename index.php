@@ -7,7 +7,7 @@ require_once 'bootstrap.php';
 use Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Response;
-use SetCMS\Application\Middleware\Servant\MiddlewareDispatcherServant;
+use SetCMS\Middleware\Servant\MiddlewareDispatcherServant;
 
 $middlewareDispatcher = MiddlewareDispatcherServant::new($container);
 $middlewareDispatcher->middlewares = $container->get('middlewares');

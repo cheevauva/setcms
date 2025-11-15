@@ -7,7 +7,7 @@ namespace Module\Module01\DAO;
 use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\Exception\Entity01NotFoundException;
 
-class Entity01RetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO
+class Entity01RetrieveManyByCriteriaDAO extends \SetCMS\DAO\EntityRetrieveManyByCriteriaDAO
 {
 
     use Entity01CommonDAO;

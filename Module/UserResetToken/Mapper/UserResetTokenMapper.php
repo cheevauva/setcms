@@ -8,7 +8,7 @@ use Module\UserResetToken\Exception\UserResetTokenException;
 use Module\UserResetToken\Entity\UserResetTokenEntity;
 use SetCMS\UUID;
 
-class UserResetTokenMapper extends \SetCMS\Common\Mapper\EntityMapper
+class UserResetTokenMapper extends \SetCMS\Mapper\EntityMapper
 {
 
     #[\Override]

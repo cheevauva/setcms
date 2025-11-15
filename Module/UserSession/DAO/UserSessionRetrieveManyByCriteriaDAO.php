@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\UserSession\DAO;
 
-use SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO;
+use SetCMS\DAO\EntityRetrieveManyByCriteriaDAO;
 use Module\UserSession\UserSessionEntity;
 use Module\UserSession\Exception\UserSessionNotFoundException;
 

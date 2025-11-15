@@ -11,9 +11,4 @@ class UserException extends Exception
 {
 
     public ?UserEntity $user = null;
-
-    public function __construct(string $message = '')
-    {
-        parent::__construct($message);
-    }
 }

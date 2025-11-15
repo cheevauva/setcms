@@ -6,7 +6,7 @@ namespace Module\Captcha\Mapper;
 
 use Module\Captcha\CaptchaEntity;
 
-class CaptchaEntityMapper extends \SetCMS\Common\Mapper\EntityMapper
+class CaptchaEntityMapper extends \SetCMS\Mapper\EntityMapper
 {
 
     protected function entity2row(): void

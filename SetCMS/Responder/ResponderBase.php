@@ -6,9 +6,9 @@ namespace SetCMS\Responder;
 
 use SetCMS\Responder;
 use Psr\Http\Message\ResponseInterface;
-use SetCMS\Application\Contract\ContractNotAllow;
-use SetCMS\Application\Contract\ContractNotFound;
-use SetCMS\Application\Contract\ContractForbidden;
+use SetCMS\Contract\ContractNotAllow;
+use SetCMS\Contract\ContractNotFound;
+use SetCMS\Contract\ContractForbidden;
 use SetCMS\View\ViewInternalServerError;
 use SetCMS\View\ViewNotFound;
 use SetCMS\View\ViewNotAllow;

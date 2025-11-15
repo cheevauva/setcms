@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Menu\Entity;
 
-use SetCMS\Common\Entity\Entity;
+use SetCMS\Entity\Entity;
 
 class MenuEntity extends Entity
 {

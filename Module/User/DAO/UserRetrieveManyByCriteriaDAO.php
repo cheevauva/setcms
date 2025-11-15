@@ -7,7 +7,7 @@ namespace Module\User\DAO;
 use Module\User\Entity\UserEntity;
 use Module\User\Exception\UserNotFoundException;
 
-class UserRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO
+class UserRetrieveManyByCriteriaDAO extends \SetCMS\DAO\EntityRetrieveManyByCriteriaDAO
 {
 
     use UserCommonDAO;
