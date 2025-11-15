@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Module\ACL\Servant;
+namespace SetCMS\ACL\Servant;
 
 use SetCMS\ACL\ACL;
 use SetCMS\ACL\Exception\ACLNotAllowException;
+use SetCMS\ACL\VO\ACLRoleVO;
 
 class ACLCheckByRoleAndPrivilegeServant extends \UUA\Servant
 {
 
     public bool $skip = false;
-    public public(set) string|\Closure $role;
+    public public(set) ACLRoleVO $role;
     public public(set) string $privilege;
     public protected(set) bool $isAllow = false;
     public public(set) bool $throwExceptions = false;
@@ -41,19 +42,13 @@ class ACLCheckByRoleAndPrivilegeServant extends \UUA\Servant
     {
         $acl = ACL::singleton($this->container);
 
-        $role = $this->role;
-
-        if ($role instanceof \Closure) {
-            $role = $role();
-        }
-
         if (!$acl->hasResource('routes')) {
             throw new \RuntimeException(sprintf('Не найден ресурс "routes"'));
         }
 
 
-        if (!$acl->isAllowed($role, 'routes', $this->privilege)) {
-            throw new ACLNotAllowException($role, $this->privilege);
+        if (!$acl->isAllowed((string) $this->role, 'routes', $this->privilege)) {
+            throw new ACLNotAllowException((string) $this->role, $this->privilege);
         }
     }
 }

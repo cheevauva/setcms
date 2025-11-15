@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\ACL\Symbiont;
+namespace SetCMS\ACL\Symbiont;
 
-use Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
+use SetCMS\ACL\VO\ACLRoleVO;
+use SetCMS\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
 use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
-use Module\User\Exception\UserForbiddenException;
 
 class ACLUserScopeProtectionSymbiont extends \UUA\SymbiontCustomizer
 {
@@ -20,13 +20,7 @@ class ACLUserScopeProtectionSymbiont extends \UUA\SymbiontCustomizer
             $object->throwExceptions = true;
             $object->skip = !$master->controller->hasACLCheck;
             $object->privilege = $master->route;
-            $object->role = $master->ctx['currentUserRole'];
+            $object->role = ACLRoleVO::as($master->ctx['currentUserRole'] ?? null);
         }
-    }
-
-    #[\Override]
-    public function catch(\Throwable $object): void
-    {
-        throw new UserForbiddenException($object->getMessage());
     }
 }

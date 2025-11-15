@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace SetCMS\View;
 
+use Laminas\Diactoros\Response;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Uri;
 use SetCMS\Controller\ControllerViaPSR7;
 use SetCMS\UUID;
 use SetCMS\Event\AppErrorEvent;
 use SetCMS\Router\Exception\RouterNotFoundException;
-use Laminas\Diactoros\Response;
-use Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant; // @todo этого здесь не должно быть
+use SetCMS\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
+use SetCMS\ACL\VO\ACLRoleVO;
 use SetCMS\Controller\Exception\ControllerEmptyResponseException;
 
 abstract class ViewHtml extends View
@@ -208,7 +209,7 @@ abstract class ViewHtml extends View
     protected function scHasAccess(string $route): bool
     {
         $checkRole = ACLCheckByRoleAndPrivilegeServant::new($this->container);
-        $checkRole->role = $this->ctx['currentUserRole'];
+        $checkRole->role = ACLRoleVO::as($this->ctx['currentUserRole'] ?? null);
         $checkRole->throwExceptions = false;
         $checkRole->privilege = $route;
         $checkRole->serve();

@@ -10,6 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Module\UserSession\Servant\UserSessionRetrieveUserServant;
 use Module\User\Entity\UserEntity;
+use SetCMS\ACL\VO\ACLRoleVO;
 
 class UserRetrieveCurrentUserMiddleware implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {
@@ -29,9 +30,10 @@ class UserRetrieveCurrentUserMiddleware implements MiddlewareInterface, \UUA\Con
 
             return $useByToken->user ?? new UserEntity;
         });
+        $userRole = new \ReflectionClass(ACLRoleVO::class)->newLazyProxy(function () use ($user): ACLRoleVO {
+            return new ACLRoleVO(UserEntity::as($user)->role->value);
+        });
 
-        return $handler->handle($request->withAttribute('currentUser', $user)->withAttribute('currentUserRole', function () use ($user) {
-            return UserEntity::as($user)->role->value;
-        }));
+        return $handler->handle($request->withAttribute('currentUser', $user)->withAttribute('currentUserRole', $userRole));
     }
 }
