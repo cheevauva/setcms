@@ -15,6 +15,7 @@ use SetCMS\Router\Router;
 abstract class TemplateRenderServant extends \UUA\Servant
 {
     use \UUA\Traits\EnvTrait;
+    use \SetCMS\Traits\RouterTrait;
 
     protected string $slug;
     public TemplateRenderedVO $templateRendered;
@@ -48,7 +49,7 @@ abstract class TemplateRenderServant extends \UUA\Servant
         ]));
 
         $twig->addFunction(new TwigFunction('scLink', function (string $route, array $params = [], array|string $query = []) {
-            $link = Router::singleton($this->container)->generate($route, $params);
+            $link = $this->router()->generate($route, $params);
 
             if ($query && is_string($query)) {
                 $link .= '?' . $query;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\View;
 
 use Laminas\Diactoros\Response;
-use SetCMS\View;
+use SetCMS\View\View;
 
 class ViewNotAllow extends View
 {
@@ -15,7 +15,7 @@ class ViewNotAllow extends View
     #[\Override]
     public function serve(): void
     {
-        $response = (new Response)->withStatus(405);
+        $response = (new Response)->withStatus(403);
         $response->getBody()->write($this->message);
 
         $this->response = $response;

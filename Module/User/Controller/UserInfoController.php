@@ -2,7 +2,7 @@
 
 namespace Module\User\Controller;
 
-use SetCMS\ControllerViaPSR7;
+use SetCMS\Controller\ControllerViaPSR7;
 use Module\User\Entity\UserEntity;
 
 class UserInfoController extends ControllerViaPSR7

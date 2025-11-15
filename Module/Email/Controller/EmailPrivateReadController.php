@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Email\Controller;
 
 use SetCMS\UUID;
-use SetCMS\ControllerViaPSR7;
+use SetCMS\Controller\ControllerViaPSR7;
 use Module\Email\Entity\EmailEntity;
 use Module\Email\DAO\EmailRetrieveManyByCriteriaDAO;
 use Module\Email\View\EmailPrivateReadView;

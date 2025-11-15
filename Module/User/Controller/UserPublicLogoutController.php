@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\User\Controller;
 
 use SetCMS\UUID;
-use SetCMS\ControllerViaPSR7;
+use SetCMS\Controller\ControllerViaPSR7;
 use Module\UserSession\DAO\UserSessionDeleteByIdDAO;
 use Module\User\View\UserPublicLogoutView;
 

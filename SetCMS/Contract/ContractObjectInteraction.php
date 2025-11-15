@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Contract;
 
-interface ContractApplicable
+interface ContractObjectInteraction
 {
 
     public function to(object $object): void;

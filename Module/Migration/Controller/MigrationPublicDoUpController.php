@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Migration\Controller;
 
-use SetCMS\ControllerViaPSR7;
+use SetCMS\Controller\ControllerViaPSR7;
 use Module\Migration\Servant\MigrationUpServant;
 use Module\Migration\View\MigrationPublicDoUpView;
 use SetCMS\Servant\SecretKeyServant;

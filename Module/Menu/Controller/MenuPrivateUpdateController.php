@@ -10,7 +10,7 @@ use Module\Menu\Entity\MenuEntity;
 use Module\Menu\View\MenuPrivateUpdateView;
 use Module\Menu\Exception\MenuParamsInvalidJsonException;
 
-class MenuPrivateUpdateController extends \SetCMS\ControllerViaPSR7
+class MenuPrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
 {
 
     protected MenuEntity $menu;

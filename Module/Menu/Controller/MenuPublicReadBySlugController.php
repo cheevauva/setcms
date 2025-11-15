@@ -6,7 +6,7 @@ namespace Module\Menu\Controller;
 
 use Module\Menu\DAO\MenuRetrieveManyBySlugDAO;
 
-class MenuPublicReadBySlugController extends \SetCMS\ControllerViaPSR7
+class MenuPublicReadBySlugController extends \SetCMS\Controller\ControllerViaPSR7
 {
 
     protected string $slug;

@@ -9,7 +9,7 @@ use Module\Page\DAO\PageRetrieveManyByCriteriaDAO;
 use Module\Page\DAO\PageSaveDAO;
 use Module\Page\View\PagePrivateUpdateView;
 
-class PagePrivateUpdateController extends \SetCMS\ControllerViaPSR7
+class PagePrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
 {
 
     protected PageEntity $page;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Template\Controller;
 
 use SetCMS\UUID;
-use SetCMS\ControllerViaPSR7;
+use SetCMS\Controller\ControllerViaPSR7;
 use Module\Template\Entity\TemplateEntity;
 use Module\Template\DAO\TemplateRetrieveManyByCriteriaDAO;
 use Module\Template\View\TemplatePrivateReadView;
