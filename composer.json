@@ -22,12 +22,13 @@
     "autoload": {
         "psr-4": {
             "SetCMS\\": "SetCMS/",
+            "Module\\": "Module/",
             "UUA\\": "UUA/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "SetCMS\\Tests\\": "Tests/"
+            "Tests\\": "Tests/"
         }
     },
     "config": {

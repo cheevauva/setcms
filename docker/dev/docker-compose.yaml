@@ -23,27 +23,27 @@ services:
             - ../../:/setcms
         env_file:
             - ../../.env
-    migration_main:
-        build:
-            context: ./migrations
-        volumes:
-            - ../../:/setcms
-        command: php /setcms/bin/migrations-main.php up
-        env_file:
-            - ../../.env
-    postgres:
-        image: postgres:latest
-        ports:
-            - ${POSTGRES_PORT}:5432
-        environment:
-            POSTGRES_DB: main
-            POSTGRES_USER: root
-            POSTGRES_PASSWORD: root
-    adminer:
-        image: adminer:latest
-        ports:
-            - ${ADMINER_PORT}:8080
-        environment:
-            ADMINER_DEFAULT_SERVER: postgres
-        links:
-            - postgres
+#    migration_main:
+#        build:
+#            context: ./migrations
+#        volumes:
+#            - ../../:/setcms
+#        command: php /setcms/bin/migrations-main.php up
+#        env_file:
+#            - ../../.env
+#    postgres:
+#        image: postgres:latest
+#        ports:
+#            - ${POSTGRES_PORT}:5432
+#        environment:
+#            POSTGRES_DB: main
+#            POSTGRES_USER: root
+#            POSTGRES_PASSWORD: root
+#    adminer:
+#        image: adminer:latest
+#        ports:
+#            - ${ADMINER_PORT}:8080
+#        environment:
+#            ADMINER_DEFAULT_SERVER: postgres
+#        links:
+#            - postgres

@@ -12,7 +12,7 @@ INSERT INTO templates
 VALUES 
 (
     '2bd21112-b9b8-4b9e-9706-adc6c4c7414e', 
-    'SetCMS\Module\Template\Entity\TemplateEntity', 
+    'Module\Template\Entity\TemplateEntity', 
     '2025-08-24', 
     '2025-08-24', 
     false, 

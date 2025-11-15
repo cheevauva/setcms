@@ -1,6 +1,6 @@
 <?php
 
-use SetCMS\Module\User\UserRoleConstants;
+use Module\User\UserRoleConstants;
 
 $acl = [
     'roles' => [

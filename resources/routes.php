@@ -1,7 +1,7 @@
 <?php
 
-use SetCMS\Module\Post\Controller\PostPublicIndexController;
-use SetCMS\Module\Post\Controller\PostPrivateIndexController;
+use Module\Post\Controller\PostPublicIndexController;
+use Module\Post\Controller\PostPrivateIndexController;
 
 $routes['GET / Home'] = PostPublicIndexController::class;
 $routes['GET /~ AdminHome'] = PostPrivateIndexController::class;
