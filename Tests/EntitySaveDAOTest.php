@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Tests;
+namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use SetCMS\Common\DAO\EntitySaveDAO;

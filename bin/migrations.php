@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use SetCMS\Database\DatabaseFactory;
-use SetCMS\Module\Migration\Servant\MigrationUpServant;
-use SetCMS\Module\Migration\Servant\MigrationDownServant;
-use SetCMS\Module\Migration\VO\MigrationCandidateVO;
+use Module\Migration\Servant\MigrationUpServant;
+use Module\Migration\Servant\MigrationDownServant;
+use Module\Migration\VO\MigrationCandidateVO;
 
 define('ROOT_PATH', dirname(__DIR__));
 

@@ -12,7 +12,7 @@ use SetCMS\Event\AppErrorEvent;
 use SetCMS\Application\Router\Router;
 use SetCMS\Application\Router\Exception\RouterNotFoundException;
 use Laminas\Diactoros\Response;
-use SetCMS\Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
+use Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant; // @todo этого здесь не должно быть
 
 abstract class ViewHtml extends \SetCMS\View
 {

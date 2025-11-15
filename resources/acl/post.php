@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use SetCMS\Module\User\UserRoleConstants;
+use Module\User\UserRoleConstants;
 
 $acl['rules'][UserRoleConstants::ADMIN]['routes']['AdminPostIndex'] = true;
 $acl['rules'][UserRoleConstants::ADMIN]['routes']['AdminPostEdit'] = true;

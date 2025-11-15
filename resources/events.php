@@ -2,7 +2,7 @@
 
 $events = [
     SetCMS\Controller\Event\ControllerOnBeforeServeEvent::class => [
-        [SetCMS\Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant::class, \SetCMS\Module\ACL\Symbiont\ACLUserScopeProtectionSymbiont::class],
+        [Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant::class, \Module\ACL\Symbiont\ACLUserScopeProtectionSymbiont::class],
     ],
     \SetCMS\Event\AppErrorEvent::class => [
         [\SetCMS\Logger\Servant\LoggerServant::class, \SetCMS\Logger\Symbiont\LoggerAppErrorSymbiont::class],

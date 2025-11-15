@@ -14,7 +14,7 @@ INSERT INTO users
 VALUES 
 (
     'c5e35038-4d12-4d90-be57-f4eb1a45fe35', 
-    'SetCMS\Module\User\Entity\UserEntity', 
+    'Module\User\Entity\UserEntity', 
     '2025-01-01', 
     '2025-01-01', 
     'f',

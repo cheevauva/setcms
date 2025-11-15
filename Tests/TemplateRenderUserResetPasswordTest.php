@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Tests;
+namespace Tests;
 
 use Psr\Container\ContainerInterface;
 use PHPUnit\Framework\TestCase;
-use SetCMS\Module\Template\Servant\TemplateRenderUserResetPasswordServant;
-use SetCMS\Module\User\Entity\UserEntity;
-use SetCMS\Module\UserResetToken\Entity\UserResetTokenEntity;
-use SetCMS\Module\Template\Entity\TemplateEntity;
+use Module\Template\Servant\TemplateRenderUserResetPasswordServant;
+use Module\User\Entity\UserEntity;
+use Module\UserResetToken\Entity\UserResetTokenEntity;
+use Module\Template\Entity\TemplateEntity;
 
 class TemplateRenderUserResetPasswordTest extends TestCase
 {
@@ -40,7 +40,7 @@ class TemplateRenderUserResetPasswordTest extends TestCase
     {
         return fn(ContainerInterface $container) => [
             'routes' => [
-                'GET /user/resetPasswordByToken/[*:token] UserResetPasswordByToken' => \SetCMS\Module\User\Controller\UserPublicResetPasswordByTokenController::class,
+                'GET /user/resetPasswordByToken/[*:token] UserResetPasswordByToken' => \Module\User\Controller\UserPublicResetPasswordByTokenController::class,
             ],
             'env' => [
                 'BASE_URL' => 'http://test.ru',

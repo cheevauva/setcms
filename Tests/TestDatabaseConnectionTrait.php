@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Tests;
+namespace Tests;
 
 use SetCMS\Database\DatabaseDriverManager;
 use SetCMS\Database\Database;

@@ -2,22 +2,22 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Tests;
+namespace Tests;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use SetCMS\UUID;
-use SetCMS\Module\User\DAO\UserRetrieveManyByCriteriaDAO;
-use SetCMS\Module\User\Entity\UserEntity;
-use SetCMS\Module\UserResetToken\Servant\UserResetTokenSendToUserServant;
-use SetCMS\Module\UserResetToken\Servant\UserResetTokenSendToEmailServant;
-use SetCMS\Module\UserResetToken\Entity\UserResetTokenEntity;
-use SetCMS\Module\UserResetToken\DAO\UserResetTokenRetrieveManyByCriteriaDAO;
-use SetCMS\Module\UserResetToken\DAO\UserResetTokenSaveDAO;
-use SetCMS\Module\Template\Servant\TemplateRenderUserResetPasswordServant;
-use SetCMS\Module\Template\VO\TemplateRenderedVO;
-use SetCMS\Module\Email\Servant\EmailSendServant;
-use SetCMS\Module\Email\Entity\EmailEntity;
+use Module\User\DAO\UserRetrieveManyByCriteriaDAO;
+use Module\User\Entity\UserEntity;
+use Module\UserResetToken\Servant\UserResetTokenSendToUserServant;
+use Module\UserResetToken\Servant\UserResetTokenSendToEmailServant;
+use Module\UserResetToken\Entity\UserResetTokenEntity;
+use Module\UserResetToken\DAO\UserResetTokenRetrieveManyByCriteriaDAO;
+use Module\UserResetToken\DAO\UserResetTokenSaveDAO;
+use Module\Template\Servant\TemplateRenderUserResetPasswordServant;
+use Module\Template\VO\TemplateRenderedVO;
+use Module\Email\Servant\EmailSendServant;
+use Module\Email\Entity\EmailEntity;
 
 class UserResetTokenSendTest extends TestCase
 {
