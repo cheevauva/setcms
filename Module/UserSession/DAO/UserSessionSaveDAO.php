@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\UserSession\DAO;
 
-use SetCMS\Common\DAO\EntitySaveDAO;
+use SetCMS\DAO\EntitySaveDAO;
 use Module\UserSession\UserSessionEntity;
 
 class UserSessionSaveDAO extends EntitySaveDAO

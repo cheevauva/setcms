@@ -7,8 +7,8 @@ namespace Module\User\Exception;
 class UserNotFoundException extends UserException
 {
 
-    public function __construct()
-    {
-        parent::__construct('Пользователь не найден');
-    }
+    /**
+     * @var string
+     */
+    protected $message = 'Пользователь не найден';
 }

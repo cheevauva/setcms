@@ -7,8 +7,8 @@ namespace Module\User\Exception;
 class UserPasswordsNotEqualException extends UserException
 {
 
-    public function __construct()
-    {
-        parent::__construct('Пароли не совпадают');
-    }
+    /**
+     * @var string
+     */
+    protected $message = 'Пароли не совпадают';
 }

@@ -8,7 +8,7 @@ use Module\Page\PageEntity;
 use SetCMS\Database\DatabaseQueryBuilder;
 use Module\Page\Exception\PageNotFoundException;
 
-class PageRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO
+class PageRetrieveManyByCriteriaDAO extends \SetCMS\DAO\EntityRetrieveManyByCriteriaDAO
 {
 
     use PageCommonDAO;

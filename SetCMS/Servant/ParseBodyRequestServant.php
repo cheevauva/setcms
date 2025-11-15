@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-use SetCMS\Application\Contract\ContractApplicable;
+use SetCMS\Contract\ContractApplicable;
 use Psr\Http\Message\ServerRequestInterface;
 
 class ParseBodyRequestServant extends \UUA\Servant implements ContractApplicable

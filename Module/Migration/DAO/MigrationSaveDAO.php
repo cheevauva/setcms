@@ -7,7 +7,7 @@ namespace Module\Migration\DAO;
 use SetCMS\Database\DatabaseQueryBuilder;
 use Module\Migration\Entity\MigrationEntity;
 
-class MigrationSaveDAO extends \SetCMS\Common\DAO\EntitySaveDAO
+class MigrationSaveDAO extends \SetCMS\DAO\EntitySaveDAO
 {
 
     use MigrationCommonDAO;

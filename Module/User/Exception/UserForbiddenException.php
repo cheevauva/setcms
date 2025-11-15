@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Module\User\Exception;
 
-use SetCMS\Application\Contract\ContractForbidden;
-
-class UserForbiddenException extends UserException implements ContractForbidden
+class UserForbiddenException extends UserException
 {
 
-    public function __construct(string $message = 'Доступ запрещён')
-    {
-        parent::__construct($message);
-    }
+    /**
+     * @var string
+     */
+    protected $message = 'Доступ запрещён';
 }

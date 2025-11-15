@@ -10,7 +10,7 @@ use Module\Template\VO\TemplateRenderedVO;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 use Twig\TwigFunction;
-use SetCMS\Application\Router\Router;
+use SetCMS\Router\Router;
 
 abstract class TemplateRenderServant extends \UUA\Servant
 {

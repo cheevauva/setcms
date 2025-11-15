@@ -6,7 +6,7 @@ namespace Module\Migration\DAO;
 
 use SetCMS\Database\Database;
 use Module\Migration\Exception\MigrationNotFoundException;
-use SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO;
+use SetCMS\DAO\EntityRetrieveManyByCriteriaDAO;
 use Module\Migration\Entity\MigrationEntity;
 
 class MigrationRetrieveManyByCriteriaDAO extends EntityRetrieveManyByCriteriaDAO

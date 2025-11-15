@@ -5,6 +5,8 @@ parameters:
     paths:
         - SetCMS
         - UUA
+        - Module
+        - Tests
         - resources
     reportUnmatchedIgnoredErrors: false
 

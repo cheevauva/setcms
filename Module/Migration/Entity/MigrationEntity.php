@@ -6,7 +6,7 @@ namespace Module\Migration\Entity;
 
 use Module\Migration\VO\MigrationCandidateVO;
 
-class MigrationEntity extends \SetCMS\Common\Entity\Entity
+class MigrationEntity extends \SetCMS\Entity\Entity
 {
 
     public string $version;

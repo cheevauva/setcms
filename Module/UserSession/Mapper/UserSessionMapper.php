@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\UserSession\Mapper;
 
-use SetCMS\Common\Mapper\EntityMapper;
+use SetCMS\Mapper\EntityMapper;
 use Module\UserSession\UserSessionEntity;
 use SetCMS\UUID;
 

@@ -6,7 +6,7 @@ namespace Module\Captcha\DAO;
 
 use Module\Captcha\Exception\CaptchaNotFoundException;
 
-class CaptchaRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO
+class CaptchaRetrieveManyByCriteriaDAO extends \SetCMS\DAO\EntityRetrieveManyByCriteriaDAO
 {
 
     use CaptchaCommonDAO;

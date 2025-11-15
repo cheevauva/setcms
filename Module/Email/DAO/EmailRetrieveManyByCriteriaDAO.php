@@ -7,7 +7,7 @@ namespace Module\Email\DAO;
 use Module\Email\Entity\EmailEntity;
 use Module\Email\Exception\EmailNotFoundException;
 
-class EmailRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO
+class EmailRetrieveManyByCriteriaDAO extends \SetCMS\DAO\EntityRetrieveManyByCriteriaDAO
 {
 
     use EmailCommonDAO;

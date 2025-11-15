@@ -8,7 +8,7 @@ use Module\UserResetToken\Exception\UserResetTokenNotFoundException;
 use Module\UserResetToken\Entity\UserResetTokenEntity;
 use SetCMS\UUID;
 
-class UserResetTokenRetrieveManyByCriteriaDAO extends \SetCMS\Common\DAO\EntityRetrieveManyByCriteriaDAO
+class UserResetTokenRetrieveManyByCriteriaDAO extends \SetCMS\DAO\EntityRetrieveManyByCriteriaDAO
 {
 
     use UserResetTokenCommonDAO;

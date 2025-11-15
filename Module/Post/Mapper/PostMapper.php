@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Post\Mapper;
 
-use SetCMS\Common\Mapper\EntityMapper;
+use SetCMS\Mapper\EntityMapper;
 use Module\Post\PostEntity;
 use Module\Post\Exception\PostMapperException;
 

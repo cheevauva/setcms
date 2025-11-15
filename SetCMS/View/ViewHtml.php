@@ -9,8 +9,8 @@ use Laminas\Diactoros\Uri;
 use SetCMS\ControllerViaPSR7;
 use SetCMS\UUID;
 use SetCMS\Event\AppErrorEvent;
-use SetCMS\Application\Router\Router;
-use SetCMS\Application\Router\Exception\RouterNotFoundException;
+use SetCMS\Router\Router;
+use SetCMS\Router\Exception\RouterNotFoundException;
 use Laminas\Diactoros\Response;
 use Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant; // @todo этого здесь не должно быть
 

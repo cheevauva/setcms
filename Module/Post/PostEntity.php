@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Post;
 
-use SetCMS\Common\Entity\Entity;
+use SetCMS\Entity\Entity;
 use SetCMS\UUID;
 
 class PostEntity extends Entity

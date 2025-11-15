@@ -6,7 +6,7 @@ namespace Module\User\Entity;
 
 use Module\User\Enum\UserRoleEnum;
 
-class UserEntity extends \SetCMS\Common\Entity\Entity
+class UserEntity extends \SetCMS\Entity\Entity
 {
 
     public string $email;

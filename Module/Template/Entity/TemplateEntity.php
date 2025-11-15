@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Template\Entity;
 
-use SetCMS\Common\Entity\Entity;
+use SetCMS\Entity\Entity;
 
 class TemplateEntity extends Entity
 {

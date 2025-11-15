@@ -6,7 +6,7 @@ namespace Module\User\DAO;
 
 use Module\User\Entity\UserEntity;
 
-class UserSaveDAO extends \SetCMS\Common\DAO\EntitySaveDAO
+class UserSaveDAO extends \SetCMS\DAO\EntitySaveDAO
 {
 
     use UserCommonDAO;

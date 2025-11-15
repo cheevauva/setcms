@@ -6,7 +6,7 @@ namespace Module\UserResetToken\DAO;
 
 use Module\UserResetToken\Entity\UserResetTokenEntity;
 
-class UserResetTokenSaveDAO extends \SetCMS\Common\DAO\EntitySaveDAO
+class UserResetTokenSaveDAO extends \SetCMS\DAO\EntitySaveDAO
 {
 
     use UserResetTokenCommonDAO;
