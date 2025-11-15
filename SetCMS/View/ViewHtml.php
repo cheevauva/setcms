@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace SetCMS\View;
 
-use Laminas\Diactoros\Response;
-use Laminas\Diactoros\ServerRequestFactory;
-use Laminas\Diactoros\Uri;
 use SetCMS\Controller\ControllerViaPSR7;
 use SetCMS\UUID;
 use SetCMS\Event\AppErrorEvent;
@@ -21,6 +18,8 @@ abstract class ViewHtml extends View
     use \UUA\Traits\EnvTrait;
     use \UUA\Traits\EventDispatcherTrait;
     use \SetCMS\Traits\RouterTrait;
+    use \SetCMS\Traits\ResponseTrait;
+    use \SetCMS\Traits\ServerRequestFactoryTrait;
 
     public ?string $templateName = null;
 
@@ -54,7 +53,7 @@ abstract class ViewHtml extends View
 
         $html = $this->render($templateName, get_object_vars($this));
 
-        $response = (new Response())->withStatus(200)->withHeader('Content-Type', 'text/html');
+        $response = $this->newResponse()->withStatus(200)->withHeader('Content-Type', 'text/html');
         $response->getBody()->write($html);
 
         $this->response = $response;
@@ -107,7 +106,7 @@ abstract class ViewHtml extends View
             $controller->name = $routerMatch->name;
             $controller->params = $routerMatch->params;
             $controller->ctx = $ctx;
-            $controller->request = (new ServerRequestFactory)->createServerRequest('GET', new Uri($path))->withQueryParams($params);
+            $controller->request = $this->serverRequestFactory()->createServerRequest('GET', $path)->withQueryParams($params);
             $controller->serve();
 
             $body = ($controller->response ?? throw new ControllerEmptyResponseException($routerMatch->target))->getBody();

@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace SetCMS\View;
 
-use SetCMS\View\View;
-use Laminas\Diactoros\Response;
-
-class ViewInternalServerError extends View
+class ViewInternalServerError extends ViewExceptionHandler
 {
-
-    public string $message;
 
     #[\Override]
     public function serve(): void
     {
-        $response = (new Response)->withStatus(500);
-        $response->getBody()->write($this->message);
+        $response = $this->newResponse();
+        $response->getBody()->write(sprintf('%s<pre>%s</pre>', $this->ex->getMessage(), $this->ex->getTraceAsString()));
 
         $this->response = $response;
     }
