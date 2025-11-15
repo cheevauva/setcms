@@ -6,19 +6,20 @@ namespace SetCMS\View;
 
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\Uri;
-use SetCMS\ControllerViaPSR7;
+use SetCMS\Controller\ControllerViaPSR7;
 use SetCMS\UUID;
 use SetCMS\Event\AppErrorEvent;
-use SetCMS\Router\Router;
 use SetCMS\Router\Exception\RouterNotFoundException;
 use Laminas\Diactoros\Response;
 use Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant; // @todo этого здесь не должно быть
+use SetCMS\Controller\Exception\ControllerEmptyResponseException;
 
-abstract class ViewHtml extends \SetCMS\View
+abstract class ViewHtml extends View
 {
 
     use \UUA\Traits\EnvTrait;
     use \UUA\Traits\EventDispatcherTrait;
+    use \SetCMS\Traits\RouterTrait;
 
     public ?string $templateName = null;
 
@@ -96,25 +97,19 @@ abstract class ViewHtml extends \SetCMS\View
         $params ??= [];
 
         try {
-            $routerMatch = Router::singleton($this->container)->match($path, 'SETCMS');
-
-            if (!$routerMatch) {
-                throw new RouterNotFoundException(sprintf('Не найден маршрут: SETCMS %s', $path));
-            }
+            $routerMatch = $this->router()->match($path, 'SETCMS');
 
             $ctx = $this->ctx;
             $ctx['view'] = $this;
 
-            $className = $routerMatch->target;
-
-            $controller = ControllerViaPSR7::as($className::new($this->container));
+            $controller = ControllerViaPSR7::as(($routerMatch->target)::new($this->container));
             $controller->name = $routerMatch->name;
             $controller->params = $routerMatch->params;
             $controller->ctx = $ctx;
             $controller->request = (new ServerRequestFactory)->createServerRequest('GET', new Uri($path))->withQueryParams($params);
             $controller->serve();
 
-            $body = $controller->response->getBody();
+            $body = ($controller->response ?? throw new ControllerEmptyResponseException($routerMatch->target))->getBody();
             $body->rewind();
 
             return $body->getContents();
@@ -170,7 +165,7 @@ abstract class ViewHtml extends \SetCMS\View
     #[\ReturnTypeWillChange]
     protected function scLink(string $route, array $params = [], array|string $query = []): string
     {
-        $link = Router::singleton($this->container)->generate($route, $params);
+        $link = $this->router()->generate($route, $params);
 
         if ($query) {
             if (is_string($query)) {

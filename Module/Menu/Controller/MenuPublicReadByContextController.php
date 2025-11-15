@@ -9,7 +9,7 @@ use Module\Post\Servant\PostMenuActionsByRequestServant;
 use Module\Page\Servant\PageMenuActionsByRequestServant;
 use Module\Menu\View\MenuPublicActionsViaContextView;
 
-class MenuPublicReadByContextController extends \SetCMS\ControllerViaPSR7
+class MenuPublicReadByContextController extends \SetCMS\Controller\ControllerViaPSR7
 {
 
     /**

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\View;
 
 use Laminas\Diactoros\Response;
-use SetCMS\View;
+use SetCMS\View\View;
 
 class ViewForbidden extends View
 {

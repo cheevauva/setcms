@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SetCMS;
+namespace SetCMS\Controller;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use SetCMS\View;
+use SetCMS\View\View;
 use SetCMS\Responder;
 use UUA\Unit;
 use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;

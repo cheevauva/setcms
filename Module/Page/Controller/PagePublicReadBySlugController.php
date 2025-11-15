@@ -8,7 +8,7 @@ use Module\Page\PageEntity;
 use Module\Page\DAO\PageRetrieveManyByCriteriaDAO;
 use Module\Page\View\PagePublicReadView;
 
-class PagePublicReadBySlugController extends \SetCMS\ControllerViaPSR7
+class PagePublicReadBySlugController extends \SetCMS\Controller\ControllerViaPSR7
 {
 
     protected string $slug;

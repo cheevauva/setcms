@@ -2,13 +2,14 @@
 
 namespace SetCMS\Router;
 
-use SetCMS\Contract\ContractRouterInterface as RouterInterface;
-use SetCMS\Router\RouterMatchDTO;
 use Psr\Container\ContainerInterface;
 use AltoRouter;
 use SetCMS\UUID;
+use SetCMS\Contract\ContractRouter;
+use SetCMS\Router\RouterMatchDTO;
+use SetCMS\Router\Exception\RouterNotFoundException;
 
-class Router implements RouterInterface, \UUA\ContainerConstructInterface
+class Router implements ContractRouter, \UUA\ContainerConstructInterface
 {
 
     use \UUA\Traits\BuildTrait;
@@ -52,12 +53,12 @@ class Router implements RouterInterface, \UUA\ContainerConstructInterface
     }
 
     #[\Override]
-    public function match(?string $requestUrl = null, ?string $requestMethod = null): ?RouterMatchDTO
+    public function match(?string $requestUrl = null, ?string $requestMethod = null): RouterMatchDTO
     {
         $result = $this->altoRouter->match($requestUrl, $requestMethod);
 
         if (!$result) {
-            return null;
+            throw new RouterNotFoundException(sprintf('Маршрут: %s %s не найден', $requestMethod, $requestUrl));
         }
 
         $routerMatch = new RouterMatchDTO;

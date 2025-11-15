@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\User\Controller;
 
 use SetCMS\UUID;
-use SetCMS\ControllerViaPSR7;
+use SetCMS\Controller\ControllerViaPSR7;
 use Module\Captcha\Servant\CaptchaUseResolvedCaptchaServant;
 use Module\Captcha\Exception\CaptchaException;
 use Module\User\View\UserPublicDoRestoreView;

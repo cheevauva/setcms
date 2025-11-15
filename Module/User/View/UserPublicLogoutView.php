@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\User\View;
 
-use SetCMS\View;
+use SetCMS\View\View;
 use Laminas\Diactoros\Response;
 
 class UserPublicLogoutView extends View

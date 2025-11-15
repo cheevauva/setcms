@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Module\ACL\Servant;
 
-use SetCMS\ACL;
+use SetCMS\ACL\ACL;
+use SetCMS\ACL\Exception\ACLNotAllowException;
 
 class ACLCheckByRoleAndPrivilegeServant extends \UUA\Servant
 {
@@ -52,7 +53,7 @@ class ACLCheckByRoleAndPrivilegeServant extends \UUA\Servant
 
 
         if (!$acl->isAllowed($role, 'routes', $this->privilege)) {
-            throw new \RuntimeException(sprintf('Для роли "%s" не разрешен доступ к привелегии "%s" ресурса "routes"', $role, $this->privilege));
+            throw new ACLNotAllowException($role, $this->privilege);
         }
     }
 }

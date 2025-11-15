@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\User\Controller;
 
-use SetCMS\ControllerViaPSR7;
+use SetCMS\Controller\ControllerViaPSR7;
 
 class UserPublicResetPasswordByTokenController extends ControllerViaPSR7
 {

@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace SetCMS;
+namespace SetCMS\Controller;
 
 use SplObjectStorage;
 use UUA\Unit;
 use UUA\ContainerConstructInterface;
+use SetCMS\Contract\ContractObjectInteraction;
 use SetCMS\Controller\Exception\ControllerUnitMustBeInstanceofUnitException;
 
-abstract class Controller extends Unit implements ContainerConstructInterface
+abstract class Controller extends Unit implements ContainerConstructInterface, ContractObjectInteraction
 {
 
     use \UUA\Traits\AsTrait;

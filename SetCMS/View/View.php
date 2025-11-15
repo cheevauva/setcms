@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS;
+namespace SetCMS\View;
 
 use SplObjectStorage;
 use Psr\Http\Message\ResponseInterface;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Menu\Controller;
 
-use SetCMS\ControllerViaPSR7;
+use SetCMS\Controller\ControllerViaPSR7;
 use Module\Menu\DAO\MenuRetrieveManyByCriteriaDAO;
 use Module\Menu\Entity\MenuEntity;
 use Module\Menu\View\MenuPrivateIndexView;

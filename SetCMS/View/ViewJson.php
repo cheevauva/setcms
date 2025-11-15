@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\View;
 
 use Psr\Http\Message\ServerRequestInterface;
-use SetCMS\View;
+use SetCMS\View\View;
 use Laminas\Diactoros\Response;
 
 class ViewJson extends View

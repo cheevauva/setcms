@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\User\Controller;
 
-use SetCMS\ControllerViaPSR7;
+use SetCMS\Controller\ControllerViaPSR7;
 use Module\User\Servant\UserLoginServant;
 use Module\User\Entity\UserEntity;
 use Module\UserSession\UserSessionEntity;

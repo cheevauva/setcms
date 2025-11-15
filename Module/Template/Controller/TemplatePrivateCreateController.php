@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Template\Controller;
 
-use SetCMS\ControllerViaPSR7;
+use SetCMS\Controller\ControllerViaPSR7;
 use Module\Template\Entity\TemplateEntity;
 use Module\Template\Servant\TemplateCreateServant;
 use Module\Template\View\TemplatePrivateCreateView;

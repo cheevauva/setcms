@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Module01\Controller;
 
-use SetCMS\ControllerViaPSR7;
+use SetCMS\Controller\ControllerViaPSR7;
 use Module\Module01\DAO\Entity01RetrieveManyByCriteriaDAO;
 use Module\Module01\View\Entity01PrivateIndexView;
 use Module\Module01\Entity\Entity01Entity;

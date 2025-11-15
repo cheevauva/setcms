@@ -4,7 +4,7 @@ namespace Module\User\Controller;
 
 use Module\User\View\UserPublicRegistrationView;
 
-class UserPublicRegistrationController extends \SetCMS\ControllerViaPSR7
+class UserPublicRegistrationController extends \SetCMS\Controller\ControllerViaPSR7
 {
 
     protected bool $useCaptcha;

@@ -2,7 +2,7 @@
 
 namespace Module\User\Controller;
 
-use SetCMS\ControllerViaPSR7;
+use SetCMS\Controller\ControllerViaPSR7;
 use Module\User\View\UserPublicProfileView;
 
 class UserPublicProfileController extends ControllerViaPSR7

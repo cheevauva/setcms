@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Page\Controller;
 
-use SetCMS\ControllerViaPSR7;
+use SetCMS\Controller\ControllerViaPSR7;
 use Module\Page\PageEntity;
 use Module\Page\View\PagePrivateCreateView;
 use Module\Page\DAO\PageSaveDAO;

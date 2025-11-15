@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Captcha\Controller;
 
-use SetCMS\ControllerViaPSR7;
+use SetCMS\Controller\ControllerViaPSR7;
 use Module\Captcha\CaptchaEntity;
 use Module\Captcha\DAO\CaptchaSaveDAO;
 use Module\Captcha\View\CaptchaPublicGenerateView;

@@ -2,7 +2,7 @@
 
 namespace SetCMS\Controller\Event;
 
-use SetCMS\ControllerViaPSR7;
+use SetCMS\Controller\ControllerViaPSR7;
 
 class ControllerOnBeforeServeEvent extends \UUA\Event
 {

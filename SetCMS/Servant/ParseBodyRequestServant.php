@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace SetCMS\Servant;
 
-use SetCMS\Contract\ContractApplicable;
 use Psr\Http\Message\ServerRequestInterface;
 
-class ParseBodyRequestServant extends \UUA\Servant implements ContractApplicable
+class ParseBodyRequestServant extends \UUA\Servant
 {
 
     public ServerRequestInterface $request;
@@ -21,15 +20,5 @@ class ParseBodyRequestServant extends \UUA\Servant implements ContractApplicable
         if (str_contains($contentType, 'application/json') && $content) {
             $this->parsedBody = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
         }
-    }
-
-    public function from(object $object): void
-    {
-        
-    }
-
-    public function to(object $object): void
-    {
-        
     }
 }

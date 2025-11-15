@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Post\Controller;
 
-use SetCMS\ControllerViaPSR7;
+use SetCMS\Controller\ControllerViaPSR7;
 use Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use Module\Post\PostEntity;
 use Module\Post\View\PostPublicReadBySlugView;

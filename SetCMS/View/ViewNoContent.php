@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace SetCMS\View;
 
-use SetCMS\View;
+use SetCMS\View\View;
 use Laminas\Diactoros\Response;
 
 class ViewNoContent extends View
 {
+    public string $message;
 
     #[\Override]
     public function serve(): void
     {
         $response = new Response;
-        $response->getBody()->write('No content');
+        $response->getBody()->write($this->message);
         $response->getBody()->rewind();
 
-        $this->response = $response->withStatus(204);
+        $this->response = $response->withStatus(500);
     }
 }
