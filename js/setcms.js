@@ -93,7 +93,49 @@ jQuery().ready(function () {
                 });
             }
         });
-        
+
+        $reload.on('click', function () {
+            $image.trigger('click');
+        });
+
+        $image.on('click', function () {
+            $.ajax($image.attr('setcms-action')).done(function (data) {
+                console.log(data);
+                $captchaId.val(data.data.id.uuid);
+                $image.attr('src', 'data:image/png;base64,' + data.data.content);
+                $captchaSolvedText.val('');
+                $captchaSolvedText.removeClass('is-valid').removeClass('is-invalid');
+                $captchaSolvedText.parent().find('.invalid-feedback').text();
+            });
+        });
+
+        $image.trigger('click');
+    });
+
+    $('.setcms-select-ajax').each(function (index, el) {
+        var $captcha = $(el);
+        var $image = $captcha.find('.setcms-captcha-image');
+        var $reload = $captcha.find('.setcms-captcha-image-reload');
+        var $captchaId = $captcha.find('.setcms-captcha-captcha-id');
+        var $captchaSolvedText = $captcha.find('.setcms-captcha-solvedtext');
+
+        $captchaSolvedText.on('keyup', function () {
+            $captchaSolvedText.removeClass('is-valid').removeClass('is-invalid');
+            $captchaSolvedText.parent().find('.invalid-feedback').text();
+
+            var solvedText = $captchaSolvedText.val();
+            if (solvedText.length === 7) {
+                $.ajax($captchaId.attr('setcms-action') + '?id=' + $captchaId.val() + '&solvedText=' + solvedText).done(function (data) {
+                    if (!data.result) {
+                        $captchaSolvedText.addClass('is-invalid');
+                        $captchaSolvedText.parent().find('.invalid-feedback').text(data.messages[0].message);
+                    } else {
+                        $captchaSolvedText.addClass('is-valid');
+                    }
+                });
+            }
+        });
+
         $reload.on('click', function () {
             $image.trigger('click');
         });
