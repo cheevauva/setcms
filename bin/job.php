@@ -1,6 +1,6 @@
 <?php
 
-use SetCMS\Module\SchedulerJob\Servant\SchedulerJobRunServant;
+use Module\SchedulerJob\Servant\SchedulerJobRunServant;
 use SetCMS\UUID;
 
 $container = require_once '../bootstrap.php';
