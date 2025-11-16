@@ -1,3 +1,22 @@
+{% macro link(params) %}
+    <div class="mb-2">
+        {% if scHasAccess(params.route) %}
+            <a href="{{ scBaseUrl() }}{{ scLink(params.route, params.params) }}">{{ params.label }}</a>
+        {% else %}
+            {{ params.label }}
+        {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro text(params) %}
+    <div class="mb-2">
+        {% if params.label %}
+            <label for="{{ params.name }}" class="form-label">{{ params.label }}</label>
+        {% endif %}
+        <div class="form-text">{{ params.value }}</div>
+    </div>
+{% endmacro %}
+
 {% macro input(params) %}
     <div class="mb-2">
         {% if params.label %}

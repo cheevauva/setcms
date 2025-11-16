@@ -1,0 +1,51 @@
+{% extends scShortPath(layout ?? 'layout_admin.twig') %}
+{% import scShortPath('macros/crud.twig') as crud %}
+
+{% block title %}{{ options.title }} - {{ schedulerJob.title }}{% endblock %}
+
+{% block content_toolbar %}
+    {% if scHasAccess('AdminSchedulerJobIndex') %}
+        <a href="{{ scLink('AdminSchedulerJobIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    {% endif %}
+    {% if scHasAccess('AdminSchedulerJobEdit') %}
+        <a href="{{ scLink('AdminSchedulerJobEdit', {id: schedulerJob.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {{ 
+        crud.detailview({
+            panels: [
+                {
+                    name: 'default',
+                    label: 'Основные данные',
+                    active: true,
+                    fields: [
+                        {name: 'schedulerJob.id', value: schedulerJob.id|default(scUUID()), type: 'hidden'},
+                        {name: 'schedulerJob.status', value: schedulerJob.status, type: 'input', label: 'status'},
+                    ]
+                }, 
+                {
+                    name: 'services',
+                    label: 'Служебные данные',
+                    fields: [
+                        {
+                            name: 'schedulerJob.dateCreated',
+                            value: schedulerJob.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата создания',
+                            disabled: true
+                        },
+                        {
+                            name: 'schedulerJob.dateModified',
+                            value: schedulerJob.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата изменения',
+                            disabled: true
+                        },
+                    ]
+                }
+            ]
+        })
+    }}
+{% endblock %}

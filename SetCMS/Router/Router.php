@@ -8,6 +8,7 @@ use SetCMS\UUID;
 use SetCMS\Contract\ContractRouter;
 use SetCMS\Router\RouterMatchDTO;
 use SetCMS\Router\Exception\RouterNotFoundException;
+use SetCMS\Router\Exception\RouterRouteByNameNotFoundException;
 
 class Router implements ContractRouter, \UUA\ContainerConstructInterface
 {
@@ -67,5 +68,11 @@ class Router implements ContractRouter, \UUA\ContainerConstructInterface
         $routerMatch->name = strval($result['name'] ?? throw new \RuntimeException('name is undefined'));
 
         return $routerMatch;
+    }
+
+    #[\Override]
+    public function controllerByRoute(string $routeName): string
+    {
+        return $this->routes[$routeName] ?? throw new RouterRouteByNameNotFoundException($routeName);
     }
 }

@@ -17,4 +17,6 @@ interface ContractRouter
      * @return string
      */
     public function generate(string $routeName, array $params = []): string;
+
+    public function controllerByRoute(string $routeName): string;
 }
