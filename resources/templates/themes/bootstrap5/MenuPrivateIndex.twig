@@ -2,7 +2,6 @@
 {% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_toolbar %}
-    <a href="{{ scLink('action_record_admin', {module: 'Menu', action: 'new', 'id': scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать</a>
 {% endblock %}
 
 {% block content_title %}Меню{% endblock %}
@@ -82,19 +81,15 @@
                         actions: [
                             {
                                 label: 'Просмотр',
-                                route: 'action_record_admin',
+                                route: 'AdminMenuRead',
                                 params: {
-                                    module: 'Menu', 
-                                    action: 'read',
                                     id: entity.id
                                 }
                             },
                             {
                                 label: 'Редактировать',
-                                route: 'action_record_admin',
+                                route: 'AdminMenuEdit',
                                 params: {
-                                    module: 'Menu', 
-                                    action: 'edit',
                                     id: entity.id
                                 }
                             }
