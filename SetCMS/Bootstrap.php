@@ -38,16 +38,21 @@ class Bootstrap
 
     public function newContainer(): ContainerInterface
     {
+        if (file_exists($this->rootPath() . '/cache/resources.php')) {
+            $resources = require $this->rootPath() . '/cache/resources.php';
+        } else {
+            $resources = require $this->rootPath() . '/resources/resources.php';
+        }
+
         $container = new Container(fn(Container $container) => [
             EventDispatcherInterface::class => fn(Container $container) => new EventDispatcher($container),
             'rootPath' => $this->rootPath(),
             'env' => $this->env(),
-            'events' => require $this->rootPath() . '/resources/events.php',
-            'acl' => require $this->rootPath() . '/resources/acl.php',
-            'routes' => require $this->rootPath() . '/resources/routes.php',
-            'themes' => require $this->rootPath() . '/resources/themes.php',
-            'middlewares' => require $this->rootPath() . '/resources/middlewares.php',
-            'exceptionHandlers' => require $this->rootPath() . '/resources/exceptionHandlers.php',
+            'events' => $resources['events'],
+            'acl' => $resources['acl'],
+            'routes' => $resources['routes'],
+            'middlewares' => $resources['middlewares'],
+            'exceptionHandlers' => $resources['exceptionHandlers'],
         ]);
 
         return $container;

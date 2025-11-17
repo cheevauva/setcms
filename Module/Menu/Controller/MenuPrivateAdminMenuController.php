@@ -13,36 +13,19 @@ class MenuPrivateAdminMenuController extends ControllerViaPSR7
     /**
      * @var array<int,array<mixed>>
      */
-    protected array $modules = [
-        [
-            'label' => 'Посты',
-            'name' => 'Post',
-        ],
-        [
-            'label' => 'Страницы',
-            'name' => 'Page',
-        ],
-        [
-            'label' => 'Пользователи',
-            'name' => 'User',
-        ],
-        [
-            'label' => 'Меню',
-            'name' => 'Menu',
-        ],
-        [
-            'label' => 'Шаблоны',
-            'name' => 'Template',
-        ],
-        [
-            'label' => 'Письма',
-            'name' => 'Email',
-        ],
-        [
-            'label' => 'Модуль01',
-            'name' => 'Module01',
-        ],
-    ];
+    protected array $items;
+
+    #[\Override]
+    protected function process(): void
+    {
+        $rootPath = $this->container->get('rootPath');
+
+        if (file_exists($rootPath . 'cache/module/menu/adminMenu.php')) {
+            $this->items = require $rootPath . 'cache/module/menu/adminMenu.php';
+        } else {
+            $this->items = require $rootPath . 'resources/module/menu/adminMenu.php';
+        }
+    }
 
     #[\Override]
     protected function viewUnits(): array
@@ -58,7 +41,7 @@ class MenuPrivateAdminMenuController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof MenuPrivateAdminMenuView) {
-            $object->modules = $this->modules;
+            $object->items = $this->items;
         }
     }
 }
