@@ -51,7 +51,6 @@ class Bootstrap
             'events' => $resources['events'],
             'acl' => $resources['acl'],
             'routes' => $resources['routes'],
-            'themes' => $resources['themes'], // @todo возможно это тут не нужно
             'middlewares' => $resources['middlewares'],
             'exceptionHandlers' => $resources['exceptionHandlers'],
         ]);

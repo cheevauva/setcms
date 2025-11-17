@@ -1,10 +1,14 @@
 <div class="position-sticky pt-3">
     <ul class="nav flex-column">
-        {% for module in modules %}
+        {% for item in items %}
             <li class="nav-item">
-                <a class="nav-link {% if module.name == setcms.currentModule %}active{% endif %}" href="{{ scLink('Admin' ~ module.name ~ 'Index') }}">
-                    {{ module.label }}
-                </a>
+                {% if item.route %}
+                    <a class="nav-link {% if item.route == ctx.request %}active{% endif %}" href="{{ scLink(item.route) }}">
+                        {{ item.label }}
+                    </a>
+                {% else %}
+                    Не найден маршрут <pre>{{ item|json_encode() }}</pre>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>

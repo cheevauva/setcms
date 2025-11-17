@@ -12,7 +12,7 @@ class MenuPrivateAdminMenuView extends ViewTwig
     /**
      * @var array<int,array<mixed>>
      */
-    public array $modules = [];
+    public array $items = [];
 
     #[\Override]
     protected function templateName(): ?string
