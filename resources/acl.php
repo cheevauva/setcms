@@ -79,7 +79,7 @@ $acl = [
 ];
 
 foreach (glob(__DIR__ . '/acl/*.php') ?: [] as $file) {
-    require_once $file;
+    require $file;
 }
 
 return $acl;
