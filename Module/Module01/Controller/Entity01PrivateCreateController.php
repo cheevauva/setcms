@@ -12,7 +12,7 @@ use Module\Module01\View\Entity01PrivateCreateView;
 class Entity01PrivateCreateController extends ControllerViaPSR7
 {
 
-    protected Entity01Entity $Entity01LC;
+    protected Entity01Entity $entity;
 
     #[\Override]
     protected function domainUnits(): array
@@ -36,11 +36,11 @@ class Entity01PrivateCreateController extends ControllerViaPSR7
         $body = $this->request->getParsedBody() ?? [];
 
         $validation = $this->validation($body);
-        $validation->array('Entity01LC')->notEmpty()->validate();
+        $validation->array('entity')->notEmpty()->validate();
 
-        $this->Entity01LC = new Entity01Entity();
-        $this->Entity01LC->id = $validation->uuid('Entity01LC.id')->val();
-        $this->Entity01LC->field01 = $validation->string('Entity01LC.field01')->notEmpty()->val();
+        $this->entity = new Entity01Entity();
+        $this->entity->id = $validation->uuid('entity.id')->val();
+        $this->entity->field01 = $validation->string('entity.field01')->notEmpty()->val();
     }
 
     #[\Override]
@@ -49,11 +49,11 @@ class Entity01PrivateCreateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof Entity01CreateServant) {
-            $object->Entity01LC = $this->Entity01LC;
+            $object->entity = $this->entity;
         }
 
         if ($object instanceof Entity01PrivateCreateView) {
-            $object->Entity01LC = $this->Entity01LC;
+            $object->entity = $this->entity;
         }
     }
 }

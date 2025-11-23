@@ -4,29 +4,16 @@ declare(strict_types=1);
 
 namespace Module\Module01\Servant;
 
+use SetCMS\Servant\EntityUpdateServant;
 use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\DAO\Entity01HasByIdDAO;
-use Module\Module01\DAO\Entity01SaveDAO;
-use Module\Module01\Exception\Entity01NotFoundException;
+use Module\Module01\DAO\Entity01UpdateDAO;
 
-class Entity01UpdateServant extends \UUA\Servant
+/**
+ * @extends EntityUpdateServant<Entity01Entity>
+ */
+class Entity01UpdateServant extends EntityUpdateServant
 {
-
-    public Entity01Entity $Entity01LC;
-
-    #[\Override]
-    public function serve(): void
-    {
-        $hasById = Entity01HasByIdDAO::new($this->container);
-        $hasById->id = $this->Entity01LC->id;
-        $hasById->serve();
-
-        if (empty($hasById->isExists)) {
-            throw new Entity01NotFoundException;
-        }
-
-        $saveEntity = Entity01SaveDAO::new($this->container);
-        $saveEntity->Entity01LC = $this->Entity01LC;
-        $saveEntity->serve();
-    }
+    protected string $clsHasById = Entity01HasByIdDAO::class;
+    protected string $clsUpdate = Entity01UpdateDAO::class;
 }

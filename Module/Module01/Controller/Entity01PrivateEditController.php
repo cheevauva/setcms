@@ -23,7 +23,7 @@ class Entity01PrivateEditController extends Entity01PrivateReadController
         parent::to($object);
 
         if ($object instanceof Entity01PrivateEditView) {
-            $object->Entity01LC = $this->Entity01LC;
+            $object->entity = $this->entity;
         }
     }
 }

@@ -9,5 +9,5 @@ use SetCMS\Entity\Entity;
 class Entity01Entity extends Entity
 {
 
-    public string $field01;
+    public mixed $field01;
 }

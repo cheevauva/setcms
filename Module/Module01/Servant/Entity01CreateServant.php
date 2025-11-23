@@ -4,29 +4,17 @@ declare(strict_types=1);
 
 namespace Module\Module01\Servant;
 
+use SetCMS\Servant\EntityCreateServant;
 use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\DAO\Entity01HasByIdDAO;
-use Module\Module01\DAO\Entity01SaveDAO;
-use Module\Module01\Exception\Entity01AlreadyExistsException;
+use Module\Module01\DAO\Entity01CreateDAO;
 
-class Entity01CreateServant extends \UUA\Servant
+/**
+ * @extends EntityCreateServant<Entity01Entity>
+ */
+class Entity01CreateServant extends EntityCreateServant
 {
 
-    public Entity01Entity $Entity01LC;
-
-    #[\Override]
-    public function serve(): void
-    {
-        $hasEntityById = Entity01HasByIdDAO::new($this->container);
-        $hasEntityById->id = $this->Entity01LC->id;
-        $hasEntityById->serve();
-
-        if ($hasEntityById->isExists) {
-            throw new Entity01AlreadyExistsException;
-        }
-
-        $saveEntity = Entity01SaveDAO::new($this->container);
-        $saveEntity->Entity01LC = $this->Entity01LC;
-        $saveEntity->serve();
-    }
+    protected string $clsHasById = Entity01HasByIdDAO::class;
+    protected string $clsCreate = Entity01CreateDAO::class;
 }

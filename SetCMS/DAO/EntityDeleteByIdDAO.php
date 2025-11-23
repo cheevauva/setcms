@@ -7,26 +7,24 @@ namespace SetCMS\DAO;
 use SetCMS\UUID;
 use SetCMS\Database\DatabaseQueryBuilder;
 
-abstract class EntityHasByIdDAO extends SQLCommonDAO
+abstract class EntityDeleteByIdDAO extends SQLCommonDAO
 {
 
     public UUID $id;
-    public ?bool $isExists = null;
 
     #[\Override]
     public function serve(): void
     {
-        $this->isExists = !!$this->createQuery()->fetchOne();
+        $this->createQuery()->executeQuery();
     }
 
     #[\Override]
     protected function createQuery(): DatabaseQueryBuilder
     {
-        $qb = $this->db()->createQueryBuilder();
-        $qb->select('id');
-        $qb->from($this->table());
+        $qb = $this->createQuery();
+        $qb->delete($this->table());
         $qb->andWhere('id = :id');
-        $qb->setParameter('id', $this->id);
+        $qb->setParameter('id', $this->id->uuid);
         $qb->setMaxResults(1);
 
         return $qb;

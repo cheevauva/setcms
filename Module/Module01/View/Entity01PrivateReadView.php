@@ -10,5 +10,5 @@ use Module\Module01\Entity\Entity01Entity;
 class Entity01PrivateReadView extends ViewTwig
 {
 
-    public Entity01Entity $Entity01LC;
+    public Entity01Entity $entity;
 }

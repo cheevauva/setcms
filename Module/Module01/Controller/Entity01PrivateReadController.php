@@ -9,11 +9,12 @@ use SetCMS\Controller\ControllerViaPSR7;
 use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\DAO\Entity01RetrieveManyByCriteriaDAO;
 use Module\Module01\View\Entity01PrivateReadView;
+use Module\Module01\Exception\Entity01NotFoundException;
 
 class Entity01PrivateReadController extends ControllerViaPSR7
 {
 
-    protected Entity01Entity $Entity01LC;
+    protected Entity01Entity $entity;
     protected UUID $id;
 
     #[\Override]
@@ -47,11 +48,11 @@ class Entity01PrivateReadController extends ControllerViaPSR7
 
         if ($object instanceof Entity01RetrieveManyByCriteriaDAO) {
             $object->id = $this->id;
-            $object->orThrow = true;
+            $object->throwIfEmpty = new Entity01NotFoundException();
         }
 
         if ($object instanceof Entity01PrivateReadView) {
-            $object->Entity01LC = $this->Entity01LC;
+            $object->entity = $this->entity;
         }
     }
 
@@ -61,7 +62,7 @@ class Entity01PrivateReadController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof Entity01RetrieveManyByCriteriaDAO) {
-            $this->Entity01LC = Entity01Entity::as($object->Entity01LC);
+            $this->entity = $object->first();
         }
     }
 }

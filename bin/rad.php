@@ -31,21 +31,20 @@ $files[] = sprintf('%s/resources/templates/themes/bootstrap5/Entity01PrivateEdit
 $files[] = sprintf('%s/resources/templates/themes/bootstrap5/Entity01PrivateRead.twig', $rootPath);
 
 $module = $argv[1] ?? null;
-$entity = $argv[2] ?? null;
-$table = $argv[3] ?? null;
-$fields = array_filter(explode(',', $argv[4] ?? ''));
+$table = $argv[2] ?? null;
+$fields = array_filter(explode(',', $argv[3] ?? ''));
 
-if (empty($module) || empty($entity) || empty($table) || empty($fields)) {
-    echo $argv[0] . ' modulename entityname tablename fields' . PHP_EOL;
+if (empty($module) || empty($table) || empty($fields)) {
+    echo $argv[0] . ' modulename tablename fields' . PHP_EOL;
     exit(1);
 }
 
 $parts = [
     'Ymdhis' => date('YmdHis'),
-    'Module01' => $module,
+    'Module01' => ucfirst($module),
     'Entity01LC' => lcfirst($entity),
-    'Entity01' => $entity,
-    'Table01' => $table,
+    'Entity01' => ucfirst($module),
+    'Table01' => strtolower($table),
 ];
 
 foreach ($files as $file) {

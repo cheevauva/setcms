@@ -9,12 +9,13 @@ use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\DAO\Entity01RetrieveManyByCriteriaDAO;
 use Module\Module01\Servant\Entity01UpdateServant;
 use Module\Module01\View\Entity01PrivateUpdateView;
+use Module\Module01\Exception\Entity01NotFoundException;
 
 class Entity01PrivateUpdateController extends ControllerViaPSR7
 {
 
-    protected Entity01Entity $Entity01LC;
-    protected Entity01Entity $newEntity01LC;
+    protected Entity01Entity $entity;
+    protected Entity01Entity $newEntity;
 
     #[\Override]
     protected function domainUnits(): array
@@ -38,9 +39,9 @@ class Entity01PrivateUpdateController extends ControllerViaPSR7
     {
         $validation = $this->validation($this->request->getParsedBody());
 
-        $this->newEntity01LC = new Entity01Entity;
-        $this->newEntity01LC->id = $validation->uuid('Entity01LC.id')->notEmpty()->val();
-        $this->newEntity01LC->field01 = $validation->string('Entity01LC.field01')->notEmpty()->val();
+        $this->newEntity = new Entity01Entity;
+        $this->newEntity->id = $validation->uuid('entity.id')->notEmpty()->val();
+        $this->newEntity->field01 = $validation->string('entity.field01')->notEmpty()->val();
     }
 
     #[\Override]
@@ -49,16 +50,16 @@ class Entity01PrivateUpdateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof Entity01RetrieveManyByCriteriaDAO) {
-            $object->id = $this->newEntity01LC->id;
-            $object->orThrow = true;
+            $object->id = $this->newEntity->id;
+            $object->throwIfEmpty = new Entity01NotFoundException();
         }
 
         if ($object instanceof Entity01UpdateServant) {
-            $object->Entity01LC = $this->Entity01LC;
+            $object->entity = $this->entity;
         }
 
         if ($object instanceof Entity01PrivateUpdateView) {
-            $object->Entity01LC = $this->Entity01LC ?? null;
+            $object->entity = $this->entity ?? null;
         }
     }
 
@@ -68,8 +69,8 @@ class Entity01PrivateUpdateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof Entity01RetrieveManyByCriteriaDAO) {
-            $this->Entity01LC = Entity01Entity::as($object->Entity01LC);
-            $this->Entity01LC->field01 = $this->newEntity01LC->field01;
+            $this->entity = $object->first();
+            $this->entity->field01 = $this->newEntity->field01;
         }
     }
 }

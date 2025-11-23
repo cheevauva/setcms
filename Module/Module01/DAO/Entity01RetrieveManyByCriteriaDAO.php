@@ -4,32 +4,17 @@ declare(strict_types=1);
 
 namespace Module\Module01\DAO;
 
+use SetCMS\DAO\EntityRetrieveManyDAO;
+use Module\Module01\Mapper\Entity01FromRowMapper;
 use Module\Module01\Entity\Entity01Entity;
-use Module\Module01\Exception\Entity01NotFoundException;
 
-class Entity01RetrieveManyByCriteriaDAO extends \SetCMS\DAO\EntityRetrieveManyByCriteriaDAO
+/**
+ * @extends EntityRetrieveManyDAO<Entity01Entity, Entity01FromRowMapper>
+ */
+class Entity01RetrieveManyByCriteriaDAO extends EntityRetrieveManyDAO
 {
 
     use Entity01CommonDAO;
 
-    /**
-     * @var array<Entity01Entity>
-     */
-    public array $Entity01LCs;
-    public ?Entity01Entity $Entity01LC;
-
-    #[\Override]
-    public function serve(): void
-    {
-        parent::serve();
-
-        $this->Entity01LCs = Entity01Entity::manyAs($this->entities);
-        $this->Entity01LC = $this->first ? Entity01Entity::as($this->first) : null;
-    }
-
-    #[\Override]
-    protected function notFoundExcecption(): \Throwable
-    {
-        return new Entity01NotFoundException();
-    }
+    protected string $clsMapper = Entity01FromRowMapper::class;
 }
