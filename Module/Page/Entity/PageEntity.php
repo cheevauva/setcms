@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Page;
+namespace Module\Page\Entity;
 
 use SetCMS\Entity\Entity;
 use SetCMS\UUID;

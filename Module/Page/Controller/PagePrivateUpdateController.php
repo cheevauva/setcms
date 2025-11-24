@@ -4,23 +4,25 @@ declare(strict_types=1);
 
 namespace Module\Page\Controller;
 
-use Module\Page\PageEntity;
+use SetCMS\Controller\ControllerViaPSR7;
+use Module\Page\Entity\PageEntity;
 use Module\Page\DAO\PageRetrieveManyByCriteriaDAO;
-use Module\Page\DAO\PageSaveDAO;
+use Module\Page\Servant\PageUpdateServant;
 use Module\Page\View\PagePrivateUpdateView;
+use Module\Page\Exception\PageNotFoundException;
 
-class PagePrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
+class PagePrivateUpdateController extends ControllerViaPSR7
 {
 
-    protected PageEntity $page;
-    protected PageEntity $newPage;
+    protected PageEntity $entity;
+    protected PageEntity $newEntity;
 
     #[\Override]
     protected function domainUnits(): array
     {
         return [
             PageRetrieveManyByCriteriaDAO::class,
-            PageSaveDAO::class,
+            PageUpdateServant::class,
         ];
     }
 
@@ -37,11 +39,11 @@ class PagePrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
     {
         $validation = $this->validation($this->request->getParsedBody());
 
-        $this->newPage = new PageEntity();
-        $this->newPage->id = $validation->uuid('page.id')->notEmpty()->val();
-        $this->newPage->slug = $validation->string('page.slug')->notEmpty()->val();
-        $this->newPage->title = $validation->string('page.title')->notEmpty()->val();
-        $this->newPage->content = $validation->string('page.content')->notEmpty()->val();
+        $this->newEntity = new PageEntity;
+        $this->newEntity->id = $validation->uuid('entity.id')->notEmpty()->val();
+        $this->newEntity->slug = $validation->string('entity.slug')->notEmpty()->val();
+        $this->newEntity->title = $validation->string('entity.title')->notEmpty()->val();
+        $this->newEntity->content = $validation->string('entity.content')->notEmpty()->val();
     }
 
     #[\Override]
@@ -50,16 +52,16 @@ class PagePrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof PageRetrieveManyByCriteriaDAO) {
-            $object->id = $this->newPage->id;
-            $object->orThrow = true;
+            $object->id = $this->newEntity->id;
+            $object->throwIfEmpty = new PageNotFoundException();
         }
 
-        if ($object instanceof PageSaveDAO) {
-            $object->page = $this->page;
+        if ($object instanceof PageUpdateServant) {
+            $object->entity = $this->entity;
         }
 
         if ($object instanceof PagePrivateUpdateView) {
-            $object->page = $this->page;
+            $object->entity = $this->entity ?? null;
         }
     }
 
@@ -67,12 +69,12 @@ class PagePrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
     public function from(object $object): void
     {
         parent::from($object);
-        
+
         if ($object instanceof PageRetrieveManyByCriteriaDAO) {
-            $this->page = PageEntity::as($object->page);
-            $this->page->content = $this->newPage->content;
-            $this->page->slug = $this->newPage->slug;
-            $this->page->title = $this->newPage->title;
+            $this->entity = $object->first();
+            $this->entity->slug = $this->newEntity->slug;
+            $this->entity->title = $this->newEntity->title;
+            $this->entity->content = $this->newEntity->content;
         }
     }
 }

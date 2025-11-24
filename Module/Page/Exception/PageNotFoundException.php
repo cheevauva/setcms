@@ -6,5 +6,5 @@ namespace Module\Page\Exception;
 
 class PageNotFoundException extends PageException
 {
-    
+    //put your code here
 }

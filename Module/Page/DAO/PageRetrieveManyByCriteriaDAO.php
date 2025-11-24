@@ -4,48 +4,29 @@ declare(strict_types=1);
 
 namespace Module\Page\DAO;
 
-use Module\Page\PageEntity;
+use SetCMS\DAO\EntityRetrieveManyDAO;
 use SetCMS\Database\DatabaseQueryBuilder;
-use Module\Page\Exception\PageNotFoundException;
+use Module\Page\Mapper\PageFromRowMapper;
+use Module\Page\Entity\PageEntity;
 
-class PageRetrieveManyByCriteriaDAO extends \SetCMS\DAO\EntityRetrieveManyByCriteriaDAO
+/**
+ * @extends EntityRetrieveManyDAO<PageEntity, PageFromRowMapper>
+ */
+class PageRetrieveManyByCriteriaDAO extends EntityRetrieveManyDAO
 {
 
     use PageCommonDAO;
 
+    protected string $clsMapper = PageFromRowMapper::class;
     public string $slug;
-
-    /**
-     * @var PageEntity[]
-     */
-    public array $pages;
-    public ?PageEntity $page;
-
-    #[\Override]
-    public function serve(): void
-    {
-        parent::serve();
-
-        $this->pages = PageEntity::manyAs($this->entities);
-        $this->page = $this->first ? PageEntity::as($this->first) : null;
-    }
 
     #[\Override]
     protected function createQuery(): DatabaseQueryBuilder
     {
-        $qb = parent::createQuery();
-
         if (isset($this->slug)) {
-            $qb->andWhere('slug = :slug');
-            $qb->setParameter('slug', $this->slug);
+            $this->criteria['slug'] = $this->slug;
         }
 
-        return $qb;
-    }
-
-    #[\Override]
-    protected function notFoundExcecption(): \Throwable
-    {
-        return new PageNotFoundException();
+        return parent::createQuery();
     }
 }

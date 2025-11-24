@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace Module\Page\Controller;
 
-use SetCMS\Controller\ControllerViaPSR7;
 use SetCMS\UUID;
-use Module\Page\PageEntity;
+use SetCMS\Controller\ControllerViaPSR7;
+use Module\Page\Entity\PageEntity;
 use Module\Page\DAO\PageRetrieveManyByCriteriaDAO;
 use Module\Page\View\PagePrivateReadView;
+use Module\Page\Exception\PageNotFoundException;
 
 class PagePrivateReadController extends ControllerViaPSR7
 {
 
-    protected ?PageEntity $page = null;
+    protected PageEntity $entity;
     protected UUID $id;
 
     #[\Override]
@@ -35,7 +36,9 @@ class PagePrivateReadController extends ControllerViaPSR7
     #[\Override]
     protected function process(): void
     {
-        $this->id = $this->validation($this->params)->uuid('id')->notEmpty()->notQuiet()->val();
+        $validation = $this->validation($this->params);
+
+        $this->id = $validation->uuid('id')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]
@@ -45,11 +48,11 @@ class PagePrivateReadController extends ControllerViaPSR7
 
         if ($object instanceof PageRetrieveManyByCriteriaDAO) {
             $object->id = $this->id;
-            $object->limit = 1;
+            $object->throwIfEmpty = new PageNotFoundException();
         }
 
         if ($object instanceof PagePrivateReadView) {
-            $object->page = $this->page;
+            $object->entity = $this->entity;
         }
     }
 
@@ -59,7 +62,7 @@ class PagePrivateReadController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PageRetrieveManyByCriteriaDAO) {
-            $this->page = $object->page;
+            $this->entity = $object->first();
         }
     }
 }

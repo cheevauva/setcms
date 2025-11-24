@@ -6,5 +6,5 @@ namespace Module\Page\Exception;
 
 class PageException extends \Exception
 {
-    
+    //put your code here
 }

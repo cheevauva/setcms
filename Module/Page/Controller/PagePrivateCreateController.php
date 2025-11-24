@@ -5,22 +5,20 @@ declare(strict_types=1);
 namespace Module\Page\Controller;
 
 use SetCMS\Controller\ControllerViaPSR7;
-use Module\Page\PageEntity;
+use Module\Page\Entity\PageEntity;
+use Module\Page\Servant\PageCreateServant;
 use Module\Page\View\PagePrivateCreateView;
-use Module\Page\DAO\PageSaveDAO;
 
 class PagePrivateCreateController extends ControllerViaPSR7
 {
 
-    use \Module\User\Traits\UserCurrentTrait;
-
-    protected PageEntity $page;
+    protected PageEntity $entity;
 
     #[\Override]
     protected function domainUnits(): array
     {
         return [
-            PageSaveDAO::class,
+            PageCreateServant::class,
         ];
     }
 
@@ -38,14 +36,13 @@ class PagePrivateCreateController extends ControllerViaPSR7
         $body = $this->request->getParsedBody() ?? [];
 
         $validation = $this->validation($body);
-        $validation->array('page')->notEmpty()->validate();
+        $validation->array('entity')->notEmpty()->validate();
 
-        $this->page = new PageEntity();
-        $this->page->id = $validation->uuid('page.id')->val();
-        $this->page->title = $validation->string('page.title')->notEmpty()->val();
-        $this->page->slug = $validation->string('page.slug')->notEmpty()->val();
-        $this->page->content = $validation->string('page.content')->notEmpty()->val();
-        $this->page->createdUserId = $this->currentUser()->id;
+        $this->entity = new PageEntity();
+        $this->entity->id = $validation->uuid('entity.id')->val();
+        $this->entity->slug = $validation->string('entity.slug')->notEmpty()->val();
+        $this->entity->title = $validation->string('entity.title')->notEmpty()->val();
+        $this->entity->content = $validation->string('entity.content')->notEmpty()->val();
     }
 
     #[\Override]
@@ -53,12 +50,12 @@ class PagePrivateCreateController extends ControllerViaPSR7
     {
         parent::to($object);
 
-        if ($object instanceof PageSaveDAO) {
-            $object->page = $this->page;
+        if ($object instanceof PageCreateServant) {
+            $object->entity = $this->entity;
         }
 
         if ($object instanceof PagePrivateCreateView) {
-            $object->page = $this->page;
+            $object->entity = $this->entity;
         }
     }
 }

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-require '../bootstrap.php';
+require __DIR__ . '/../bootstrap.php';
 
-$rootPath = \SetCMS\Bootstrap::instance()->rootPath() ;
+$rootPath = \SetCMS\Bootstrap::instance()->rootPath();
 
 function getFiles(string $directory, array $files = [])
 {
@@ -22,16 +22,18 @@ function getFiles(string $directory, array $files = [])
     return $files;
 }
 
-$files = getFiles(sprintf('%s/SetCMS/Module/Module01/', $rootPath));
-$files[] = sprintf('%s/resources/acl/Entity01LC.php', $rootPath);
-$files[] = sprintf('%s/resources/routes/Entity01LC.php', $rootPath);
-$files[] = sprintf('%s/SetCMS/Module/Migration/Version/Main/MigrationYmdhisVersion.php', $rootPath);
+$files = getFiles(sprintf('%s/Module/Module01/', $rootPath));
+$files[] = sprintf('%s/resources/acl/entity01lc.php', $rootPath);
+$files[] = sprintf('%s/resources/routes/entity01lc.php', $rootPath);
+$files[] = sprintf('%s/resources/migrations/sqlite/main/u.Ymdhis.Table01.sql', $rootPath);
+$files[] = sprintf('%s/resources/migrations/sqlite/main/d.Ymdhis.Table01.sql', $rootPath);
 $files[] = sprintf('%s/resources/templates/themes/bootstrap5/Entity01PrivateIndex.twig', $rootPath);
 $files[] = sprintf('%s/resources/templates/themes/bootstrap5/Entity01PrivateEdit.twig', $rootPath);
 $files[] = sprintf('%s/resources/templates/themes/bootstrap5/Entity01PrivateRead.twig', $rootPath);
 
 $module = $argv[1] ?? null;
 $table = $argv[2] ?? null;
+$entity = $module;
 $fields = array_filter(explode(',', $argv[3] ?? ''));
 
 if (empty($module) || empty($table) || empty($fields)) {
@@ -42,7 +44,7 @@ if (empty($module) || empty($table) || empty($fields)) {
 $parts = [
     'Ymdhis' => date('YmdHis'),
     'Module01' => ucfirst($module),
-    'Entity01LC' => lcfirst($entity),
+    'entity01lc' => lcfirst($entity),
     'Entity01' => ucfirst($module),
     'Table01' => strtolower($table),
 ];
@@ -75,6 +77,9 @@ foreach ($files as $file) {
         $lines[] = $line;
     }
 
-    file_put_contents($target, implode("\n", $lines));
+    if (!file_exists($target)) {
+        file_put_contents($target, implode("\n", $lines));
+    }
+    
     chmod($target, 0777);
 }

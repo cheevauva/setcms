@@ -2,10 +2,10 @@
 {% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_toolbar %}
-    <a href="{{ scLink('AdminPageNew', {id: scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать страницу</a>
+    <a href="{{ scLink('AdminPageNew', {'id': scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать</a>
 {% endblock %}
 
-{% block content_title %}Страницы{% endblock %}
+{% block content_title %}Page{% endblock %}
 
 {% block content %}
     {%  
@@ -20,19 +20,15 @@
                     },
                     {
                         type: 'text',
-                        value: 'Алиас'
+                        value: 'slug',
                     },
                     {
                         type: 'text',
-                        value: 'Тема'
+                        value: 'title',
                     },
                     {
                         type: 'text',
-                        value: 'Дата создания'
-                    },
-                    {
-                        type: 'text',
-                        value: 'Дата изменения'
+                        value: 'content',
                     },
                     {
                         type: 'text',
@@ -42,7 +38,7 @@
             }
         ]
     %}
-    {% for entity in pages %}
+    {% for entity in entities %}
         {%  
             set rows = rows|merge([{
                 type: 'row',
@@ -62,11 +58,7 @@
                     },
                     {
                         type: 'text',
-                        value: entity.dateCreated.format('d.m.Y H:i:s')
-                    },
-                    {
-                        type: 'text',
-                        value: entity.dateModified.format('d.m.Y H:i:s')
+                        value: entity.content
                     },
                     {
                         name: 'actions',

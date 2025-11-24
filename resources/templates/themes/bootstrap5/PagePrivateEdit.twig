@@ -1,12 +1,12 @@
 {% extends scShortPath(layout ?? 'layout_admin.twig') %}
 {% import scShortPath('macros/crud.twig') as crud %}
 
-{% block content_title %}{% if page.id %}Редактировать{% else %}Создать{% endif %} страницу{% endblock %}
+{% block content_title %}{% if entity.id %}Редактировать{% else %}Создать{% endif %}{% endblock %}
 {% block content %}
     {{ 
         crud.editview({
-            action: scLink(page.id ? 'AdminPageUpdate' : 'AdminPageCreate', {id: page ? page.id : scUUID()}),
-            redirect: scLink('AdminPageRead', {'id': '${page.id.uuid}'}),
+            action: scLink(entity.id ? 'AdminPageUpdate' : 'AdminPageCreate', {id: (entity ? entity.id : scUUID()) }),
+            redirect: scLink('AdminPageRead', {id: '${entity.id.uuid}'}),
             actions: {
                 fields: [
                     {
@@ -23,27 +23,12 @@
                     fields: [
                         {
                             type: 'hidden',
-                            name: 'page.id',
-                            value: page.id|default(scUUID())
+                            name: 'entity.id',
+                            value: entity.id|default(scUUID())
                         },
-                        {
-                            name: 'page.slug',
-                            value: page.slug,
-                            type: 'input',
-                            label: 'Псевдоним'
-                        },
-                        {
-                            name: 'page.title',
-                            value: page.title,
-                            type: 'input',
-                            label: 'Заголовок'
-                        },
-                        {
-                            name: 'page.content',
-                            type: 'textarea',
-                            value: page.content,
-                            label: 'Текст'
-                        },
+                        {name: 'entity.slug', value: entity.slug, type: 'input', label: 'slug'},
+                        {name: 'entity.title', value: entity.title, type: 'input', label: 'title'},
+                        {name: 'entity.content', value: entity.content, type: 'textarea', label: 'content'},
                     ]
                 }, 
                 {
@@ -51,15 +36,15 @@
                     label: 'Служебные данные',
                     fields: [
                         {
-                            name: 'page.dateCreated',
-                            value: page.dateCreated.format('Y-m-d H:i:s'),
+                            name: 'entity.dateCreated',
+                            value: entity.dateCreated.format('Y-m-d H:i:s'),
                             type: 'input',
                             label: 'Дата создания',
                             disabled: true
                         },
                         {
-                            name: 'page.dateModified',
-                            value: page.dateCreated.format('Y-m-d H:i:s'),
+                            name: 'entity.dateModified',
+                            value: entity.dateCreated.format('Y-m-d H:i:s'),
                             type: 'input',
                             label: 'Дата изменения',
                             disabled: true

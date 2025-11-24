@@ -18,8 +18,8 @@ class Entity01ToRowMapper extends EntityToRowMapper
     {
         parent::serve();
 
-        $entity = Entity01Entity::as($this->entity);
+        $entity01lc = Entity01Entity::as($this->entity);
 
-        $this->row['field01'] = $entity->field01;
+        $this->row['field01'] = $entity01lc->field01;
     }
 }

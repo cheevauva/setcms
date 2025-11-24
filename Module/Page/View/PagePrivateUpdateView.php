@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Page\View;
 
-use Module\Page\PageEntity;
+use SetCMS\View\ViewJson;
+use Module\Page\Entity\PageEntity;
 
-class PagePrivateUpdateView extends \SetCMS\View\ViewJson
+class PagePrivateUpdateView extends ViewJson
 {
 
-    public ?PageEntity $page = null;
+    public ?PageEntity $entity = null;
 }

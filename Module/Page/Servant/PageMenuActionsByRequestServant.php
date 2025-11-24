@@ -62,7 +62,7 @@ class PageMenuActionsByRequestServant extends \UUA\Servant
         $editAction->label = 'Редактировать страницу';
         $editAction->route = 'AdminPageEdit';
         $editAction->params = [
-            'id' => PageEntity::as($retrieveBySlug->page)->id->uuid,
+            'id' => $retrieveBySlug->first()->id->uuid,
         ];
 
         return $editAction;
