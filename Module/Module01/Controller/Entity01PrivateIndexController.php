@@ -47,7 +47,7 @@ class Entity01PrivateIndexController extends ControllerViaPSR7
     public function to(object $object): void
     {
         parent::to($object);
-        
+
         if ($object instanceof Entity01PrivateIndexView) {
             $object->entities = $this->entities;
         }

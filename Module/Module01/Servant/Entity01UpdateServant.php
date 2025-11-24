@@ -14,6 +14,7 @@ use Module\Module01\DAO\Entity01UpdateDAO;
  */
 class Entity01UpdateServant extends EntityUpdateServant
 {
+
     protected string $clsHasById = Entity01HasByIdDAO::class;
     protected string $clsUpdate = Entity01UpdateDAO::class;
 }

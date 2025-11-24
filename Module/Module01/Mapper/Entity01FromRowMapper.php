@@ -18,7 +18,7 @@ class Entity01FromRowMapper extends EntityFromRowMapper
     public function serve(): void
     {
         parent::serve();
-        
+
         $entity01lc = Entity01Entity::as($this->entity);
         $entity01lc->field01 = strval($this->row['field01'] ?? throw new Entity01MapperNotFoundKeyInRowException('field01'));
     }

@@ -27,6 +27,7 @@ abstract class EntityFromRowMapper extends Mapper
     #[\Override]
     public function serve(): void
     {
+
         if (empty($this->row['entity_type'])) {
             throw new \RuntimeException('row.entity_type is undefined');
         }
@@ -35,12 +36,14 @@ abstract class EntityFromRowMapper extends Mapper
             throw new \RuntimeException('row.entity_type must be string');
         }
 
-        if (!class_exists($this->row['entity_type'])) {
-            throw new \Exception(sprintf('row.entity_type(%s) not found', $this->row['entity_type']));
+        $className = $this->container->get('entities')[$this->row['entity_type']] ?? throw new \RuntimeException(sprintf('entities.%s undefined', $this->row['entity_type']));
+
+        if (!class_exists($className, true)) {
+            throw new \Exception(sprintf('entities.%s class %s not found', $this->row['entity_type'], $className));
         }
 
         /** @var T $entity * */
-        $entity = Entity::as(new $this->row['entity_type']);
+        $entity = Entity::as(new $className);
         $entity->id = new UUID(strval($this->row['id'] ?? throw new \RuntimeException('row.id is undefined')));
         $entity->dateCreated = new \DateTime(strval($this->row['date_created'] ?? throw new \RuntimeException('row.date_created is undefined')));
         $entity->dateModified = new \DateTime(strval($this->row['date_modified'] ?? throw new \RuntimeException('row.date_modified is undefined')));

@@ -53,6 +53,7 @@ class Bootstrap
             'routes' => $resources['routes'],
             'middlewares' => $resources['middlewares'],
             'exceptionHandlers' => $resources['exceptionHandlers'],
+            'entities' => $resources['entities'],
         ]);
 
         return $container;

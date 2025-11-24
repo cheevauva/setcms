@@ -25,6 +25,7 @@ function getFiles(string $directory, array $files = [])
 $files = getFiles(sprintf('%s/Module/Module01/', $rootPath));
 $files[] = sprintf('%s/resources/acl/entity01lc.php', $rootPath);
 $files[] = sprintf('%s/resources/routes/entity01lc.php', $rootPath);
+$files[] = sprintf('%s/resources/entities/entity01lc.php', $rootPath);
 $files[] = sprintf('%s/resources/migrations/sqlite/main/u.Ymdhis.Table01.sql', $rootPath);
 $files[] = sprintf('%s/resources/migrations/sqlite/main/d.Ymdhis.Table01.sql', $rootPath);
 $files[] = sprintf('%s/resources/templates/themes/bootstrap5/Entity01PrivateIndex.twig', $rootPath);
