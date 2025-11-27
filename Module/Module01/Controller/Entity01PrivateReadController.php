@@ -48,7 +48,7 @@ class Entity01PrivateReadController extends ControllerViaPSR7
 
         if ($object instanceof Entity01RetrieveManyByCriteriaDAO) {
             $object->id = $this->id;
-            $object->throwIfEmpty = new Entity01NotFoundException();
+            $object->limit = 1;
         }
 
         if ($object instanceof Entity01PrivateReadView) {
@@ -62,7 +62,7 @@ class Entity01PrivateReadController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof Entity01RetrieveManyByCriteriaDAO) {
-            $this->entity = $object->first();
+            $this->entity = $object->first ?? throw new Entity01NotFoundException();
         }
     }
 }

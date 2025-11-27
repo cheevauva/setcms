@@ -51,7 +51,7 @@ class Entity01PrivateUpdateController extends ControllerViaPSR7
 
         if ($object instanceof Entity01RetrieveManyByCriteriaDAO) {
             $object->id = $this->newEntity->id;
-            $object->throwIfEmpty = new Entity01NotFoundException();
+            $object->limit = 1;
         }
 
         if ($object instanceof Entity01UpdateServant) {
@@ -69,7 +69,7 @@ class Entity01PrivateUpdateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof Entity01RetrieveManyByCriteriaDAO) {
-            $this->entity = $object->first();
+            $this->entity = $object->first ?? throw new Entity01NotFoundException();
             $this->entity->field01 = $this->newEntity->field01;
         }
     }

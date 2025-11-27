@@ -33,6 +33,11 @@ abstract class EntityRetrieveManyDAO extends SQLCommonDAO
     public protected(set) array $entities = [];
 
     /**
+     * @var E
+     */
+    public protected(set) ?Entity $first = null;
+
+    /**
      * @var array<string, mixed>
      */
     protected array $criteria = [];
@@ -40,8 +45,8 @@ abstract class EntityRetrieveManyDAO extends SQLCommonDAO
     #[\Override]
     public function serve(): void
     {
-        $this->throwIfEmpty ??= new \Exception('Запись не найдена');
         $this->entities = $this->entities4rows($this->createQuery()->fetchAllAssociative() ?: []);
+        $this->first = $this->entities[0] ?? null;
     }
 
     /**

@@ -11,6 +11,7 @@ use Module\Menu\MenuAction\Entity\MenuActionEntity;
 use Module\Post\View\PostPublicReadBySlugView;
 use Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use Module\Post\Entity\PostEntity;
+use Module\Post\Exception\PostNotFoundException;
 
 class PostMenuActionsByRequestServant extends \UUA\Servant
 {
@@ -63,7 +64,7 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
         $editAction->label = 'Редактировать пост';
         $editAction->route = 'AdminPostEdit';
         $editAction->params = [
-            'id' => $retrieveBySlug->first()->id->uuid,
+            'id' => PostEntity::as($retrieveBySlug->first ?? throw new PostNotFoundException())->id->uuid,
         ];
 
         return $editAction;

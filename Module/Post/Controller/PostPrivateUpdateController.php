@@ -53,7 +53,7 @@ class PostPrivateUpdateController extends ControllerViaPSR7
 
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
             $object->id = $this->newEntity->id;
-            $object->throwIfEmpty = new PostNotFoundException();
+            $object->limit = 1;
         }
 
         if ($object instanceof PostUpdateServant) {
@@ -64,14 +64,14 @@ class PostPrivateUpdateController extends ControllerViaPSR7
             $object->entity = $this->entity ?? null;
         }
     }
-
+    
     #[\Override]
     public function from(object $object): void
     {
         parent::from($object);
 
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
-            $this->entity = $object->first();
+            $this->entity = $object->first ?? throw new PostNotFoundException();
             $this->entity->slug = $this->newEntity->slug;
             $this->entity->title = $this->newEntity->title;
             $this->entity->message = $this->newEntity->message;

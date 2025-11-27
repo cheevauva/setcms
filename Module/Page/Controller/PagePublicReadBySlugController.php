@@ -44,7 +44,6 @@ class PagePublicReadBySlugController extends \SetCMS\Controller\ControllerViaPSR
         parent::to($object);
 
         if ($object instanceof PageRetrieveManyByCriteriaDAO) {
-            $object->throwIfEmpty = new PageNotFoundException();
             $object->slug = $this->slug;
             $object->limit = 1;
         }
@@ -60,7 +59,7 @@ class PagePublicReadBySlugController extends \SetCMS\Controller\ControllerViaPSR
         parent::from($object);
 
         if ($object instanceof PageRetrieveManyByCriteriaDAO) {
-            $this->page = $object->first();
+            $this->page = $object->first ?? throw new PageNotFoundException();
         }
     }
 }

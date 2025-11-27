@@ -10,7 +10,8 @@ use SetCMS\ACL\VO\ACLRoleVO;
 use Module\Menu\MenuAction\Entity\MenuActionEntity;
 use Module\Page\View\PagePublicReadView;
 use Module\Page\DAO\PageRetrieveManyByCriteriaDAO;
-use Module\Page\PageEntity;
+use Module\Page\Entity\PageEntity;
+use Module\Page\Exception\PageNotFoundException;
 
 class PageMenuActionsByRequestServant extends \UUA\Servant
 {
@@ -56,13 +57,14 @@ class PageMenuActionsByRequestServant extends \UUA\Servant
     {
         $retrieveBySlug = PageRetrieveManyByCriteriaDAO::new($this->container);
         $retrieveBySlug->slug = $slug;
+        $retrieveBySlug->limit = 1;
         $retrieveBySlug->serve();
 
         $editAction = new MenuActionEntity();
         $editAction->label = 'Редактировать страницу';
         $editAction->route = 'AdminPageEdit';
         $editAction->params = [
-            'id' => $retrieveBySlug->first()->id->uuid,
+            'id' => PageEntity::as($retrieveBySlug->first ?? throw new PageNotFoundException())->id->uuid,
         ];
 
         return $editAction;

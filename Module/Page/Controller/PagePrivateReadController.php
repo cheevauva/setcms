@@ -48,7 +48,7 @@ class PagePrivateReadController extends ControllerViaPSR7
 
         if ($object instanceof PageRetrieveManyByCriteriaDAO) {
             $object->id = $this->id;
-            $object->throwIfEmpty = new PageNotFoundException();
+            $object->limit = 1;
         }
 
         if ($object instanceof PagePrivateReadView) {
@@ -62,7 +62,7 @@ class PagePrivateReadController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PageRetrieveManyByCriteriaDAO) {
-            $this->entity = $object->first();
+            $this->entity = $object->first ?? throw new PageNotFoundException();
         }
     }
 }

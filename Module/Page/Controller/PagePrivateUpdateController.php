@@ -53,7 +53,7 @@ class PagePrivateUpdateController extends ControllerViaPSR7
 
         if ($object instanceof PageRetrieveManyByCriteriaDAO) {
             $object->id = $this->newEntity->id;
-            $object->throwIfEmpty = new PageNotFoundException();
+            $object->limit = 1;
         }
 
         if ($object instanceof PageUpdateServant) {
@@ -71,7 +71,7 @@ class PagePrivateUpdateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PageRetrieveManyByCriteriaDAO) {
-            $this->entity = $object->first();
+            $this->entity = $object->first ?? throw new PageNotFoundException();
             $this->entity->slug = $this->newEntity->slug;
             $this->entity->title = $this->newEntity->title;
             $this->entity->content = $this->newEntity->content;

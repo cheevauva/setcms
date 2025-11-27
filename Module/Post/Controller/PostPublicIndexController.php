@@ -7,7 +7,7 @@ namespace Module\Post\Controller;
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use Module\Post\View\PostPublicIndexView;
-use Module\Post\PostEntity;
+use Module\Post\Entity\PostEntity;
 
 class PostPublicIndexController extends ControllerViaPSR7
 {

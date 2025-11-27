@@ -11,7 +11,7 @@ class ViewInternalServerError extends ViewExceptionHandler
     public function serve(): void
     {
         $response = $this->newResponse();
-        $response->getBody()->write(sprintf('%s<pre>%s</pre>', $this->ex->getMessage(), $this->ex->getTraceAsString()));
+        $response->getBody()->write(sprintf('%s: %s<pre>%s</pre>', $this->ex::class, $this->ex->getMessage(), $this->ex->getTraceAsString()));
 
         $this->response = $response;
     }

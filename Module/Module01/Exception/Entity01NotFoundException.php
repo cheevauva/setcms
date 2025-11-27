@@ -6,5 +6,9 @@ namespace Module\Module01\Exception;
 
 class Entity01NotFoundException extends Entity01Exception
 {
-    //put your code here
+    /**
+     * @var string
+     */
+    protected $message = 'Запись не найдена';
+
 }

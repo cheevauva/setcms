@@ -6,5 +6,9 @@ namespace Module\Post\Exception;
 
 class PostNotFoundException extends PostException
 {
-    //put your code here
+
+    /**
+     * @var string
+     */
+    protected $message = 'Запись не найдена';
 }
