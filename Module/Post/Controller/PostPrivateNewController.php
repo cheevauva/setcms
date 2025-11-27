@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Post\Controller;
 
+use SetCMS\Controller\ControllerViaPSR7;
 use Module\Post\View\PostPrivateNewView;
 
-class PostPrivateNewController extends PostPrivateController
+class PostPrivateNewController extends ControllerViaPSR7
 {
 
     #[\Override]

@@ -6,5 +6,5 @@ namespace Module\Post\Exception;
 
 class PostAlreadyExistsException extends PostException
 {
-    
+    //put your code here
 }

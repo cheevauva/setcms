@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Module\Post\View;
 
 use SetCMS\View\ViewTwig;
-use SetCMS\View\ViewJson;
+use Module\Post\Entity\PostEntity;
 
 class PostPrivateIndexView extends ViewTwig
 {
 
     /**
-     * @var \Module\Post\PostEntity[]
+     * @var PostEntity[]
      */
-    public array $posts = [];
+    public array $entities = [];
 }

@@ -4,35 +4,19 @@ declare(strict_types=1);
 
 namespace Module\Post\Servant;
 
-use SetCMS\UUID;
-use Module\Post\PostEntity;
+use SetCMS\Servant\EntityDeleteServant;
+use Module\Post\Entity\PostEntity;
 use Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
-use Module\Post\DAO\PostSaveDAO;
-use Module\Post\Exception\PostNotFoundException;
+use Module\Post\DAO\PostDeleteByIdDAO;
+use Module\Post\DAO\PostUpdateDAO;
 
-class PostDeleteServant extends \UUA\Servant
+/**
+ * @extends EntityDeleteServant<PostEntity>
+ */
+class PostDeleteServant extends EntityDeleteServant
 {
 
-    public ?PostEntity $post = null;
-    public ?UUID $id = null;
-
-    public function serve(): void
-    {
-        $postById = PostRetrieveManyByCriteriaDAO::new($this->container);
-        $postById->id = $this->id ?? ($this->post->id ?? throw new \RuntimeException('id is undefined'));
-        $postById->serve();
-
-        if (!$postById->post) {
-            throw new PostNotFoundException;
-        }
-
-        $post = PostEntity::as($postById->post);
-        $post->deleted = true;
-
-        $save = PostSaveDAO::new($this->container);
-        $save->post = $post;
-        $save->serve();
-
-        $this->post = $post;
-    }
+    protected string $clsRetrieve = PostRetrieveManyByCriteriaDAO::class;
+    protected string $clsUpdate = PostUpdateDAO::class;
+    protected string $clsDelete = PostDeleteByIdDAO::class;
 }

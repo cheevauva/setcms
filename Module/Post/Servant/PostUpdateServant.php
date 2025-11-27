@@ -4,28 +4,17 @@ declare(strict_types=1);
 
 namespace Module\Post\Servant;
 
-use Module\Post\PostEntity;
+use SetCMS\Servant\EntityUpdateServant;
+use Module\Post\Entity\PostEntity;
 use Module\Post\DAO\PostHasByIdDAO;
-use Module\Post\DAO\PostSaveDAO;
-use Module\Post\Exception\PostNotFoundException;
+use Module\Post\DAO\PostUpdateDAO;
 
-class PostUpdateServant extends \UUA\Servant
+/**
+ * @extends EntityUpdateServant<PostEntity>
+ */
+class PostUpdateServant extends EntityUpdateServant
 {
 
-    public PostEntity $post;
-
-    public function serve(): void
-    {
-        $hasById = PostHasByIdDAO::new($this->container);
-        $hasById->id = $this->post->id;
-        $hasById->serve();
-
-        if (empty($hasById->isExists)) {
-            throw new PostNotFoundException;
-        }
-
-        $saveEntity = PostSaveDAO::new($this->container);
-        $saveEntity->post = $this->post;
-        $saveEntity->serve();
-    }
+    protected string $clsHasById = PostHasByIdDAO::class;
+    protected string $clsUpdate = PostUpdateDAO::class;
 }

@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Module\Post\Controller;
 
-use Module\Post\PostEntity;
+use SetCMS\Controller\ControllerViaPSR7;
+use Module\Post\Entity\PostEntity;
 use Module\Post\Servant\PostCreateServant;
 use Module\Post\View\PostPrivateCreateView;
 
-class PostPrivateCreateController extends PostPrivateController
+class PostPrivateCreateController extends ControllerViaPSR7
 {
 
-    use \Module\User\Traits\UserCurrentTrait;
-    
-    protected PostEntity $post;
+    protected PostEntity $entity;
 
     #[\Override]
     protected function domainUnits(): array
@@ -37,26 +36,26 @@ class PostPrivateCreateController extends PostPrivateController
         $body = $this->request->getParsedBody() ?? [];
 
         $validation = $this->validation($body);
-        $validation->array('post')->notEmpty()->validate();
+        $validation->array('entity')->notEmpty()->validate();
 
-        $this->post = new PostEntity();
-        $this->post->id = $validation->uuid('post.id')->val();
-        $this->post->title = $validation->string('post.title')->notEmpty()->val();
-        $this->post->slug = $validation->string('post.slug')->notEmpty()->val();
-        $this->post->message = $validation->string('post.message')->notEmpty()->val();
-        $this->post->createdUserId = $this->currentUser()->id;
+        $this->entity = new PostEntity();
+        $this->entity->id = $validation->uuid('entity.id')->val();
+        $this->entity->slug = $validation->string('entity.slug')->notEmpty()->val();
+        $this->entity->title = $validation->string('entity.title')->notEmpty()->val();
+        $this->entity->message = $validation->string('entity.message')->notEmpty()->val();
     }
 
+    #[\Override]
     public function to(object $object): void
     {
         parent::to($object);
 
         if ($object instanceof PostCreateServant) {
-            $object->post = $this->post;
+            $object->entity = $this->entity;
         }
 
         if ($object instanceof PostPrivateCreateView) {
-            $object->post = $this->post;
+            $object->entity = $this->entity;
         }
     }
 }

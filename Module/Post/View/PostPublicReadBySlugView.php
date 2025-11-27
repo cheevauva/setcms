@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Post\View;
 
 use SetCMS\View\ViewTwig;
-use Module\Post\PostEntity;
+use Module\Post\Entity\PostEntity;
 
 class PostPublicReadBySlugView extends ViewTwig
 {

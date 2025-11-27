@@ -6,5 +6,5 @@ namespace Module\Post\Exception;
 
 class PostException extends \Exception
 {
-    
+    //put your code here
 }

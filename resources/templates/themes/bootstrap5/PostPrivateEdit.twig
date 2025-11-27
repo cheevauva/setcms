@@ -6,8 +6,8 @@
 {% block content %}
     {{ 
         crud.editview({
-            action: scLink(post.id ? 'AdminPostUpdate' : 'AdminPostCreate', {id: post ? post.id : scUUID()}),
-            redirect: scLink('AdminPostRead', {id: '${post.id.uuid}'}),
+            action: scLink(entity.id ? 'AdminPostUpdate' : 'AdminPostCreate', {id: entity ? entity.id : scUUID()}),
+            redirect: scLink('AdminPostRead', {id: '${entity.id.uuid}'}),
             actions: {
                 fields: [
                     {
@@ -24,25 +24,25 @@
                     fields: [
                         {
                             type: 'hidden',
-                            name: 'post.id',
-                            value: post.id|default(scUUID())
+                            name: 'entity.id',
+                            value: entity.id|default(scUUID())
                         },
                         {
-                            name: 'post.slug',
-                            value: post.slug,
+                            name: 'entity.slug',
+                            value: entity.slug,
                             type: 'input',
                             label: 'Псевдоним'
                         },
                         {
-                            name: 'post.title',
-                            value: post.title,
+                            name: 'entity.title',
+                            value: entity.title,
                             type: 'input',
                             label: 'Заголовок'
                         },
                         {
-                            name: 'post.message',
+                            name: 'entity.message',
                             type: 'textarea',
-                            value: post.message,
+                            value: entity.message,
                             label: 'Сообщение'
                         },
                     ]
@@ -52,15 +52,15 @@
                     label: 'Служебные данные',
                     fields: [
                         {
-                            name: 'post.dateCreated',
-                            value: post.dateCreated.format('Y-m-d H:i:s'),
+                            name: 'entity.dateCreated',
+                            value: entity.dateCreated.format('Y-m-d H:i:s'),
                             type: 'input',
                             label: 'Дата создания',
                             disabled: true
                         },
                         {
-                            name: 'post.dateModified',
-                            value: post.dateCreated.format('Y-m-d H:i:s'),
+                            name: 'entity.dateModified',
+                            value: entity.dateCreated.format('Y-m-d H:i:s'),
                             type: 'input',
                             label: 'Дата изменения',
                             disabled: true

@@ -7,7 +7,7 @@ namespace Module\Post\Controller;
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use Module\Post\View\PostPrivateIndexView;
-use Module\Post\PostEntity;
+use Module\Post\Entity\PostEntity;
 
 class PostPrivateIndexController extends ControllerViaPSR7
 {
@@ -15,7 +15,7 @@ class PostPrivateIndexController extends ControllerViaPSR7
     /**
      * @var PostEntity[]
      */
-    protected array $posts = [];
+    protected array $entities = [];
 
     #[\Override]
     protected function domainUnits(): array
@@ -39,7 +39,7 @@ class PostPrivateIndexController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
-            $this->posts = $object->posts;
+            $this->entities = $object->entities;
         }
     }
 
@@ -47,9 +47,9 @@ class PostPrivateIndexController extends ControllerViaPSR7
     public function to(object $object): void
     {
         parent::to($object);
-        
+
         if ($object instanceof PostPrivateIndexView) {
-            $object->posts = $this->posts;
+            $object->entities = $this->entities;
         }
     }
 }

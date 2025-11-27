@@ -39,7 +39,7 @@ class PostPublicIndexController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
-            $this->posts = $object->posts;
+            $this->posts = $object->entities;
         }
     }
 

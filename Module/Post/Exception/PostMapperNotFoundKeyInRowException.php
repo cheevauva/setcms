@@ -1,0 +1,19 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Module\Post\Exception;
+
+class PostMapperNotFoundKeyInRowException extends \Exception
+{
+
+    /**
+     * @var string
+     */
+    protected $message = 'Не найден ключ %s в массиве row';
+
+    public function __construct(string $key)
+    {
+        parent::__construct(sprintf($this->message, $key));
+    }
+}

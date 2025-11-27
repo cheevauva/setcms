@@ -10,7 +10,7 @@ use SetCMS\ACL\VO\ACLRoleVO;
 use Module\Menu\MenuAction\Entity\MenuActionEntity;
 use Module\Post\View\PostPublicReadBySlugView;
 use Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
-use Module\Post\PostEntity;
+use Module\Post\Entity\PostEntity;
 
 class PostMenuActionsByRequestServant extends \UUA\Servant
 {
@@ -58,12 +58,12 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
         $retrieveBySlug = PostRetrieveManyByCriteriaDAO::new($this->container);
         $retrieveBySlug->slug = $slug;
         $retrieveBySlug->serve();
-
+        
         $editAction = new MenuActionEntity();
         $editAction->label = 'Редактировать пост';
         $editAction->route = 'AdminPostEdit';
         $editAction->params = [
-            'id' => PostEntity::as($retrieveBySlug->post)->id->uuid,
+            'id' => $retrieveBySlug->first()->id->uuid,
         ];
 
         return $editAction;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Post\DAO;
 
-use SetCMS\DAO\EntityHasByIdDAO;
+use SetCMS\DAO\EntityDeleteByIdDAO;
 
-class PostHasByIdDAO extends EntityHasByIdDAO
+class PostDeleteByIdDAO extends EntityDeleteByIdDAO
 {
 
     use PostCommonDAO;

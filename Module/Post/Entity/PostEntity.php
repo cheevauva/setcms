@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Post;
+namespace Module\Post\Entity;
 
 use SetCMS\Entity\Entity;
 use SetCMS\UUID;

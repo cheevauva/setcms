@@ -6,8 +6,9 @@ namespace Module\Post\Controller;
 
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
-use Module\Post\PostEntity;
+use Module\Post\Entity\PostEntity;
 use Module\Post\View\PostPublicReadBySlugView;
+use Module\Post\Exception\PostNotFoundException;
 
 class PostPublicReadBySlugController extends ControllerViaPSR7
 {
@@ -44,7 +45,8 @@ class PostPublicReadBySlugController extends ControllerViaPSR7
 
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
             $object->slug = $this->slug;
-            $object->orThrow = true;
+            $object->limit = 1;
+            $object->throwIfEmpty = new PostNotFoundException();
         }
 
         if ($object instanceof PostPublicReadBySlugView) {
@@ -58,7 +60,7 @@ class PostPublicReadBySlugController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
-            $this->post = PostEntity::as($object->post);
+            $this->post = $object->first();
         }
     }
 }

@@ -6,5 +6,5 @@ namespace Module\Post\Exception;
 
 class PostNotFoundException extends PostException
 {
-    
+    //put your code here
 }

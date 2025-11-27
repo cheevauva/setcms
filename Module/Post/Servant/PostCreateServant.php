@@ -4,28 +4,17 @@ declare(strict_types=1);
 
 namespace Module\Post\Servant;
 
-use Module\Post\PostEntity;
+use SetCMS\Servant\EntityCreateServant;
+use Module\Post\Entity\PostEntity;
 use Module\Post\DAO\PostHasByIdDAO;
-use Module\Post\DAO\PostSaveDAO;
-use Module\Post\Exception\PostAlreadyExistsException;
+use Module\Post\DAO\PostCreateDAO;
 
-class PostCreateServant extends \UUA\Servant
+/**
+ * @extends EntityCreateServant<PostEntity>
+ */
+class PostCreateServant extends EntityCreateServant
 {
 
-    public PostEntity $post;
-
-    public function serve(): void
-    {
-        $hasEntityById = PostHasByIdDAO::new($this->container);
-        $hasEntityById->id = $this->post->id;
-        $hasEntityById->serve();
-
-        if ($hasEntityById->isExists) {
-            throw new PostAlreadyExistsException;
-        }
-
-        $saveEntity = PostSaveDAO::new($this->container);
-        $saveEntity->post = $this->post;
-        $saveEntity->serve();
-    }
+    protected string $clsHasById = PostHasByIdDAO::class;
+    protected string $clsCreate = PostCreateDAO::class;
 }

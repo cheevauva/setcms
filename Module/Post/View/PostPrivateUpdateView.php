@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Post\View;
 
 use SetCMS\View\ViewJson;
-use Module\Post\PostEntity;
+use Module\Post\Entity\PostEntity;
 
 class PostPrivateUpdateView extends ViewJson
 {
 
-    public ?PostEntity $post = null;
+    public ?PostEntity $entity = null;
 }

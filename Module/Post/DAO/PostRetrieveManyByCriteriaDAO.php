@@ -4,42 +4,30 @@ declare(strict_types=1);
 
 namespace Module\Post\DAO;
 
-use Module\Post\PostEntity;
-use Module\Post\Exception\PostNotFoundException;
+use SetCMS\DAO\EntityRetrieveManyDAO;
+use SetCMS\Database\DatabaseQueryBuilder;
+use Module\Post\Mapper\PostFromRowMapper;
+use Module\Post\Entity\PostEntity;
 
-class PostRetrieveManyByCriteriaDAO extends \SetCMS\DAO\EntityRetrieveManyByCriteriaDAO
+/**
+ * @extends EntityRetrieveManyDAO<PostEntity, PostFromRowMapper>
+ */
+class PostRetrieveManyByCriteriaDAO extends EntityRetrieveManyDAO
 {
 
-    use PostGenericDAO;
-
+    use PostCommonDAO;
+    
     public string $slug;
 
-    /**
-     * @var PostEntity[]
-     */
-    public array $posts;
-    public ?PostEntity $post = null;
+    protected string $clsMapper = PostFromRowMapper::class;
 
     #[\Override]
-    public function serve(): void
+    protected function createQuery(): DatabaseQueryBuilder
     {
         if (isset($this->slug)) {
-            $this->criteria = [
-                'slug' => $this->slug,
-                'deleted' => 0,
-            ];
-            $this->limit = 1;
+            $this->criteria['slug'] = $this->slug;
         }
 
-        parent::serve();
-
-        $this->posts = PostEntity::manyAs($this->entities);
-        $this->post = $this->first ? PostEntity::as($this->first) : null;
-    }
-    
-    #[\Override]
-    protected function notFoundExcecption(): \Throwable
-    {
-        return new PostNotFoundException();
+        return parent::createQuery();
     }
 }
