@@ -6,6 +6,7 @@ namespace Module\Module01\Mapper;
 
 use SetCMS\Mapper\EntityFromRowMapper;
 use Module\Module01\Entity\Entity01Entity;
+use SetCMS\Exception\EntityMapperNotFoundKeyInRowException;
 use Module\Module01\Exception\Entity01MapperNotFoundKeyInRowException;
 
 /**
@@ -17,8 +18,13 @@ class Entity01FromRowMapper extends EntityFromRowMapper
     #[\Override]
     public function serve(): void
     {
-        parent::serve();
 
+        try {
+            parent::serve();
+        } catch (EntityMapperNotFoundKeyInRowException $ex) {
+            throw new Entity01MapperNotFoundKeyInRowException($ex->key);
+        }
+        
         $entity01lc = Entity01Entity::as($this->entity);
         $entity01lc->field01 = strval($this->row['field01'] ?? throw new Entity01MapperNotFoundKeyInRowException('field01'));
     }

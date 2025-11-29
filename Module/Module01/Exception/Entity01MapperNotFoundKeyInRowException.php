@@ -4,16 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Module01\Exception;
 
-class Entity01MapperNotFoundKeyInRowException extends \Exception
+use SetCMS\Exception\EntityMapperNotFoundKeyInRowException;
+
+class Entity01MapperNotFoundKeyInRowException extends EntityMapperNotFoundKeyInRowException
 {
-
-    /**
-     * @var string
-     */
-    protected $message = 'Не найден ключ %s в массиве row';
-
-    public function __construct(string $key)
-    {
-        parent::__construct(sprintf($this->message, $key));
-    }
+    
 }
