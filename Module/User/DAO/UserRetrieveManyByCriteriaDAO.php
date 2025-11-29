@@ -6,6 +6,7 @@ namespace Module\User\DAO;
 
 use Module\User\Entity\UserEntity;
 use Module\User\Exception\UserNotFoundException;
+use Module\User\Mapper\UserMapper;
 
 class UserRetrieveManyByCriteriaDAO extends \SetCMS\DAO\EntityRetrieveManyByCriteriaDAO
 {
@@ -42,5 +43,10 @@ class UserRetrieveManyByCriteriaDAO extends \SetCMS\DAO\EntityRetrieveManyByCrit
     protected function notFoundExcecption(): UserNotFoundException
     {
         return new UserNotFoundException();
+    }
+
+    protected function mapper(): UserMapper
+    {
+        return UserMapper::new($this->container);
     }
 }
