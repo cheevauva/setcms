@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Entity01\DAO;
+namespace Tests\Module\Module01\DAO;
 
 use Psr\Container\ContainerInterface;
 use SetCMS\UUID;

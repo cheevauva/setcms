@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\UserResetToken\Servant;
+namespace Tests\Module\UserResetToken\Servant;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;

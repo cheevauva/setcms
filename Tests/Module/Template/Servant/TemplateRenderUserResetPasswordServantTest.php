@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Template\Servant;
+namespace Tests\Module\Template\Servant;
 
 use Psr\Container\ContainerInterface;
 use PHPUnit\Framework\TestCase;
