@@ -10,8 +10,8 @@ use SetCMS\UUID;
 use SetCMS\Mapper\EntityFromRowMapper;
 
 /**
- * @template E of Entity
- * @template M of EntityFromRowMapper
+ * @template Entity of Entity
+ * @template Mapper of EntityFromRowMapper
  */
 abstract class EntityRetrieveByCriteriaDAO extends SQLCommonDAO
 {
@@ -22,34 +22,37 @@ abstract class EntityRetrieveByCriteriaDAO extends SQLCommonDAO
     public bool $deleted;
 
     /**
-     * @var class-string
-     */
-    protected string $clsMapper;
-
-    /**
      * @var array<string, mixed>
      */
     protected array $criteria = [];
 
     /**
-     * @return M<E>
+     * @return array<int, array<string, mixed>>
      */
-    protected function mapper(): EntityFromRowMapper
+    protected function retrieveRows(): array
     {
-        return EntityFromRowMapper::as(($this->clsMapper)::new($this->container));
+        return $this->createQuery()->fetchAllAssociative();
+    }
+
+    #[\Override]
+    public function serve(): void
+    {
+        $this->handleRows($this->retrieveRows());
     }
 
     /**
-     * @return array<int, array<string, mixed>>
+     * @param array<int, array<string, mixed>> $rows
      */
-    protected function retrieveAll(): array
-    {
-        return $this->createQuery()->fetchAllAssociative() ?: [];
-    }
+    abstract protected function handleRows(array $rows): void;
+
+    /**
+     * @return Mapper<Entity>
+     */
+    abstract protected function mapper(): EntityFromRowMapper;
 
     /**
      * @param array<int,array<string,mixed>> $rows
-     * @return array<E>
+     * @return array<Entity>
      */
     protected function entitiesFromRows(array $rows): array
     {

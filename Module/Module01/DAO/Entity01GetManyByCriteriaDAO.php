@@ -17,8 +17,12 @@ class Entity01GetManyByCriteriaDAO extends Entity01RetrieveByCriteriaDAO
     public protected(set) array $entities;
 
     #[\Override]
-    public function serve(): void
+    public function handleRows(array $rows): void
     {
-        $this->entities = $this->entitiesFromRows($this->retrieveAll() ?: throw new Entity01EntitiesNotFoundException());
+        if (empty($rows)) {
+            throw new Entity01EntitiesNotFoundException();
+        }
+        
+        $this->entities = $this->entitiesFromRows($rows);
     }
 }

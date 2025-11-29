@@ -232,6 +232,12 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
                 {
                     Entity01RetrieveByCriteriaDAOTest::$qb = $this->createQuery();
                 }
+                
+                #[\Override]
+                protected function handleRows(array $rows): void
+                {
+                    ;
+                }
             },
             Entity01FindManyByCriteriaDAO::class => fn($container) => new class($container) extends Entity01FindManyByCriteriaDAO {
 
@@ -241,7 +247,7 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
                  * @return array<int, array<string, mixed>>
                  */
                 #[\Override]
-                protected function retrieveAll(): array
+                protected function retrieveRows(): array
                 {
                     Entity01RetrieveByCriteriaDAOTest::$qb = $this->createQuery();
 
@@ -256,7 +262,7 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
                  * @return array<int, array<string, mixed>>
                  */
                 #[\Override]
-                protected function retrieveAll(): array
+                protected function retrieveRows(): array
                 {
                     Entity01RetrieveByCriteriaDAOTest::$qb = $this->createQuery();
 
@@ -271,7 +277,7 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
                  * @return array<int, array<string, mixed>>
                  */
                 #[\Override]
-                protected function retrieveAll(): array
+                protected function retrieveRows(): array
                 {
                     Entity01RetrieveByCriteriaDAOTest::$qb = $this->createQuery();
 
@@ -286,7 +292,7 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
                  * @return array<int, array<string, mixed>>
                  */
                 #[\Override]
-                protected function retrieveAll(): array
+                protected function retrieveRows(): array
                 {
                     Entity01RetrieveByCriteriaDAOTest::$qb = $this->createQuery();
 

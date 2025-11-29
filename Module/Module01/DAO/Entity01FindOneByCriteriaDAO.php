@@ -15,10 +15,8 @@ class Entity01FindOneByCriteriaDAO extends Entity01RetrieveByCriteriaDAO
     public ?int $limit = 1;
 
     #[\Override]
-    public function serve(): void
+    public function handleRows(array $rows): void
     {
-        $rows = $this->retrieveAll();
-
         if (empty($rows)) {
             return;
         }

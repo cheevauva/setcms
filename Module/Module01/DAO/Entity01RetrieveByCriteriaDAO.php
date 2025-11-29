@@ -17,8 +17,13 @@ abstract class Entity01RetrieveByCriteriaDAO extends EntityRetrieveByCriteriaDAO
 
     use Entity01CommonDAO;
 
-    protected string $clsMapper = Entity01FromRowMapper::class;
     public string $field01;
+
+    #[\Override]
+    protected function mapper(): Entity01FromRowMapper
+    {
+        return Entity01FromRowMapper::new($this->container);
+    }
 
     #[\Override]
     protected function createQuery(): DatabaseQueryBuilder
