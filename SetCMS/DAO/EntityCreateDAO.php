@@ -9,44 +9,55 @@ use SetCMS\Entity\Entity;
 use SetCMS\Mapper\EntityToRowMapper;
 
 /**
- * @template T of Entity
- * @template M of EntityToRowMapper
+ * @template Entity of Entity
+ * @template Mapper of EntityToRowMapper
  */
 abstract class EntityCreateDAO extends SQLCommonDAO
 {
 
     /**
-     * @var T
+     * @var Entity
      */
     public Entity $entity;
 
     /**
-     * @var class-string
+     * @var array<string, mixed>
      */
-    protected string $clsMapper;
+    protected array $row;
 
     #[\Override]
     public function serve(): void
     {
-        $this->insert();
+        $this->prepareRow();
+        $this->insertRow();
     }
-    
-    protected function insert(): void
+
+    protected function insertRow(): void
     {
         $this->createQuery()->executeQuery();
     }
 
-    #[\Override]
-    protected function createQuery(): DatabaseQueryBuilder
+    protected function prepareRow(): void
     {
-        $mapper = EntityToRowMapper::as(($this->clsMapper)::new($this->container));
+        $mapper = $this->mapper();
         $mapper->entity = $this->entity;
         $mapper->serve();
 
+        $this->row = $mapper->row;
+    }
+
+    /**
+     * @return Mapper<Entity>
+     */
+    abstract protected function mapper(): EntityToRowMapper;
+
+    #[\Override]
+    protected function createQuery(): DatabaseQueryBuilder
+    {
         $qb = $this->db()->createQueryBuilder();
         $qb->insert($this->table());
 
-        foreach ($mapper->row as $key => $value) {
+        foreach ($this->row as $key => $value) {
             $qb->setValue($key, sprintf(':%s', $key));
             $qb->setParameter($key, $value);
         }

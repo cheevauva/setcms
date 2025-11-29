@@ -16,5 +16,9 @@ class PageCreateDAO extends EntityCreateDAO
 
     use PageCommonDAO;
 
-    protected string $clsMapper = PageToRowMapper::class;
+    #[\Override]
+    protected function mapper(): PageToRowMapper
+    {
+        return PageToRowMapper::new($this->container);
+    }
 }

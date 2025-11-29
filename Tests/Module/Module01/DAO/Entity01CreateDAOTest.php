@@ -21,7 +21,6 @@ class Entity01CreateDAOTest extends TestCase
      * @var array<string, mixed>
      */
     public static array $results = [];
-    public static Entity01Entity $entity;
     public static ?DatabaseQueryBuilder $qb = null;
 
     #[\Override]
@@ -30,7 +29,7 @@ class Entity01CreateDAOTest extends TestCase
         self::$qb = null;
     }
 
-    protected function newEntity(): Entity01Entity
+    public function testEntity01CreateDAO(): void
     {
         $entity = new Entity01Entity;
         $entity->id = new UUID('331c1832-d5e1-43a6-aef0-6fa6ffbe01a6');
@@ -38,13 +37,6 @@ class Entity01CreateDAOTest extends TestCase
         $entity->dateModified = new \DateTimeImmutable('2025-11-29 19:56:10');
         $entity->deleted = false;
         $entity->field01 = 'field01';
-
-        return $entity;
-    }
-
-    public function testQueries(): void
-    {
-        $entity = self::$entity = $this->newEntity();
 
         $create = Entity01CreateDAO::new($this->container($this->mocks()));
         $create->entity = $entity;
@@ -88,9 +80,9 @@ class Entity01CreateDAOTest extends TestCase
                 use \Tests\TestDatabaseConnectionTrait;
 
                 #[\Override]
-                protected function insert(): void
+                protected function insertRow(): void
                 {
-                    Entity01CreateDAOTest::$qb = parent::createQuery();
+                    Entity01CreateDAOTest::$qb = $this->createQuery();
                 }
             },
         ];

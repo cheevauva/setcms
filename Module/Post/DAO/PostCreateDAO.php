@@ -16,5 +16,9 @@ class PostCreateDAO extends EntityCreateDAO
 
     use PostCommonDAO;
 
-    protected string $clsMapper = PostToRowMapper::class;
+    #[\Override]
+    protected function mapper(): PostToRowMapper
+    {
+        return PostToRowMapper::new($this->container);
+    }
 }

@@ -16,5 +16,9 @@ class Entity01CreateDAO extends EntityCreateDAO
 
     use Entity01CommonDAO;
 
-    protected string $clsMapper = Entity01ToRowMapper::class;
+    #[\Override]
+    protected function mapper(): Entity01ToRowMapper
+    {
+        return Entity01ToRowMapper::new($this->container);
+    }
 }
