@@ -22,7 +22,10 @@ function getFiles(string $directory, array $files = [])
     return $files;
 }
 
-$files = getFiles(sprintf('%s/Module/Module01/', $rootPath));
+$files = array_merge(...[
+    getFiles(sprintf('%s/Module/Module01/', $rootPath)),
+    getFiles(sprintf('%s/Tests/Module/Module01/', $rootPath)),
+]);
 $files[] = sprintf('%s/resources/acl/entity01lc.php', $rootPath);
 $files[] = sprintf('%s/resources/routes/entity01lc.php', $rootPath);
 $files[] = sprintf('%s/resources/entities/entity01lc.php', $rootPath);
@@ -81,6 +84,6 @@ foreach ($files as $file) {
     if (!file_exists($target)) {
         file_put_contents($target, implode("\n", $lines));
     }
-    
+
     chmod($target, 0777);
 }
