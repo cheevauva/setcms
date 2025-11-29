@@ -6,7 +6,6 @@ namespace Module\Module01\DAO;
 
 use Module\Module01\DAO\Entity01RetrieveByCriteriaDAO;
 use Module\Module01\Entity\Entity01Entity;
-use Module\Module01\Mapper\Entity01FromRowMapper;
 
 class Entity01FindManyByCriteriaDAO extends Entity01RetrieveByCriteriaDAO
 {

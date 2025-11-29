@@ -14,7 +14,7 @@ class Entity01GetManyByCriteriaDAO extends Entity01RetrieveByCriteriaDAO
     /**
      * @var array<Entity01Entity>
      */
-    public array $entities;
+    public protected(set) array $entities;
 
     #[\Override]
     public function serve(): void

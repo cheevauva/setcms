@@ -101,7 +101,23 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
         ], $params);
     }
 
-    public function testEntity01FindManyByCriteriaDAOEmpty(): void
+    public function testEntity01FindManyByCriteriaDAOFoundRows(): void
+    {
+        self::$findManyRows = [
+            $this->prepareRow(),
+            $this->prepareRow(),
+        ];
+        
+        $findMany = Entity01FindManyByCriteriaDAO::new($this->container($this->mocks()));
+        $findMany->serve();
+
+        self::assertNotEmpty($findMany->entities);
+        self::assertCount(2, $findMany->entities);
+        self::assertInstanceOf(Entity01Entity::class, $findMany->entities[0]);
+        self::assertInstanceOf(Entity01Entity::class, $findMany->entities[1]);
+    }
+
+    public function testEntity01FindManyByCriteriaDAONotFound(): void
     {
         $findMany = Entity01FindManyByCriteriaDAO::new($this->container($this->mocks()));
         $findMany->serve();
