@@ -22,6 +22,7 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
 {
 
     use \Tests\TestTrait;
+    use \Tests\Module\Module01\Entity01HelperTestTrait;
 
     public static ?DatabaseQueryBuilder $qb;
 
@@ -53,21 +54,6 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
         self::$findOneRows = [];
         self::$getOneRows = [];
         self::$getManyRows = [];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    protected function prepareRow(): array
-    {
-        return [
-            'id' => (new UUID)->uuid,
-            'entity_type' => 'entity01lc',
-            'date_created' => '2020-02-02 02:02:02',
-            'date_modified' => '2020-02-02 02:02:02',
-            'deleted' => 0,
-            'field01' => 'field01',
-        ];
     }
 
     public function testEntity01RetrieveByCriteriaDAO(): void
@@ -107,7 +93,7 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
             $this->prepareRow(),
             $this->prepareRow(),
         ];
-        
+
         $findMany = Entity01FindManyByCriteriaDAO::new($this->container($this->mocks()));
         $findMany->serve();
 
@@ -232,7 +218,7 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
                 {
                     Entity01RetrieveByCriteriaDAOTest::$qb = $this->createQuery();
                 }
-                
+
                 #[\Override]
                 protected function handleRows(array $rows): void
                 {
