@@ -31,7 +31,7 @@ abstract class EntityToRowMapper extends Mapper
         $entity = Entity::as($this->entity);
 
         $this->row['id'] = (string) $entity->id;
-        $this->row['entity_type'] = array_search($entity->entityType, $this->container->get('entities')) ?: throw new \Exception(sprintf('%s не найдена', $entity->entityType));
+        $this->row['entity_type'] = array_search(get_class($entity), $this->container->get('entities')) ?: throw new \Exception(sprintf('%s не найдена', get_class($entity)));
         $this->row['date_created'] = $entity->dateCreated->format('Y-m-d H:i:s');
         $this->row['date_modified'] = $entity->dateModified->format('Y-m-d H:i:s');
         $this->row['deleted'] = intval($entity->deleted);

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Module01\Controller;
 
 use SetCMS\Controller\ControllerViaPSR7;
-use Module\Module01\DAO\Entity01RetrieveManyByCriteriaDAO;
+use Module\Module01\DAO\Entity01FindManyByCriteriaDAO;
 use Module\Module01\View\Entity01PrivateIndexView;
 use Module\Module01\Entity\Entity01Entity;
 
@@ -21,7 +21,7 @@ class Entity01PrivateIndexController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
-            Entity01RetrieveManyByCriteriaDAO::class,
+            Entity01FindManyByCriteriaDAO::class,
         ];
     }
 
@@ -38,7 +38,7 @@ class Entity01PrivateIndexController extends ControllerViaPSR7
     {
         parent::from($object);
 
-        if ($object instanceof Entity01RetrieveManyByCriteriaDAO) {
+        if ($object instanceof Entity01FindManyByCriteriaDAO) {
             $this->entities = $object->entities;
         }
     }

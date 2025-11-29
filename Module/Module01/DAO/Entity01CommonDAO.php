@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Module01\DAO;
 
-use Module\Module01\Module01Constrants;
+use Module\Module01\Module01Constants;
 
 trait Entity01CommonDAO
 {
@@ -13,6 +13,6 @@ trait Entity01CommonDAO
 
     protected function table(): string
     {
-        return Module01Constrants::TABLE_NAME;
+        return Module01Constants::TABLE_NAME;
     }
 }

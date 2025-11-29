@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace Tests\UserResetToken\Servant;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -22,7 +22,7 @@ use Module\Email\Entity\EmailEntity;
 class UserResetTokenSendTest extends TestCase
 {
 
-    use TestTrait;
+    use \Tests\TestTrait;
 
     public static string $userId = '4c751162-8b67-4f22-b431-ed24c17f0048';
     public static string $userResetToken = '2b9d1c09-b417-43f5-bd7b-5b4db4dd6620';

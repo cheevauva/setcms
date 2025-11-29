@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests;
+namespace Tests\Template\Servant;
 
 use Psr\Container\ContainerInterface;
 use PHPUnit\Framework\TestCase;
@@ -11,10 +11,10 @@ use Module\User\Entity\UserEntity;
 use Module\UserResetToken\Entity\UserResetTokenEntity;
 use Module\Template\Entity\TemplateEntity;
 
-class TemplateRenderUserResetPasswordTest extends TestCase
+class TemplateRenderUserResetPasswordServantTest extends TestCase
 {
 
-    use TestTrait;
+    use \Tests\TestTrait;
 
     public function testRender(): void
     {

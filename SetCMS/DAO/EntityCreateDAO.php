@@ -28,6 +28,11 @@ abstract class EntityCreateDAO extends SQLCommonDAO
     #[\Override]
     public function serve(): void
     {
+        $this->insert();
+    }
+    
+    protected function insert(): void
+    {
         $this->createQuery()->executeQuery();
     }
 

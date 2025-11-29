@@ -6,10 +6,10 @@ namespace Module\Module01\Controller;
 
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Module01\Entity\Entity01Entity;
-use Module\Module01\DAO\Entity01RetrieveManyByCriteriaDAO;
+use Module\Module01\DAO\Entity01GetOneByCriteriaDAO;
 use Module\Module01\Servant\Entity01UpdateServant;
 use Module\Module01\View\Entity01PrivateUpdateView;
-use Module\Module01\Exception\Entity01NotFoundException;
+use Module\Module01\Exception\Entity01EntityNotFoundException;
 
 class Entity01PrivateUpdateController extends ControllerViaPSR7
 {
@@ -21,7 +21,7 @@ class Entity01PrivateUpdateController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
-            Entity01RetrieveManyByCriteriaDAO::class,
+            Entity01GetOneByCriteriaDAO::class,
             Entity01UpdateServant::class,
         ];
     }
@@ -49,9 +49,8 @@ class Entity01PrivateUpdateController extends ControllerViaPSR7
     {
         parent::to($object);
 
-        if ($object instanceof Entity01RetrieveManyByCriteriaDAO) {
+        if ($object instanceof Entity01GetOneByCriteriaDAO) {
             $object->id = $this->newEntity->id;
-            $object->limit = 1;
         }
 
         if ($object instanceof Entity01UpdateServant) {
@@ -68,8 +67,8 @@ class Entity01PrivateUpdateController extends ControllerViaPSR7
     {
         parent::from($object);
 
-        if ($object instanceof Entity01RetrieveManyByCriteriaDAO) {
-            $this->entity = $object->first ?? throw new Entity01NotFoundException();
+        if ($object instanceof Entity01GetOneByCriteriaDAO) {
+            $this->entity = $object->entity;
             $this->entity->field01 = $this->newEntity->field01;
         }
     }

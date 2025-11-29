@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Module01\Exception;
 
-class Entity01NotFoundException extends Entity01Exception
+class Entity01EntityNotFoundException extends Entity01Exception
 {
     /**
      * @var string
