@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\User;
 
-interface UserContstants
+interface UserConstants
 {
 
     public const TABLE_NAME = 'users';

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\User\DAO;
 
-use Module\User\UserContstants;
+use Module\User\UserConstants;
 
 trait UserCommonDAO
 {
@@ -13,6 +13,6 @@ trait UserCommonDAO
 
     protected function table(): string
     {
-        return UserContstants::TABLE_NAME;
+        return UserConstants::TABLE_NAME;
     }
 }
