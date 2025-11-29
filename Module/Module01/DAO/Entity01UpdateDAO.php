@@ -9,12 +9,16 @@ use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\Mapper\Entity01ToRowMapper;
 
 /**
- * @extends EntityUpdateDAO<Entity01Entity>
+ * @extends EntityUpdateDAO<Entity01Entity, Entity01ToRowMapper>
  */
 class Entity01UpdateDAO extends EntityUpdateDAO
 {
 
     use Entity01CommonDAO;
 
-    protected string $clsMapper = Entity01ToRowMapper::class;
+    #[\Override]
+    protected function mapper(): Entity01ToRowMapper
+    {
+        return Entity01ToRowMapper::new($this->container);
+    }
 }

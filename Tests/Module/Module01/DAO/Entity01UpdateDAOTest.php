@@ -9,10 +9,10 @@ use Psr\Container\ContainerInterface;
 use SetCMS\UUID;
 use SetCMS\Database\DatabaseQueryBuilder;
 use Module\Module01\Module01Constants;
-use Module\Module01\DAO\Entity01CreateDAO;
+use Module\Module01\DAO\Entity01UpdateDAO;
 use Module\Module01\Entity\Entity01Entity;
 
-class Entity01CreateDAOTest extends TestCase
+class Entity01UpdateDAOTest extends TestCase
 {
 
     use \Tests\TestTrait;
@@ -25,7 +25,7 @@ class Entity01CreateDAOTest extends TestCase
         self::$qb = null;
     }
 
-    public function testEntity01CreateDAO(): void
+    public function testEntity01UpdateDAO(): void
     {
         $entity = new Entity01Entity;
         $entity->id = new UUID('331c1832-d5e1-43a6-aef0-6fa6ffbe01a6');
@@ -34,7 +34,7 @@ class Entity01CreateDAOTest extends TestCase
         $entity->deleted = false;
         $entity->field01 = 'field01';
 
-        $create = Entity01CreateDAO::new($this->container($this->mocks()));
+        $create = Entity01UpdateDAO::new($this->container($this->mocks()));
         $create->entity = $entity;
         $create->serve();
 
@@ -47,11 +47,9 @@ class Entity01CreateDAOTest extends TestCase
         $sql = self::$qb->getSQL();
         $params = self::$qb->getParameters();
 
-        self::assertStringStartsWith('INSERT INTO ' . Module01Constants::TABLE_NAME, $sql);
-        self::assertStringContainsString('id, entity_type, date_created, date_modified, deleted', $sql);
-        self::assertStringContainsString(':id, :entity_type, :date_created, :date_modified, :deleted', $sql);
-        self::assertStringContainsString(', field01', $sql);
-        self::assertStringContainsString(', :field01', $sql);
+        self::assertStringStartsWith('UPDATE ' . Module01Constants::TABLE_NAME, $sql);
+        self::assertStringContainsString('id = :id, entity_type = :entity_type, date_created = :date_created, date_modified = :date_modified, deleted = :deleted', $sql);
+        self::assertStringContainsString(', field01 = :field01', $sql);
         self::assertEquals([
             'id' => '331c1832-d5e1-43a6-aef0-6fa6ffbe01a6',
             'entity_type' => 'entity01lc',
@@ -71,14 +69,14 @@ class Entity01CreateDAOTest extends TestCase
             'entities' => [
                 'entity01lc' => Entity01Entity::class,
             ],
-            Entity01CreateDAO::class => fn($container) => new class($container) extends Entity01CreateDAO {
+            Entity01UpdateDAO::class => fn($container) => new class($container) extends Entity01UpdateDAO {
 
                 use \Tests\TestDatabaseConnectionTrait;
 
                 #[\Override]
-                protected function insertRow(): void
+                protected function updateRow(): void
                 {
-                    Entity01CreateDAOTest::$qb = $this->createQuery();
+                    Entity01UpdateDAOTest::$qb = $this->createQuery();
                 }
             },
         ];

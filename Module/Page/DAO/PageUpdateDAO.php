@@ -9,12 +9,16 @@ use Module\Page\Entity\PageEntity;
 use Module\Page\Mapper\PageToRowMapper;
 
 /**
- * @extends EntityUpdateDAO<PageEntity>
+ * @extends EntityUpdateDAO<PageEntity, PageToRowMapper>
  */
 class PageUpdateDAO extends EntityUpdateDAO
 {
 
     use PageCommonDAO;
 
-    protected string $clsMapper = PageToRowMapper::class;
+    #[\Override]
+    protected function mapper(): PageToRowMapper
+    {
+        return PageToRowMapper::new($this->container);
+    }
 }

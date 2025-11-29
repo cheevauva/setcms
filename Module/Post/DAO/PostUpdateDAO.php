@@ -9,12 +9,16 @@ use Module\Post\Entity\PostEntity;
 use Module\Post\Mapper\PostToRowMapper;
 
 /**
- * @extends EntityUpdateDAO<PostEntity>
+ * @extends EntityUpdateDAO<PostEntity, PostToRowMapper>
  */
 class PostUpdateDAO extends EntityUpdateDAO
 {
 
     use PostCommonDAO;
 
-    protected string $clsMapper = PostToRowMapper::class;
+    #[\Override]
+    protected function mapper(): PostToRowMapper
+    {
+        return PostToRowMapper::new($this->container);
+    }
 }
