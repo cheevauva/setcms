@@ -1,1 +1,1 @@
-DELETE FROM users WHERE id = 'c5e35038-4d12-4d90-be57-f4eb1a45fe35';
+DELETE FROM users WHERE id = 'ADMIN_USER_UUID';

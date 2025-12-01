@@ -37,13 +37,16 @@ abstract class EntityFromRowMapper extends Mapper
             throw new \Exception(sprintf('entities.%s class %s not found', $this->row['entity_type'], $className));
         }
 
-        /** @var T $entity * */
         $entity = Entity::as(new $className);
         $entity->id = new UUID(strval($this->row['id'] ?? throw new EntityMapperNotFoundKeyInRowException('id')));
+        $entity->assignedBy = new UUID(strval($this->row['assigned_by'] ?? throw new EntityMapperNotFoundKeyInRowException('assigned_by')));
+        $entity->createdBy = new UUID(strval($this->row['created_by'] ?? throw new EntityMapperNotFoundKeyInRowException('created_by')));
+        $entity->modifiedBy = new UUID(strval($this->row['modified_by'] ?? throw new EntityMapperNotFoundKeyInRowException('modified_by')));
         $entity->dateCreated = new \DateTimeImmutable(strval($this->row['date_created'] ?? throw new EntityMapperNotFoundKeyInRowException('date_created')));
         $entity->dateModified = new \DateTimeImmutable(strval($this->row['date_modified'] ?? throw new EntityMapperNotFoundKeyInRowException('date_modified')));
         $entity->deleted = boolval($this->row['deleted'] ?? throw new EntityMapperNotFoundKeyInRowException('deleted'));
-
+        
+        /** @var T $entity * */
         $this->entity = $entity;
     }
 }

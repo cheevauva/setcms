@@ -41,8 +41,15 @@ class Entity01UpdateDAOTest extends TestCase
         $params = self::$qb->getParameters();
 
         self::assertStringStartsWith('UPDATE ' . Module01Constants::TABLE_NAME, $sql);
-        self::assertStringContainsString('id = :id, entity_type = :entity_type, date_created = :date_created, date_modified = :date_modified, deleted = :deleted', $sql);
-        self::assertStringContainsString(', field01 = :field01', $sql);
+        self::assertStringContainsString('id = :id', $sql);
+        self::assertStringContainsString('created_by = :created_by', $sql);
+        self::assertStringContainsString('modified_by = :modified_by', $sql);
+        self::assertStringContainsString('assigned_by = :assigned_by', $sql);
+        self::assertStringContainsString('entity_type = :entity_type', $sql);
+        self::assertStringContainsString('date_created = :date_created', $sql);
+        self::assertStringContainsString('date_modified = :date_modified', $sql);
+        self::assertStringContainsString('deleted = :deleted', $sql);
+        self::assertStringContainsString('field01 = :field01', $sql);
         self::assertEquals($this->prepareRow(), $params);
     }
 

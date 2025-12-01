@@ -6,6 +6,7 @@ namespace SetCMS\Mapper;
 
 use SetCMS\Entity\Entity;
 use SetCMS\UUID;
+use SetCMS\Exception\EntityMapperNotFoundKeyInRowException;
 
 abstract class EntityMapper extends \UUA\Servant
 {
@@ -37,6 +38,9 @@ abstract class EntityMapper extends \UUA\Servant
         $entity = Entity::as($this->entity);
 
         $this->row['id'] = (string) $entity->id;
+        $this->row['created_by'] = $entity->createdBy->uuid;
+        $this->row['modified_by'] = $entity->modifiedBy->uuid;
+        $this->row['assigned_by'] = $entity->assignedBy->uuid;
         $this->row['entity_type'] = array_search(get_class($entity), $this->container->get('entities')) ?: throw new \Exception(sprintf('%s не найдена', get_class($entity)));
         $this->row['date_created'] = $entity->dateCreated->format('Y-m-d H:i:s');
         $this->row['date_modified'] = $entity->dateModified->format('Y-m-d H:i:s');
@@ -60,11 +64,14 @@ abstract class EntityMapper extends \UUA\Servant
         }
 
         $entity = Entity::as(new $className);
-        $entity->id = new UUID(strval($this->row['id'] ?? throw new \RuntimeException('row.id is undefined')));
-        $entity->dateCreated = new \DateTimeImmutable(strval($this->row['date_created'] ?? throw new \RuntimeException('row.date_created is undefined')));
-        $entity->dateModified = new \DateTimeImmutable(strval($this->row['date_modified'] ?? throw new \RuntimeException('row.date_modified is undefined')));
-        $entity->deleted = boolval($this->row['deleted'] ?? throw new \RuntimeException('row.deleted is undefined'));
-
+        $entity->id = new UUID(strval($this->row['id'] ?? throw new \RuntimeException('id')));
+        $entity->dateCreated = new \DateTimeImmutable(strval($this->row['date_created'] ?? throw new EntityMapperNotFoundKeyInRowException('date_created')));
+        $entity->dateModified = new \DateTimeImmutable(strval($this->row['date_modified'] ?? throw new EntityMapperNotFoundKeyInRowException('date_modified')));
+        $entity->deleted = boolval($this->row['deleted'] ?? throw new EntityMapperNotFoundKeyInRowException('deleted'));
+        $entity->assignedBy = new UUID(strval($this->row['assigned_by'] ?? throw new EntityMapperNotFoundKeyInRowException('assigned_by')));
+        $entity->createdBy = new UUID(strval($this->row['created_by'] ?? throw new EntityMapperNotFoundKeyInRowException('created_by')));
+        $entity->modifiedBy = new UUID(strval($this->row['modified_by'] ?? throw new EntityMapperNotFoundKeyInRowException('modified_by')));
+        
         $this->entity = $entity;
     }
 }

@@ -22,6 +22,9 @@ abstract class EntityRetrieveByCriteriaDAO extends SQLCommonDAO
     public UUID $id;
     public bool $deleted;
     public string $entityType;
+    public UUID $assignedBy;
+    public UUID $createdBy;
+    public UUID $modifiedBy;
     public \DateTimeImmutable $dateCreatedFrom;
     public \DateTimeImmutable $dateCreatedTo;
     public \DateTimeImmutable $dateModifiedFrom;
@@ -88,6 +91,18 @@ abstract class EntityRetrieveByCriteriaDAO extends SQLCommonDAO
 
         if (isset($this->id)) {
             $this->criteria['id'] ??= $this->id;
+        }
+
+        if (isset($this->createdBy)) {
+            $this->criteria['created_by'] = $this->createdBy;
+        }
+
+        if (isset($this->modifiedBy)) {
+            $this->criteria['modified_by'] = $this->modifiedBy;
+        }
+
+        if (isset($this->assignedBy)) {
+            $this->criteria['assigned_by'] = $this->assignedBy;
         }
 
         if (isset($this->entityType)) {

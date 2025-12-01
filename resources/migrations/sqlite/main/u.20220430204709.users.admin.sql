@@ -4,6 +4,9 @@ INSERT INTO users
     entity_type, 
     date_created,
     date_modified,
+    created_by, 
+    assigned_by, 
+    modified_by, 
     deleted,
     email,
     username,
@@ -13,10 +16,13 @@ INSERT INTO users
 ) 
 VALUES 
 (
-    'c5e35038-4d12-4d90-be57-f4eb1a45fe35', 
+    'ADMIN_USER_UUID', 
     'user', 
     '2025-01-01', 
     '2025-01-01', 
+    'ADMIN_USER_UUID', 
+    'ADMIN_USER_UUID', 
+    'ADMIN_USER_UUID', 
     'f',
     'admin@admin',
     'admin', 

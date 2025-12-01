@@ -21,6 +21,7 @@ class UserSessionCreateByUserServant extends \UUA\Servant
         $session->userId = $this->user->id;
         $session->device = $this->device;
         $session->dateExpiries = new \DateTime('+1 year');
+        $session->createdBy = $this->user->id;
 
         $save = UserSessionSaveDAO::new($this->container);
         $save->session = $session;

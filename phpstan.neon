@@ -12,4 +12,5 @@ parameters:
 
     bootstrapFiles:
         - vendor/autoload.php
+        - bootstrap.php
 

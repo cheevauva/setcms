@@ -24,7 +24,9 @@ class MigrationUpdateServant extends \UUA\Servant
 
         $run = MigrationRunDAO::new($this->container);
         $run->db = $this->db;
-        $run->sql = $this->candidate->sql;
+        $run->sql = strtr($this->candidate->sql, [
+            'ADMIN_USER_UUID' => ADMIN_USER_UUID,
+        ]);
         $run->serve();
 
         $migration = $this->migration = new MigrationEntity();

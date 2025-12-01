@@ -41,8 +41,8 @@ class Entity01CreateDAOTest extends TestCase
         $params = self::$qb->getParameters();
 
         self::assertStringStartsWith('INSERT INTO ' . Module01Constants::TABLE_NAME, $sql);
-        self::assertStringContainsString('id, entity_type, date_created, date_modified, deleted', $sql);
-        self::assertStringContainsString(':id, :entity_type, :date_created, :date_modified, :deleted', $sql);
+        self::assertStringContainsString('id, created_by, modified_by, assigned_by, entity_type, date_created, date_modified, deleted, field01', $sql);
+        self::assertStringContainsString(':id, :created_by, :modified_by, :assigned_by, :entity_type, :date_created, :date_modified, :deleted, :field01', $sql);
         self::assertStringContainsString(', field01', $sql);
         self::assertStringContainsString(', :field01', $sql);
         self::assertEquals($this->prepareRow(), $params);

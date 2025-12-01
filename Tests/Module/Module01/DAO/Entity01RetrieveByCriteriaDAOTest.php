@@ -64,6 +64,9 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
         $retrieveByCriteria = Entity01RetrieveByCriteriaDAO::new($this->container($this->mocks()));
         $retrieveByCriteria->entityType = 'test';
         $retrieveByCriteria->id = $id;
+        $retrieveByCriteria->assignedBy = $id;
+        $retrieveByCriteria->createdBy = $id;
+        $retrieveByCriteria->modifiedBy = $id;
         $retrieveByCriteria->dateCreatedFrom = new \DateTimeImmutable('2020-02-02 01:01:01');
         $retrieveByCriteria->dateCreatedTo = new \DateTimeImmutable('2020-02-02 02:02:02');
         $retrieveByCriteria->dateModifiedFrom = new \DateTimeImmutable('2020-02-01 01:01:01');
@@ -87,6 +90,9 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
         self::assertStringContainsString('FROM ' . Module01Constants::TABLE_NAME, $sql);
         self::assertStringContainsString('deleted = :deleted', $sql);
         self::assertStringContainsString('id = :id', $sql);
+        self::assertStringContainsString('created_by = :created_by', $sql);
+        self::assertStringContainsString('modified_by = :modified_by', $sql);
+        self::assertStringContainsString('assigned_by = :assigned_by', $sql);
         self::assertStringContainsString('date_created >= :dateCreatedFrom', $sql);
         self::assertStringContainsString('date_created <= :dateCreatedTo', $sql);
         self::assertStringContainsString('date_modified >= :dateModifiedFrom', $sql);
@@ -101,6 +107,9 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
             'dateCreatedTo' => '2020-02-02 02:02:02',
             'dateModifiedFrom' => '2020-02-01 01:01:01',
             'dateModifiedTo' => '2020-02-01 02:02:02',
+            'created_by' => $id->uuid,
+            'modified_by' => $id->uuid,
+            'assigned_by' => $id->uuid,
             'id' => $id->uuid,
             'deleted' => 1,
             'entity_type' => 'test',
