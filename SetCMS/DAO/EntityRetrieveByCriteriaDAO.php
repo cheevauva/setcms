@@ -20,6 +20,10 @@ abstract class EntityRetrieveByCriteriaDAO extends SQLCommonDAO
     public int $offset = 0;
     public UUID $id;
     public bool $deleted;
+    public \DateTimeImmutable $dateCreatedFrom;
+    public \DateTimeImmutable $dateCreatedTo;
+    public \DateTimeImmutable $dateModifiedFrom;
+    public \DateTimeImmutable $dateModifiedTo;
 
     /**
      * @var array<string, mixed>
@@ -77,21 +81,39 @@ abstract class EntityRetrieveByCriteriaDAO extends SQLCommonDAO
         $qb->from($this->table());
         $qb->setMaxResults($this->limit);
         $qb->setFirstResult($this->offset);
-
+        
+        if (isset($this->id)) {
+            $this->criteria['id'] ??= $this->id;
+        }
+        
         if (isset($this->deleted)) {
             $qb->andWhere('deleted = :deleted');
             $qb->setParameter('deleted', intval($this->deleted));
         }
 
-        if (isset($this->id)) {
-            $qb->andWhere('id = :id');
-            $qb->setParameter('id', $this->id->uuid);
-            $qb->setMaxResults(1);
+        if (isset($this->dateCreatedFrom)) {
+            $qb->andWhere('date_created >= :dateCreatedFrom');
+            $qb->setParameter('dateCreatedFrom', $this->dateCreatedFrom->format('Y-m-d H:i:s'));
+        }
+
+        if (isset($this->dateCreatedTo)) {
+            $qb->andWhere('date_created <= :dateCreatedTo');
+            $qb->setParameter('dateCreatedTo', $this->dateCreatedTo->format('Y-m-d H:i:s'));
+        }
+
+        if (isset($this->dateModifiedFrom)) {
+            $qb->andWhere('date_modified >= :dateModifiedFrom');
+            $qb->setParameter('dateModifiedFrom', $this->dateModifiedFrom->format('Y-m-d H:i:s'));
+        }
+
+        if (isset($this->dateModifiedTo)) {
+            $qb->andWhere('date_modified <= :dateModifiedTo');
+            $qb->setParameter('dateModifiedTo', $this->dateModifiedTo->format('Y-m-d H:i:s'));
         }
 
         foreach ($this->criteria as $field => $value) {
             $qb->andWhere(sprintf('%s.%s = :%s', $this->table(), $field, $field));
-            $qb->setParameter($field, $value);
+            $qb->setParameter($field, strval($value));
         }
 
         return $qb;

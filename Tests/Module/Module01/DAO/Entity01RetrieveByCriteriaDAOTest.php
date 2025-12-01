@@ -56,12 +56,16 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
         self::$getManyRows = [];
     }
 
-    public function testEntity01RetrieveByCriteriaDAO(): void
+    public function testEntity01RetrieveByCriteriaDAOWithAllCriteria(): void
     {
         $id = new UUID();
 
         $retrieveByCriteria = Entity01RetrieveByCriteriaDAO::new($this->container($this->mocks()));
         $retrieveByCriteria->id = $id;
+        $retrieveByCriteria->dateCreatedFrom = new \DateTimeImmutable('2020-02-02 01:01:01');
+        $retrieveByCriteria->dateCreatedTo = new \DateTimeImmutable('2020-02-02 02:02:02');
+        $retrieveByCriteria->dateModifiedFrom = new \DateTimeImmutable('2020-02-01 01:01:01');
+        $retrieveByCriteria->dateModifiedTo = new \DateTimeImmutable('2020-02-01 02:02:02');
         $retrieveByCriteria->deleted = true;
         $retrieveByCriteria->limit = 1;
         $retrieveByCriteria->offset = 2;
@@ -79,12 +83,40 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
         self::assertStringContainsString('FROM ' . Module01Constants::TABLE_NAME, $sql);
         self::assertStringContainsString('deleted = :deleted', $sql);
         self::assertStringContainsString('id = :id', $sql);
+        self::assertStringContainsString('date_created >= :dateCreatedFrom', $sql);
+        self::assertStringContainsString('date_created <= :dateCreatedTo', $sql);
+        self::assertStringContainsString('date_modified >= :dateModifiedFrom', $sql);
+        self::assertStringContainsString('date_modified <= :dateModifiedTo', $sql);
         self::assertStringContainsString('LIMIT 1', $sql);
         self::assertStringContainsString('OFFSET 2', $sql);
         self::assertEquals([
+            'dateCreatedFrom' => '2020-02-02 01:01:01',
+            'dateCreatedTo' => '2020-02-02 02:02:02',
+            'dateModifiedFrom' => '2020-02-01 01:01:01',
+            'dateModifiedTo' => '2020-02-01 02:02:02',
             'id' => $id->uuid,
             'deleted' => 1,
         ], $params);
+    }
+
+    public function testEntity01RetrieveByCriteriaDAOWithoutCriteria(): void
+    {
+        $id = new UUID();
+
+        $retrieveByCriteria = Entity01RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $retrieveByCriteria->serve();
+
+        self::assertNotEmpty(self::$qb);
+
+        if (empty(self::$qb)) {
+            return;
+        }
+
+        $sql = self::$qb->getSQL();
+        $params = self::$qb->getParameters();
+
+        self::assertEquals('SELECT * FROM ' . Module01Constants::TABLE_NAME, $sql);
+        self::assertEmpty($params);
     }
 
     public function testEntity01FindManyByCriteriaDAOFoundRows(): void
