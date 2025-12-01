@@ -29,7 +29,7 @@ abstract class Entity01RetrieveByCriteriaDAO extends EntityRetrieveByCriteriaDAO
     protected function createQuery(): DatabaseQueryBuilder
     {
         isset($this->field01) ? $this->criteria['field01'] = $this->field01 : null;
-
+        
         return parent::createQuery();
     }
 }

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace SetCMS\DAO;
 
+use SetCMS\UUID;
+use SetCMS\Enum\SortEnum;
 use SetCMS\Database\DatabaseQueryBuilder;
 use SetCMS\Entity\Entity;
-use SetCMS\UUID;
 use SetCMS\Mapper\EntityFromRowMapper;
 
 /**
@@ -20,10 +21,13 @@ abstract class EntityRetrieveByCriteriaDAO extends SQLCommonDAO
     public int $offset = 0;
     public UUID $id;
     public bool $deleted;
+    public string $entityType;
     public \DateTimeImmutable $dateCreatedFrom;
     public \DateTimeImmutable $dateCreatedTo;
     public \DateTimeImmutable $dateModifiedFrom;
     public \DateTimeImmutable $dateModifiedTo;
+    public SortEnum $sortByDateCreated;
+    public SortEnum $sortByDateModified;
 
     /**
      * @var array<string, mixed>
@@ -81,11 +85,15 @@ abstract class EntityRetrieveByCriteriaDAO extends SQLCommonDAO
         $qb->from($this->table());
         $qb->setMaxResults($this->limit);
         $qb->setFirstResult($this->offset);
-        
+
         if (isset($this->id)) {
             $this->criteria['id'] ??= $this->id;
         }
-        
+
+        if (isset($this->entityType)) {
+            $this->criteria['entity_type'] = $this->entityType;
+        }
+
         if (isset($this->deleted)) {
             $qb->andWhere('deleted = :deleted');
             $qb->setParameter('deleted', intval($this->deleted));
@@ -109,6 +117,14 @@ abstract class EntityRetrieveByCriteriaDAO extends SQLCommonDAO
         if (isset($this->dateModifiedTo)) {
             $qb->andWhere('date_modified <= :dateModifiedTo');
             $qb->setParameter('dateModifiedTo', $this->dateModifiedTo->format('Y-m-d H:i:s'));
+        }
+
+        if (isset($this->sortByDateCreated)) {
+            $qb->addOrderBy('date_created', $this->sortByDateCreated->value);
+        }
+
+        if (isset($this->sortByDateModified)) {
+            $qb->addOrderBy('date_modified', $this->sortByDateModified->value);
         }
 
         foreach ($this->criteria as $field => $value) {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Module\Module01\DAO;
 
 use Psr\Container\ContainerInterface;
+use SetCMS\Enum\SortEnum;
 use SetCMS\UUID;
 use SetCMS\Database\DatabaseQueryBuilder;
 use Module\Module01\Module01Constants;
@@ -61,11 +62,14 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
         $id = new UUID();
 
         $retrieveByCriteria = Entity01RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $retrieveByCriteria->entityType = 'test';
         $retrieveByCriteria->id = $id;
         $retrieveByCriteria->dateCreatedFrom = new \DateTimeImmutable('2020-02-02 01:01:01');
         $retrieveByCriteria->dateCreatedTo = new \DateTimeImmutable('2020-02-02 02:02:02');
         $retrieveByCriteria->dateModifiedFrom = new \DateTimeImmutable('2020-02-01 01:01:01');
         $retrieveByCriteria->dateModifiedTo = new \DateTimeImmutable('2020-02-01 02:02:02');
+        $retrieveByCriteria->sortByDateCreated = SortEnum::ASC;
+        $retrieveByCriteria->sortByDateModified = SortEnum::ASC;
         $retrieveByCriteria->deleted = true;
         $retrieveByCriteria->limit = 1;
         $retrieveByCriteria->offset = 2;
@@ -87,6 +91,9 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
         self::assertStringContainsString('date_created <= :dateCreatedTo', $sql);
         self::assertStringContainsString('date_modified >= :dateModifiedFrom', $sql);
         self::assertStringContainsString('date_modified <= :dateModifiedTo', $sql);
+        self::assertStringContainsString('entity_type = :entity_type', $sql);
+        self::assertStringContainsString('date_created ASC', $sql);
+        self::assertStringContainsString('date_modified ASC', $sql);
         self::assertStringContainsString('LIMIT 1', $sql);
         self::assertStringContainsString('OFFSET 2', $sql);
         self::assertEquals([
@@ -96,6 +103,7 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
             'dateModifiedTo' => '2020-02-01 02:02:02',
             'id' => $id->uuid,
             'deleted' => 1,
+            'entity_type' => 'test',
         ], $params);
     }
 
