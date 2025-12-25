@@ -1,0 +1,69 @@
+{% extends scShortPath(layout ?? 'layout_admin.twig') %}
+{% import scShortPath('macros/crud.twig') as crud %}
+
+{% block content_toolbar %}
+    <a href="{{ scLink('AdminSchedulerJobNew', {'id': scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать</a>
+{% endblock %}
+
+{% block content_title %}SchedulerJob{% endblock %}
+
+{% block content %}
+    {%  
+        set rows = [
+            {
+                type: 'header',
+                columns: [
+                    {
+                        type: 'checkbox',
+                        name: 'id',
+                        value: 'selectall'
+                    },
+                    {
+                        type: 'text',
+                        value: 'status'
+                    },
+                    {
+                        type: 'text',
+                        value: 'Действия'
+                    },
+                ]
+            }
+        ]
+    %}
+    {% for schedulerJob in cronSchedulerJobs %}
+        {%  
+            set rows = rows|merge([{
+                type: 'row',
+                columns: [
+                    {
+                        name: 'id[]',
+                        type: 'checkbox',
+                        value: schedulerJob.id.uuid
+                    },
+                    {
+                        type: 'link',
+                        label: schedulerJob.status,
+                        route: 'AdminSchedulerJobRead',
+                        params: {id: schedulerJob.id},
+                    },
+                    {
+                        name: 'actions',
+                        type: 'actions',
+                        actions: [
+                            {
+                                label: 'Редактировать',
+                                route: 'AdminSchedulerJobEdit',
+                                params: {
+                                    id: schedulerJob.id
+                                }
+                            }
+                        ]
+
+                    }
+                ]
+            }])
+        %}
+    {% endfor %}
+
+    {{ crud.listview({rows: rows})  }}
+{% endblock %}

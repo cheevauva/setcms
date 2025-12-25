@@ -1,0 +1,60 @@
+{% extends scShortPath(layout ?? 'layout_admin.twig') %}
+{% import scShortPath('macros/crud.twig') as crud %}
+
+{% block content_title %}{% if scheduler.id %}Редактировать{% else %}Создать{% endif %}{% endblock %}
+{% block content %}
+    {{ 
+        crud.editview({
+            action: scLink(scheduler.id ? 'AdminSchedulerUpdate' : 'AdminSchedulerCreate', {id: (scheduler ? scheduler.id : scUUID()) }),
+            redirect: scLink('AdminSchedulerRead', {id: '${scheduler.id.uuid}'}),
+            actions: {
+                fields: [
+                    {
+                        type: 'submit',
+                        label: 'Сохранить',
+                    },
+                ],
+            },
+            panels: [
+                {
+                    name: 'default',
+                    label: 'Основные данные',
+                    active: true,
+                    fields: [
+                        {
+                            type: 'hidden',
+                            name: 'scheduler.id',
+                            value: scheduler.id|default(scUUID())
+                        },
+                        {name: 'scheduler.job', value: scheduler.job, type: 'select', options: scFetch('AdminSchedulerJobs'), label: 'Задание'},
+                        {name: 'scheduler.cronExpression', value: scheduler.cronExpression, type: 'input', label: 'Правило запуска'},
+                        {name: 'scheduler.isActive', value: scheduler.isActive, type: 'boolean', label: 'Активная работа'},
+                        {name: 'scheduler.isSafeRun', value: scheduler.isSafeRun, type: 'boolean', label: 'Безопасный запуск'},
+                        {name: 'scheduler.dateStart', value: scheduler.dateStart.format('Y-m-d'), type: 'date', label: 'Дата начала выполнения'},
+                        {name: 'scheduler.dateEnd', value: scheduler.dateEnd.format('Y-m-d'), type: 'date', label: 'Дата окончания выполнения'},
+                    ]
+                }, 
+                {
+                    name: 'services',
+                    label: 'Служебные данные',
+                    fields: [
+                        {
+                            name: 'scheduler.dateCreated',
+                            value: scheduler.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата создания',
+                            disabled: true
+                        },
+                        {
+                            name: 'scheduler.dateModified',
+                            value: scheduler.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата изменения',
+                            disabled: true
+                        },
+                    ]
+                }
+            ]
+        }) 
+    }}
+{% endblock %}

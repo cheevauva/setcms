@@ -1,0 +1,55 @@
+{% extends scShortPath(layout ?? 'layout_admin.twig') %}
+{% import scShortPath('macros/crud.twig') as crud %}
+
+{% block content_title %}{% if schedulerJob.id %}Редактировать{% else %}Создать{% endif %}{% endblock %}
+{% block content %}
+    {{ 
+        crud.editview({
+            action: scLink(schedulerJob.id ? 'AdminSchedulerJobUpdate' : 'AdminSchedulerJobCreate', {id: (schedulerJob ? schedulerJob.id : scUUID()) }),
+            redirect: scLink('AdminSchedulerJobRead', {id: '${schedulerJob.id.uuid}'}),
+            actions: {
+                fields: [
+                    {
+                        type: 'submit',
+                        label: 'Сохранить',
+                    },
+                ],
+            },
+            panels: [
+                {
+                    name: 'default',
+                    label: 'Основные данные',
+                    active: true,
+                    fields: [
+                        {
+                            type: 'hidden',
+                            name: 'schedulerJob.id',
+                            value: schedulerJob.id|default(scUUID())
+                        },
+                        {name: 'schedulerJob.status', value: schedulerJob.status, type: 'input', label: 'status'},
+                    ]
+                }, 
+                {
+                    name: 'services',
+                    label: 'Служебные данные',
+                    fields: [
+                        {
+                            name: 'schedulerJob.dateCreated',
+                            value: schedulerJob.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата создания',
+                            disabled: true
+                        },
+                        {
+                            name: 'schedulerJob.dateModified',
+                            value: schedulerJob.dateCreated.format('Y-m-d H:i:s'),
+                            type: 'input',
+                            label: 'Дата изменения',
+                            disabled: true
+                        },
+                    ]
+                }
+            ]
+        }) 
+    }}
+{% endblock %}

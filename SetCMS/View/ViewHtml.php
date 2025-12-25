@@ -7,7 +7,7 @@ namespace SetCMS\View;
 use SetCMS\Controller\ControllerViaPSR7;
 use SetCMS\UUID;
 use SetCMS\Event\AppErrorEvent;
-use SetCMS\Router\Exception\RouterNotFoundException;
+use SetCMS\Controller\ControllerViaEmbedded;
 use SetCMS\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
 use SetCMS\ACL\VO\ACLRoleVO;
 use SetCMS\Controller\Exception\ControllerEmptyResponseException;
@@ -128,26 +128,32 @@ abstract class ViewHtml extends View
 
     /**
      * @param string $path
-     * @param array<string,mixed> $params
-     * @return mixed
+     * @return \ArrayObject<string, mixed>
      */
-    protected function scFetch(string $path, array $params = []): mixed
+    protected function scFetch(string $path): \ArrayObject
     {
-        $data = null;
+        $embedded = new \ArrayObject();
 
-//        try {
-//            return $this->scCall($path, $params);
-//        } catch (\Throwable $ex) {
-//            (new AppErrorEvent($ex->getMessage(), [
-//                __METHOD__,
-//                $path,
-//                $params,
-//                $ex->getFile(),
-//                $ex->getLine(),
-//            ]))->dispatch($this->eventDispatcher());
-//        }
+        try {
+            $ctx = $this->ctx;
+            $ctx['view'] = $this;
 
-        return $data;
+            $className = $this->router()->controllerByRoute($path );
+            
+            $controller = ControllerViaEmbedded::as($className::new($this->container));
+            $controller->ctx = $ctx;
+            $controller->embedded = $embedded;
+            $controller->serve();
+        } catch (\Throwable $ex) {
+            (new AppErrorEvent($ex->getMessage(), [
+                __METHOD__,
+                $path,
+                $ex->getFile(),
+                $ex->getLine(),
+            ]))->dispatch($this->eventDispatcher());
+        }
+
+        return $embedded;
     }
 
     #[\ReturnTypeWillChange]
