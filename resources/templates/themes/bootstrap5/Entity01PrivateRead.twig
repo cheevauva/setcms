@@ -15,7 +15,11 @@
     {% if entity %}
         <article class="blog-entity">
             <h2 class="blog-entity-title">{{ entity.title }}</h2>
-            <p class="blog-entity-meta"><a href="{{ scLink('AdminUserRead', {id : entity.createdBy}) }}">Автор</a> опубликовал в {{ entity.dateCreated.format('H:i') }} {{ entity.dateCreated.format('d.m.Y') }}</p>
+            <p class="blog-entity-meta">
+                <a href="{{ scLink('AdminUserRead', {id : entity.createdBy}) }}">{{ createdBy.username }}</a> опубликовал в {{ entity.dateCreated.format('H:i') }} {{ entity.dateCreated.format('d.m.Y') }} /
+                <a href="{{ scLink('AdminUserRead', {id : entity.modifiedBy }) }}">{{ modifiedBy.username }}</a> изменил в {{ entity.dateCreated.format('H:i') }} {{ entity.dateCreated.format('d.m.Y') }} /
+                <a href="{{ scLink('AdminUserRead', {id : entity.assignedBy }) }}">{{ assignedBy.username }}</a> ответственный
+            </p>
             <p>
                 {{ entity.field01 }}
             </p>

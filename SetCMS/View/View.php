@@ -7,7 +7,7 @@ namespace SetCMS\View;
 use SplObjectStorage;
 use Psr\Http\Message\ResponseInterface;
 
-abstract class View extends \UUA\View
+abstract class View extends \UUA\View implements \SetCMS\Contract\ContractObjectInteraction
 {
 
     /**
@@ -20,4 +20,16 @@ abstract class View extends \UUA\View
      */
     public SplObjectStorage $messages;
     public protected(set) ResponseInterface $response;
+
+    #[\Override]
+    public function from(object $object): void
+    {
+        
+    }
+
+    #[\Override]
+    public function to(object $object): void
+    {
+        
+    }
 }

@@ -21,12 +21,12 @@ abstract class ViewHtml extends View
     use \SetCMS\Traits\ResponseTrait;
     use \SetCMS\Traits\ServerRequestFactoryTrait;
 
-    public ?string $templateName = null;
+    protected ?string $templateName = null;
 
     /**
      * @var array<string, mixed>
      */
-    public array $vars = [];
+    protected array $vars = [];
 
     protected function templateName(): ?string
     {

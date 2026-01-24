@@ -24,5 +24,9 @@ abstract class Wrapper extends Unit
     abstract protected function onBefore(): void;
 
     abstract protected function onAfter(): void;
-    
+
+    public function from(object $object): void
+    {
+        
+    }
 }

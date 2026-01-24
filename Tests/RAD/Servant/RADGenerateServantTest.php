@@ -6,6 +6,7 @@ namespace Tests\RAD\Servant;
 
 use Psr\Container\ContainerInterface;
 use SetCMS\RAD\Servant\RADGenerateServant;
+use SetCMS\RAD\Filesystem\FilesystemMemory;
 use SetCMS\RAD\DAO\RADFileFindManyDAO;
 use SetCMS\RAD\VO\RADContextVO;
 use SetCMS\RAD\VO\RADMetadataVO;
@@ -47,6 +48,7 @@ class RADGenerateServantTest extends \PHPUnit\Framework\TestCase
 
         $generate = RADGenerateServant::new(self::$container);
         $generate->ctx = $ctx;
+        $generate->filesystem = FilesystemMemory::new(self::$container);
         $generate->meta = $metadata;
         $generate->serve();
 

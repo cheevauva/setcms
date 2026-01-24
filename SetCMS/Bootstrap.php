@@ -43,7 +43,7 @@ class Bootstrap
         } else {
             $resources = require $this->rootPath() . '/resources/resources.php';
         }
-
+        
         $container = new Container(fn(Container $container) => [
             EventDispatcherInterface::class => fn(Container $container) => new EventDispatcher($container),
             'rootPath' => $this->rootPath(),

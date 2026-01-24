@@ -13,7 +13,8 @@ class ViewTwig extends ViewHtml
 {
 
     private Environment $twig;
-    public ?string $customTemplate = null;
+    protected ?string $customTemplate = null;
+
 
     protected function twig(): Environment
     {
