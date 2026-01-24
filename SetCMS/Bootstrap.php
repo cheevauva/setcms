@@ -48,13 +48,7 @@ class Bootstrap
             EventDispatcherInterface::class => fn(Container $container) => new EventDispatcher($container),
             'rootPath' => $this->rootPath(),
             'env' => $this->env(),
-            'events' => $resources['events'],
-            'acl' => $resources['acl'],
-            'routes' => $resources['routes'],
-            'middlewares' => $resources['middlewares'],
-            'exceptionHandlers' => $resources['exceptionHandlers'],
-            'entities' => $resources['entities'],
-        ]);
+        ] + $resources);
 
         return $container;
     }

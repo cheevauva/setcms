@@ -187,7 +187,17 @@ abstract class ViewHtml extends View
 
     private function templateNameByClass(): string
     {
-        $shortName = (new \ReflectionClass(static::class))->getShortName();
+        $reflectionClass = (new \ReflectionClass(static::class));
+        
+        $shortName = $reflectionClass->getShortName();
+        
+        if ($reflectionClass->isAnonymous()) {
+            if (!$reflectionClass->getParentClass()) {
+                throw new \Exception('Анонимный класс без наследования не разрешен');
+            }
+            
+            $shortName = $reflectionClass->getParentClass()->getShortName();
+        }
 
         if (substr($shortName, -4) === 'View') {
             $shortName = substr($shortName, 0, -4);

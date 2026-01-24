@@ -18,6 +18,7 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
     use \UUA\Traits\BuildTrait;
     use \UUA\Traits\EventDispatcherTrait;
     use \UUA\Traits\EnvTrait;
+    use \UUA\Traits\WrappingTrait;
     use \SetCMS\Traits\ValidationTrait;
 
     public string $name;
@@ -148,7 +149,7 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
             }
 
             $this->to($unit);
-            $unit->serve();
+            $this->wrapping($unit)->serve();
             $this->from($unit);
 
             if ($breakIfMessages && $this->messages->count()) {
