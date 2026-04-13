@@ -54,7 +54,7 @@ class Entity01PrivateUpdateController extends ControllerViaPSR7
         }
 
         if ($object instanceof Entity01UpdateServant) {
-            $object->entity = $this->entity;
+            $object->entity01 = $this->entity;
         }
 
         if ($object instanceof Entity01PrivateUpdateView) {

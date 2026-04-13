@@ -6,6 +6,7 @@ namespace SetCMS\Mapper;
 
 use UUA\Mapper;
 use SetCMS\Entity\Entity;
+use Psr\Container\ContainerInterface;
 
 /**
  * @template T of Entity
@@ -37,5 +38,19 @@ abstract class EntityToRowMapper extends Mapper
         $this->row['date_created'] = $entity->dateCreated->format('Y-m-d H:i:s');
         $this->row['date_modified'] = $entity->dateModified->format('Y-m-d H:i:s');
         $this->row['deleted'] = intval($entity->deleted);
+    }
+
+    /**
+     * @param ContainerInterface $container
+     * @param T $entity
+     * @return static
+     */
+    public static function call(ContainerInterface $container, Entity $entity): self
+    {
+        $self = static::new($container);
+        $self->entity = $entity;
+        $self->serve();
+
+        return $self;
     }
 }

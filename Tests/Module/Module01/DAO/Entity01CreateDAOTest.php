@@ -28,7 +28,7 @@ class Entity01CreateDAOTest extends TestCase
     public function testEntity01CreateDAO(): void
     {
         $create = Entity01CreateDAO::new($this->container($this->mocks()));
-        $create->entity = $this->prepareEntity();
+        $create->entity01 = $this->prepareEntity();
         $create->serve();
 
         self::assertNotEmpty(self::$qb);
@@ -62,7 +62,7 @@ class Entity01CreateDAOTest extends TestCase
                 use \Tests\TestDatabaseConnectionTrait;
 
                 #[\Override]
-                protected function insertRow(): void
+                public function serve(): void
                 {
                     Entity01CreateDAOTest::$qb = $this->createQuery();
                 }

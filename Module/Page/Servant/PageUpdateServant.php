@@ -4,16 +4,26 @@ declare(strict_types=1);
 
 namespace Module\Page\Servant;
 
-use SetCMS\Servant\EntityUpdateServant;
 use Module\Page\Entity\PageEntity;
 use Module\Page\DAO\PageHasByIdDAO;
 use Module\Page\DAO\PageUpdateDAO;
 
-/**
- * @extends EntityUpdateServant<PageEntity>
- */
-class PageUpdateServant extends EntityUpdateServant
+class PageUpdateServant extends \UUA\Servant
 {
-    protected string $clsHasById = PageHasByIdDAO::class;
-    protected string $clsUpdate = PageUpdateDAO::class;
+
+    use \SetCMS\Servant\EntityUpdateServantTrait;
+
+    public PageEntity $page;
+
+    #[\Override]
+    protected function hasById(): bool
+    {
+        return PageHasByIdDAO::call($this->container, $this->page->id)->isExists;
+    }
+
+    #[\Override]
+    protected function update(): void
+    {
+        PageUpdateDAO::call($this->container, $this->page);
+    }
 }

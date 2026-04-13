@@ -51,7 +51,7 @@ class PostPrivateCreateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof PostCreateServant) {
-            $object->entity = $this->entity;
+            $object->post = $this->entity;
         }
 
         if ($object instanceof PostPrivateCreateView) {

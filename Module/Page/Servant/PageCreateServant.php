@@ -4,17 +4,26 @@ declare(strict_types=1);
 
 namespace Module\Page\Servant;
 
-use SetCMS\Servant\EntityCreateServant;
 use Module\Page\Entity\PageEntity;
 use Module\Page\DAO\PageHasByIdDAO;
 use Module\Page\DAO\PageCreateDAO;
 
-/**
- * @extends EntityCreateServant<PageEntity>
- */
-class PageCreateServant extends EntityCreateServant
+class PageCreateServant extends \UUA\Servant
 {
 
-    protected string $clsHasById = PageHasByIdDAO::class;
-    protected string $clsCreate = PageCreateDAO::class;
+    use \SetCMS\Servant\EntityCreateServantTrait;
+
+    public PageEntity $page;
+
+    #[\Override]
+    protected function create(): void
+    {
+        PageCreateDAO::call($this->container, $this->page);
+    }
+
+    #[\Override]
+    protected function hasById(): bool
+    {
+        return PageHasByIdDAO::call($this->container, $this->page->id)->isExists;
+    }
 }

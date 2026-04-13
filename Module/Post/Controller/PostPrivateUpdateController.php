@@ -57,7 +57,7 @@ class PostPrivateUpdateController extends ControllerViaPSR7
         }
 
         if ($object instanceof PostUpdateServant) {
-            $object->entity = $this->entity;
+            $object->post = $this->entity;
         }
 
         if ($object instanceof PostPrivateUpdateView) {

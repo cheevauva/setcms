@@ -4,19 +4,33 @@ declare(strict_types=1);
 
 namespace Module\Module01\Servant;
 
-use SetCMS\Servant\EntitySaveServant;
 use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\DAO\Entity01HasByIdDAO;
 use Module\Module01\DAO\Entity01CreateDAO;
 use Module\Module01\DAO\Entity01UpdateDAO;
 
-/**
- * @extends EntitySaveServant<Entity01Entity>
- */
-class Entity01SaveServant extends EntitySaveServant
+class Entity01SaveServant extends \UUA\Servant
 {
 
-    public string $clsHas = Entity01HasByIdDAO::class;
-    public string $clsUpdate = Entity01UpdateDAO::class;
-    public string $clsCreate = Entity01CreateDAO::class;
+    use \SetCMS\Servant\EntitySaveServantTrait;
+
+    public Entity01Entity $entity01;
+
+    #[\Override]
+    protected function create(): void
+    {
+        Entity01CreateDAO::call($this->container, $this->entity01);
+    }
+
+    #[\Override]
+    protected function hasById(): bool
+    {
+        return Entity01HasByIdDAO::call($this->container, $this->entity01->id)->isExists;
+    }
+
+    #[\Override]
+    protected function update(): void
+    {
+        Entity01UpdateDAO::call($this->container, $this->entity01);
+    }
 }

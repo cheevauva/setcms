@@ -4,21 +4,41 @@ declare(strict_types=1);
 
 namespace Module\Module01\DAO;
 
-use SetCMS\DAO\EntityUpdateDAO;
+use Psr\Container\ContainerInterface;
 use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\Mapper\Entity01ToRowMapper;
 
-/**
- * @extends EntityUpdateDAO<Entity01Entity, Entity01ToRowMapper>
- */
-class Entity01UpdateDAO extends EntityUpdateDAO
+class Entity01UpdateDAO extends \UUA\DAO
 {
 
+    use \SetCMS\DAO\EntityUpdateDAOTrait;
     use Entity01CommonDAO;
 
+    public Entity01Entity $entity01;
+
     #[\Override]
-    protected function mapper(): Entity01ToRowMapper
+    protected function row(): array
     {
-        return Entity01ToRowMapper::new($this->container);
+        return Entity01ToRowMapper::call($this->container, $this->entity01)->row;
+    }
+
+    /**
+     * @param ContainerInterface $container
+     * @param Entity01Entity $entity01
+     * @return static
+     */
+    public static function call(ContainerInterface $container, Entity01Entity $entity01): self
+    {
+        $self = self::new($container);
+        $self->entity01 = $entity01;
+        $self->serve();
+
+        return $self;
+    }
+
+    #[\Override]
+    protected function id(): string
+    {
+        return (string) $this->entity01->id;
     }
 }

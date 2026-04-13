@@ -57,7 +57,7 @@ class PagePrivateUpdateController extends ControllerViaPSR7
         }
 
         if ($object instanceof PageUpdateServant) {
-            $object->entity = $this->entity;
+            $object->page = $this->entity;
         }
 
         if ($object instanceof PagePrivateUpdateView) {

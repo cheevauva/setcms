@@ -4,21 +4,41 @@ declare(strict_types=1);
 
 namespace Module\Post\DAO;
 
-use SetCMS\DAO\EntityUpdateDAO;
+use Psr\Container\ContainerInterface;
 use Module\Post\Entity\PostEntity;
 use Module\Post\Mapper\PostToRowMapper;
 
-/**
- * @extends EntityUpdateDAO<PostEntity, PostToRowMapper>
- */
-class PostUpdateDAO extends EntityUpdateDAO
+class PostUpdateDAO extends \UUA\DAO
 {
 
     use PostCommonDAO;
+    use \SetCMS\DAO\EntityUpdateDAOTrait;
+
+    public PostEntity $post;
 
     #[\Override]
-    protected function mapper(): PostToRowMapper
+    protected function row(): array
     {
-        return PostToRowMapper::new($this->container);
+        return PostToRowMapper::call($this->container, $this->post)->row;
+    }
+
+    #[\Override]
+    protected function id(): string
+    {
+        return (string) $this->post->id;
+    }
+
+    /**
+     * @param ContainerInterface $container
+     * @param PostEntity $post
+     * @return static
+     */
+    public static function call(ContainerInterface $container, PostEntity $post): self
+    {
+        $self = self::new($container);
+        $self->post = $post;
+        $self->serve();
+
+        return $self;
     }
 }

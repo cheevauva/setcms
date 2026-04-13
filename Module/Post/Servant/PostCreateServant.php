@@ -4,17 +4,26 @@ declare(strict_types=1);
 
 namespace Module\Post\Servant;
 
-use SetCMS\Servant\EntityCreateServant;
 use Module\Post\Entity\PostEntity;
 use Module\Post\DAO\PostHasByIdDAO;
 use Module\Post\DAO\PostCreateDAO;
 
-/**
- * @extends EntityCreateServant<PostEntity>
- */
-class PostCreateServant extends EntityCreateServant
+class PostCreateServant extends \UUA\Servant
 {
 
-    protected string $clsHasById = PostHasByIdDAO::class;
-    protected string $clsCreate = PostCreateDAO::class;
+    use \SetCMS\Servant\EntityCreateServantTrait;
+
+    public PostEntity $post;
+
+    #[\Override]
+    protected function create(): void
+    {
+        PostCreateDAO::call($this->container, $this->post);
+    }
+
+    #[\Override]
+    protected function hasById(): bool
+    {
+        return PostHasByIdDAO::call($this->container, $this->post->id)->isExists;
+    }
 }

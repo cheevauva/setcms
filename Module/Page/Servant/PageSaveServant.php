@@ -4,19 +4,33 @@ declare(strict_types=1);
 
 namespace Module\Page\Servant;
 
-use SetCMS\Servant\EntitySaveServant;
 use Module\Page\Entity\PageEntity;
 use Module\Page\DAO\PageHasByIdDAO;
 use Module\Page\DAO\PageCreateDAO;
 use Module\Page\DAO\PageUpdateDAO;
 
-/**
- * @extends EntitySaveServant<PageEntity>
- */
-class PageSaveServant extends EntitySaveServant
+class PageSaveServant extends \UUA\Servant
 {
 
-    public string $clsHas = PageHasByIdDAO::class;
-    public string $clsUpdate = PageUpdateDAO::class;
-    public string $clsCreate = PageCreateDAO::class;
+    use \SetCMS\Servant\EntitySaveServantTrait;
+
+    public PageEntity $page;
+
+    #[\Override]
+    protected function hasById(): bool
+    {
+        return PageHasByIdDAO::call($this->container, $this->page->id)->isExists;
+    }
+
+    #[\Override]
+    protected function create(): void
+    {
+        PageCreateDAO::call($this->container, $this->page);
+    }
+
+    #[\Override]
+    protected function update(): void
+    {
+        PageUpdateDAO::call($this->container, $this->page);
+    }
 }

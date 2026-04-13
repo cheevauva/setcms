@@ -49,7 +49,7 @@ class Entity01PrivateCreateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof Entity01CreateServant) {
-            $object->entity = $this->entity;
+            $object->entity01 = $this->entity;
         }
 
         if ($object instanceof Entity01PrivateCreateView) {

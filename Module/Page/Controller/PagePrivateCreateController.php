@@ -51,7 +51,7 @@ class PagePrivateCreateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof PageCreateServant) {
-            $object->entity = $this->entity;
+            $object->page = $this->entity;
         }
 
         if ($object instanceof PagePrivateCreateView) {

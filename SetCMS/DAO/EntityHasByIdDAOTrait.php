@@ -6,12 +6,13 @@ namespace SetCMS\DAO;
 
 use SetCMS\UUID;
 use SetCMS\Database\DatabaseQueryBuilder;
+use SetCMS\Database\Database;
 
-abstract class EntityHasByIdDAO extends SQLCommonDAO
+trait EntityHasByIdDAOTrait
 {
 
     public UUID $id;
-    public ?bool $isExists = null;
+    public protected(set) bool $isExists;
 
     #[\Override]
     public function serve(): void
@@ -19,7 +20,10 @@ abstract class EntityHasByIdDAO extends SQLCommonDAO
         $this->isExists = !!$this->createQuery()->fetchOne();
     }
 
-    #[\Override]
+    abstract protected function table(): string;
+
+    abstract protected function db(): Database;
+
     protected function createQuery(): DatabaseQueryBuilder
     {
         $qb = $this->db()->createQueryBuilder();

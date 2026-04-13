@@ -4,21 +4,42 @@ declare(strict_types=1);
 
 namespace Module\Page\DAO;
 
-use SetCMS\DAO\EntityCreateDAO;
+use Psr\Container\ContainerInterface;
 use Module\Page\Entity\PageEntity;
 use Module\Page\Mapper\PageToRowMapper;
+use Module\Page\PageConstrants;
 
-/**
- * @extends EntityCreateDAO<PageEntity, PageToRowMapper>
- */
-class PageCreateDAO extends EntityCreateDAO
+class PageCreateDAO extends \UUA\DAO
 {
 
-    use PageCommonDAO;
+    use \SetCMS\Traits\DatabaseMainTrait;
+    use \SetCMS\DAO\EntityCreateDAOTrait;
+
+    public PageEntity $page;
 
     #[\Override]
-    protected function mapper(): PageToRowMapper
+    protected function table(): string
     {
-        return PageToRowMapper::new($this->container);
+        return PageConstrants::TABLE_NAME;
+    }
+
+    #[\Override]
+    protected function row(): array
+    {
+        return PageToRowMapper::call($this->container, $this->page)->row;
+    }
+
+    /**
+     * @param ContainerInterface $container
+     * @param PageEntity $page
+     * @return static
+     */
+    public static function call(ContainerInterface $container, PageEntity $page): self
+    {
+        $self = self::new($container);
+        $self->page = $page;
+        $self->serve();
+
+        return $self;
     }
 }
