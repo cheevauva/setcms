@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Module01\DAO;
 
-use SetCMS\DAO\EntityDeleteByIdDAO;
-
-class Entity01DeleteByIdDAO extends EntityDeleteByIdDAO
+class Entity01DeleteByIdDAO extends \UUA\DAO
 {
 
-    use Entity01CommonDAO;
+    use \SetCMS\DAO\EntityDeleteByIdDAOTrait;
+    use \Module\Module01\Traits\Entity01DbalDAOTrait;
 }

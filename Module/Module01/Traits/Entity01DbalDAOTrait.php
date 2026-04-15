@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Module01\DAO;
+namespace Module\Module01\Traits;
 
 use Module\Module01\Module01Constants;
 
-abstract class Entity01DAO extends \UUA\DAO
+trait Entity01DbalDAOTrait
 {
 
     use \SetCMS\Traits\DatabaseMainTrait;

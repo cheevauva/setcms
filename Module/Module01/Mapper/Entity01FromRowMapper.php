@@ -18,7 +18,6 @@ class Entity01FromRowMapper extends EntityFromRowMapper
     #[\Override]
     public function serve(): void
     {
-
         try {
             parent::serve();
         } catch (EntityMapperNotFoundKeyInRowException $ex) {

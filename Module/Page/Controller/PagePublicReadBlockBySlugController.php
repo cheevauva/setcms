@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Module\Page\Controller;
 
 use Module\Page\Entity\PageEntity;
-use Module\Page\DAO\PageRetrieveManyByCriteriaDAO;
+use Module\Page\DAO\PageGetBySlugDAO;
 use Module\Page\View\PagePublicReadBlockView;
-use Module\Page\Exception\PageNotFoundException;
 
 class PagePublicReadBlockBySlugController extends \SetCMS\Controller\ControllerViaPSR7
 {
@@ -19,7 +18,7 @@ class PagePublicReadBlockBySlugController extends \SetCMS\Controller\ControllerV
     protected function domainUnits(): array
     {
         return [
-            PageRetrieveManyByCriteriaDAO::class,
+            PageGetBySlugDAO::class,
         ];
     }
 
@@ -42,10 +41,8 @@ class PagePublicReadBlockBySlugController extends \SetCMS\Controller\ControllerV
     {
         parent::to($object);
 
-        if ($object instanceof PageRetrieveManyByCriteriaDAO) {
-            $object->throwIfEmpty = new PageNotFoundException();
+        if ($object instanceof PageGetBySlugDAO) {
             $object->slug = $this->slug;
-            $object->limit = 1;
         }
 
         if ($object instanceof PagePublicReadBlockView) {
@@ -59,8 +56,8 @@ class PagePublicReadBlockBySlugController extends \SetCMS\Controller\ControllerV
     {
         parent::from($object);
 
-        if ($object instanceof PageRetrieveManyByCriteriaDAO) {
-            $this->page = $object->first();
+        if ($object instanceof PageGetBySlugDAO) {
+            $this->page = $object->page;
         }
     }
 }

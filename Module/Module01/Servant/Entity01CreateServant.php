@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Module01\Servant;
 
-use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\DAO\Entity01HasByIdDAO;
 use Module\Module01\DAO\Entity01CreateDAO;
 
@@ -12,8 +11,7 @@ class Entity01CreateServant extends \UUA\Servant
 {
 
     use \SetCMS\Servant\EntityCreateServantTrait;
-
-    public Entity01Entity $entity01;
+    use \Module\Module01\Traits\Entity01CallTrait;
 
     #[\Override]
     protected function hasById(): bool

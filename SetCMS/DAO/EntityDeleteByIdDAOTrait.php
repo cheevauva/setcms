@@ -9,16 +9,15 @@ use SetCMS\Database\DatabaseQueryBuilder;
 use SetCMS\Database\Database;
 use Psr\Container\ContainerInterface;
 
-trait EntityHasByIdDAOTrait
+trait EntityDeleteByIdDAOTrait
 {
+    use \UUA\Traits\AsTrait;
 
     public UUID $id;
-    public protected(set) bool $isExists;
 
-    #[\Override]
     public function serve(): void
     {
-        $this->isExists = !!$this->createQuery()->fetchOne();
+        $this->createQuery()->executeQuery();
     }
 
     abstract protected function table(): string;
@@ -27,11 +26,10 @@ trait EntityHasByIdDAOTrait
 
     protected function createQuery(): DatabaseQueryBuilder
     {
-        $qb = $this->db()->createQueryBuilder();
-        $qb->select('id');
-        $qb->from($this->table());
+        $qb = $this->createQuery();
+        $qb->delete($this->table());
         $qb->andWhere('id = :id');
-        $qb->setParameter('id', $this->id);
+        $qb->setParameter('id', $this->id->uuid);
         $qb->setMaxResults(1);
 
         return $qb;

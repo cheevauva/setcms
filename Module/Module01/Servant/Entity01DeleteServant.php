@@ -4,19 +4,33 @@ declare(strict_types=1);
 
 namespace Module\Module01\Servant;
 
-use SetCMS\Servant\EntityDeleteServant;
 use Module\Module01\Entity\Entity01Entity;
-use Module\Module01\DAO\Entity01GetOneByCriteriaDAO;
+use Module\Module01\DAO\Entity01GetByIdDAO;
 use Module\Module01\DAO\Entity01DeleteByIdDAO;
 use Module\Module01\DAO\Entity01UpdateDAO;
 
-/**
- * @extends EntityDeleteServant<Entity01Entity>
- */
-class Entity01DeleteServant extends EntityDeleteServant
+class Entity01DeleteServant extends \UUA\Servant
 {
 
-    protected string $clsRetrieve = Entity01GetOneByCriteriaDAO::class;
-    protected string $clsUpdate = Entity01UpdateDAO::class;
-    protected string $clsDelete = Entity01DeleteByIdDAO::class;
+    use \SetCMS\Servant\EntityDeleteServantTrait;
+
+    protected Entity01Entity $entity;
+
+    #[\Override]
+    protected function delete(): void
+    {
+        Entity01DeleteByIdDAO::call($this->container, $this->id);
+    }
+
+    #[\Override]
+    protected function entity(): Entity01Entity
+    {
+        return $this->entity ??= Entity01GetByIdDAO::call($this->container, $this->id)->entity01;
+    }
+
+    #[\Override]
+    protected function update(): void
+    {
+        Entity01UpdateDAO::call($this->container, $this->entity());
+    }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Module01\Servant;
 
-use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\DAO\Entity01HasByIdDAO;
 use Module\Module01\DAO\Entity01CreateDAO;
 use Module\Module01\DAO\Entity01UpdateDAO;
@@ -13,8 +12,7 @@ class Entity01SaveServant extends \UUA\Servant
 {
 
     use \SetCMS\Servant\EntitySaveServantTrait;
-
-    public Entity01Entity $entity01;
+    use \Module\Module01\Traits\Entity01CallTrait;
 
     #[\Override]
     protected function create(): void

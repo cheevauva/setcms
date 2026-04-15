@@ -6,10 +6,9 @@ namespace Module\Page\Controller;
 
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Page\Entity\PageEntity;
-use Module\Page\DAO\PageRetrieveManyByCriteriaDAO;
+use Module\Page\DAO\PageGetByIdDAO;
 use Module\Page\Servant\PageUpdateServant;
 use Module\Page\View\PagePrivateUpdateView;
-use Module\Page\Exception\PageNotFoundException;
 
 class PagePrivateUpdateController extends ControllerViaPSR7
 {
@@ -21,7 +20,7 @@ class PagePrivateUpdateController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
-            PageRetrieveManyByCriteriaDAO::class,
+            PageGetByIdDAO::class,
             PageUpdateServant::class,
         ];
     }
@@ -51,9 +50,8 @@ class PagePrivateUpdateController extends ControllerViaPSR7
     {
         parent::to($object);
 
-        if ($object instanceof PageRetrieveManyByCriteriaDAO) {
+        if ($object instanceof PageGetByIdDAO) {
             $object->id = $this->newEntity->id;
-            $object->limit = 1;
         }
 
         if ($object instanceof PageUpdateServant) {
@@ -70,8 +68,8 @@ class PagePrivateUpdateController extends ControllerViaPSR7
     {
         parent::from($object);
 
-        if ($object instanceof PageRetrieveManyByCriteriaDAO) {
-            $this->entity = $object->first ?? throw new PageNotFoundException();
+        if ($object instanceof PageGetByIdDAO) {
+            $this->entity = $object->page;
             $this->entity->slug = $this->newEntity->slug;
             $this->entity->title = $this->newEntity->title;
             $this->entity->content = $this->newEntity->content;

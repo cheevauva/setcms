@@ -7,9 +7,8 @@ namespace Module\Page\Controller;
 use SetCMS\UUID;
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Page\Entity\PageEntity;
-use Module\Page\DAO\PageRetrieveManyByCriteriaDAO;
+use Module\Page\DAO\PageGetByIdDAO;
 use Module\Page\View\PagePrivateReadView;
-use Module\Page\Exception\PageNotFoundException;
 
 class PagePrivateReadController extends ControllerViaPSR7
 {
@@ -21,7 +20,7 @@ class PagePrivateReadController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
-            PageRetrieveManyByCriteriaDAO::class,
+            PageGetByIdDAO::class,
         ];
     }
 
@@ -46,9 +45,8 @@ class PagePrivateReadController extends ControllerViaPSR7
     {
         parent::to($object);
 
-        if ($object instanceof PageRetrieveManyByCriteriaDAO) {
+        if ($object instanceof PageGetByIdDAO) {
             $object->id = $this->id;
-            $object->limit = 1;
         }
 
         if ($object instanceof PagePrivateReadView) {
@@ -61,8 +59,8 @@ class PagePrivateReadController extends ControllerViaPSR7
     {
         parent::from($object);
 
-        if ($object instanceof PageRetrieveManyByCriteriaDAO) {
-            $this->entity = $object->first ?? throw new PageNotFoundException();
+        if ($object instanceof PageGetByIdDAO) {
+            $this->entity = $object->page;
         }
     }
 }

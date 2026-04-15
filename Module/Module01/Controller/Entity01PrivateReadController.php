@@ -7,7 +7,7 @@ namespace Module\Module01\Controller;
 use SetCMS\UUID;
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Module01\Entity\Entity01Entity;
-use Module\Module01\DAO\Entity01GetOneByCriteriaDAO;
+use Module\Module01\DAO\Entity01GetByIdDAO;
 use Module\Module01\View\Entity01PrivateReadView;
 
 class Entity01PrivateReadController extends ControllerViaPSR7
@@ -20,7 +20,7 @@ class Entity01PrivateReadController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
-            Entity01GetOneByCriteriaDAO::class,
+            Entity01GetByIdDAO::class,
         ];
     }
 
@@ -45,7 +45,7 @@ class Entity01PrivateReadController extends ControllerViaPSR7
     {
         parent::to($object);
 
-        if ($object instanceof Entity01GetOneByCriteriaDAO) {
+        if ($object instanceof Entity01GetByIdDAO) {
             $object->id = $this->id;
         }
 
@@ -59,8 +59,8 @@ class Entity01PrivateReadController extends ControllerViaPSR7
     {
         parent::from($object);
 
-        if ($object instanceof Entity01GetOneByCriteriaDAO) {
-            $this->entity = $object->entity;
+        if ($object instanceof Entity01GetByIdDAO) {
+            $this->entity = $object->entity01;
         }
     }
 }

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Page\DAO;
+namespace Module\Page\Traits;
 
 use Module\Page\PageConstrants;
 
-trait PageCommonDAO
+trait PageDbalDAOTrait
 {
 
     use \SetCMS\Traits\DatabaseMainTrait;

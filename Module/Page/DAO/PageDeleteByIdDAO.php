@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Page\DAO;
 
-use SetCMS\DAO\EntityDeleteByIdDAO;
-
-class PageDeleteByIdDAO extends EntityDeleteByIdDAO
+class PageDeleteByIdDAO extends \UUA\DAO
 {
 
-    use PageCommonDAO;
+    use \SetCMS\DAO\EntityDeleteByIdDAOTrait;
+    use \Module\Page\Traits\PageDbalDAOTrait;
 }

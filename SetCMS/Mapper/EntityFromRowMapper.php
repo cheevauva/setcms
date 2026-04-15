@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\Mapper;
 
+use Psr\Container\ContainerInterface;
 use UUA\Mapper;
 use SetCMS\Entity\Entity;
 use SetCMS\UUID;
@@ -45,8 +46,22 @@ abstract class EntityFromRowMapper extends Mapper
         $entity->dateCreated = new \DateTimeImmutable(strval($this->row['date_created'] ?? throw new EntityMapperNotFoundKeyInRowException('date_created')));
         $entity->dateModified = new \DateTimeImmutable(strval($this->row['date_modified'] ?? throw new EntityMapperNotFoundKeyInRowException('date_modified')));
         $entity->deleted = boolval($this->row['deleted'] ?? throw new EntityMapperNotFoundKeyInRowException('deleted'));
-        
+
         /** @var T $entity * */
         $this->entity = $entity;
+    }
+
+    /**
+     * @param ContainerInterface $container
+     * @param array $row
+     * @return static
+     */
+    public static function call(ContainerInterface $container, array $row): self
+    {
+        $self = static::new($container);
+        $self->row = $row;
+        $self->serve();
+
+        return $self;
     }
 }

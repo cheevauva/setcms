@@ -9,10 +9,6 @@ use SetCMS\Enum\SortEnum;
 use SetCMS\UUID;
 use SetCMS\Database\DatabaseQueryBuilder;
 use Module\Module01\Module01Constants;
-use Module\Module01\DAO\Entity01FindManyByCriteriaDAO;
-use Module\Module01\DAO\Entity01FindOneByCriteriaDAO;
-use Module\Module01\DAO\Entity01GetManyByCriteriaDAO;
-use Module\Module01\DAO\Entity01GetOneByCriteriaDAO;
 use Module\Module01\DAO\Entity01RetrieveByCriteriaDAO;
 use Module\Module01\Exception\Entity01EntityNotFoundException;
 use Module\Module01\Exception\Entity01EntitiesNotFoundException;
@@ -30,31 +26,13 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
     /**
      * @var array<int, array<string, mixed>>
      */
-    public static array $findManyRows;
-
-    /**
-     * @var array<int, array<string, mixed>>
-     */
-    public static array $findOneRows;
-
-    /**
-     * @var array<int, array<string, mixed>>
-     */
-    public static array $getOneRows;
-
-    /**
-     * @var array<int, array<string, mixed>>
-     */
-    public static array $getManyRows;
+    public static array $rows;
 
     #[\Override]
     protected function setUp(): void
     {
         self::$qb = null;
-        self::$findManyRows = [];
-        self::$findOneRows = [];
-        self::$getOneRows = [];
-        self::$getManyRows = [];
+        self::$rows = [];
     }
 
     public function testEntity01RetrieveByCriteriaDAOWithAllCriteria(): void
@@ -138,12 +116,14 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
 
     public function testEntity01FindManyByCriteriaDAOFoundRows(): void
     {
-        self::$findManyRows = [
+        self::$rows = [
             $this->prepareRow(),
             $this->prepareRow(),
         ];
 
-        $findMany = Entity01FindManyByCriteriaDAO::new($this->container($this->mocks()));
+        $findMany = Entity01RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $findMany->expectOne = false;
+        $findMany->allowEmptyResult = true;
         $findMany->serve();
 
         self::assertNotEmpty($findMany->entities);
@@ -154,7 +134,9 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
 
     public function testEntity01FindManyByCriteriaDAONotFound(): void
     {
-        $findMany = Entity01FindManyByCriteriaDAO::new($this->container($this->mocks()));
+        $findMany = Entity01RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $findMany->expectOne = false;
+        $findMany->allowEmptyResult = true;
         $findMany->serve();
 
         self::assertEmpty($findMany->entities);
@@ -162,35 +144,41 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
 
     public function testEntity01FindOneByCriteriaDAOEmpty(): void
     {
-        $findOne = Entity01FindOneByCriteriaDAO::new($this->container($this->mocks()));
+        $findOne = Entity01RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $findOne->expectOne = true;
+        $findOne->allowEmptyResult = true;
         $findOne->serve();
 
-        self::assertEmpty($findOne->entity);
+        self::assertEmpty($findOne->entity01OrNull);
     }
 
     public function testEntity01FindOneByCriteriaDAOFindOneRow(): void
     {
-        self::$findOneRows = [
+        self::$rows = [
             $this->prepareRow(),
         ];
 
-        $findOne = Entity01FindOneByCriteriaDAO::new($this->container($this->mocks()));
+        $findOne = Entity01RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $findOne->expectOne = true;
+        $findOne->allowEmptyResult = true;
         $findOne->serve();
 
-        self::assertNotEmpty($findOne->entity);
-        self::assertInstanceOf(Entity01Entity::class, $findOne->entity);
+        self::assertNotEmpty($findOne->entity01);
+        self::assertInstanceOf(Entity01Entity::class, $findOne->entity01);
     }
 
     public function testEntity01FindOneByCriteriaDAOFindTooMuchRows(): void
     {
         $this->expectException(Entity01EntityExpectOneButReceivedTooMuchException::class);
 
-        self::$findOneRows = [
+        self::$rows = [
             $this->prepareRow(),
             $this->prepareRow(),
         ];
 
-        $findOne = Entity01FindOneByCriteriaDAO::new($this->container($this->mocks()));
+        $findOne = Entity01RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $findOne->expectOne = true;
+        $findOne->allowEmptyResult = true;
         $findOne->serve();
     }
 
@@ -198,7 +186,9 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(Entity01EntityNotFoundException::class);
 
-        $getOne = Entity01GetOneByCriteriaDAO::new($this->container($this->mocks()));
+        $getOne = Entity01RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $getOne->expectOne = true;
+        $getOne->allowEmptyResult = false;
         $getOne->serve();
     }
 
@@ -206,18 +196,22 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(Entity01EntitiesNotFoundException::class);
 
-        $getMany = Entity01GetManyByCriteriaDAO::new($this->container($this->mocks()));
+        $getMany = Entity01RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $getMany->expectOne = false;
+        $getMany->allowEmptyResult = false;
         $getMany->serve();
     }
 
     public function testEntity01GetManyByCriteriaDAOFoundRows(): void
     {
-        self::$getManyRows = [
+        self::$rows = [
             $this->prepareRow(),
             $this->prepareRow(),
         ];
 
-        $getMany = Entity01GetManyByCriteriaDAO::new($this->container($this->mocks()));
+        $getMany = Entity01RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $getMany->expectOne = false;
+        $getMany->allowEmptyResult = false;
         $getMany->serve();
 
         self::assertNotEmpty($getMany->entities);
@@ -228,27 +222,31 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
 
     public function testEntity01GetOneByCriteriaDAOFoundOneRow(): void
     {
-        self::$getOneRows = [
+        self::$rows = [
             $this->prepareRow(),
         ];
 
-        $getOne = Entity01GetOneByCriteriaDAO::new($this->container($this->mocks()));
+        $getOne = Entity01RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $getOne->expectOne = true;
+        $getOne->allowEmptyResult = false;
         $getOne->serve();
 
-        self::assertNotEmpty($getOne->entity);
-        self::assertInstanceOf(Entity01Entity::class, $getOne->entity);
+        self::assertNotEmpty($getOne->entity01);
+        self::assertInstanceOf(Entity01Entity::class, $getOne->entity01);
     }
 
     public function testEntity01GetOneByCriteriaDAOFoundTooMuchRows(): void
     {
         $this->expectException(Entity01EntityExpectOneButReceivedTooMuchException::class);
 
-        self::$getOneRows = [
+        self::$rows = [
             $this->prepareRow(),
             $this->prepareRow(),
         ];
 
-        $getOne = Entity01GetOneByCriteriaDAO::new($this->container($this->mocks()));
+        $getOne = Entity01RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $getOne->expectOne = true;
+        $getOne->allowEmptyResult = false;
         $getOne->serve();
     }
 
@@ -265,73 +263,10 @@ class Entity01RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
                 #[\Override]
                 public function serve(): void
                 {
-                    Entity01RetrieveByCriteriaDAOTest::$qb = $this->createQuery();
-                }
+                    Entity01RetrieveByCriteriaDAOTest::$qb = $this->createQb();
 
-                #[\Override]
-                protected function handleRows(array $rows): void
-                {
-                    ;
-                }
-            },
-            Entity01FindManyByCriteriaDAO::class => fn($container) => new class($container) extends Entity01FindManyByCriteriaDAO {
-
-                use \Tests\TestDatabaseConnectionTrait;
-
-                /**
-                 * @return array<int, array<string, mixed>>
-                 */
-                #[\Override]
-                protected function retrieveRows(): array
-                {
-                    Entity01RetrieveByCriteriaDAOTest::$qb = $this->createQuery();
-
-                    return Entity01RetrieveByCriteriaDAOTest::$findManyRows;
-                }
-            },
-            Entity01FindOneByCriteriaDAO::class => fn($container) => new class($container) extends Entity01FindOneByCriteriaDAO {
-
-                use \Tests\TestDatabaseConnectionTrait;
-
-                /**
-                 * @return array<int, array<string, mixed>>
-                 */
-                #[\Override]
-                protected function retrieveRows(): array
-                {
-                    Entity01RetrieveByCriteriaDAOTest::$qb = $this->createQuery();
-
-                    return Entity01RetrieveByCriteriaDAOTest::$findOneRows;
-                }
-            },
-            Entity01GetOneByCriteriaDAO::class => fn($container) => new class($container) extends Entity01GetOneByCriteriaDAO {
-
-                use \Tests\TestDatabaseConnectionTrait;
-
-                /**
-                 * @return array<int, array<string, mixed>>
-                 */
-                #[\Override]
-                protected function retrieveRows(): array
-                {
-                    Entity01RetrieveByCriteriaDAOTest::$qb = $this->createQuery();
-
-                    return Entity01RetrieveByCriteriaDAOTest::$getOneRows;
-                }
-            },
-            Entity01GetManyByCriteriaDAO::class => fn($container) => new class($container) extends Entity01GetManyByCriteriaDAO {
-
-                use \Tests\TestDatabaseConnectionTrait;
-
-                /**
-                 * @return array<int, array<string, mixed>>
-                 */
-                #[\Override]
-                protected function retrieveRows(): array
-                {
-                    Entity01RetrieveByCriteriaDAOTest::$qb = $this->createQuery();
-
-                    return Entity01RetrieveByCriteriaDAOTest::$getManyRows;
+                    $this->checkRows(Entity01RetrieveByCriteriaDAOTest::$rows);
+                    $this->handleRows(Entity01RetrieveByCriteriaDAOTest::$rows);
                 }
             },
         ];

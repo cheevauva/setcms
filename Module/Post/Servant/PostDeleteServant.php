@@ -4,19 +4,30 @@ declare(strict_types=1);
 
 namespace Module\Post\Servant;
 
-use SetCMS\Servant\EntityDeleteServant;
 use Module\Post\Entity\PostEntity;
-use Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use Module\Post\DAO\PostDeleteByIdDAO;
 use Module\Post\DAO\PostUpdateDAO;
 
-/**
- * @extends EntityDeleteServant<PostEntity>
- */
-class PostDeleteServant extends EntityDeleteServant
+class PostDeleteServant extends \UUA\Servant
 {
 
-    protected string $clsRetrieve = PostRetrieveManyByCriteriaDAO::class;
-    protected string $clsUpdate = PostUpdateDAO::class;
-    protected string $clsDelete = PostDeleteByIdDAO::class;
+    use \SetCMS\Servant\EntityDeleteServantTrait;
+
+    #[\Override]
+    protected function delete(): void
+    {
+        PostDeleteByIdDAO::call($this->container, $this->entity()->id);
+    }
+
+    #[\Override]
+    protected function entity(): PostEntity
+    {
+        return PostGetByIdDAO::call($this->container, $this->id)->post;
+    }
+
+    #[\Override]
+    protected function update(): void
+    {
+        PostUpdateDAO::call($this->container, $this->entity());
+    }
 }
