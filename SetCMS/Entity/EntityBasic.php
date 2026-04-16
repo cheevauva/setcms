@@ -9,6 +9,8 @@ use SetCMS\UUID;
 class EntityBasic extends Entity
 {
 
+    public \DateTimeImmutable $dateCreated;
+    public \DateTimeImmutable $dateModified;
     public UUID $assignedBy;
     public UUID $createdBy;
     public UUID $modifiedBy;
@@ -21,6 +23,8 @@ class EntityBasic extends Entity
         $this->assignedBy = new UUID(ADMIN_USER_UUID);
         $this->createdBy = new UUID(ADMIN_USER_UUID);
         $this->modifiedBy = new UUID(ADMIN_USER_UUID);
+        $this->dateCreated = new \DateTimeImmutable();
+        $this->dateModified = new \DateTimeImmutable();
     }
 
     public function markDeleted(): void

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\UserSession;
 
-use SetCMS\Entity\Entity;
+use SetCMS\Entity\EntityBasic;
 use SetCMS\UUID;
 
-class UserSessionEntity extends Entity
+class UserSessionEntity extends EntityBasic
 {
 
     public string $device;

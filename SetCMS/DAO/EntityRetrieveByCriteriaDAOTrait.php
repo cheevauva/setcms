@@ -50,6 +50,10 @@ trait EntityRetrieveByCriteriaDAOTrait
         $this->handleRows($rows);
     }
 
+    /**
+     * @param array<int,array<string, mixed>> $rows
+     * @return void
+     */
     protected function checkRows(array $rows): void
     {
         if ($this->expectOne) {

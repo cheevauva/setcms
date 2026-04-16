@@ -4,22 +4,17 @@ declare(strict_types=1);
 
 namespace Module\Module01\Mapper;
 
-use SetCMS\Mapper\EntityToRowMapper;
-use Module\Module01\Entity\Entity01Entity;
-
-/**
- * @extends EntityToRowMapper<Entity01Entity>
- */
-class Entity01ToRowMapper extends EntityToRowMapper
+class Entity01ToRowMapper extends \UUA\Mapper
 {
+
+    use \SetCMS\Mapper\EntityToRowMapperTrait;
+    use \Module\Module01\Traits\Entity01CallTrait;
 
     #[\Override]
     public function serve(): void
     {
-        parent::serve();
+        $this->row['field01'] = $this->entity01->field01;
 
-        $entity01lc = Entity01Entity::as($this->entity);
-
-        $this->row['field01'] = $entity01lc->field01;
+        $this->map($this->entity01);
     }
 }

@@ -39,7 +39,7 @@ class PostPrivateIndexController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
-            $this->entities = $object->entities;
+            $this->entities = $object->posts;
         }
     }
 

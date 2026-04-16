@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace SetCMS\Mapper;
 
-use SetCMS\Entity\Entity;
+use SetCMS\Entity\EntityBasic;
 use SetCMS\UUID;
 use SetCMS\Exception\EntityMapperNotFoundKeyInRowException;
 
 abstract class EntityMapper extends \UUA\Servant
 {
 
-    public ?Entity $entity = null;
+    public ?EntityBasic $entity = null;
 
     /**
      * @var array<string, mixed>|null
@@ -35,7 +35,7 @@ abstract class EntityMapper extends \UUA\Servant
             $this->row = [];
         }
 
-        $entity = Entity::as($this->entity);
+        $entity = EntityBasic::as($this->entity);
 
         $this->row['id'] = (string) $entity->id;
         $this->row['created_by'] = $entity->createdBy->uuid;
@@ -63,7 +63,7 @@ abstract class EntityMapper extends \UUA\Servant
             throw new \Exception(sprintf('entities.%s class %s not found', $this->row['entity_type'], $className));
         }
 
-        $entity = Entity::as(new $className);
+        $entity = EntityBasic::as(new $className);
         $entity->id = new UUID(strval($this->row['id'] ?? throw new \RuntimeException('id')));
         $entity->dateCreated = new \DateTimeImmutable(strval($this->row['date_created'] ?? throw new EntityMapperNotFoundKeyInRowException('date_created')));
         $entity->dateModified = new \DateTimeImmutable(strval($this->row['date_modified'] ?? throw new EntityMapperNotFoundKeyInRowException('date_modified')));

@@ -4,24 +4,31 @@ declare(strict_types=1);
 
 namespace Module\Post\Mapper;
 
-use SetCMS\Mapper\EntityFromRowMapper;
 use Module\Post\Entity\PostEntity;
 use Module\Post\Exception\PostMapperNotFoundKeyInRowException;
 
-/**
- * @extends EntityFromRowMapper<PostEntity>
- */
-class PostFromRowMapper extends EntityFromRowMapper
+class PostFromRowMapper extends \UUA\Mapper
 {
+    use \SetCMS\Mapper\EntityFromRowMapperTrait;
+    use \SetCMS\Mapper\EntityFromRowBasicMapperTrait;
+    
+    public protected(set) PostEntity $post;
 
     #[\Override]
     public function serve(): void
     {
-        parent::serve();
+        $this->post = PostEntity::as($this->newEntityByRow($this->row));
+        $this->post->slug = strval($this->row['slug'] ?? throw $this->notFoundKeyInRowException('slug'));
+        $this->post->title = strval($this->row['title'] ?? throw $this->notFoundKeyInRowException('title'));
+        $this->post->message = strval($this->row['message'] ?? throw $this->notFoundKeyInRowException('message'));
+        
+        $this->mapperBasic($this->row, $this->post);
+        
+    }
 
-        $post = PostEntity::as($this->entity);
-        $post->slug = strval($this->row['slug'] ?? throw new PostMapperNotFoundKeyInRowException('slug'));
-        $post->title = strval($this->row['title'] ?? throw new PostMapperNotFoundKeyInRowException('title'));
-        $post->message = strval($this->row['message'] ?? throw new PostMapperNotFoundKeyInRowException('message'));
+    #[\Override]
+    protected function notFoundKeyInRowException(string $key): \Throwable
+    {
+        return new PostMapperNotFoundKeyInRowException($key);
     }
 }

@@ -4,24 +4,19 @@ declare(strict_types=1);
 
 namespace Module\Page\Mapper;
 
-use SetCMS\Mapper\EntityToRowMapper;
-use Module\Page\Entity\PageEntity;
-
-/**
- * @extends EntityToRowMapper<PageEntity>
- */
-class PageToRowMapper extends EntityToRowMapper
+class PageToRowMapper extends \UUA\Mapper
 {
+
+    use \SetCMS\Mapper\EntityToRowMapperTrait;
+    use \Module\Page\Traits\PageCallTrait;
 
     #[\Override]
     public function serve(): void
     {
-        parent::serve();
-
-        $page = PageEntity::as($this->entity);
-
-        $this->row['slug'] = $page->slug;
-        $this->row['title'] = $page->title;
-        $this->row['content'] = $page->content;
+        $this->row = [];
+        $this->row['slug'] = $this->page->slug;
+        $this->row['title'] = $this->page->title;
+        $this->row['content'] = $this->page->content;
+        $this->map($this->page);
     }
 }

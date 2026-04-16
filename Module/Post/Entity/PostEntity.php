@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Module\Post\Entity;
 
-use SetCMS\Entity\Entity;
-use SetCMS\UUID;
+use SetCMS\Entity\EntityBasic;
 
-class PostEntity extends Entity
+class PostEntity extends EntityBasic
 {
 
     public string $slug;
     public string $title;
     public string $message;
-    public UUID $createdUserId;
 }

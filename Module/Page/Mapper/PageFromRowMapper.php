@@ -4,24 +4,30 @@ declare(strict_types=1);
 
 namespace Module\Page\Mapper;
 
-use SetCMS\Mapper\EntityFromRowMapper;
 use Module\Page\Entity\PageEntity;
 use Module\Page\Exception\PageMapperNotFoundKeyInRowException;
 
-/**
- * @extends EntityFromRowMapper<PageEntity>
- */
-class PageFromRowMapper extends EntityFromRowMapper
+class PageFromRowMapper extends \UUA\Mapper
 {
+
+    use \SetCMS\Mapper\EntityFromRowMapperTrait;
+
+    public protected(set) PageEntity $page;
 
     #[\Override]
     public function serve(): void
     {
-        parent::serve();
-        
-        $page = PageEntity::as($this->entity);
-        $page->slug = strval($this->row['slug'] ?? throw new PageMapperNotFoundKeyInRowException('slug'));
-        $page->title = strval($this->row['title'] ?? throw new PageMapperNotFoundKeyInRowException('title'));
-        $page->content = strval($this->row['content'] ?? throw new PageMapperNotFoundKeyInRowException('content'));
+        $page = PageEntity::as($this->newEntityByRow($this->row));
+        $page->slug = strval($this->row['slug'] ?? throw $this->notFoundKeyInRowException('slug'));
+        $page->title = strval($this->row['title'] ?? throw $this->notFoundKeyInRowException('title'));
+        $page->content = strval($this->row['content'] ?? throw $this->notFoundKeyInRowException('content'));
+
+        $this->page = $page;
+    }
+
+    #[\Override]
+    protected function notFoundKeyInRowException($key): \Throwable
+    {
+        return new PageMapperNotFoundKeyInRowException($key);
     }
 }

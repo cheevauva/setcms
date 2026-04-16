@@ -46,7 +46,8 @@ class PostPublicReadBySlugController extends ControllerViaPSR7
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
             $object->slug = $this->slug;
             $object->limit = 1;
-            $object->throwIfEmpty = new PostNotFoundException();
+            $object->expectOne = true; 
+            $object->allowEmptyResult = false;
         }
 
         if ($object instanceof PostPublicReadBySlugView) {
@@ -60,7 +61,7 @@ class PostPublicReadBySlugController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
-            $this->post = $object->first();
+            $this->post = $object->post;
         }
     }
 }

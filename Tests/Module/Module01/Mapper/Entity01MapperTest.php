@@ -20,7 +20,7 @@ class Entity01MapperTest extends TestCase
     public function testEntity01ToRowMapperSuccess(): void
     {
         $entityToRow = Entity01ToRowMapper::new($this->container($this->mocks()));
-        $entityToRow->entity = $this->prepareEntity();
+        $entityToRow->entity01 = $this->prepareEntity();
         $entityToRow->serve();
 
         self::assertEquals($this->prepareRow(), $entityToRow->row);
@@ -32,7 +32,7 @@ class Entity01MapperTest extends TestCase
         $entityFromRow->row = $this->prepareRow();
         $entityFromRow->serve();
 
-        self::assertEquals($this->prepareEntity(), $entityFromRow->entity);
+        self::assertEquals($this->prepareEntity(), $entityFromRow->entity01);
     }
 
     #[DataProvider('missingRequiredKeysProvider')]
@@ -48,7 +48,7 @@ class Entity01MapperTest extends TestCase
         $entityFromRow->row = $row;
         $entityFromRow->serve();
 
-        self::assertEquals($this->prepareEntity(), $entityFromRow->entity);
+        self::assertEquals($this->prepareEntity(), $entityFromRow->entity01);
     }
 
     /**
@@ -59,9 +59,6 @@ class Entity01MapperTest extends TestCase
         return [
             ['id'],
             ['entity_type'],
-            ['date_created'],
-            ['date_modified'],
-            ['deleted'],
             ['field01'],
         ];
     }

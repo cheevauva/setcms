@@ -4,24 +4,19 @@ declare(strict_types=1);
 
 namespace Module\Post\Mapper;
 
-use SetCMS\Mapper\EntityToRowMapper;
-use Module\Post\Entity\PostEntity;
-
-/**
- * @extends EntityToRowMapper<PostEntity>
- */
-class PostToRowMapper extends EntityToRowMapper
+class PostToRowMapper extends \UUA\Mapper
 {
+
+    use \SetCMS\Mapper\EntityToRowMapperTrait;
+    use \Module\Post\Traits\PostCallTrait;
 
     #[\Override]
     public function serve(): void
     {
-        parent::serve();
-
-        $post = PostEntity::as($this->entity);
-
-        $this->row['slug'] = $post->slug;
-        $this->row['title'] = $post->title;
-        $this->row['message'] = $post->message;
+        $this->row = [];
+        $this->row['slug'] = $this->post->slug;
+        $this->row['title'] = $this->post->title;
+        $this->row['message'] = $this->post->message;
+        $this->map($this->post);
     }
 }

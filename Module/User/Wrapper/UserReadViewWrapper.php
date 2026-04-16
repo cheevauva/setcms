@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\User\Wrapper;
 
-use SetCMS\Entity\Entity;
+use SetCMS\Entity\EntityBasic;
 use Module\User\DAO\UserGetOneByCriteriaDAO;
 use Module\User\Entity\UserEntity;
 use SetCMS\UUID;
@@ -26,7 +26,7 @@ class UserReadViewWrapper extends \UUA\Wrapper
                 return;
             }
 
-            $entity = Entity::as($entity);
+            $entity = EntityBasic::as($entity);
 
             new SignedDTO('assignedBy', $this->userById($entity->assignedBy))->to($root);
             new SignedDTO('createdBy', $this->userById($entity->createdBy))->to($root);

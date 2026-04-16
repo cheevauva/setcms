@@ -4,33 +4,18 @@ declare(strict_types=1);
 
 namespace SetCMS\Mapper;
 
-use UUA\Mapper;
-use SetCMS\Entity\Entity;
-use Psr\Container\ContainerInterface;
+use SetCMS\Entity\EntityBasic;
 
-/**
- * @template T of Entity
- */
-abstract class EntityToRowMapper extends Mapper
+trait EntityToRowBasicMapperTrait
 {
-
-    /**
-     * @var T
-     */
-    public Entity $entity;
 
     /**
      * @var array<string, mixed>
      */
     public protected(set) array $row;
 
-    #[\Override]
-    public function serve(): void
+    public function mapBasic(EntityBasic $entity): void
     {
-        $entity = $this->entity;
-
-        $this->row = [];
-        $this->row['id'] = $entity->id->uuid;
         $this->row['created_by'] = $entity->createdBy->uuid;
         $this->row['modified_by'] = $entity->modifiedBy->uuid;
         $this->row['assigned_by'] = $entity->assignedBy->uuid;
@@ -38,19 +23,5 @@ abstract class EntityToRowMapper extends Mapper
         $this->row['date_created'] = $entity->dateCreated->format('Y-m-d H:i:s');
         $this->row['date_modified'] = $entity->dateModified->format('Y-m-d H:i:s');
         $this->row['deleted'] = intval($entity->deleted);
-    }
-
-    /**
-     * @param ContainerInterface $container
-     * @param T $entity
-     * @return static
-     */
-    public static function call(ContainerInterface $container, Entity $entity): self
-    {
-        $self = static::new($container);
-        $self->entity = $entity;
-        $self->serve();
-
-        return $self;
     }
 }

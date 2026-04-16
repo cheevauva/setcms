@@ -2,53 +2,53 @@
 
 declare(strict_types=1);
 
-namespace Module\Module01\DAO;
+namespace Module\Module99\DAO;
 
 use SetCMS\Enum\SortEnum;
 use SetCMS\Database\DatabaseQueryBuilder;
-use Module\Module01\Exception\Entity01EntitiesNotFoundException;
-use Module\Module01\Exception\Entity01EntityExpectOneButReceivedTooMuchException;
-use Module\Module01\Exception\Entity01EntityNotFoundException;
-use Module\Module01\Entity\Entity01Entity;
-use Module\Module01\Mapper\Entity01FromRowMapper;
+use Module\Module99\Exception\Entity99EntitiesNotFoundException;
+use Module\Module99\Exception\Entity99EntityExpectOneButReceivedTooMuchException;
+use Module\Module99\Exception\Entity99EntityNotFoundException;
+use Module\Module99\Entity\Entity99Entity;
+use Module\Module99\Mapper\Entity99FromRowMapper;
 
-abstract class Entity01RetrieveByCriteriaDAO extends \UUA\DAO
+abstract class Entity99RetrieveByCriteriaDAO extends \UUA\DAO
 {
 
     use \SetCMS\DAO\EntityRetrieveByCriteriaDAOTrait;
-    use \Module\Module01\Traits\Entity01DbalDAOTrait;
+    use \Module\Module99\Traits\Entity99DbalDAOTrait;
 
     // field-repeat-start
-    public string $field01;
+    public string $field99;
     // field-repeat-end
     // field-repeat-start
     public SortEnum $sortByField01Uc;
     // field-repeat-end
 
-    public protected(set) Entity01Entity $entity01;
-    public protected(set) ?Entity01Entity $entity01OrNull = null;
+    public protected(set) Entity99Entity $entity99;
+    public protected(set) ?Entity99Entity $entity99OrNull = null;
 
     /**
-     * @var array<Entity01Entity>
+     * @var array<Entity99Entity>
      */
     public protected(set) array $entities = [];
 
     #[\Override]
     protected function entitiesNotFoundException(): \Throwable
     {
-        return new Entity01EntitiesNotFoundException;
+        return new Entity99EntitiesNotFoundException;
     }
 
     #[\Override]
     protected function entityExpectOneButReceivedTooMuchException(): \Throwable
     {
-        return new Entity01EntityExpectOneButReceivedTooMuchException;
+        return new Entity99EntityExpectOneButReceivedTooMuchException;
     }
 
     #[\Override]
     protected function entityNotFoundException(): \Throwable
     {
-        return new Entity01EntityNotFoundException;
+        return new Entity99EntityNotFoundException;
     }
 
     protected function createQb(): DatabaseQueryBuilder
@@ -68,10 +68,10 @@ abstract class Entity01RetrieveByCriteriaDAO extends \UUA\DAO
     #[\Override]
     protected function handleRows(array $rows): void
     {
-        $this->entities = array_map(fn($row) => Entity01FromRowMapper::call($this->container, $row)->entity01lc, $rows);
+        $this->entities = array_map(fn($row) => Entity99FromRowMapper::call($this->container, $row)->entity99, $rows);
 
         if (isset($this->entities[0])) {
-            $this->entity01 = $this->entity01OrNull = $this->entities[0];
+            $this->entity99 = $this->entity99OrNull = $this->entities[0];
         }
     }
 
@@ -79,7 +79,7 @@ abstract class Entity01RetrieveByCriteriaDAO extends \UUA\DAO
     protected function addSortByField01Uc(DatabaseQueryBuilder $qb): void
     {
         if (isset($this->sortByField01Uc)) {
-            $qb->addOrderBy('field01', $this->sortByField01Uc->value);
+            $qb->addOrderBy('field99', $this->sortByField01Uc->value);
         }
     }
 
@@ -87,9 +87,9 @@ abstract class Entity01RetrieveByCriteriaDAO extends \UUA\DAO
     // field-repeat-start
     protected function addCriteriaByField01Uc(DatabaseQueryBuilder $qb): void
     {
-        if (isset($this->field01)) {
-            $qb->andWhere('field01 = :field01');
-            $qb->setParameter('field01', $this->field01);
+        if (isset($this->field99)) {
+            $qb->andWhere('field99 = :field99');
+            $qb->setParameter('field99', $this->field99);
         }
     }
 
