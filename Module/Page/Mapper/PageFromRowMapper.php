@@ -11,22 +11,23 @@ class PageFromRowMapper extends \UUA\Mapper
 {
 
     use \SetCMS\Mapper\EntityFromRowMapperTrait;
+    use \SetCMS\Mapper\EntityFromRowBasicMapperTrait;
 
     public protected(set) PageEntity $page;
 
     #[\Override]
     public function serve(): void
     {
-        $page = PageEntity::as($this->newEntityByRow($this->row));
-        $page->slug = strval($this->row['slug'] ?? throw $this->notFoundKeyInRowException('slug'));
-        $page->title = strval($this->row['title'] ?? throw $this->notFoundKeyInRowException('title'));
-        $page->content = strval($this->row['content'] ?? throw $this->notFoundKeyInRowException('content'));
-
-        $this->page = $page;
+        $this->page = PageEntity::as($this->newEntityByRow($this->row));
+        $this->page->slug = strval($this->row['slug'] ?? throw $this->notFoundKeyInRowException('slug'));
+        $this->page->title = strval($this->row['title'] ?? throw $this->notFoundKeyInRowException('title'));
+        $this->page->content = strval($this->row['content'] ?? throw $this->notFoundKeyInRowException('content'));
+        
+        $this->mapperBasic($this->row, $this->page);
     }
 
     #[\Override]
-    protected function notFoundKeyInRowException($key): \Throwable
+    protected function notFoundKeyInRowException(string $key): \Throwable
     {
         return new PageMapperNotFoundKeyInRowException($key);
     }

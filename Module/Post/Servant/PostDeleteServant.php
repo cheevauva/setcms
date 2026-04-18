@@ -4,30 +4,20 @@ declare(strict_types=1);
 
 namespace Module\Post\Servant;
 
-use Module\Post\Entity\PostEntity;
-use Module\Post\DAO\PostDeleteByIdDAO;
+use Module\Post\DAO\PostGetByIdDAO;
 use Module\Post\DAO\PostUpdateDAO;
 
 class PostDeleteServant extends \UUA\Servant
 {
 
-    use \SetCMS\Servant\EntityDeleteServantTrait;
+    use \SetCMS\Traits\CallWithUUIDTrait;
 
     #[\Override]
-    protected function delete(): void
+    public function serve(): void
     {
-        PostDeleteByIdDAO::call($this->container, $this->entity()->id);
-    }
+        $post = PostGetByIdDAO::call($this->container, $this->id)->post;
+        $post->markDeleted();
 
-    #[\Override]
-    protected function entity(): PostEntity
-    {
-        return PostGetByIdDAO::call($this->container, $this->id)->post;
-    }
-
-    #[\Override]
-    protected function update(): void
-    {
-        PostUpdateDAO::call($this->container, $this->entity());
+        PostUpdateDAO::call($this->container, $post);
     }
 }

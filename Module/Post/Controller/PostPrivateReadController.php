@@ -7,21 +7,20 @@ namespace Module\Post\Controller;
 use SetCMS\UUID;
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Post\Entity\PostEntity;
-use Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
+use Module\Post\DAO\PostGetByIdDAO;
 use Module\Post\View\PostPrivateReadView;
-use Module\Post\Exception\PostNotFoundException;
 
 class PostPrivateReadController extends ControllerViaPSR7
 {
 
-    protected PostEntity $entity;
+    protected PostEntity $post;
     protected UUID $id;
 
     #[\Override]
     protected function domainUnits(): array
     {
         return [
-            PostRetrieveManyByCriteriaDAO::class,
+            PostGetByIdDAO::class,
         ];
     }
 
@@ -46,13 +45,12 @@ class PostPrivateReadController extends ControllerViaPSR7
     {
         parent::to($object);
 
-        if ($object instanceof PostRetrieveManyByCriteriaDAO) {
+        if ($object instanceof PostGetByIdDAO) {
             $object->id = $this->id;
-            $object->limit = 1;
         }
 
         if ($object instanceof PostPrivateReadView) {
-            $object->entity = $this->entity;
+            $object->entity = $this->post;
         }
     }
 
@@ -61,8 +59,8 @@ class PostPrivateReadController extends ControllerViaPSR7
     {
         parent::from($object);
 
-        if ($object instanceof PostRetrieveManyByCriteriaDAO) {
-            $this->entity = $object->first ?? throw new PostNotFoundException();
+        if ($object instanceof PostGetByIdDAO) {
+            $this->post = $object->post;
         }
     }
 }

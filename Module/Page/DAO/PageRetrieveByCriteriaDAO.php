@@ -24,15 +24,13 @@ class PageRetrieveByCriteriaDAO extends \UUA\DAO
     public protected(set) PageEntity $page;
     public protected(set) ?PageEntity $pageOrNull = null;
     public string $slug;
+    public bool $deleted = false;
 
     #[\Override]
     protected function handleRows(array $rows): void
     {
-        $this->pages = array_map(fn($row) => PageFromRowMapper::call($this->container, $row)->entity, $rows);
-
-        if (isset($this->pages[0])) {
-            $this->page = $this->pageOrNull = $this->pages[0];
-        }
+        $this->pages = array_map(fn($row) => PageFromRowMapper::call($this->container, $row)->page, $rows);
+        $this->pages ? $this->page = $this->pageOrNull = $this->pages[0] : null;
     }
 
     #[\Override]

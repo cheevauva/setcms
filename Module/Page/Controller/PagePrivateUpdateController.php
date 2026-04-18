@@ -7,21 +7,21 @@ namespace Module\Page\Controller;
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Page\Entity\PageEntity;
 use Module\Page\DAO\PageGetByIdDAO;
-use Module\Page\Servant\PageUpdateServant;
+use Module\Page\DAO\PageUpdateDAO;
 use Module\Page\View\PagePrivateUpdateView;
 
 class PagePrivateUpdateController extends ControllerViaPSR7
 {
 
-    protected PageEntity $entity;
-    protected PageEntity $newEntity;
+    public PageEntity $page;
+    public PageEntity $newPage;
 
     #[\Override]
     protected function domainUnits(): array
     {
         return [
             PageGetByIdDAO::class,
-            PageUpdateServant::class,
+            PageUpdateDAO::class,
         ];
     }
 
@@ -38,11 +38,11 @@ class PagePrivateUpdateController extends ControllerViaPSR7
     {
         $validation = $this->validation($this->request->getParsedBody());
 
-        $this->newEntity = new PageEntity;
-        $this->newEntity->id = $validation->uuid('entity.id')->notEmpty()->val();
-        $this->newEntity->slug = $validation->string('entity.slug')->notEmpty()->val();
-        $this->newEntity->title = $validation->string('entity.title')->notEmpty()->val();
-        $this->newEntity->content = $validation->string('entity.content')->notEmpty()->val();
+        $this->newPage = new PageEntity;
+        $this->newPage->id = $validation->uuid('entity.id')->notEmpty()->val();
+        $this->newPage->slug = $validation->string('entity.slug')->notEmpty()->val();
+        $this->newPage->title = $validation->string('entity.title')->notEmpty()->val();
+        $this->newPage->content = $validation->string('entity.content')->notEmpty()->val();
     }
 
     #[\Override]
@@ -51,15 +51,18 @@ class PagePrivateUpdateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof PageGetByIdDAO) {
-            $object->id = $this->newEntity->id;
+            $object->id = $this->newPage->id;
         }
 
-        if ($object instanceof PageUpdateServant) {
-            $object->page = $this->entity;
+        if ($object instanceof PageUpdateDAO) {
+            $object->page = $this->page;
+            $object->page->slug = $this->newPage->slug;
+            $object->page->title = $this->newPage->title;
+            $object->page->content = $this->newPage->content;
         }
 
         if ($object instanceof PagePrivateUpdateView) {
-            $object->entity = $this->entity ?? null;
+            $object->entity = $this->page;
         }
     }
 
@@ -69,10 +72,7 @@ class PagePrivateUpdateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PageGetByIdDAO) {
-            $this->entity = $object->page;
-            $this->entity->slug = $this->newEntity->slug;
-            $this->entity->title = $this->newEntity->title;
-            $this->entity->content = $this->newEntity->content;
+            $this->page = $object->page;
         }
     }
 }

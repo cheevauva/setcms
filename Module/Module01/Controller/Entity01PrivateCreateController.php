@@ -6,19 +6,19 @@ namespace Module\Module01\Controller;
 
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Module01\Entity\Entity01Entity;
-use Module\Module01\Servant\Entity01CreateServant;
+use Module\Module01\DAO\Entity01CreateDAO;
 use Module\Module01\View\Entity01PrivateCreateView;
 
 class Entity01PrivateCreateController extends ControllerViaPSR7
 {
 
-    protected Entity01Entity $entity;
+    private Entity01Entity $entity01;
 
     #[\Override]
     protected function domainUnits(): array
     {
         return [
-            Entity01CreateServant::class,
+            Entity01CreateDAO::class,
         ];
     }
 
@@ -38,9 +38,9 @@ class Entity01PrivateCreateController extends ControllerViaPSR7
         $validation = $this->validation($body);
         $validation->array('entity')->notEmpty()->validate();
 
-        $this->entity = new Entity01Entity();
-        $this->entity->id = $validation->uuid('entity.id')->val();
-        $this->entity->field01 = $validation->string('entity.field01')->notEmpty()->val();
+        $this->entity01 = new Entity01Entity();
+        $this->entity01->id = $validation->uuid('entity.id')->val();
+        $this->entity01->field01 = $validation->string('entity.field01')->notEmpty()->val();
     }
 
     #[\Override]
@@ -48,12 +48,12 @@ class Entity01PrivateCreateController extends ControllerViaPSR7
     {
         parent::to($object);
 
-        if ($object instanceof Entity01CreateServant) {
-            $object->entity01 = $this->entity;
+        if ($object instanceof Entity01CreateDAO) {
+            $object->entity01 = $this->entity01;
         }
 
         if ($object instanceof Entity01PrivateCreateView) {
-            $object->entity = $this->entity;
+            $object->entity = $this->entity01;
         }
     }
 }

@@ -8,6 +8,7 @@ class PostToRowMapper extends \UUA\Mapper
 {
 
     use \SetCMS\Mapper\EntityToRowMapperTrait;
+    use \SetCMS\Mapper\EntityToRowBasicMapperTrait;
     use \Module\Post\Traits\PostCallTrait;
 
     #[\Override]
@@ -18,5 +19,6 @@ class PostToRowMapper extends \UUA\Mapper
         $this->row['title'] = $this->post->title;
         $this->row['message'] = $this->post->message;
         $this->map($this->post);
+        $this->mapBasic($this->post);
     }
 }

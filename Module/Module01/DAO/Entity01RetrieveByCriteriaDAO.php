@@ -12,7 +12,7 @@ use Module\Module01\Exception\Entity01EntityNotFoundException;
 use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\Mapper\Entity01FromRowMapper;
 
-abstract class Entity01RetrieveByCriteriaDAO extends \UUA\DAO
+class Entity01RetrieveByCriteriaDAO extends \UUA\DAO
 {
 
     use \SetCMS\DAO\EntityRetrieveByCriteriaDAOTrait;
@@ -25,13 +25,19 @@ abstract class Entity01RetrieveByCriteriaDAO extends \UUA\DAO
     public SortEnum $sortByField01Uc;
     // field-repeat-end
 
-    public protected(set) Entity01Entity $entity01;
-    public protected(set) ?Entity01Entity $entity01OrNull = null;
-
     /**
      * @var array<Entity01Entity>
      */
     public protected(set) array $entities = [];
+    public protected(set) Entity01Entity $entity01;
+    public protected(set) ?Entity01Entity $entity01OrNull = null;
+
+    #[\Override]
+    protected function handleRows(array $rows): void
+    {
+        $this->entities = array_map(fn($row) => Entity01FromRowMapper::call($this->container, $row)->entity01, $rows);
+        $this->entities ? $this->entity01 = $this->entity01OrNull = $this->entities[0] : null;
+    }
 
     #[\Override]
     protected function entitiesNotFoundException(): \Throwable
@@ -63,16 +69,6 @@ abstract class Entity01RetrieveByCriteriaDAO extends \UUA\DAO
         // field-repeat-end
 
         return $qb;
-    }
-
-    #[\Override]
-    protected function handleRows(array $rows): void
-    {
-        $this->entities = array_map(fn($row) => Entity01FromRowMapper::call($this->container, $row)->entity01lc, $rows);
-
-        if (isset($this->entities[0])) {
-            $this->entity01 = $this->entity01OrNull = $this->entities[0];
-        }
     }
 
     // field-repeat-start

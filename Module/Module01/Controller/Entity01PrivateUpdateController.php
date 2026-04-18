@@ -7,22 +7,21 @@ namespace Module\Module01\Controller;
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\DAO\Entity01GetByIdDAO;
-use Module\Module01\Servant\Entity01UpdateServant;
+use Module\Module01\DAO\Entity01UpdateDAO;
 use Module\Module01\View\Entity01PrivateUpdateView;
-use Module\Module01\Exception\Entity01EntityNotFoundException;
 
 class Entity01PrivateUpdateController extends ControllerViaPSR7
 {
 
-    protected Entity01Entity $entity;
-    protected Entity01Entity $newEntity;
+    protected Entity01Entity $entity01;
+    protected Entity01Entity $newEntity01;
 
     #[\Override]
     protected function domainUnits(): array
     {
         return [
             Entity01GetByIdDAO::class,
-            Entity01UpdateServant::class,
+            Entity01UpdateDAO::class,
         ];
     }
 
@@ -39,9 +38,9 @@ class Entity01PrivateUpdateController extends ControllerViaPSR7
     {
         $validation = $this->validation($this->request->getParsedBody());
 
-        $this->newEntity = new Entity01Entity;
-        $this->newEntity->id = $validation->uuid('entity.id')->notEmpty()->val();
-        $this->newEntity->field01 = $validation->string('entity.field01')->notEmpty()->val();
+        $this->newEntity01 = new Entity01Entity;
+        $this->newEntity01->id = $validation->uuid('entity.id')->notEmpty()->val();
+        $this->newEntity01->field01 = $validation->string('entity.field01')->notEmpty()->val();
     }
 
     #[\Override]
@@ -50,15 +49,16 @@ class Entity01PrivateUpdateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof Entity01GetByIdDAO) {
-            $object->id = $this->newEntity->id;
+            $object->id = $this->newEntity01->id;
         }
 
-        if ($object instanceof Entity01UpdateServant) {
-            $object->entity01 = $this->entity;
+        if ($object instanceof Entity01UpdateDAO) {
+            $object->entity01 = $this->entity01;
+            $object->entity01->field01 = $this->newEntity01->field01;
         }
 
         if ($object instanceof Entity01PrivateUpdateView) {
-            $object->entity = $this->entity ?? null;
+            $object->entity = $this->entity01;
         }
     }
 
@@ -68,8 +68,7 @@ class Entity01PrivateUpdateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof Entity01GetByIdDAO) {
-            $this->entity = $object->entity01;
-            $this->entity->field01 = $this->newEntity->field01;
+            $this->entity01 = $object->entity01;
         }
     }
 }

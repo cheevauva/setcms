@@ -16,6 +16,6 @@ class Entity99CreateDAO extends \UUA\DAO
     #[\Override]
     protected function row(): array
     {
-        return Entity99ToRowMapper::call($this->container, $this->entity01)->row;
+        return Entity99ToRowMapper::call($this->container, $this->entity99)->row;
     }
 }

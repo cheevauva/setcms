@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Post\Servant;
 
-use Module\Post\Entity\PostEntity;
 use Module\Post\DAO\PostHasByIdDAO;
 use Module\Post\DAO\PostCreateDAO;
 use Module\Post\DAO\PostUpdateDAO;
@@ -12,25 +11,15 @@ use Module\Post\DAO\PostUpdateDAO;
 class PostSaveServant extends \UUA\Servant
 {
 
-    use \SetCMS\Servant\EntitySaveServantTrait;
-
-    public PostEntity $post;
+    use \Module\Post\Traits\PostCallTrait;
 
     #[\Override]
-    protected function hasById(): bool
+    public function serve(): void
     {
-        return PostHasByIdDAO::call($this->container, $this->post->id)->isExists;
-    }
-
-    #[\Override]
-    protected function create(): void
-    {
-        PostCreateDAO::call($this->container, $this->post);
-    }
-
-    #[\Override]
-    protected function update(): void
-    {
-        PostUpdateDAO::call($this->container, $this->post);
+        if (PostHasByIdDAO::call($this->container, $this->post->id)->isExists) {
+            PostUpdateDAO::call($this->container, $this->post);
+        } else {
+            PostCreateDAO::call($this->container, $this->post);
+        }
     }
 }

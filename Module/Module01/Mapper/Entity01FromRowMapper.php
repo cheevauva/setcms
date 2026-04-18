@@ -19,12 +19,17 @@ class Entity01FromRowMapper extends \UUA\Mapper
     {
         $this->entity01 = Entity01Entity::as($this->newEntityByRow($this->row));
 
-        $this->mapFields($this->row, $this->entity01);
+        $this->mappingFields($this->row, $this->entity01);
     }
 
-    protected function mapFields(): void
+    /**
+     * @param array<string, mixed> $row
+     * @param Entity01Entity $enitiy01
+     * @return void
+     */
+    protected function mappingFields(array $row, Entity01Entity $enitiy01): void
     {
-        $this->entity01->field01 = strval($this->row['field01'] ?? throw $this->notFoundKeyInRowException('field01'));
+        $enitiy01->field01 = strval($row['field01'] ?? throw $this->notFoundKeyInRowException('field01'));
     }
 
     #[\Override]

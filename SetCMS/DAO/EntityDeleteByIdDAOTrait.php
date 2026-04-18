@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace SetCMS\DAO;
 
-use SetCMS\UUID;
 use SetCMS\Database\DatabaseQueryBuilder;
 use SetCMS\Database\Database;
-use Psr\Container\ContainerInterface;
 
 trait EntityDeleteByIdDAOTrait
 {
-    use \UUA\Traits\AsTrait;
 
-    public UUID $id;
+    use \UUA\Traits\AsTrait;
+    use \SetCMS\Traits\CallWithUUIDTrait;
 
     public function serve(): void
     {
@@ -33,19 +31,5 @@ trait EntityDeleteByIdDAOTrait
         $qb->setMaxResults(1);
 
         return $qb;
-    }
-
-    /**
-     * @param ContainerInterface $container
-     * @param UUID $id
-     * @return static
-     */
-    public static function call(ContainerInterface $container, UUID $id): self
-    {
-        $self = self::new($container);
-        $self->id = $id;
-        $self->serve();
-
-        return $self;
     }
 }

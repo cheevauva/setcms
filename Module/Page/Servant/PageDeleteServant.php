@@ -4,33 +4,20 @@ declare(strict_types=1);
 
 namespace Module\Page\Servant;
 
-use Module\Page\Entity\PageEntity;
-use Module\Page\DAO\PageDeleteByIdDAO;
 use Module\Page\DAO\PageUpdateDAO;
 use Module\Page\DAO\PageGetByIdDAO;
 
 class PageDeleteServant extends \UUA\Servant
 {
 
-    use \SetCMS\Servant\EntityDeleteServantTrait;
-
-    protected PageEntity $page;
+    use \SetCMS\Traits\CallWithUUIDTrait;
 
     #[\Override]
-    protected function delete(): void
+    public function serve(): void
     {
-        PageDeleteByIdDAO::call($this->container, $this->id);
-    }
+        $page = PageGetByIdDAO::call($this->container, $this->id)->page;
+        $page->markDeleted();
 
-    #[\Override]
-    protected function entity(): PageEntity
-    {
-        return $this->page ??= PageGetByIdDAO::call($this->container, $this->id)->page;
-    }
-
-    #[\Override]
-    protected function update(): void
-    {
-        PageUpdateDAO::call($this->container, $this->entity());
+        PageUpdateDAO::call($this->container, $page);
     }
 }

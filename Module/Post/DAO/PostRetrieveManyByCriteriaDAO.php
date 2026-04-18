@@ -15,7 +15,7 @@ class PostRetrieveManyByCriteriaDAO extends \UUA\DAO
 {
 
     use \SetCMS\DAO\EntityRetrieveByCriteriaDAOTrait;
-    use PostCommonDAO;
+    use \Module\Post\Traits\PostDbalDAOTrait;
 
     public string $slug;
 
@@ -61,9 +61,6 @@ class PostRetrieveManyByCriteriaDAO extends \UUA\DAO
     protected function handleRows(array $rows): void
     {
         $this->posts = array_map(fn($row) => PostFromRowMapper::call($this->container, $row)->post, $rows);
-
-        if (isset($this->posts[0])) {
-            $this->post = $this->postOrNull = $this->posts[0];
-        }
+        $this->posts ? $this->post = $this->postOrNull = $this->posts[0] : null;
     }
 }

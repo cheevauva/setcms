@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace SetCMS\DAO;
 
-use SetCMS\UUID;
 use SetCMS\Database\DatabaseQueryBuilder;
 use SetCMS\Database\Database;
-use Psr\Container\ContainerInterface;
 
 trait EntityHasByIdDAOTrait
 {
 
-    public UUID $id;
+    use \SetCMS\Traits\CallWithUUIDTrait;
+
     public protected(set) bool $isExists;
 
     #[\Override]
@@ -35,19 +34,5 @@ trait EntityHasByIdDAOTrait
         $qb->setMaxResults(1);
 
         return $qb;
-    }
-
-    /**
-     * @param ContainerInterface $container
-     * @param UUID $id
-     * @return static
-     */
-    public static function call(ContainerInterface $container, UUID $id): self
-    {
-        $self = self::new($container);
-        $self->id = $id;
-        $self->serve();
-
-        return $self;
     }
 }

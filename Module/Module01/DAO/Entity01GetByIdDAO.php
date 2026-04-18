@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Module\Module01\DAO;
 
-use SetCMS\UUID;
 use Module\Module01\DAO\Entity01RetrieveByCriteriaDAO;
 use Module\Module01\Entity\Entity01Entity;
 

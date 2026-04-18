@@ -69,10 +69,7 @@ abstract class Entity99RetrieveByCriteriaDAO extends \UUA\DAO
     protected function handleRows(array $rows): void
     {
         $this->entities = array_map(fn($row) => Entity99FromRowMapper::call($this->container, $row)->entity99, $rows);
-
-        if (isset($this->entities[0])) {
-            $this->entity99 = $this->entity99OrNull = $this->entities[0];
-        }
+        $this->entities ? $this->entity99 = $this->entity99OrNull = $this->entities[0] : null;
     }
 
     // field-repeat-start

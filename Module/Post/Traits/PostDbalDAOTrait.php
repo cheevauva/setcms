@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Module\Post\DAO;
+namespace Module\Post\Traits;
 
 use Module\Post\PostConstrants;
 
-trait PostCommonDAO
+trait PostDbalDAOTrait
 {
 
     use \SetCMS\Traits\DatabaseMainTrait;

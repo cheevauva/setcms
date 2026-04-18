@@ -6,19 +6,19 @@ namespace Module\Page\Controller;
 
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Page\Entity\PageEntity;
-use Module\Page\Servant\PageCreateServant;
+use Module\Page\DAO\PageCreateDAO;
 use Module\Page\View\PagePrivateCreateView;
 
 class PagePrivateCreateController extends ControllerViaPSR7
 {
 
-    protected PageEntity $entity;
+    private PageEntity $page;
 
     #[\Override]
     protected function domainUnits(): array
     {
         return [
-            PageCreateServant::class,
+            PageCreateDAO::class,
         ];
     }
 
@@ -38,11 +38,11 @@ class PagePrivateCreateController extends ControllerViaPSR7
         $validation = $this->validation($body);
         $validation->array('entity')->notEmpty()->validate();
 
-        $this->entity = new PageEntity();
-        $this->entity->id = $validation->uuid('entity.id')->val();
-        $this->entity->slug = $validation->string('entity.slug')->notEmpty()->val();
-        $this->entity->title = $validation->string('entity.title')->notEmpty()->val();
-        $this->entity->content = $validation->string('entity.content')->notEmpty()->val();
+        $this->page = new PageEntity();
+        $this->page->id = $validation->uuid('entity.id')->val();
+        $this->page->slug = $validation->string('entity.slug')->notEmpty()->val();
+        $this->page->title = $validation->string('entity.title')->notEmpty()->val();
+        $this->page->content = $validation->string('entity.content')->notEmpty()->val();
     }
 
     #[\Override]
@@ -50,12 +50,12 @@ class PagePrivateCreateController extends ControllerViaPSR7
     {
         parent::to($object);
 
-        if ($object instanceof PageCreateServant) {
-            $object->page = $this->entity;
+        if ($object instanceof PageCreateDAO) {
+            $object->page = $this->page;
         }
 
         if ($object instanceof PagePrivateCreateView) {
-            $object->entity = $this->entity;
+            $object->entity = $this->page;
         }
     }
 }

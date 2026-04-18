@@ -11,7 +11,7 @@ use Module\Post\Mapper\PostToRowMapper;
 class PostUpdateDAO extends \UUA\DAO
 {
 
-    use PostCommonDAO;
+    use \Module\Post\Traits\PostDbalDAOTrait;
     use \SetCMS\DAO\EntityUpdateDAOTrait;
 
     public PostEntity $post;

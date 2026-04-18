@@ -8,7 +8,6 @@ use SetCMS\Controller\ControllerViaPSR7;
 use Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use Module\Post\Entity\PostEntity;
 use Module\Post\View\PostPublicReadBySlugView;
-use Module\Post\Exception\PostNotFoundException;
 
 class PostPublicReadBySlugController extends ControllerViaPSR7
 {
