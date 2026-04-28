@@ -10,7 +10,7 @@ use Module\Page\Exception\PageAlreadyExistsException;
 class PageCreateDAO extends \UUA\DAO
 {
 
-    use \SetCMS\DAO\EntityCreateDAOTrait;
+    use \SetCMS\DAO\DAOEntityCreateTrait;
     use \Module\Page\Traits\PageCallTrait;
     use \Module\Page\Traits\PageDbalDAOTrait;
 

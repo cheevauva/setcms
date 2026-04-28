@@ -47,7 +47,9 @@ class TemplatePrivateReadController extends ControllerViaPSR7
 
         if ($object instanceof TemplateRetrieveManyByCriteriaDAO) {
             $object->id = $this->id;
-            $object->orThrow = true;
+            $object->expectOne = true;
+            $object->limit = 1;
+            $object->allowEmptyResult = false;
         }
 
         if ($object instanceof TemplatePrivateReadView) {
@@ -61,7 +63,7 @@ class TemplatePrivateReadController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof TemplateRetrieveManyByCriteriaDAO) {
-            $this->template = TemplateEntity::as($object->template);
+            $this->template = $object->template;
         }
     }
 }

@@ -17,7 +17,7 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
     use \UUA\Traits\BuildTrait;
     use \UUA\Traits\ContainerTrait;
     use \UUA\Traits\EventDispatcherTrait;
-    use \SetCMS\Traits\RouterTrait;
+    use \SetCMS\Traits\TraitsRouter;
 
     #[\Override]
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface

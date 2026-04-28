@@ -7,18 +7,17 @@ namespace Module\Post\Mapper;
 class PostToRowMapper extends \UUA\Mapper
 {
 
-    use \SetCMS\Mapper\EntityToRowMapperTrait;
-    use \SetCMS\Mapper\EntityToRowBasicMapperTrait;
+    use \SetCMS\Mapper\MapperEntityToRowTrait;
+    use \SetCMS\Mapper\MapperEntityToRowBasicTrait;
     use \Module\Post\Traits\PostCallTrait;
 
     #[\Override]
     public function serve(): void
     {
-        $this->row = [];
+        $this->mappingDefault($this->post);
+        $this->mappingBasic($this->post);
         $this->row['slug'] = $this->post->slug;
         $this->row['title'] = $this->post->title;
         $this->row['message'] = $this->post->message;
-        $this->map($this->post);
-        $this->mapBasic($this->post);
     }
 }

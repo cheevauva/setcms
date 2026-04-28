@@ -7,20 +7,20 @@ namespace Module\Page\Controller;
 use SetCMS\UUID;
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Page\Entity\PageEntity;
-use Module\Page\DAO\PageGetByIdDAO;
+use Module\Page\Servant\PageGetByIdServant;
 use Module\Page\View\PagePrivateReadView;
 
 class PagePrivateReadController extends ControllerViaPSR7
 {
 
-    protected PageEntity $entity;
+    protected PageEntity $page;
     protected UUID $id;
 
     #[\Override]
     protected function domainUnits(): array
     {
         return [
-            PageGetByIdDAO::class,
+            PageGetByIdServant::class,
         ];
     }
 
@@ -45,12 +45,12 @@ class PagePrivateReadController extends ControllerViaPSR7
     {
         parent::to($object);
 
-        if ($object instanceof PageGetByIdDAO) {
+        if ($object instanceof PageGetByIdServant) {
             $object->id = $this->id;
         }
 
         if ($object instanceof PagePrivateReadView) {
-            $object->entity = $this->entity;
+            $object->entity = $this->page;
         }
     }
 
@@ -59,8 +59,8 @@ class PagePrivateReadController extends ControllerViaPSR7
     {
         parent::from($object);
 
-        if ($object instanceof PageGetByIdDAO) {
-            $this->entity = $object->page;
+        if ($object instanceof PageGetByIdServant) {
+            $this->page = $object->page;
         }
     }
 }

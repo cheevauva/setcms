@@ -6,7 +6,7 @@ namespace Module\Page\Controller;
 
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Page\Entity\PageEntity;
-use Module\Page\DAO\PageGetByIdDAO;
+use Module\Page\Servant\PageGetByIdServant;
 use Module\Page\DAO\PageUpdateDAO;
 use Module\Page\View\PagePrivateUpdateView;
 
@@ -20,7 +20,7 @@ class PagePrivateUpdateController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
-            PageGetByIdDAO::class,
+            PageGetByIdServant::class,
             PageUpdateDAO::class,
         ];
     }
@@ -50,7 +50,7 @@ class PagePrivateUpdateController extends ControllerViaPSR7
     {
         parent::to($object);
 
-        if ($object instanceof PageGetByIdDAO) {
+        if ($object instanceof PageGetByIdServant) {
             $object->id = $this->newPage->id;
         }
 
@@ -71,7 +71,7 @@ class PagePrivateUpdateController extends ControllerViaPSR7
     {
         parent::from($object);
 
-        if ($object instanceof PageGetByIdDAO) {
+        if ($object instanceof PageGetByIdServant) {
             $this->page = $object->page;
         }
     }

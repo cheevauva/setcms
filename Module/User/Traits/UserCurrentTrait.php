@@ -9,7 +9,7 @@ use Module\User\Entity\UserEntity;
 trait UserCurrentTrait
 {
 
-    use \SetCMS\Traits\ValidationTrait;
+    use \SetCMS\Traits\TraitsValidation;
 
     private bool $_validationStateCurrentUser = false;
 

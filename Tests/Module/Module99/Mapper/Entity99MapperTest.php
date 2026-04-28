@@ -4,22 +4,23 @@ declare(strict_types=1);
 
 namespace Tests\Module\Module99\Mapper;
 
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Module\Module99\Mapper\Entity99ToRowMapper;
 use Module\Module99\Mapper\Entity99FromRowMapper;
 use Module\Module99\Entity\Entity99Entity;
 use Module\Module99\Exception\Entity99MapperNotFoundKeyInRowException;
 
-class Entity99MapperTest extends TestCase
+#[Group('Module99')]
+#[Group('Module99Mapper')]
+class Entity99MapperTest extends \Tests\TestEasy
 {
 
-    use \Tests\TestTrait;
     use \Tests\Module\Module99\Entity99HelperTestTrait;
 
     public function testEntity99ToRowMapperSuccess(): void
     {
-        $entityToRow = Entity99ToRowMapper::new($this->container($this->mocks()));
+        $entityToRow = Entity99ToRowMapper::new(self::$container);
         $entityToRow->entity99 = $this->prepareEntity();
         $entityToRow->serve();
 
@@ -28,7 +29,7 @@ class Entity99MapperTest extends TestCase
 
     public function testEntity99FromRowMapperSuccess(): void
     {
-        $entityFromRow = Entity99FromRowMapper::new($this->container($this->mocks()));
+        $entityFromRow = Entity99FromRowMapper::new(self::$container);
         $entityFromRow->row = $this->prepareRow();
         $entityFromRow->serve();
 
@@ -44,7 +45,7 @@ class Entity99MapperTest extends TestCase
 
         unset($row[$missingKey]);
 
-        $entityFromRow = Entity99FromRowMapper::new($this->container($this->mocks()));
+        $entityFromRow = Entity99FromRowMapper::new(self::$container);
         $entityFromRow->row = $row;
         $entityFromRow->serve();
 
@@ -63,18 +64,6 @@ class Entity99MapperTest extends TestCase
             ['date_modified'],
             ['deleted'],
             ['field99'],
-        ];
-    }
-
-    /**
-     * @return \Closure
-     */
-    protected function mocks(): \Closure
-    {
-        return fn() => [
-            'entities' => [
-                'entity99lc' => Entity99Entity::class,
-            ],
         ];
     }
 }

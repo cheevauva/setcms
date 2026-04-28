@@ -6,7 +6,7 @@ namespace Module\Captcha\Controller;
 
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Captcha\CaptchaEntity;
-use Module\Captcha\DAO\CaptchaSaveDAO;
+use Module\Captcha\DAO\CaptchaCreateDAO;
 use Module\Captcha\View\CaptchaPublicGenerateView;
 
 class CaptchaPublicGenerateController extends ControllerViaPSR7
@@ -26,7 +26,7 @@ class CaptchaPublicGenerateController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
-            CaptchaSaveDAO::class,
+            CaptchaCreateDAO::class,
         ];
     }
 
@@ -43,7 +43,7 @@ class CaptchaPublicGenerateController extends ControllerViaPSR7
     {
         parent::to($object);
 
-        if ($object instanceof CaptchaSaveDAO) {
+        if ($object instanceof CaptchaCreateDAO) {
             $object->captcha = $this->captcha;
         }
 

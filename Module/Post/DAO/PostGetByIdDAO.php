@@ -10,7 +10,7 @@ use Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 class PostGetByIdDAO extends \UUA\DAO
 {
 
-    use \SetCMS\Traits\CallWithUUIDTrait;
+    use \SetCMS\Traits\TraitsCallWithUUID;
 
     public PostEntity $post;
 

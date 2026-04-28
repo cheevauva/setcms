@@ -9,7 +9,7 @@ use Module\Module99\Module99Constants;
 trait Entity99DbalDAOTrait
 {
 
-    use \SetCMS\Traits\DatabaseMainTrait;
+    use \SetCMS\Traits\TraitsDatabaseMain;
 
     protected function table(): string
     {

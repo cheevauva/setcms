@@ -12,6 +12,7 @@ use Module\Migration\DAO\MigrationCandidateRetrieveManyDAO;
 use Module\Migration\VO\MigrationCandidateVO;
 use Module\Migration\Servant\MigrationUpdateServant;
 use Module\Migration\Entity\MigrationEntity;
+use Module\Migration\DAO\MigrationCheckStorageDAO;
 
 class MigrationUpServant extends Servant
 {
@@ -38,16 +39,27 @@ class MigrationUpServant extends Servant
     {
         $db = DatabaseFactory::singleton($this->container)->make($this->dbName);
 
-        $retrieveExecuted = MigrationRetrieveManyByCriteriaDAO::new($this->container);
-        $retrieveExecuted->db = $db;
-        $retrieveExecuted->serve();
+        $check = MigrationCheckStorageDAO::new($this->container);
+        $check->db = $db;
+        $check->serve();
+
+        $executedMigrations = [];
+
+        if ($check->isOk) {
+            $retrieveExecuted = MigrationRetrieveManyByCriteriaDAO::new($this->container);
+            $retrieveExecuted->db = $db;
+            $retrieveExecuted->serve();
+
+            $executedMigrations = $this->migrationsKeyValue($retrieveExecuted->migrations);
+        }
+
+        $this->executedOld = $executedMigrations;
 
         $retrieveCandidates = MigrationCandidateRetrieveManyDAO::new($this->container);
         $retrieveCandidates->dbName = $this->dbName;
         $retrieveCandidates->dbType = $db->connectionDriverName();
         $retrieveCandidates->serve();
 
-        $executedMigrations = $this->executedOld = $retrieveExecuted->migrations;
         $candidates = $retrieveCandidates->migrationCandidates;
 
         $this->executedNew = [];
@@ -59,12 +71,12 @@ class MigrationUpServant extends Servant
             if (isset($executedMigrations[$candidate->version])) {
                 continue;
             }
-
-            $updater = MigrationUpdateServant::new($this->container);
-            $updater->db = $db;
-            $updater->candidate = $candidate;
-
+            
             try {
+                $updater = MigrationUpdateServant::new($this->container);
+                $updater->db = $db;
+                $updater->candidate = $candidate;
+
                 $transaction = DatabaseTransactionServant::new($this->container);
                 $transaction->db = $db;
                 $transaction->servant = $updater;
@@ -72,10 +84,27 @@ class MigrationUpServant extends Servant
 
                 $this->executedNew[] = $candidate;
             } catch (\Throwable $ex) {
+                var_dump($ex->getMessage());
                 $candidate->error = $ex;
 
                 $this->failded[] = $candidate;
             }
         }
+    }
+
+    /**
+     * 
+     * @param array<MigrationEntity> $migrations
+     * @return  array<string, MigrationEntity>
+     */
+    protected function migrationsKeyValue(array $migrations): array
+    {
+        $newMigrations = [];
+
+        foreach ($migrations as $migration) {
+            $newMigrations[MigrationEntity::as($migration)->version] = $migration;
+        }
+
+        return $newMigrations;
     }
 }

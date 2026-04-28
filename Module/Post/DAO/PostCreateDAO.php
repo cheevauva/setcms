@@ -10,7 +10,7 @@ use Module\Post\Mapper\PostToRowMapper;
 class PostCreateDAO extends \UUA\DAO
 {
 
-    use \SetCMS\DAO\EntityCreateDAOTrait;
+    use \SetCMS\DAO\DAOEntityCreateTrait;
     use \Module\Post\Traits\PostDbalDAOTrait;
     use \Module\Post\Traits\PostCallTrait;
 

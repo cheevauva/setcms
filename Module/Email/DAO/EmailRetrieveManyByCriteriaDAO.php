@@ -6,30 +6,43 @@ namespace Module\Email\DAO;
 
 use Module\Email\Entity\EmailEntity;
 use Module\Email\Exception\EmailNotFoundException;
+use Module\Email\Mapper\EmailFromRowMapper;
 
-class EmailRetrieveManyByCriteriaDAO extends \SetCMS\DAO\EntityRetrieveManyByCriteriaDAO
+class EmailRetrieveManyByCriteriaDAO extends \UUA\DAO
 {
 
-    use EmailCommonDAO;
+    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaTrait;
+    use \Module\Email\Traits\EmailDbalDAOTrait;
 
     /**
      * @var array<EmailEntity>
      */
     public array $emails;
-    public ?EmailEntity $email;
+    public EmailEntity $email;
+    public ?EmailEntity $emailOrNull = null;
 
     #[\Override]
-    public function serve(): void
+    protected function entitiesNotFoundException(): \Throwable
     {
-        parent::serve();
-
-        $this->emails = EmailEntity::manyAs($this->entities);
-        $this->email = $this->first ? EmailEntity::as($this->first) : null;
+        return new EmailNotFoundException();
     }
 
     #[\Override]
-    protected function notFoundExcecption(): \Throwable
+    protected function entityExpectOneButReceivedTooMuchException(): \Throwable
     {
         return new EmailNotFoundException();
+    }
+
+    #[\Override]
+    protected function entityNotFoundException(): \Throwable
+    {
+        return new EmailNotFoundException();
+    }
+
+    #[\Override]
+    protected function handleRows(array $rows): void
+    {
+        $this->emails = array_map(fn($row) => EmailFromRowMapper::call($this->container, $row)->email, $rows);
+        $this->emails ? $this->email = $this->emailOrNull = $this->emails[0] : null;
     }
 }

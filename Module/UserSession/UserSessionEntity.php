@@ -12,5 +12,5 @@ class UserSessionEntity extends EntityBasic
 
     public string $device;
     public UUID $userId;
-    public \DateTimeInterface $dateExpiries;
+    public \DateTimeImmutable $dateExpiries;
 }

@@ -10,7 +10,7 @@ use Module\Module99\DAO\Entity99UpdateDAO;
 class Entity99DeleteServant extends \UUA\Servant
 {
 
-    use \SetCMS\Traits\CallWithUUIDTrait;
+    use \SetCMS\Traits\TraitsCallWithUUID;
 
     #[\Override]
     public function serve(): void

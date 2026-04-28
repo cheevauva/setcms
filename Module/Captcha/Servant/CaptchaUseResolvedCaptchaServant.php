@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace Module\Captcha\Servant;
 
 use SetCMS\UUID;
-use Module\Captcha\CaptchaEntity;
-use Module\Captcha\DAO\CaptchaRetrieveManyByCriteriaDAO;
-use Module\Captcha\DAO\CaptchaSaveDAO;
+use Module\Captcha\Servant\CaptchaByIdServant;
+use Module\Captcha\DAO\CaptchaUpdateDAO;
 
 class CaptchaUseResolvedCaptchaServant extends \UUA\Servant
 {
@@ -17,16 +16,9 @@ class CaptchaUseResolvedCaptchaServant extends \UUA\Servant
     #[\Override]
     public function serve(): void
     {
-        $captchaById = CaptchaRetrieveManyByCriteriaDAO::new($this->container);
-        $captchaById->id = $this->captcha;
-        $captchaById->orThrow = true;
-        $captchaById->serve();
-
-        $captcha = CaptchaEntity::as($captchaById->first);
+        $captcha = CaptchaByIdServant::call($this->container, $this->captcha)->captcha;
         $captcha->use();
 
-        $captchaSave = CaptchaSaveDAO::new($this->container);
-        $captchaSave->captcha = $captcha;
-        $captchaSave->serve();
+        CaptchaUpdateDAO::call($this->container, $captcha);
     }
 }

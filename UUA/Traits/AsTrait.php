@@ -25,18 +25,4 @@ trait AsTrait
 
         return $self;
     }
-
-    /**
-     * @param array<object> $objects
-     * @return array<static>
-     */
-    public static function manyAs(array $objects): array
-    {
-        return array_map(fn($object) => static::as($object), $objects);
-    }
-
-    public static function is(?object $self): bool
-    {
-        return $self instanceof static;
-    }
 }

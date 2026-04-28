@@ -13,10 +13,8 @@ use SetCMS\RAD\VO\RADMetadataVO;
 use SetCMS\RAD\VO\RADFsFileVO;
 use SetCMS\RAD\VO\RADFsDirVO;
 
-class RADGenerateServantTest extends \PHPUnit\Framework\TestCase
+class RADGenerateServantTest extends \Tests\TestEasy
 {
-
-    use \Tests\TestTrait;
 
     public function testMain(): void
     {
@@ -65,10 +63,11 @@ class RADGenerateServantTest extends \PHPUnit\Framework\TestCase
         self::assertEquals('20200101010101', RADFsFileVO::as($generate->files[2])->content);
     }
 
-    protected function mocks(): \Closure
+    #[\Override]
+    protected function mocks(ContainerInterface $c): array
     {
-        return fn(ContainerInterface $c) => [
-            RADFileFindManyDAO::class => fn($c) => new class($c) extends RADFileFindManyDAO {
+        return [
+            RADFileFindManyDAO::class => fn() => new class($c) extends RADFileFindManyDAO {
 
                 #[\Override]
                 public function serve(): void

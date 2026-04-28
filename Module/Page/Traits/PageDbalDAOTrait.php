@@ -9,7 +9,7 @@ use Module\Page\PageConstrants;
 trait PageDbalDAOTrait
 {
 
-    use \SetCMS\Traits\DatabaseMainTrait;
+    use \SetCMS\Traits\TraitsDatabaseMain;
 
     protected function table(): string
     {

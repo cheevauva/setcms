@@ -7,6 +7,6 @@ namespace Module\Page\DAO;
 class PageDeleteByIdDAO extends \UUA\DAO
 {
 
-    use \SetCMS\DAO\EntityDeleteByIdDAOTrait;
+    use \SetCMS\DAO\DAOEntityDeleteByIdTrait;
     use \Module\Page\Traits\PageDbalDAOTrait;
 }

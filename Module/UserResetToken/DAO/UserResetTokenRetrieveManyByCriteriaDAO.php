@@ -4,39 +4,62 @@ declare(strict_types=1);
 
 namespace Module\UserResetToken\DAO;
 
+use SetCMS\Database\DatabaseQueryBuilder;
+use Module\UserResetToken\Exception\UserResetTokensNotFoundException;
 use Module\UserResetToken\Exception\UserResetTokenNotFoundException;
+use Module\UserResetToken\Exception\UserResetTokenExpectOneButReceivedTooMuchException;
 use Module\UserResetToken\Entity\UserResetTokenEntity;
+use Module\UserResetToken\Mapper\UserResetTokenFromRowMapper;
 use SetCMS\UUID;
 
-class UserResetTokenRetrieveManyByCriteriaDAO extends \SetCMS\DAO\EntityRetrieveManyByCriteriaDAO
+class UserResetTokenRetrieveManyByCriteriaDAO extends \UUA\DAO
 {
 
-    use UserResetTokenCommonDAO;
-
-    public ?UserResetTokenEntity $userResetToken = null;
+    use \Module\UserResetToken\Traits\UserResetTokenDbalDAOTrait;
+    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaTrait;
 
     /**
      * @var UserResetTokenEntity[]
      */
-    public array $userResetTokens;
+    public protected(set) array $userResetTokens;
+    public protected(set) UserResetTokenEntity $userResetToken;
+    public protected(set) ?UserResetTokenEntity $userResetTokenOrNull = null;
     public UUID $userId;
 
     #[\Override]
-    protected function notFoundExcecption(): \Throwable
+    protected function handleRows(array $rows): void
     {
-        return new UserResetTokenNotFoundException();
+        $this->userResetTokens = array_map(fn($row) => UserResetTokenFromRowMapper::call($this->container, $row)->userResetToken, $rows);
+        $this->userResetTokens ? $this->userResetToken = $this->userResetTokenOrNull = $this->userResetTokens[0] : null;
+    }
+
+    protected function createQb(): DatabaseQueryBuilder
+    {
+        $qb = $this->createQuery();
+
+        if (isset($this->userId)) {
+            $qb->andWhere('user_id = :userId');
+            $qb->setParameter('userId', $this->userId->uuid);
+        }
+
+        return $qb;
     }
 
     #[\Override]
-    public function serve(): void
+    protected function entitiesNotFoundException(): \Throwable
     {
-        if (isset($this->userId)) {
-            $this->criteria['user_id'] = $this->userId->uuid;
-        }
+        return new UserResetTokensNotFoundException();
+    }
 
-        parent::serve();
+    #[\Override]
+    protected function entityExpectOneButReceivedTooMuchException(): \Throwable
+    {
+        return new UserResetTokenExpectOneButReceivedTooMuchException();
+    }
 
-        $this->userResetToken = $this->first ? UserResetTokenEntity::as($this->first) : null;
-        $this->userResetTokens = UserResetTokenEntity::manyAs($this->entities);
+    #[\Override]
+    protected function entityNotFoundException(): \Throwable
+    {
+        return new UserResetTokenNotFoundException();
     }
 }

@@ -7,6 +7,6 @@ namespace Module\Page\DAO;
 class PageHasByIdDAO extends \UUA\DAO
 {
 
-    use \SetCMS\DAO\EntityHasByIdDAOTrait;
+    use \SetCMS\DAO\DAOEntityHasByIdTrait;
     use \Module\Page\Traits\PageDbalDAOTrait;
 }

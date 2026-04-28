@@ -9,8 +9,8 @@ use SetCMS\View\View;
 class UserPublicLogoutView extends View
 {
 
-    use \SetCMS\Traits\RouterTrait;
-    use \SetCMS\Traits\ResponseTrait;
+    use \SetCMS\Traits\TraitsRouter;
+    use \SetCMS\Traits\TraitsResponse;
 
     #[\Override]
     public function serve(): void

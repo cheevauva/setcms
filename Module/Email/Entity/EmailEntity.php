@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Email\Entity;
 
-use SetCMS\Entity\Entity;
+use SetCMS\Entity\EntityBasic;
 use Module\Email\Enum\EmailStatusEnum;
 
-class EmailEntity extends Entity
+class EmailEntity extends EntityBasic
 {
 
     public string $subject;

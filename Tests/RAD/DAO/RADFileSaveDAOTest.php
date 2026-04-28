@@ -9,10 +9,8 @@ use SetCMS\RAD\DAO\RADFileSaveDAO;
 use SetCMS\RAD\VO\RADFsFileVO;
 use SetCMS\RAD\VO\RADFsDirVO;
 
-class RADFileSaveDAOTest extends \PHPUnit\Framework\TestCase
+class RADFileSaveDAOTest extends \Tests\TestEasy
 {
-
-    use \Tests\TestTrait;
 
     public function testRADFileSaveDAO(): void
     {

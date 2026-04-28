@@ -10,26 +10,17 @@ use Module\Module01\Exception\Entity01MapperNotFoundKeyInRowException;
 class Entity01FromRowMapper extends \UUA\Mapper
 {
 
-    use \SetCMS\Mapper\EntityFromRowMapperTrait;
+    use \SetCMS\Mapper\MapperEntityFromRowTrait;
 
     public Entity01Entity $entity01;
 
     #[\Override]
     public function serve(): void
     {
-        $this->entity01 = Entity01Entity::as($this->newEntityByRow($this->row));
+        $this->entity01 = new Entity01Entity();
+        $this->entity01->field01 = $this->string('field01');
 
-        $this->mappingFields($this->row, $this->entity01);
-    }
-
-    /**
-     * @param array<string, mixed> $row
-     * @param Entity01Entity $enitiy01
-     * @return void
-     */
-    protected function mappingFields(array $row, Entity01Entity $enitiy01): void
-    {
-        $enitiy01->field01 = strval($row['field01'] ?? throw $this->notFoundKeyInRowException('field01'));
+        $this->mappingDefault($this->entity01);
     }
 
     #[\Override]

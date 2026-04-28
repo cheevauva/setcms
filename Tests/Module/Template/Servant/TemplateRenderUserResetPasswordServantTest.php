@@ -5,16 +5,13 @@ declare(strict_types=1);
 namespace Tests\Module\Template\Servant;
 
 use Psr\Container\ContainerInterface;
-use PHPUnit\Framework\TestCase;
 use Module\Template\Servant\TemplateRenderUserResetPasswordServant;
 use Module\User\Entity\UserEntity;
 use Module\UserResetToken\Entity\UserResetTokenEntity;
 use Module\Template\Entity\TemplateEntity;
 
-class TemplateRenderUserResetPasswordServantTest extends TestCase
+class TemplateRenderUserResetPasswordServantTest extends \Tests\TestEasy
 {
-
-    use \Tests\TestTrait;
 
     public function testRender(): void
     {
@@ -24,7 +21,7 @@ class TemplateRenderUserResetPasswordServantTest extends TestCase
         $user->email = 'admin@admin';
         $user->username = 'admin';
 
-        $render = TemplateRenderUserResetPasswordServant::new($this->container($this->mocks()));
+        $render = TemplateRenderUserResetPasswordServant::new(self::$container);
         $render->user = $user;
         $render->userResetToken = $userResetToken;
         $render->serve();
@@ -33,19 +30,18 @@ class TemplateRenderUserResetPasswordServantTest extends TestCase
         $this->assertEquals('admin, ваша ссылка для сброса пароля http://test.ru/user/resetPasswordByToken/' . $userResetToken->token, $render->templateRendered->content);
     }
 
-    /**
-     * @return \Closure
-     */
-    protected function mocks(): \Closure
+
+    #[\Override]
+    protected function mocks(ContainerInterface $c): array
     {
-        return fn(ContainerInterface $container) => [
+        return [
             'routes' => [
                 'GET /user/resetPasswordByToken/[*:token] UserResetPasswordByToken' => \Module\User\Controller\UserPublicResetPasswordByTokenController::class,
             ],
             'env' => [
                 'BASE_URL' => 'http://test.ru',
             ],
-            TemplateRenderUserResetPasswordServant::class => fn($container) => new class($container) extends TemplateRenderUserResetPasswordServant {
+            TemplateRenderUserResetPasswordServant::class => fn() => new class($c) extends TemplateRenderUserResetPasswordServant {
 
                 #[\Override]
                 protected function template(): TemplateEntity

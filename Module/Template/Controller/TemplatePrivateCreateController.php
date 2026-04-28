@@ -6,7 +6,7 @@ namespace Module\Template\Controller;
 
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Template\Entity\TemplateEntity;
-use Module\Template\Servant\TemplateCreateServant;
+use Module\Template\DAO\TemplateCreateDAO;
 use Module\Template\View\TemplatePrivateCreateView;
 
 class TemplatePrivateCreateController extends ControllerViaPSR7
@@ -18,7 +18,7 @@ class TemplatePrivateCreateController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
-            TemplateCreateServant::class,
+            TemplateCreateDAO::class,
         ];
     }
 
@@ -50,7 +50,7 @@ class TemplatePrivateCreateController extends ControllerViaPSR7
     {
         parent::to($object);
 
-        if ($object instanceof TemplateCreateServant) {
+        if ($object instanceof TemplateCreateDAO) {
             $object->template = $this->template;
         }
 

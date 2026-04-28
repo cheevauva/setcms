@@ -6,7 +6,7 @@ namespace Module\UserSession\Servant;
 
 use Module\User\Entity\UserEntity;
 use Module\UserSession\UserSessionEntity;
-use Module\UserSession\DAO\UserSessionSaveDAO;
+use Module\UserSession\DAO\UserSessionCreateDAO;
 
 class UserSessionCreateByUserServant extends \UUA\Servant
 {
@@ -15,17 +15,18 @@ class UserSessionCreateByUserServant extends \UUA\Servant
     public string $device;
     public protected(set) UserSessionEntity $session;
 
+    #[\Override]
     public function serve(): void
     {
         $session = new UserSessionEntity;
         $session->userId = $this->user->id;
         $session->device = $this->device;
-        $session->dateExpiries = new \DateTime('+1 year');
+        $session->dateExpiries = new \DateTimeImmutable('+1 year');
         $session->createdBy = $this->user->id;
 
-        $save = UserSessionSaveDAO::new($this->container);
-        $save->session = $session;
-        $save->serve();
+        $create = UserSessionCreateDAO::new($this->container);
+        $create->userSession = $session;
+        $create->serve();
 
         $this->session = $session;
     }

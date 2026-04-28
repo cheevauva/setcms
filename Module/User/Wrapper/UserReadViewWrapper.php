@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Module\User\Wrapper;
 
 use SetCMS\Entity\EntityBasic;
-use Module\User\DAO\UserGetOneByCriteriaDAO;
-use Module\User\Entity\UserEntity;
-use SetCMS\UUID;
+use Module\User\Servant\UserGetByIdServant;
 use SetCMS\View\View;
 use UUA\DTO\SignedDTO;
 
@@ -28,19 +26,10 @@ class UserReadViewWrapper extends \UUA\Wrapper
 
             $entity = EntityBasic::as($entity);
 
-            new SignedDTO('assignedBy', $this->userById($entity->assignedBy))->to($root);
-            new SignedDTO('createdBy', $this->userById($entity->createdBy))->to($root);
-            new SignedDTO('modifiedBy', $this->userById($entity->modifiedBy))->to($root);
+            new SignedDTO('assignedBy', UserGetByIdServant::call($this->container, $entity->assignedBy)->user)->to($root);
+            new SignedDTO('createdBy', UserGetByIdServant::call($this->container, $entity->createdBy)->user)->to($root);
+            new SignedDTO('modifiedBy', UserGetByIdServant::call($this->container, $entity->modifiedBy)->user)->to($root);
         }
-    }
-
-    protected function userById(UUID $uuid): UserEntity
-    {
-        $userById = UserGetOneByCriteriaDAO::new($this->container);
-        $userById->id = $uuid;
-        $userById->serve();
-
-        return $userById->user;
     }
 
     #[\Override]

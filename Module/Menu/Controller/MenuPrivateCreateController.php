@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Menu\Controller;
 
 use SetCMS\Controller\ControllerViaPSR7;
-use Module\Menu\DAO\MenuSaveDAO;
+use Module\Menu\DAO\MenuCreateDAO;
 use Module\Menu\Entity\MenuEntity;
 use Module\Menu\View\MenuPrivateCreateView;
 use Module\Menu\Exception\MenuParamsInvalidJsonException;
@@ -19,7 +19,7 @@ class MenuPrivateCreateController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
-            MenuSaveDAO::class
+            MenuCreateDAO::class
         ];
     }
 
@@ -54,7 +54,7 @@ class MenuPrivateCreateController extends ControllerViaPSR7
     {
         parent::from($object);
 
-        if ($object instanceof MenuSaveDAO) {
+        if ($object instanceof MenuCreateDAO) {
             $this->menu = $object->menu;
         }
     }
@@ -64,7 +64,7 @@ class MenuPrivateCreateController extends ControllerViaPSR7
     {
         parent::to($object);
 
-        if ($object instanceof MenuSaveDAO) {
+        if ($object instanceof MenuCreateDAO) {
             $object->menu = $this->menu;
         }
 

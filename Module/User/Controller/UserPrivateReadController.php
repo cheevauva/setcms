@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\User\Controller;
 
 use SetCMS\UUID;
-use Module\User\DAO\UserRetrieveManyByCriteriaDAO;
+use Module\User\Servant\UserGetByIdServant;
 use Module\User\Entity\UserEntity;
 
 class UserPrivateReadController extends UserPrivateController
@@ -18,7 +18,7 @@ class UserPrivateReadController extends UserPrivateController
     protected function domainUnits(): array
     {
         return [
-            UserRetrieveManyByCriteriaDAO::class,
+            UserGetByIdServant::class,
         ];
     }
 
@@ -26,7 +26,7 @@ class UserPrivateReadController extends UserPrivateController
     protected function process(): void
     {
         $validation = $this->validation($this->params);
-        
+
         $this->id = $validation->uuid('id')->notEmpty()->notQuiet()->val();
     }
 
@@ -35,8 +35,8 @@ class UserPrivateReadController extends UserPrivateController
     {
         parent::from($object);
 
-        if ($object instanceof UserRetrieveManyByCriteriaDAO) {
-            $this->user = UserEntity::as($object->user);
+        if ($object instanceof UserGetByIdServant) {
+            $this->user = $object->user;
         }
     }
 
@@ -45,10 +45,8 @@ class UserPrivateReadController extends UserPrivateController
     {
         parent::to($object);
 
-        if ($object instanceof UserRetrieveManyByCriteriaDAO) {
+        if ($object instanceof UserGetByIdServant) {
             $object->id = $this->id;
-            $object->limit = 1;
-            $object->orThrow = true;
         }
     }
 }

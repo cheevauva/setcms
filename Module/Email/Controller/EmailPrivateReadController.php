@@ -47,7 +47,9 @@ class EmailPrivateReadController extends ControllerViaPSR7
 
         if ($object instanceof EmailRetrieveManyByCriteriaDAO) {
             $object->id = $this->id;
-            $object->orThrow = true;
+            $object->expectOne = true;
+            $object->limit = 1;
+            $object->allowEmptyResult = false;
         }
 
         if ($object instanceof EmailPrivateReadView) {
@@ -61,7 +63,7 @@ class EmailPrivateReadController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof EmailRetrieveManyByCriteriaDAO) {
-            $this->email = EmailEntity::as($object->email);
+            $this->email = $object->email;
         }
     }
 }

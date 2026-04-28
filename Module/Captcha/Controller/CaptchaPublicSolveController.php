@@ -7,8 +7,6 @@ namespace Module\Captcha\Controller;
 use SetCMS\UUID;
 use Module\Captcha\Exception\CaptchaException;
 use Module\Captcha\Servant\CaptchaResolveServant;
-use Module\Captcha\DAO\CaptchaRetrieveManyByCriteriaDAO;
-use Module\Captcha\DAO\CaptchaSaveDAO;
 use Module\Captcha\CaptchaEntity;
 use Module\Captcha\View\CaptchaPublicSolveView;
 
@@ -23,9 +21,7 @@ class CaptchaPublicSolveController extends \SetCMS\Controller\ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
-            CaptchaRetrieveManyByCriteriaDAO::class,
             CaptchaResolveServant::class,
-            CaptchaSaveDAO::class,
         ];
     }
 
@@ -51,18 +47,9 @@ class CaptchaPublicSolveController extends \SetCMS\Controller\ControllerViaPSR7
     {
         parent::to($object);
 
-        if ($object instanceof CaptchaRetrieveManyByCriteriaDAO) {
-            $object->id = $this->id;
-            $object->orThrow = true;
-        }
-
         if ($object instanceof CaptchaResolveServant) {
-            $object->captcha = CaptchaEntity::as($this->captcha);
+            $object->id = $this->id;
             $object->solvedText = $this->solvedText;
-        }
-
-        if ($object instanceof CaptchaSaveDAO) {
-            $object->captcha = CaptchaEntity::as($this->captcha);
         }
 
         if ($object instanceof CaptchaPublicSolveView) {
@@ -78,9 +65,9 @@ class CaptchaPublicSolveController extends \SetCMS\Controller\ControllerViaPSR7
         if ($object instanceof CaptchaException) {
             $this->catch($object);
         }
-
-        if ($object instanceof CaptchaRetrieveManyByCriteriaDAO) {
-            $this->captcha = CaptchaEntity::as($object->first);
+        
+        if ($object instanceof CaptchaResolveServant) {
+            $this->captcha = $object->captcha;
         }
     }
 

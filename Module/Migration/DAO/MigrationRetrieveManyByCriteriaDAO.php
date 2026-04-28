@@ -4,45 +4,45 @@ declare(strict_types=1);
 
 namespace Module\Migration\DAO;
 
-use SetCMS\Database\Database;
+use Module\Migration\Mapper\MigraionFromRowMapper;
 use Module\Migration\Exception\MigrationNotFoundException;
-use SetCMS\DAO\EntityRetrieveManyByCriteriaDAO;
 use Module\Migration\Entity\MigrationEntity;
 
-class MigrationRetrieveManyByCriteriaDAO extends EntityRetrieveManyByCriteriaDAO
+class MigrationRetrieveManyByCriteriaDAO extends \UUA\DAO
 {
 
-    use MigrationCommonDAO;
-
-    public Database $db;
-    public ?int $limit = null;
+    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaTrait;
+    use \Module\Migration\Traits\MigrationDbalDAOTrait;
 
     /**
-     * @var array<string, MigrationEntity>
+     * @var array<MigrationEntity>
      */
     public array $migrations;
+    public MigrationEntity $migration;
+    public ?MigrationEntity $migrationOrNull = null;
 
     #[\Override]
-    public function serve(): void
+    protected function entitiesNotFoundException(): \Throwable
     {
-        $this->migrations = [];
-
-        if (!$this->db()->createSchemaManager()->tableExists($this->table())) {
-            return;
-        }
-
-        parent::serve();
-
-        foreach ($this->entities as $entity) {
-            $migration = MigrationEntity::as($entity);
-
-            $this->migrations[$migration->version] = $migration;
-        }
+        return new MigrationNotFoundException();
     }
 
     #[\Override]
-    protected function notFoundExcecption(): \Throwable
+    protected function entityExpectOneButReceivedTooMuchException(): \Throwable
     {
-        throw new MigrationNotFoundException();
+        return new MigrationNotFoundException();
+    }
+
+    #[\Override]
+    protected function entityNotFoundException(): \Throwable
+    {
+        return new MigrationNotFoundException();
+    }
+
+    #[\Override]
+    protected function handleRows(array $rows): void
+    {
+        $this->migrations = array_map(fn($row) => MigraionFromRowMapper::call($this->container, $row)->migration, $rows);
+        $this->migrations ? $this->migration = $this->migrationOrNull = $this->migrations[0] : null;
     }
 }

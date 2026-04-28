@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Menu\Controller;
 
-use Module\Menu\DAO\MenuRetrieveManyBySlugDAO;
+use Module\Menu\DAO\MenuRetrieveManyByCriteriaDAO;
 
 class MenuPublicReadBySlugController extends \SetCMS\Controller\ControllerViaPSR7
 {
@@ -26,7 +26,8 @@ class MenuPublicReadBySlugController extends \SetCMS\Controller\ControllerViaPSR
     protected function domainUnits(): array
     {
         return [
-            MenuRetrieveManyBySlugDAO::class,
+            MenuRetrieveManyByCriteriaDAO::class,
         ];
     }
+
 }

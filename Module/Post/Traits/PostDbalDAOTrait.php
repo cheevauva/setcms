@@ -9,7 +9,7 @@ use Module\Post\PostConstrants;
 trait PostDbalDAOTrait
 {
 
-    use \SetCMS\Traits\DatabaseMainTrait;
+    use \SetCMS\Traits\TraitsDatabaseMain;
 
     protected function table(): string
     {

@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace Module\Email\Servant;
 
-use Module\Email\Entity\EmailEntity;
-use Module\Email\DAO\EmailSaveDAO;
+use Module\Email\Servant\EmailSaveServant;
 
 class EmailSendServant extends \UUA\Servant
 {
 
+    use \Module\Email\Traits\EmailCallTrait;
+
     public bool $immediate = false;
-    public EmailEntity $email;
 
     #[\Override]
     public function serve(): void
     {
-        $save = EmailSaveDAO::new($this->container);
-        $save->email = $this->email;
-        $save->serve();
+        EmailSaveServant::call($this->container, $this->email);
 
         if ($this->immediate) {
             // отправка почты

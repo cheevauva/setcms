@@ -15,10 +15,9 @@ use Module\Module99\Exception\Entity99EntitiesNotFoundException;
 use Module\Module99\Exception\Entity99EntityExpectOneButReceivedTooMuchException;
 use Module\Module99\Entity\Entity99Entity;
 
-class Entity99RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
+class Entity99RetrieveByCriteriaDAOTest extends \Tests\TestEasy
 {
 
-    use \Tests\TestTrait;
     use \Tests\Module\Module99\Entity99HelperTestTrait;
 
     public static ?DatabaseQueryBuilder $qb;
@@ -39,7 +38,7 @@ class Entity99RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
     {
         $id = new UUID();
 
-        $retrieveByCriteria = Entity99RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $retrieveByCriteria = Entity99RetrieveByCriteriaDAO::new(self::$container);
         $retrieveByCriteria->entityType = 'test';
         $retrieveByCriteria->id = $id;
         $retrieveByCriteria->assignedBy = $id;
@@ -49,8 +48,8 @@ class Entity99RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
         $retrieveByCriteria->dateCreatedTo = new \DateTimeImmutable('2020-02-02 02:02:02');
         $retrieveByCriteria->dateModifiedFrom = new \DateTimeImmutable('2020-02-01 01:01:01');
         $retrieveByCriteria->dateModifiedTo = new \DateTimeImmutable('2020-02-01 02:02:02');
-        $retrieveByCriteria->sortByDateCreated = SortEnum::ASC;
-        $retrieveByCriteria->sortByDateModified = SortEnum::ASC;
+        $retrieveByCriteria->sortDateCreatedASC = true;
+        $retrieveByCriteria->sortDateModifiedASC = true;
         $retrieveByCriteria->deleted = true;
         $retrieveByCriteria->limit = 1;
         $retrieveByCriteria->offset = 2;
@@ -98,7 +97,7 @@ class Entity99RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
     {
         $id = new UUID();
 
-        $retrieveByCriteria = Entity99RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $retrieveByCriteria = Entity99RetrieveByCriteriaDAO::new(self::$container);
         $retrieveByCriteria->serve();
 
         self::assertNotEmpty(self::$qb);
@@ -121,7 +120,7 @@ class Entity99RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
             $this->prepareRow(),
         ];
 
-        $findMany = Entity99RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $findMany = Entity99RetrieveByCriteriaDAO::new(self::$container);
         $findMany->expectOne = false;
         $findMany->allowEmptyResult = true;
         $findMany->serve();
@@ -134,7 +133,7 @@ class Entity99RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
 
     public function testEntity99FindManyByCriteriaDAONotFound(): void
     {
-        $findMany = Entity99RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $findMany = Entity99RetrieveByCriteriaDAO::new(self::$container);
         $findMany->expectOne = false;
         $findMany->allowEmptyResult = true;
         $findMany->serve();
@@ -144,7 +143,7 @@ class Entity99RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
 
     public function testEntity99FindOneByCriteriaDAOEmpty(): void
     {
-        $findOne = Entity99RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $findOne = Entity99RetrieveByCriteriaDAO::new(self::$container);
         $findOne->expectOne = true;
         $findOne->allowEmptyResult = true;
         $findOne->serve();
@@ -158,7 +157,7 @@ class Entity99RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
             $this->prepareRow(),
         ];
 
-        $findOne = Entity99RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $findOne = Entity99RetrieveByCriteriaDAO::new(self::$container);
         $findOne->expectOne = true;
         $findOne->allowEmptyResult = true;
         $findOne->serve();
@@ -176,7 +175,7 @@ class Entity99RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
             $this->prepareRow(),
         ];
 
-        $findOne = Entity99RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $findOne = Entity99RetrieveByCriteriaDAO::new(self::$container);
         $findOne->expectOne = true;
         $findOne->allowEmptyResult = true;
         $findOne->serve();
@@ -186,7 +185,7 @@ class Entity99RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(Entity99EntityNotFoundException::class);
 
-        $getOne = Entity99RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $getOne = Entity99RetrieveByCriteriaDAO::new(self::$container);
         $getOne->expectOne = true;
         $getOne->allowEmptyResult = false;
         $getOne->serve();
@@ -196,7 +195,7 @@ class Entity99RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(Entity99EntitiesNotFoundException::class);
 
-        $getMany = Entity99RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $getMany = Entity99RetrieveByCriteriaDAO::new(self::$container);
         $getMany->expectOne = false;
         $getMany->allowEmptyResult = false;
         $getMany->serve();
@@ -209,7 +208,7 @@ class Entity99RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
             $this->prepareRow(),
         ];
 
-        $getMany = Entity99RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $getMany = Entity99RetrieveByCriteriaDAO::new(self::$container);
         $getMany->expectOne = false;
         $getMany->allowEmptyResult = false;
         $getMany->serve();
@@ -226,7 +225,7 @@ class Entity99RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
             $this->prepareRow(),
         ];
 
-        $getOne = Entity99RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $getOne = Entity99RetrieveByCriteriaDAO::new(self::$container);
         $getOne->expectOne = true;
         $getOne->allowEmptyResult = false;
         $getOne->serve();
@@ -244,19 +243,17 @@ class Entity99RetrieveByCriteriaDAOTest extends \PHPUnit\Framework\TestCase
             $this->prepareRow(),
         ];
 
-        $getOne = Entity99RetrieveByCriteriaDAO::new($this->container($this->mocks()));
+        $getOne = Entity99RetrieveByCriteriaDAO::new(self::$container);
         $getOne->expectOne = true;
         $getOne->allowEmptyResult = false;
         $getOne->serve();
     }
 
-    public function mocks(): \Closure
+    #[\Override]
+    public function mocks(ContainerInterface $c): array
     {
-        return fn(ContainerInterface $container) => [
-            'entities' => [
-                'entity99lc' => Entity99Entity::class,
-            ],
-            Entity99RetrieveByCriteriaDAO::class => fn($container) => new class($container) extends Entity99RetrieveByCriteriaDAO {
+        return [
+            Entity99RetrieveByCriteriaDAO::class => fn() => new class($c) extends Entity99RetrieveByCriteriaDAO {
 
                 use \Tests\TestDatabaseConnectionTrait;
 

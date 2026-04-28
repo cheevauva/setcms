@@ -17,5 +17,5 @@ class DatabaseDebugEvent
         
     }
 
-    use \SetCMS\Traits\EventTrait;
+    use \SetCMS\Traits\TraitsEvent;
 }

@@ -4,32 +4,45 @@ declare(strict_types=1);
 
 namespace Module\UserSession\DAO;
 
-use SetCMS\DAO\EntityRetrieveManyByCriteriaDAO;
 use Module\UserSession\UserSessionEntity;
 use Module\UserSession\Exception\UserSessionNotFoundException;
+use Module\UserSession\Mapper\UserSessionFromRowMapper;
 
-class UserSessionRetrieveManyByCriteriaDAO extends EntityRetrieveManyByCriteriaDAO
+class UserSessionRetrieveManyByCriteriaDAO extends \UUA\DAO
 {
 
-    use UserSessionGenericDAO;
+    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaTrait;
+    use \Module\UserSession\Traits\UserSessionDbalDAOTrait;
 
     /**
      * @var UserSessionEntity[]
      */
-    public array $sessions; 
-    public ?UserSessionEntity $session;
+    public array $userSessions;
+    public UserSessionEntity $userSession;
+    public ?UserSessionEntity $userSessionOrNull;
 
-    public function serve(): void
+    #[\Override]
+    protected function entitiesNotFoundException(): \Throwable
     {
-        parent::serve();
-
-        $this->session = $this->first ? UserSessionEntity::as($this->first) : null;
-        $this->sessions = UserSessionEntity::manyAs($this->entities);
+        return new UserSessionNotFoundException();
     }
 
     #[\Override]
-    protected function notFoundExcecption(): \Throwable
+    protected function entityExpectOneButReceivedTooMuchException(): \Throwable
     {
-        throw new UserSessionNotFoundException();
+        return new UserSessionNotFoundException();
+    }
+
+    #[\Override]
+    protected function entityNotFoundException(): \Throwable
+    {
+        return new UserSessionNotFoundException();
+    }
+
+    #[\Override]
+    protected function handleRows(array $rows): void
+    {
+        $this->userSessions = array_map(fn($row) => UserSessionFromRowMapper::call($this->container, $row)->userSession, $rows);
+        $this->userSessions ? $this->userSession = $this->userSessionOrNull = $this->userSessions[0] : null;
     }
 }

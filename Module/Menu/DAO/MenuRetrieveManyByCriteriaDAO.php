@@ -4,32 +4,44 @@ declare(strict_types=1);
 
 namespace Module\Menu\DAO;
 
-use SetCMS\DAO\EntityRetrieveByIdDAO;
 use Module\Menu\Entity\MenuEntity;
 use Module\Menu\Exception\MenuNotFoundException;
+use Module\Menu\Mapper\MenuFromRowMapper;
 
-class MenuRetrieveManyByCriteriaDAO extends EntityRetrieveByIdDAO
+class MenuRetrieveManyByCriteriaDAO extends \UUA\DAO
 {
 
-    use MenuCommonDAO;
+    use \Module\Menu\Traits\MenuDbalDAOTrait;
+    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaTrait;
 
     /**
-     * @var MenuEntity[]
+     * @var array<MenuEntity>
      */
     public array $menus;
-    public ?MenuEntity $menu;
+    public MenuEntity $menu;
+    public ?MenuEntity $menuOrNull = null;
 
     #[\Override]
-    public function serve(): void
+    protected function handleRows(array $rows): void
     {
-        parent::serve();
-
-        $this->menu = $this->first ? MenuEntity::as($this->first) : null;
-        $this->menus = MenuEntity::manyAs($this->entities);
+        $this->menus = array_map(fn($row) => MenuFromRowMapper::call($this->container, $row)->menu, $rows);
+        $this->menus ? $this->menu = $this->menuOrNull = $this->menus[0] : null;
     }
 
     #[\Override]
-    protected function notFoundExcecption(): \Throwable
+    protected function entitiesNotFoundException(): \Throwable
+    {
+        return new MenuNotFoundException();
+    }
+
+    #[\Override]
+    protected function entityExpectOneButReceivedTooMuchException(): \Throwable
+    {
+        return new MenuNotFoundException();
+    }
+
+    #[\Override]
+    protected function entityNotFoundException(): \Throwable
     {
         return new MenuNotFoundException();
     }

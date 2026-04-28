@@ -9,7 +9,7 @@ use Module\Module99\Mapper\Entity99ToRowMapper;
 class Entity99UpdateDAO extends \UUA\DAO
 {
 
-    use \SetCMS\DAO\EntityUpdateDAOTrait;
+    use \SetCMS\DAO\DAOEntityUpdateTrait;
     use \Module\Module99\Traits\Entity99CallTrait;
     use \Module\Module99\Traits\Entity99DbalDAOTrait;
 
@@ -17,11 +17,5 @@ class Entity99UpdateDAO extends \UUA\DAO
     protected function row(): array
     {
         return Entity99ToRowMapper::call($this->container, $this->entity99)->row;
-    }
-
-    #[\Override]
-    protected function id(): string
-    {
-        return (string) $this->entity99->id;
     }
 }

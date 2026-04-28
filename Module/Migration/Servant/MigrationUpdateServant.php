@@ -7,7 +7,7 @@ namespace Module\Migration\Servant;
 use Module\Migration\VO\MigrationCandidateVO;
 use Module\Migration\Entity\MigrationEntity;
 use Module\Migration\DAO\MigrationRunDAO;
-use Module\Migration\DAO\MigrationSaveDAO;
+use Module\Migration\DAO\MigrationCreateDAO;
 use SetCMS\Database\Database;
 
 class MigrationUpdateServant extends \UUA\Servant
@@ -29,14 +29,16 @@ class MigrationUpdateServant extends \UUA\Servant
         ]);
         $run->serve();
 
-        $migration = $this->migration = new MigrationEntity();
+        $migration = new MigrationEntity();
         $migration->version = $this->candidate->version;
         $migration->executedAt = new \DateTimeImmutable;
         $migration->executionTime = intval(microtime(true) - $start);
 
-        $save = MigrationSaveDAO::new($this->container);
+        $save = MigrationCreateDAO::new($this->container);
         $save->migration = $migration;
         $save->db = $this->db;
         $save->serve();
+        
+        $this->migration = $migration;
     }
 }

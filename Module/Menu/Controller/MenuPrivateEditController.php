@@ -31,7 +31,9 @@ class MenuPrivateEditController extends ControllerViaPSR7
 
         if ($object instanceof MenuRetrieveManyByCriteriaDAO) {
             $object->id = $this->id;
-            $object->orThrow = true;
+            $object->expectOne = true;
+            $object->allowEmptyResult = false;
+            $object->limit = 1;
         }
     }
 
@@ -41,7 +43,7 @@ class MenuPrivateEditController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof MenuRetrieveManyByCriteriaDAO) {
-            $this->menu = MenuEntity::as($object->menu);
+            $this->menu = $object->menu;
         }
     }
 }

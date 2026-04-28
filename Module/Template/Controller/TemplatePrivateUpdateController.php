@@ -7,7 +7,7 @@ namespace Module\Template\Controller;
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Template\Entity\TemplateEntity;
 use Module\Template\DAO\TemplateRetrieveManyByCriteriaDAO;
-use Module\Template\Servant\TemplateUpdateServant;
+use Module\Template\DAO\TemplateUpdateDAO;
 use Module\Template\View\TemplatePrivateUpdateView;
 
 class TemplatePrivateUpdateController extends ControllerViaPSR7
@@ -21,7 +21,7 @@ class TemplatePrivateUpdateController extends ControllerViaPSR7
     {
         return [
             TemplateRetrieveManyByCriteriaDAO::class,
-            TemplateUpdateServant::class,
+            TemplateUpdateDAO::class,
         ];
     }
 
@@ -52,11 +52,14 @@ class TemplatePrivateUpdateController extends ControllerViaPSR7
 
         if ($object instanceof TemplateRetrieveManyByCriteriaDAO) {
             $object->id = $this->newtemplate->id;
-            $object->orThrow = true;
+            $object->expectOne = true;
+            $object->limit = 1;
+            $object->allowEmptyResult = false;
         }
 
-        if ($object instanceof TemplateUpdateServant) {
+        if ($object instanceof TemplateUpdateDAO) {
             $object->template = $this->template;
+            $object->template->template = $this->newtemplate->template;
         }
 
         if ($object instanceof TemplatePrivateUpdateView) {
@@ -70,8 +73,7 @@ class TemplatePrivateUpdateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof TemplateRetrieveManyByCriteriaDAO) {
-            $this->template = TemplateEntity::as($object->template);
-            $this->template->template = $this->newtemplate->template;
+            $this->template = $object->template;
         }
     }
 }

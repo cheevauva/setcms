@@ -7,7 +7,7 @@ use SetCMS\Controller\ControllerViaPSR7;
 class ControllerOnBeforeServeEvent extends \UUA\Event
 {
 
-    use \SetCMS\Traits\EventTrait;
+    use \SetCMS\Traits\TraitsEvent;
 
     public ControllerViaPSR7 $controller;
 

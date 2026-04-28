@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Menu\Controller;
 
 use Module\Menu\DAO\MenuRetrieveManyByCriteriaDAO;
-use Module\Menu\DAO\MenuSaveDAO;
+use Module\Menu\DAO\MenuUpdateDAO;
 use Module\Menu\Entity\MenuEntity;
 use Module\Menu\View\MenuPrivateUpdateView;
 use Module\Menu\Exception\MenuParamsInvalidJsonException;
@@ -21,7 +21,7 @@ class MenuPrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
     {
         return [
             MenuRetrieveManyByCriteriaDAO::class,
-            MenuSaveDAO::class,
+            MenuUpdateDAO::class,
         ];
     }
 
@@ -63,7 +63,7 @@ class MenuPrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
             $object->id = $this->newMenu->id;
         }
 
-        if ($object instanceof MenuSaveDAO) {
+        if ($object instanceof MenuUpdateDAO) {
             $object->menu = $this->menu;
         }
         

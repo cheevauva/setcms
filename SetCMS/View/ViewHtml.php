@@ -17,9 +17,9 @@ abstract class ViewHtml extends View
 
     use \UUA\Traits\EnvTrait;
     use \UUA\Traits\EventDispatcherTrait;
-    use \SetCMS\Traits\RouterTrait;
-    use \SetCMS\Traits\ResponseTrait;
-    use \SetCMS\Traits\ServerRequestFactoryTrait;
+    use \SetCMS\Traits\TraitsRouter;
+    use \SetCMS\Traits\TraitsResponse;
+    use \SetCMS\Traits\TraitsServerRequestFactory;
 
     protected ?string $templateName = null;
 

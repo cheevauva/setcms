@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Module\UserResetToken\Servant;
 
-use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use SetCMS\UUID;
 use Module\User\DAO\UserRetrieveManyByCriteriaDAO;
@@ -13,16 +12,14 @@ use Module\UserResetToken\Servant\UserResetTokenSendToUserServant;
 use Module\UserResetToken\Servant\UserResetTokenSendToEmailServant;
 use Module\UserResetToken\Entity\UserResetTokenEntity;
 use Module\UserResetToken\DAO\UserResetTokenRetrieveManyByCriteriaDAO;
-use Module\UserResetToken\DAO\UserResetTokenSaveDAO;
+use Module\UserResetToken\Servant\UserResetTokenSaveServant;
 use Module\Template\Servant\TemplateRenderUserResetPasswordServant;
 use Module\Template\VO\TemplateRenderedVO;
 use Module\Email\Servant\EmailSendServant;
 use Module\Email\Entity\EmailEntity;
 
-class UserResetTokenSendTest extends TestCase
+class UserResetTokenSendTest extends \Tests\TestEasy
 {
-
-    use \Tests\TestTrait;
 
     public static string $userId = '4c751162-8b67-4f22-b431-ed24c17f0048';
     public static string $userResetToken = '2b9d1c09-b417-43f5-bd7b-5b4db4dd6620';
@@ -38,7 +35,7 @@ class UserResetTokenSendTest extends TestCase
         UserResetTokenSendTest::$userResetTokenRetrived = null;
         UserResetTokenSendTest::$userResetTokenSaved = null;
 
-        $sendToEmail = UserResetTokenSendToEmailServant::new($this->container($this->mocks()));
+        $sendToEmail = UserResetTokenSendToEmailServant::new(self::$container);
         $sendToEmail->email = 'admin1@admin';
         $sendToEmail->serve();
 
@@ -52,7 +49,7 @@ class UserResetTokenSendTest extends TestCase
         UserResetTokenSendTest::$userResetTokenSaved = null;
         UserResetTokenSendTest::$sendedEmail = null;
 
-        $sendToUser = UserResetTokenSendToUserServant::new($this->container($this->mocks()));
+        $sendToUser = UserResetTokenSendToUserServant::new(self::$container);
         $sendToUser->user = self::newUser();
         $sendToUser->serve();
 
@@ -71,7 +68,7 @@ class UserResetTokenSendTest extends TestCase
         UserResetTokenSendTest::$userResetTokenSaved = null;
         UserResetTokenSendTest::$sendedEmail = null;
 
-        $sendToUser2 = UserResetTokenSendToUserServant::new($this->container($this->mocks()));
+        $sendToUser2 = UserResetTokenSendToUserServant::new(self::$container);
         $sendToUser2->user = self::newUser();
         $sendToUser2->serve();
 
@@ -104,15 +101,16 @@ class UserResetTokenSendTest extends TestCase
         return $userResetToken;
     }
 
-    public function mocks(): \Closure
+    #[\Override]
+    public function mocks(ContainerInterface $c): array
     {
-        return fn(ContainerInterface $container) => [
+        return [
             'env' => [
                 'EMAIL_ADDRESS_FOR_SENDING_SERVICE_MESSAGES' => 'test@test',
                 'USER_RESET_TOKEN_REFRESH_EXISTS' => UserResetTokenSendTest::$userResetTokenRefreshExists,
                 'USER_RESET_TOKEN_EXPIRED_SECONDS' => 120,
             ],
-            EmailSendServant::class => fn($container) => new class($container) extends EmailSendServant {
+            EmailSendServant::class => fn() => new class($c) extends EmailSendServant {
 
                 #[\Override]
                 public function serve(): void
@@ -120,7 +118,7 @@ class UserResetTokenSendTest extends TestCase
                     UserResetTokenSendTest::$sendedEmail = $this->email;
                 }
             },
-            TemplateRenderUserResetPasswordServant::class => fn($container) => new class($container) extends TemplateRenderUserResetPasswordServant {
+            TemplateRenderUserResetPasswordServant::class => fn() => new class($c) extends TemplateRenderUserResetPasswordServant {
 
                 #[\Override]
                 public function serve(): void
@@ -130,7 +128,7 @@ class UserResetTokenSendTest extends TestCase
                     $this->templateRendered->content = $this->userResetToken->id->uuid;
                 }
             },
-            UserResetTokenSaveDAO::class => fn($container) => new class($container) extends UserResetTokenSaveDAO {
+            UserResetTokenSaveServant::class => fn() => new class($c) extends UserResetTokenSaveServant {
 
                 #[\Override]
                 public function serve(): void
@@ -138,7 +136,7 @@ class UserResetTokenSendTest extends TestCase
                     UserResetTokenSendTest::$userResetTokenSaved = $this->userResetToken;
                 }
             },
-            UserResetTokenRetrieveManyByCriteriaDAO::class => fn($container) => new class($container) extends UserResetTokenRetrieveManyByCriteriaDAO {
+            UserResetTokenRetrieveManyByCriteriaDAO::class => fn() => new class($c) extends UserResetTokenRetrieveManyByCriteriaDAO {
 
                 #[\Override]
                 public function serve(): void
@@ -151,7 +149,7 @@ class UserResetTokenSendTest extends TestCase
                     }
                 }
             },
-            UserRetrieveManyByCriteriaDAO::class => fn($container) => new class($container) extends UserRetrieveManyByCriteriaDAO {
+            UserRetrieveManyByCriteriaDAO::class => fn() => new class($c) extends UserRetrieveManyByCriteriaDAO {
 
                 #[\Override]
                 public function serve(): void

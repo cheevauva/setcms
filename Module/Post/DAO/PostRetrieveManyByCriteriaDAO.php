@@ -14,7 +14,8 @@ use Module\Post\Mapper\PostFromRowMapper;
 class PostRetrieveManyByCriteriaDAO extends \UUA\DAO
 {
 
-    use \SetCMS\DAO\EntityRetrieveByCriteriaDAOTrait;
+    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaTrait;
+    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaBasicTrait;
     use \Module\Post\Traits\PostDbalDAOTrait;
 
     public string $slug;
@@ -26,10 +27,11 @@ class PostRetrieveManyByCriteriaDAO extends \UUA\DAO
     public protected(set) PostEntity $post;
     public protected(set) ?PostEntity $postOrNull;
 
-    #[\Override]
     protected function createQb(): DatabaseQueryBuilder
     {
         $qb = $this->createQuery();
+        
+        $this->addCriteriaBasic($qb);
 
         if (isset($this->slug)) {
             $qb->andWhere('slug = :slug');

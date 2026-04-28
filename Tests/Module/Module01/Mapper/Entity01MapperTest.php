@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 namespace Tests\Module\Module01\Mapper;
 
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Module\Module01\Mapper\Entity01ToRowMapper;
 use Module\Module01\Mapper\Entity01FromRowMapper;
 use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\Exception\Entity01MapperNotFoundKeyInRowException;
 
-class Entity01MapperTest extends TestCase
+class Entity01MapperTest extends \Tests\TestEasy
 {
 
-    use \Tests\TestTrait;
     use \Tests\Module\Module01\Entity01HelperTestTrait;
 
     public function testEntity01ToRowMapperSuccess(): void
     {
-        $entityToRow = Entity01ToRowMapper::new($this->container($this->mocks()));
+        $entityToRow = Entity01ToRowMapper::new(self::$container);
         $entityToRow->entity01 = $this->prepareEntity();
         $entityToRow->serve();
 
@@ -28,7 +26,7 @@ class Entity01MapperTest extends TestCase
 
     public function testEntity01FromRowMapperSuccess(): void
     {
-        $entityFromRow = Entity01FromRowMapper::new($this->container($this->mocks()));
+        $entityFromRow = Entity01FromRowMapper::new(self::$container);
         $entityFromRow->row = $this->prepareRow();
         $entityFromRow->serve();
 
@@ -44,7 +42,7 @@ class Entity01MapperTest extends TestCase
 
         unset($row[$missingKey]);
 
-        $entityFromRow = Entity01FromRowMapper::new($this->container($this->mocks()));
+        $entityFromRow = Entity01FromRowMapper::new(self::$container);
         $entityFromRow->row = $row;
         $entityFromRow->serve();
 
@@ -60,18 +58,6 @@ class Entity01MapperTest extends TestCase
             ['id'],
             ['entity_type'],
             ['field01'],
-        ];
-    }
-
-    /**
-     * @return \Closure
-     */
-    protected function mocks(): \Closure
-    {
-        return fn() => [
-            'entities' => [
-                'entity01lc' => Entity01Entity::class,
-            ],
         ];
     }
 }

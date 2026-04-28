@@ -4,17 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Module\Module01\DAO;
 
-use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use SetCMS\Database\DatabaseQueryBuilder;
 use Module\Module01\Module01Constants;
 use Module\Module01\DAO\Entity01UpdateDAO;
 use Module\Module01\Entity\Entity01Entity;
 
-class Entity01UpdateDAOTest extends TestCase
+class Entity01UpdateDAOTest extends \Tests\TestEasy
 {
 
-    use \Tests\TestTrait;
     use \Tests\Module\Module01\Entity01HelperTestTrait;
 
     public static ?DatabaseQueryBuilder $qb = null;
@@ -27,7 +25,7 @@ class Entity01UpdateDAOTest extends TestCase
 
     public function testEntity01UpdateDAO(): void
     {
-        $create = Entity01UpdateDAO::new($this->container($this->mocks()));
+        $create = Entity01UpdateDAO::new(self::$container);
         $create->entity01 = $this->prepareEntity();
         $create->serve();
 
@@ -53,19 +51,15 @@ class Entity01UpdateDAOTest extends TestCase
         self::assertEquals($this->prepareRow(), $params);
     }
 
-    /**
-     * @return \Closure
-     */
-    protected function mocks(): \Closure
+    #[\Override]
+    protected function mocks(ContainerInterface $c): array
     {
-        return fn(ContainerInterface $container) => [
-            'entities' => [
-                'entity01lc' => Entity01Entity::class,
-            ],
-            Entity01UpdateDAO::class => fn($container) => new class($container) extends Entity01UpdateDAO {
+        return [
+            Entity01UpdateDAO::class => fn() => new class($c) extends Entity01UpdateDAO {
 
                 use \Tests\TestDatabaseConnectionTrait;
 
+                #[\Override]
                 public function serve(): void
                 {
                     Entity01UpdateDAOTest::$qb = $this->createQuery();

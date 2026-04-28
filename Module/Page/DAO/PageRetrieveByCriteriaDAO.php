@@ -14,7 +14,7 @@ use Module\Page\Exception\PageEntityExpectOneButReceivedTooMuchException;
 class PageRetrieveByCriteriaDAO extends \UUA\DAO
 {
 
-    use \SetCMS\DAO\EntityRetrieveByCriteriaDAOTrait;
+    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaTrait;
     use \Module\Page\Traits\PageDbalDAOTrait;
 
     /**
@@ -33,7 +33,6 @@ class PageRetrieveByCriteriaDAO extends \UUA\DAO
         $this->pages ? $this->page = $this->pageOrNull = $this->pages[0] : null;
     }
 
-    #[\Override]
     protected function createQb(): DatabaseQueryBuilder
     {
         $qb = $this->createQuery();

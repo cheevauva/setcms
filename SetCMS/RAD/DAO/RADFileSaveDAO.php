@@ -21,7 +21,7 @@ class RADFileSaveDAO extends \UUA\DAO
     {
         $path = $this->fileOrDir->path;
 
-        if (RADFsDirVO::is($this->fileOrDir) && !$this->filesystem->isDir($path)) {
+        if ($this->fileOrDir instanceof RADFsDirVO && !$this->filesystem->isDir($path)) {
             $this->filesystem->makeDir($path, 0777, true);
             return;
         }

@@ -9,7 +9,7 @@ use SetCMS\View\View;
 
 class ViewJson extends View
 {
-    use \SetCMS\Traits\ResponseTrait;
+    use \SetCMS\Traits\TraitsResponse;
 
     public public(set) ServerRequestInterface $request;
 

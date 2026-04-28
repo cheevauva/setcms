@@ -10,7 +10,7 @@ use Module\Module01\Entity\Entity01Entity;
 class Entity01GetByIdDAO extends \UUA\DAO
 {
 
-    use \SetCMS\Traits\CallWithUUIDTrait;
+    use \SetCMS\Traits\TraitsCallWithUUID;
 
     public protected(set) Entity01Entity $entity01;
 

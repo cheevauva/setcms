@@ -10,7 +10,7 @@ use Module\Post\DAO\PostUpdateDAO;
 class PostDeleteServant extends \UUA\Servant
 {
 
-    use \SetCMS\Traits\CallWithUUIDTrait;
+    use \SetCMS\Traits\TraitsCallWithUUID;
 
     #[\Override]
     public function serve(): void

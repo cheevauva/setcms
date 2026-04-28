@@ -7,7 +7,7 @@ namespace Module\Email\Controller;
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Email\Entity\EmailEntity;
 use Module\Email\DAO\EmailRetrieveManyByCriteriaDAO;
-use Module\Email\Servant\EmailUpdateServant;
+use Module\Email\DAO\EmailUpdateDAO;
 use Module\Email\View\EmailPrivateUpdateView;
 
 class EmailPrivateUpdateController extends ControllerViaPSR7
@@ -21,7 +21,7 @@ class EmailPrivateUpdateController extends ControllerViaPSR7
     {
         return [
             EmailRetrieveManyByCriteriaDAO::class,
-            EmailUpdateServant::class,
+            EmailUpdateDAO::class,
         ];
     }
 
@@ -50,11 +50,14 @@ class EmailPrivateUpdateController extends ControllerViaPSR7
 
         if ($object instanceof EmailRetrieveManyByCriteriaDAO) {
             $object->id = $this->newemail->id;
-            $object->orThrow = true;
+            $object->expectOne = true;
+            $object->allowEmptyResult = false;
+            $object->limit = 1;
         }
 
-        if ($object instanceof EmailUpdateServant) {
+        if ($object instanceof EmailUpdateDAO) {
             $object->email = $this->email;
+            $object->email->subject = $this->newemail->subject;
         }
 
         if ($object instanceof EmailPrivateUpdateView) {
@@ -68,8 +71,7 @@ class EmailPrivateUpdateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof EmailRetrieveManyByCriteriaDAO) {
-            $this->email = EmailEntity::as($object->email);
-            $this->email->subject = $this->newemail->subject;
+            $this->email = $object->email;
         }
     }
 }

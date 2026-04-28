@@ -11,6 +11,7 @@ class UserResetTokenSendToEmailServant extends \UUA\Servant
 {
 
     public string $email;
+    public protected(set) bool $success = false;
 
     #[\Override]
     public function serve(): void
@@ -18,15 +19,18 @@ class UserResetTokenSendToEmailServant extends \UUA\Servant
         $retrieveUser = UserRetrieveManyByCriteriaDAO::new($this->container);
         $retrieveUser->email = $this->email;
         $retrieveUser->limit = 1;
-        $retrieveUser->orThrow = false;
+        $retrieveUser->expectOne = true;
+        $retrieveUser->allowEmptyResult = true;
         $retrieveUser->serve();
 
-        if (empty($retrieveUser->user)) {
+        if (empty($retrieveUser->userOrNull)) {
             return;
         }
 
         $sendToUser = UserResetTokenSendToUserServant::new($this->container);
         $sendToUser->user = $retrieveUser->user;
         $sendToUser->serve();
+
+        $this->success = true;
     }
 }

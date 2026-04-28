@@ -9,7 +9,7 @@ use Module\Module99\Mapper\Entity99ToRowMapper;
 class Entity99CreateDAO extends \UUA\DAO
 {
 
-    use \SetCMS\DAO\EntityCreateDAOTrait;
+    use \SetCMS\DAO\DAOEntityCreateTrait;
     use \Module\Module99\Traits\Entity99CallTrait;
     use \Module\Module99\Traits\Entity99DbalDAOTrait;
 

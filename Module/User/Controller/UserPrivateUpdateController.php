@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\User\Controller;
 
 use Module\User\DAO\UserRetrieveManyByCriteriaDAO;
-use Module\User\DAO\UserSaveDAO;
+use Module\User\DAO\UserUpdateDAO;
 use Module\User\Entity\UserEntity;
 use Module\User\View\UserPrivateUpdateView;
 use Module\User\Enum\UserRoleEnum;
@@ -21,7 +21,7 @@ class UserPrivateUpdateController extends UserPrivateController
     {
         return [
             UserRetrieveManyByCriteriaDAO::class,
-            UserSaveDAO::class,
+            UserUpdateDAO::class,
         ];
     }
 
@@ -67,7 +67,7 @@ class UserPrivateUpdateController extends UserPrivateController
             $object->user = UserEntity::as($this->user);
         }
 
-        if ($object instanceof UserSaveDAO) {
+        if ($object instanceof UserUpdateDAO) {
             $object->user = $this->user;
         }
     }

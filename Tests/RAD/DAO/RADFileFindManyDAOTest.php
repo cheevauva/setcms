@@ -9,16 +9,12 @@ use SetCMS\RAD\DAO\RADFileFindManyDAO;
 use SetCMS\RAD\VO\RADFsDirVO;
 use SetCMS\RAD\VO\RADFsFileVO;
 
-class RADFileFindManyDAOTest extends \PHPUnit\Framework\TestCase
+class RADFileFindManyDAOTest extends \Tests\TestEasy
 {
-
-    use \Tests\TestTrait;
 
     public function testRADFileFindManyDAO(): void
     {
-        $container = $this->container($this->mocks());
-
-        $fs = FilesystemMemory::singleton($container);
+        $fs = FilesystemMemory::singleton(self::$container);
         $fs->makeDir('root/dir1');
         $fs->makeDir('root/dir3');
         $fs->makeDir('root/dir1/subdir1');
@@ -27,7 +23,7 @@ class RADFileFindManyDAOTest extends \PHPUnit\Framework\TestCase
         $fs->filePutContents('root/dir2/file1', 'content3');
         $fs->filePutContents('root/dir2/file2', 'content4');
 
-        $findFiles = RADFileFindManyDAO::new($container);
+        $findFiles = RADFileFindManyDAO::new(self::$container);
         $findFiles->filesystem = $fs;
         $findFiles->rootPath = 'rootPath';
         $findFiles->scanDirs = [

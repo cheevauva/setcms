@@ -7,7 +7,7 @@ namespace SetCMS\View;
 abstract class ViewExceptionHandler extends View
 {
 
-    use \SetCMS\Traits\ResponseTrait;
+    use \SetCMS\Traits\TraitsResponse;
 
     public \Throwable $ex;
     protected int $statusCode;

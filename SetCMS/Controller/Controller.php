@@ -19,7 +19,7 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
     use \UUA\Traits\EventDispatcherTrait;
     use \UUA\Traits\EnvTrait;
     use \UUA\Traits\WrappingTrait;
-    use \SetCMS\Traits\ValidationTrait;
+    use \SetCMS\Traits\TraitsValidation;
 
     public string $name;
 

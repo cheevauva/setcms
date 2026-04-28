@@ -15,7 +15,7 @@ use SetCMS\Router\Router;
 abstract class TemplateRenderServant extends \UUA\Servant
 {
     use \UUA\Traits\EnvTrait;
-    use \SetCMS\Traits\RouterTrait;
+    use \SetCMS\Traits\TraitsRouter;
 
     protected string $slug;
     public TemplateRenderedVO $templateRendered;
@@ -73,9 +73,10 @@ abstract class TemplateRenderServant extends \UUA\Servant
         $templateByAlias = TemplateRetrieveManyByCriteriaDAO::new($this->container);
         $templateByAlias->slug = $this->slug;
         $templateByAlias->limit = 1;
-        $templateByAlias->orThrow = true;
+        $templateByAlias->expectOne = true;
+        $templateByAlias->allowEmptyResult = false;
         $templateByAlias->serve();
 
-        return TemplateEntity::as($templateByAlias->template);
+        return $templateByAlias->template;
     }
 }

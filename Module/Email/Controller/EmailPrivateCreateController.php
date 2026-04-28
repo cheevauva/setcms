@@ -6,7 +6,7 @@ namespace Module\Email\Controller;
 
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Email\Entity\EmailEntity;
-use Module\Email\Servant\EmailCreateServant;
+use Module\Email\DAO\EmailCreateDAO;
 use Module\Email\View\EmailPrivateCreateView;
 
 class EmailPrivateCreateController extends ControllerViaPSR7
@@ -18,7 +18,7 @@ class EmailPrivateCreateController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
-            EmailCreateServant::class,
+            EmailCreateDAO::class,
         ];
     }
 
@@ -48,7 +48,7 @@ class EmailPrivateCreateController extends ControllerViaPSR7
     {
         parent::to($object);
 
-        if ($object instanceof EmailCreateServant) {
+        if ($object instanceof EmailCreateDAO) {
             $object->email = $this->email;
         }
 
