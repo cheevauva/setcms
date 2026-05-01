@@ -1,32 +1,16 @@
 INSERT INTO users 
 (
     id, 
-    entity_type, 
-    date_created,
-    date_modified,
-    created_by, 
-    assigned_by, 
-    modified_by, 
-    deleted,
     email,
     username,
     password, 
-    "role",
-    extra
+    user_role
 ) 
 VALUES 
 (
     'ADMIN_USER_UUID', 
-    'user', 
-    '2025-01-01', 
-    '2025-01-01', 
-    'ADMIN_USER_UUID', 
-    'ADMIN_USER_UUID', 
-    'ADMIN_USER_UUID', 
-    'f',
     'admin@admin',
     'admin', 
     '$2y$12$5tfZoh2e0GCjShqeVybxsOJI7PdPRGdge8sxz2q0MNiwTNjRimoqO', 
-    'admin', 
-    '{}'
+    'admin'
 );

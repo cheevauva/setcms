@@ -84,7 +84,6 @@ class MigrationUpServant extends Servant
 
                 $this->executedNew[] = $candidate;
             } catch (\Throwable $ex) {
-                var_dump($ex->getMessage());
                 $candidate->error = $ex;
 
                 $this->failded[] = $candidate;

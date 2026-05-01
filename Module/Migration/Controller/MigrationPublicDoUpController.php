@@ -7,6 +7,7 @@ namespace Module\Migration\Controller;
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\Migration\Servant\MigrationUpServant;
 use Module\Migration\View\MigrationPublicDoUpView;
+use Module\Migration\VO\MigrationCandidateVO;
 use SetCMS\Servant\SecretKeyServant;
 use SetCMS\Exception\SecretKeyException;
 
@@ -47,6 +48,25 @@ class MigrationPublicDoUpController extends ControllerViaPSR7
 
         if ($object instanceof MigrationUpServant) {
             $object->dbName = $this->dbName;
+        }
+    }
+
+    #[\Override]
+    public function from(object $object): void
+    {
+        parent::from($object);
+
+        if ($object instanceof MigrationUpServant) {
+            foreach ($object->failded as $fail) {
+                $fail = MigrationCandidateVO::as($fail);
+
+                $reflection = new \ReflectionClass($fail->error);
+                $property = $reflection->getProperty('message');
+                $property->setAccessible(true);
+                $property->setValue($fail->error, sprintf('%s: %s', $fail->file, $fail->error->getMessage()));
+                
+                $this->messages->attach($fail->error, 'secretKey');
+            }
         }
     }
 

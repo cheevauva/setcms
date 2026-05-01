@@ -16,7 +16,7 @@ class UserToRowMapper extends \UUA\Mapper
         $this->mappingDefault($this->user);
         $this->row['username'] = $this->user->username;
         $this->row['password'] = $this->user->password;
-        $this->row['role'] = $this->user->role->value;
+        $this->row['user_role'] = $this->user->role->value;
         $this->row['email'] = $this->user->email;
     }
 }

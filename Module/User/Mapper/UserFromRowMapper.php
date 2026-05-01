@@ -22,7 +22,7 @@ class UserFromRowMapper extends \UUA\Mapper
         $this->user->username = $this->string('username');
         $this->user->password = $this->string('password');
         $this->user->email = $this->string('email');
-        $this->user->role = UserRoleEnum::from($this->string('role'));
+        $this->user->role = UserRoleEnum::from($this->string('user_role'));
         
         $this->mappingDefault($this->user);
     }

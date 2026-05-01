@@ -6,5 +6,5 @@ namespace Module\Migration\View;
 
 class MigrationPublicDoUpView extends \SetCMS\View\ViewJson
 {
-    //put your code here
+
 }
