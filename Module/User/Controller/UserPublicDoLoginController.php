@@ -56,19 +56,17 @@ class UserPublicDoLoginController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $validationBody = $this->validation($this->request->getParsedBody());
-        $validationHeaders = $this->validation([
-            'device' => $this->request->getHeaderLine('user-agent')
-        ]);
+        $body = $this->validationBody();
+        $headers = $this->validationHeaders();
 
-        $this->email = $validationBody->string('email')->notEmpty()->val();
-        $this->password = $validationBody->string('password')->notEmpty()->val();
-        $this->device = $validationHeaders->string('device')->notEmpty()->val();
+        $this->email = $body->string('email')->notEmpty()->val();
+        $this->password = $body->string('password')->notEmpty()->val();
+        $this->device = $headers->string('user-agent')->notEmpty()->val();
 
         if ($this->useCaptcha) {
-            $this->captcha = $validationBody->uuid('captcha')->notEmpty()->val();
+            $this->captcha = $body->uuid('captcha')->notEmpty()->val();
         }
     }
 
@@ -91,8 +89,8 @@ class UserPublicDoLoginController extends ControllerViaPSR7
             $object->device = $this->device;
         }
 
-        if ($object instanceof UserPublicDoLoginView && isset($this->session)) {
-            $object->sessionId = (string) UserSessionEntity::as($this->session)->id;
+        if ($object instanceof UserPublicDoLoginView) {
+            $object->sessionId = $this->session->id->uuid;
         }
     }
 
@@ -104,7 +102,7 @@ class UserPublicDoLoginController extends ControllerViaPSR7
         if ($object instanceof UserLoginServant) {
             $this->user = $object->user;
         }
-        
+
         if ($object instanceof UserSessionCreateByUserServant) {
             $this->session = $object->session;
         }

@@ -34,13 +34,13 @@ class EmailPrivateUpdateController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $validation = $this->validation($this->request->getParsedBody());
+        $body = $this->validationBody();
 
         $this->newemail = new EmailEntity;
-        $this->newemail->id = $validation->uuid('email.id')->notEmpty()->val();
-        $this->newemail->subject = $validation->string('email.subject')->notEmpty()->val();
+        $this->newemail->id = $body->uuid('email.id')->notEmpty()->val();
+        $this->newemail->subject = $body->string('email.subject')->notEmpty()->val();
     }
 
     #[\Override]

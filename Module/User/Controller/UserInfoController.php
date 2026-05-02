@@ -13,7 +13,7 @@ class UserInfoController extends ControllerViaPSR7
     protected UserEntity $user;
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
         $this->user = $this->currentUser();
     }

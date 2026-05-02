@@ -31,11 +31,9 @@ class UserPublicLogoutController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $validationCookies = $this->validation($this->request->getCookieParams());
-
-        $this->token = $validationCookies->uuid('X-CSRF-Token')->notEmpty()->notQuiet()->val();
+        $this->token = $this->validationCookie()->uuid('X-CSRF-Token')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]

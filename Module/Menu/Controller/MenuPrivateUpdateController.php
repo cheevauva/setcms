@@ -36,16 +36,16 @@ class MenuPrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $validation = $this->validation($this->request->getParsedBody());
+        $body = $this->validationBody();
 
         $this->newMenu = new MenuEntity();
-        $this->newMenu->id = $validation->uuid('menu.id')->notEmpty()->val();
-        $this->newMenu->route = $validation->string('menu.route')->notEmpty()->val();
-        $this->newMenu->label = $validation->string('menu.label')->notEmpty()->val();
+        $this->newMenu->id = $body->uuid('menu.id')->notEmpty()->val();
+        $this->newMenu->route = $body->string('menu.route')->notEmpty()->val();
+        $this->newMenu->label = $body->string('menu.label')->notEmpty()->val();
 
-        $params = $validation->string('menu.params')->notEmpty()->val();
+        $params = $body->string('menu.params')->notEmpty()->val();
         
         if (!json_validate($params)) {
             throw new MenuParamsInvalidJsonException('Невалидный json');

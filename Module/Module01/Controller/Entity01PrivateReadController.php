@@ -33,11 +33,9 @@ class Entity01PrivateReadController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $validation = $this->validation($this->params);
-
-        $this->id = $validation->uuid('id')->notEmpty()->notQuiet()->val();
+        $this->id = $this->validationParams()->uuid('id')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]

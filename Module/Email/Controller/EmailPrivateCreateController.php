@@ -31,16 +31,14 @@ class EmailPrivateCreateController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $body = $this->request->getParsedBody() ?? [];
-
-        $validation = $this->validation($body);
-        $validation->array('email')->notEmpty()->validate();
+        $body = $this->validationBody();
+        $body->array('email')->notEmpty()->validate();
 
         $this->email = new EmailEntity();
-        $this->email->id = $validation->uuid('email.id')->val();
-        $this->email->subject = $validation->string('email.subject')->notEmpty()->val();
+        $this->email->id = $body->uuid('email.id')->val();
+        $this->email->subject = $body->string('email.subject')->notEmpty()->val();
     }
 
     #[\Override]

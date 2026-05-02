@@ -31,18 +31,16 @@ class PostPrivateCreateController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $body = $this->request->getParsedBody() ?? [];
-
-        $validation = $this->validation($body);
-        $validation->array('entity')->notEmpty()->validate();
+        $body = $this->validationBody();
+        $body->array('entity')->notEmpty()->validate();
 
         $this->post = new PostEntity();
-        $this->post->id = $validation->uuid('entity.id')->val();
-        $this->post->slug = $validation->string('entity.slug')->notEmpty()->val();
-        $this->post->title = $validation->string('entity.title')->notEmpty()->val();
-        $this->post->message = $validation->string('entity.message')->notEmpty()->val();
+        $this->post->id = $body->uuid('entity.id')->val();
+        $this->post->slug = $body->string('entity.slug')->notEmpty()->val();
+        $this->post->title = $body->string('entity.title')->notEmpty()->val();
+        $this->post->message = $body->string('entity.message')->notEmpty()->val();
     }
 
     #[\Override]

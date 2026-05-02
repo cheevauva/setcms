@@ -15,11 +15,11 @@ class MenuPublicReadBySlugController extends \SetCMS\Controller\ControllerViaPSR
      * @var array<mixed>
      */
     protected array $items = [];
-    
+
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $this->validation($this->request->getAttributes())->string('slug')->notQuiet()->val();
+        $this->slug = $this->validationParams()->string('slug')->notQuiet()->val();
     }
 
     #[\Override]
@@ -29,5 +29,4 @@ class MenuPublicReadBySlugController extends \SetCMS\Controller\ControllerViaPSR
             MenuRetrieveManyByCriteriaDAO::class,
         ];
     }
-
 }

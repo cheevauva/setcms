@@ -32,9 +32,9 @@ class PostPublicReadBySlugController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $this->slug = $this->validation($this->params)->string('slug')->notEmpty()->notQuiet()->val();
+        $this->slug = $this->validationParams()->string('slug')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]
@@ -45,7 +45,7 @@ class PostPublicReadBySlugController extends ControllerViaPSR7
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
             $object->slug = $this->slug;
             $object->limit = 1;
-            $object->expectOne = true; 
+            $object->expectOne = true;
             $object->allowEmptyResult = false;
         }
 

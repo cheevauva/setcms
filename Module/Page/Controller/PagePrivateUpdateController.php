@@ -34,15 +34,15 @@ class PagePrivateUpdateController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $validation = $this->validation($this->request->getParsedBody());
+        $body = $this->validationBody();
 
         $this->newPage = new PageEntity;
-        $this->newPage->id = $validation->uuid('entity.id')->notEmpty()->val();
-        $this->newPage->slug = $validation->string('entity.slug')->notEmpty()->val();
-        $this->newPage->title = $validation->string('entity.title')->notEmpty()->val();
-        $this->newPage->content = $validation->string('entity.content')->notEmpty()->val();
+        $this->newPage->id = $body->uuid('entity.id')->notEmpty()->val();
+        $this->newPage->slug = $body->string('entity.slug')->notEmpty()->val();
+        $this->newPage->title = $body->string('entity.title')->notEmpty()->val();
+        $this->newPage->content = $body->string('entity.content')->notEmpty()->val();
     }
 
     #[\Override]

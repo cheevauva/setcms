@@ -8,19 +8,70 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\View\View;
 use SetCMS\Responder;
-use UUA\Unit;
 use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
+use SetCMS\Validation\Validation;
+use SetCMS\View\ViewJsonErrorHandler;
+use SetCMS\View\ViewHtmlErrorHandler;
 
 abstract class ControllerViaPSR7 extends Controller
 {
 
     public ServerRequestInterface $request;
-    public protected(set) ResponseInterface $response;
+    public protected(set) ?ResponseInterface $response = null;
+
+    use \SetCMS\Traits\TraitsValidation;
 
     #[\Override]
     protected function process(): void
     {
-        // use $this->validate($this->request->getParsedBody() ?: [])
+        $this->fromRequest();
+    }
+
+    protected function fromRequest(): void
+    {
+        $this->validationBody();
+    }
+
+    protected function validationBody(): Validation
+    {
+        $body = $this->request->getParsedBody() ?: [];
+
+        if (!is_array($body)) {
+            throw new \Exception('body must be array');
+        }
+
+        return $this->validation($body);
+    }
+
+    protected function validationParams(): Validation
+    {
+        return $this->validation($this->params);
+    }
+
+    protected function validationQuery(): Validation
+    {
+        return $this->validation($this->request->getQueryParams());
+    }
+
+    protected function validationAttributes(): Validation
+    {
+        return $this->validation($this->request->getAttributes());
+    }
+
+    protected function validationHeaders(): Validation
+    {
+        $headers = [];
+
+        foreach ($this->request->getHeaders() as $name => $values) {
+            $headers[$name] = implode(', ', $values);
+        }
+
+        return $this->validation($headers);
+    }
+
+    protected function validationCookie(): Validation
+    {
+        return $this->validation($this->request->getCookieParams());
     }
 
     #[\Override]
@@ -54,7 +105,7 @@ abstract class ControllerViaPSR7 extends Controller
     }
 
     #[\Override]
-    protected function onBeforeServe(): void
+    protected function onBeforeProcess(): void
     {
         $onBeforeServe = new ControllerOnBeforeServeEvent();
         $onBeforeServe->controller = $this;
@@ -63,21 +114,33 @@ abstract class ControllerViaPSR7 extends Controller
         $onBeforeServe->dispatch($this->eventDispatcher());
     }
 
-    /**
-     * @return array<string|Unit>
-     */
     #[\Override]
-    protected function domainUnits(): array
+    protected function stopRunningViewUnits(): bool
     {
-        return [];
+        if (isset($this->response)) {
+            return true;
+        }
+
+        return parent::stopRunningViewUnits();
+    }
+
+    #[\Override]
+    protected function overrideViewUnits(array $viewUnits): array
+    {
+        array_unshift($viewUnits, $this->errorHandlerView());
+
+        return $viewUnits;
     }
 
     /**
-     * @return array<string|Unit>
+     * @return class-string
      */
-    #[\Override]
-    protected function viewUnits(): array
+    protected function errorHandlerView(): string
     {
-        return [];
+        if (str_contains($this->request->getHeaderLine('Accept'), 'json')) {
+            return ViewJsonErrorHandler::class;
+        }
+
+        return ViewHtmlErrorHandler::class;
     }
 }

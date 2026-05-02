@@ -51,16 +51,16 @@ class UserPublicDoRegistrationController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $validation = $this->validation($this->request->getParsedBody());
+        $body = $this->validationBody();
 
-        $this->email = $validation->string('email')->notEmpty()->val();
-        $this->password = $validation->string('password')->notEmpty()->val();
-        $this->password2 = $validation->string('password2')->notEmpty()->val();
+        $this->email = $body->string('email')->notEmpty()->val();
+        $this->password = $body->string('password')->notEmpty()->val();
+        $this->password2 = $body->string('password2')->notEmpty()->val();
 
         if ($this->useCaptcha) {
-            $this->captcha = $validation->uuid('captcha')->notEmpty()->val();
+            $this->captcha = $body->uuid('captcha')->notEmpty()->val();
         }
 
         if (!empty($this->password) && !empty($this->password2) && $this->password !== $this->password2) {

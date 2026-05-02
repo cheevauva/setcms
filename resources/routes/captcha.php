@@ -2,5 +2,5 @@
 
 declare(strict_types=1);
 
-$routes['GET /captcha/generate CaptchaGenerate'] = \Module\Captcha\Controller\CaptchaPublicGenerateController::class;
-$routes['GET /captcha/solve CaptchaSolve'] = \Module\Captcha\Controller\CaptchaPublicSolveController::class;
+$routes['POST /captcha/generate CaptchaGenerate'] = \Module\Captcha\Controller\CaptchaPublicGenerateController::class;
+$routes['POST /captcha/solve CaptchaSolve'] = \Module\Captcha\Controller\CaptchaPublicSolveController::class;

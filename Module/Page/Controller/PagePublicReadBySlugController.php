@@ -31,10 +31,9 @@ class PagePublicReadBySlugController extends \SetCMS\Controller\ControllerViaPSR
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-
-        $this->slug = $this->validation($this->params)->string('slug')->notEmpty()->notQuiet()->val();
+        $this->slug = $this->validationParams()->string('slug')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]

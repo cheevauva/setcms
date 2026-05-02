@@ -32,20 +32,20 @@ class MenuPrivateCreateController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $validation = $this->validation($this->request->getParsedBody());
-        $validation->array('menu')->notEmpty()->validate();
+        $body = $this->validationBody();
+        $body->array('menu')->notEmpty()->validate();
 
-        $params = $validation->string('menu.params')->notEmpty()->val();
+        $params = $body->string('menu.params')->notEmpty()->val();
 
         if (!json_validate($params)) {
             $this->messages->attach(new MenuParamsInvalidJsonException('Невалидный json'), 'menu.params');
         }
         
         $this->menu = new MenuEntity();
-        $this->menu->label = $validation->string('menu.label')->notEmpty()->val();
-        $this->menu->route = $validation->string('menu.route')->notEmpty()->val();
+        $this->menu->label = $body->string('menu.label')->notEmpty()->val();
+        $this->menu->route = $body->string('menu.route')->notEmpty()->val();
         $this->menu->params = json_decode($params, true) ?? [];
     }
 

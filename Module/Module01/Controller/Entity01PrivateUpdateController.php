@@ -34,13 +34,13 @@ class Entity01PrivateUpdateController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $validation = $this->validation($this->request->getParsedBody());
+        $body = $this->validationBody();
 
         $this->newEntity01 = new Entity01Entity;
-        $this->newEntity01->id = $validation->uuid('entity.id')->notEmpty()->val();
-        $this->newEntity01->field01 = $validation->string('entity.field01')->notEmpty()->val();
+        $this->newEntity01->id = $body->uuid('entity.id')->notEmpty()->val();
+        $this->newEntity01->field01 = $body->string('entity.field01')->notEmpty()->val();
     }
 
     #[\Override]

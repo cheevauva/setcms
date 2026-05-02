@@ -31,18 +31,16 @@ class TemplatePrivateCreateController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $body = $this->request->getParsedBody() ?? [];
-
-        $validation = $this->validation($body);
-        $validation->array('template')->notEmpty()->validate();
+        $body = $this->validationBody();
+        $body->array('template')->notEmpty()->validate();
 
         $this->template = new TemplateEntity();
-        $this->template->id = $validation->uuid('template.id')->val();
-        $this->template->template = $validation->string('template.template')->notEmpty()->val();
-        $this->template->slug = $validation->string('template.slug')->notEmpty()->val();
-        $this->template->title = $validation->string('template.title')->notEmpty()->val();
+        $this->template->id = $body->uuid('template.id')->val();
+        $this->template->template = $body->string('template.template')->notEmpty()->val();
+        $this->template->slug = $body->string('template.slug')->notEmpty()->val();
+        $this->template->title = $body->string('template.title')->notEmpty()->val();
     }
 
     #[\Override]

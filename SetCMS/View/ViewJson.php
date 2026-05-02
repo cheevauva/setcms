@@ -9,18 +9,20 @@ use SetCMS\View\View;
 
 class ViewJson extends View
 {
+
     use \SetCMS\Traits\TraitsResponse;
 
     public public(set) ServerRequestInterface $request;
 
+    #[\Override]
     public function serve(): void
     {
         $json = json_encode([
-            'result' => !$this->messages->count(),
+            'result' => $this->messages->count() === 0,
             'data' => $this->data(),
-            'messages' => $this->prepareMessages(),
+            'messages' => null,
         ], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-
+        
         if (!is_string($json)) {
             if (json_last_error_msg()) {
                 throw new \Exception(json_last_error_msg());
@@ -29,38 +31,8 @@ class ViewJson extends View
             }
         }
 
-        $response = $this->newResponse()->withStatus(200)->withHeader('Content-Type', 'application/json');
-        $response->getBody()->write($json);
-
-        $this->response = $response;
-    }
-
-    /**
-     * @return array<int|array<string|mixed>>
-     */
-    protected function prepareMessages(): array
-    {
-        $messages = [];
-
-        $this->messages->rewind();
-
-        while ($this->messages->valid()) {
-            $object = $this->messages->current();
-            $message = 'Неизвестное сообщение';
-
-            if ($object instanceof \Throwable) {
-                $message = $object->getMessage();
-            }
-
-            $messages[] = [
-                'field' => $this->messages->getInfo(),
-                'message' => $message
-            ];
-
-            $this->messages->next();
-        }
-
-        return $messages;
+        $this->response = $this->newResponse()->withStatus(200)->withHeader('Content-Type', 'application/json');
+        $this->response->getBody()->write($json);
     }
 
     /**

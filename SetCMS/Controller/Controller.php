@@ -19,7 +19,6 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
     use \UUA\Traits\EventDispatcherTrait;
     use \UUA\Traits\EnvTrait;
     use \UUA\Traits\WrappingTrait;
-    use \SetCMS\Traits\TraitsValidation;
 
     public string $name;
 
@@ -46,17 +45,13 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
 
     abstract protected function process(): void;
 
-    protected function init(): void
-    {
-        $this->messages = new SplObjectStorage();
-        $this->exceptions = new SplObjectStorage();
-    }
-
+    #[\Override]
     public function from(object $object): void
     {
         
     }
 
+    #[\Override]
     public function to(object $object): void
     {
         
@@ -68,7 +63,7 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
     }
 
     /**
-     * @return string[]
+     * @return class-string[]
      */
     protected function domainUnits(): array
     {
@@ -76,17 +71,9 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
     }
 
     /**
-     * @return string[]
+     * @return class-string[]
      */
     protected function viewUnits(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return string[]
-     */
-    protected function mixtures(): array
     {
         return [];
     }
@@ -94,22 +81,46 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
     #[\Override]
     public function serve(): void
     {
+        $this->messages = new SplObjectStorage();
+        $this->exceptions = new SplObjectStorage();
+
+        $domainUnits = $this->overrideDomainUnits($this->domainUnits());
+        $viewUnits = $this->overrideViewUnits($this->viewUnits());
+
         try {
-            $this->onBeforeServe();
+            $this->onBeforeProcess();
             $this->process();
-            $this->multiserveUnits($this->domainUnits());
+            $this->runUnits($domainUnits, $this->stopRunningDomainUnits(...));
         } catch (\Throwable $ex) {
             $this->exceptions->attach($ex);
             $this->catch($ex);
         }
 
         $this->throwUncatchedExceptions();
-        $this->multiserveUnits($this->viewUnits(), false);
+        $this->runUnits($viewUnits, $this->stopRunningViewUnits(...));
     }
 
-    protected function onBeforeServe(): void
+    protected function onBeforeProcess(): void
     {
         
+    }
+
+    /**
+     * @param class-string[] $domainUnits
+     * @return class-string[]
+     */
+    protected function overrideDomainUnits(array $domainUnits): array
+    {
+        return $domainUnits;
+    }
+
+    /**
+     * @param class-string[] $viewUnits
+     * @return class-string[]
+     */
+    protected function overrideViewUnits(array $viewUnits): array
+    {
+        return $viewUnits;
     }
 
     protected function throwUncatchedExceptions(): void
@@ -129,17 +140,27 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
         }
     }
 
+    protected function stopRunningDomainUnits(): bool
+    {
+        return $this->messages->count() !== 0;
+    }
+
+    protected function stopRunningViewUnits(): bool
+    {
+        return false;
+    }
+
     /**
-     * @param array<Unit>|array<int, string> $units
+     * @param array<Unit>|array<int, class-string> $units
      * @return void
      */
-    protected function multiserveUnits(array $units, bool $breakIfMessages = true): void
+    protected function runUnits(array $units, \Closure $stopRunningUnits): void
     {
-        if ($breakIfMessages && $this->messages->count()) {
-            return;
-        }
-
         foreach ($units as $unit) {
+            if (($stopRunningUnits)()) {
+                return;
+            }
+            
             if (is_string($unit)) {
                 $unit = $unit::new($this->container);
             }
@@ -151,27 +172,6 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
             $this->to($unit);
             $this->wrapping($unit)->serve();
             $this->from($unit);
-
-            if ($breakIfMessages && $this->messages->count()) {
-                return;
-            }
         }
-    }
-
-    /**
-     * @return SplObjectStorage<\Throwable|object, mixed>
-     */
-    #[\Override]
-    protected function getMessages(): SplObjectStorage
-    {
-        return $this->messages;
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    protected function ctx(): array
-    {
-        return $this->ctx;
     }
 }

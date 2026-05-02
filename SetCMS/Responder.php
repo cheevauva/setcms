@@ -19,5 +19,5 @@ abstract class Responder extends \UUA\Responder
      * @var SplObjectStorage<object, mixed>
      */
     public SplObjectStorage $messages;
-    public protected(set) ResponseInterface $response;
+    public protected(set) ?ResponseInterface $response = null;
 }

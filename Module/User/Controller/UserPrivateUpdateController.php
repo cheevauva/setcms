@@ -34,13 +34,13 @@ class UserPrivateUpdateController extends UserPrivateController
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $validation = $this->validation($this->request->getParsedBody());
+        $body = $this->validationBody();
 
         $this->newUser = new UserEntity();
-        $this->newUser->id = $validation->uuid('user.id')->notEmpty()->val();
-        $this->newUser->role = UserRoleEnum::from($validation->string('user.role')->notEmpty()->val());
+        $this->newUser->id = $body->uuid('user.id')->notEmpty()->val();
+        $this->newUser->role = UserRoleEnum::from($body->string('user.role')->notEmpty()->val());
     }
 
     #[\Override]

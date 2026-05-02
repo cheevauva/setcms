@@ -59,6 +59,10 @@ class MigrationPublicDoUpController extends ControllerViaPSR7
         if ($object instanceof MigrationUpServant) {
             foreach ($object->failded as $fail) {
                 $fail = MigrationCandidateVO::as($fail);
+                
+                if (empty($fail->error)) {
+                    continue;
+                }
 
                 $reflection = new \ReflectionClass($fail->error);
                 $property = $reflection->getProperty('message');
@@ -71,11 +75,9 @@ class MigrationPublicDoUpController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $body = $this->request->getParsedBody() ?? [];
-
-        $validation = $this->validation($body);
+        $validation = $this->validationBody();
 
         $this->dbName = $validation->string('dbName')->notEmpty()->val();
         $this->secretKey = $validation->string('secretKey')->notEmpty()->val();

@@ -10,14 +10,17 @@ use SetCMS\Validation\Validation;
 trait TraitsValidation
 {
 
-    protected function validation(mixed $data): Validation
+    /**
+     * @var SplObjectStorage<\Throwable|object, mixed>
+     */
+    protected SplObjectStorage $messages;
+
+    /**
+     * @param array<string, mixed> $data
+     * @return Validation
+     */
+    protected function validation(array $data): Validation
     {
-        if (!is_array($data)) {
-            throw new \Exception('Ожидался array, а пришел ' . gettype($data));
-        }
-
-        return new Validation($data, $this->getMessages());
+        return new Validation($data, $this->messages);
     }
-
-    abstract public function getMessages(): SplObjectStorage;
 }

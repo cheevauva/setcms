@@ -11,21 +11,21 @@ trait UserCurrentTrait
 
     use \SetCMS\Traits\TraitsValidation;
 
+    /**
+     * @var array<string, mixed|object>
+     */
+    public array $ctx = [];
+    
     private bool $_validationStateCurrentUser = false;
 
     protected function currentUser(): UserEntity
     {
         if (!$this->_validationStateCurrentUser) {
-            UserEntity::as($this->validation($this->ctx())->object('currentUser')->notEmpty()->notQuiet()->val());
+            UserEntity::as($this->validation($this->ctx)->object('currentUser')->notEmpty()->notQuiet()->val());
 
             $this->_validationStateCurrentUser = true;
         }
 
-        return UserEntity::as($this->ctx()['currentUser']);
+        return UserEntity::as($this->ctx['currentUser'] ?? null);
     }
-
-    /**
-     * @return array<string, mixed>
-     */
-    abstract protected function ctx(): array;
 }

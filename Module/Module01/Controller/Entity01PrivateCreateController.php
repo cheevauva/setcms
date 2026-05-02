@@ -31,16 +31,24 @@ class Entity01PrivateCreateController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $body = $this->request->getParsedBody() ?? [];
-
-        $validation = $this->validation($body);
-        $validation->array('entity')->notEmpty()->validate();
+        $body = $this->validationBody();
+        $body->array('entity')->notEmpty()->validate();
 
         $this->entity01 = new Entity01Entity();
-        $this->entity01->id = $validation->uuid('entity.id')->val();
-        $this->entity01->field01 = $validation->string('entity.field01')->notEmpty()->val();
+        $this->entity01->id = $body->uuid('entity.id')->val();
+        $this->entity01->field01 = $body->string('entity.field01')->notEmpty()->val();
+    }
+    
+    #[\Override]
+    public function from(object $object): void
+    {
+        parent::from($object);
+        
+        if ($object instanceof \Psr\Http\Message\RequestInterface) {
+            
+        }
     }
 
     #[\Override]

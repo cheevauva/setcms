@@ -68,14 +68,14 @@ class UserPublicDoRestoreController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $validation = $this->validation($this->request->getParsedBody());
+        $body = $this->validationBody();
 
-        $this->email = $validation->string('email')->notEmpty()->val();
+        $this->email = $body->string('email')->notEmpty()->val();
 
         if ($this->useCaptcha) {
-            $this->captcha = $validation->uuid('captcha')->notEmpty()->val();
+            $this->captcha = $body->uuid('captcha')->notEmpty()->val();
         }
     }
 

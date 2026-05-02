@@ -9,5 +9,5 @@ use SetCMS\View\ViewJson;
 class UserPublicDoLoginView extends ViewJson
 {
 
-    public ?string $sessionId = null;
+    public string $sessionId;
 }

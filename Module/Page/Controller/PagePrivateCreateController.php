@@ -31,18 +31,16 @@ class PagePrivateCreateController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $body = $this->request->getParsedBody() ?? [];
-
-        $validation = $this->validation($body);
-        $validation->array('entity')->notEmpty()->validate();
+        $body = $this->validationBody();
+        $body->array('entity')->notEmpty()->validate();
 
         $this->page = new PageEntity();
-        $this->page->id = $validation->uuid('entity.id')->val();
-        $this->page->slug = $validation->string('entity.slug')->notEmpty()->val();
-        $this->page->title = $validation->string('entity.title')->notEmpty()->val();
-        $this->page->content = $validation->string('entity.content')->notEmpty()->val();
+        $this->page->id = $body->uuid('entity.id')->val();
+        $this->page->slug = $body->string('entity.slug')->notEmpty()->val();
+        $this->page->title = $body->string('entity.title')->notEmpty()->val();
+        $this->page->content = $body->string('entity.content')->notEmpty()->val();
     }
 
     #[\Override]

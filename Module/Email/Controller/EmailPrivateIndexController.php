@@ -47,7 +47,7 @@ class EmailPrivateIndexController extends ControllerViaPSR7
     public function to(object $object): void
     {
         parent::to($object);
-        
+
         if ($object instanceof EmailPrivateIndexView) {
             $object->emails = $this->emails;
         }

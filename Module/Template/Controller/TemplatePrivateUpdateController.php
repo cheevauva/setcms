@@ -34,15 +34,15 @@ class TemplatePrivateUpdateController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function process(): void
+    protected function fromRequest(): void
     {
-        $validation = $this->validation($this->request->getParsedBody());
+        $body = $this->validationBody();
 
         $this->newtemplate = new TemplateEntity;
-        $this->newtemplate->id = $validation->uuid('template.id')->notEmpty()->val();
-        $this->newtemplate->template = $validation->string('template.template')->notEmpty()->val();
-        $this->newtemplate->slug = $validation->string('template.slug')->notEmpty()->val();
-        $this->newtemplate->title = $validation->string('template.title')->notEmpty()->val();
+        $this->newtemplate->id = $body->uuid('template.id')->notEmpty()->val();
+        $this->newtemplate->template = $body->string('template.template')->notEmpty()->val();
+        $this->newtemplate->slug = $body->string('template.slug')->notEmpty()->val();
+        $this->newtemplate->title = $body->string('template.title')->notEmpty()->val();
     }
 
     #[\Override]

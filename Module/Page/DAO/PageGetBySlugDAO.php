@@ -20,6 +20,7 @@ class PageGetBySlugDAO extends \UUA\DAO
         $getBySlug->expectOne = true;
         $getBySlug->allowEmptyResult = false;
         $getBySlug->slug = $this->slug;
+        $getBySlug->limit = 1;
         $getBySlug->serve();
 
         $this->page = $getBySlug->page;

@@ -16,8 +16,10 @@ class MenuPrivateAdminMenuController extends ControllerViaPSR7
     protected array $items;
 
     #[\Override]
-    protected function process(): void
+    protected function init(): void
     {
+        parent::init();
+
         $rootPath = $this->container->get('rootPath');
 
         if (file_exists($rootPath . 'cache/module/menu/adminMenu.php')) {

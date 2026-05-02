@@ -19,7 +19,7 @@ abstract class View extends \UUA\View implements \SetCMS\Contract\ContractObject
      * @var SplObjectStorage<object, mixed>
      */
     public SplObjectStorage $messages;
-    public protected(set) ResponseInterface $response;
+    public protected(set) ?ResponseInterface $response = null;
 
     #[\Override]
     public function from(object $object): void
