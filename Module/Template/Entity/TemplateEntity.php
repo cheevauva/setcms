@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Template\Entity;
 
-use SetCMS\Entity\EntityBasic;
+use SetCMS\Entity\Entity;
 
-class TemplateEntity extends EntityBasic
+class TemplateEntity extends Entity
 {
 
     public string $slug;

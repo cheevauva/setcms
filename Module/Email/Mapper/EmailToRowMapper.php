@@ -14,7 +14,6 @@ class EmailToRowMapper extends \UUA\Mapper
     public function serve(): void
     {
         $this->mappingDefault($this->email);
-        $this->mappingBasic($this->email);
         $this->row['subject'] = $this->email->subject;
         $this->row['status'] = $this->email->status->value;
         $this->row['from_addr'] = $this->email->from;

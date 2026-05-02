@@ -62,12 +62,6 @@ class UserPublicDoRestoreController extends ControllerViaPSR7
     }
 
     #[\Override]
-    public function from(object $object): void
-    {
-        parent::from($object);
-    }
-
-    #[\Override]
     protected function fromRequest(): void
     {
         $body = $this->validationBody();

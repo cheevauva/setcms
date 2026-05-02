@@ -22,7 +22,7 @@ class UserSessionCreateByUserServant extends \UUA\Servant
         $session->userId = $this->user->id;
         $session->device = $this->device;
         $session->dateExpiries = new \DateTimeImmutable('+1 year');
-        $session->createdBy = $this->user->id;
+        $session->dateCreated = new \DateTimeImmutable();
 
         $create = UserSessionCreateDAO::new($this->container);
         $create->userSession = $session;

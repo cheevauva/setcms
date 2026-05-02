@@ -21,12 +21,12 @@ class UserRegistrationServant extends \UUA\Servant
     {
         $userByEmail = UserRetrieveManyByCriteriaDAO::new($this->container);
         $userByEmail->limit = 1;
-        $userByEmail->allowEmptyResult = false;
+        $userByEmail->allowEmptyResult = true;
         $userByEmail->expectOne = true;
         $userByEmail->email = $this->email;
         $userByEmail->serve();
 
-        if (!empty($userByEmail->user)) {
+        if ($userByEmail->userOrNull) {
             throw new UserAlreadyExistsException();
         }
 

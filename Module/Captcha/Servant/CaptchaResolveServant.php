@@ -8,6 +8,7 @@ use SetCMS\UUID;
 use Module\Captcha\CaptchaEntity;
 use Module\Captcha\Servant\CaptchaByIdServant;
 use Module\Captcha\DAO\CaptchaUpdateDAO;
+use Module\Captcha\Exception\CaptchaUnsolvedException;
 
 class CaptchaResolveServant extends \UUA\Servant
 {
@@ -23,5 +24,9 @@ class CaptchaResolveServant extends \UUA\Servant
         $this->captcha->solve($this->solvedText);
 
         CaptchaUpdateDAO::call($this->container, $this->captcha);
+        
+        if (!$this->captcha->isSolved) {
+            throw new CaptchaUnsolvedException();
+        }
     }
 }

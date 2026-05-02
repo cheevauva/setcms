@@ -36,10 +36,10 @@ class CaptchaPublicSolveController extends \SetCMS\Controller\ControllerViaPSR7
     #[\Override]
     protected function fromRequest(): void
     {
-        $queryParams = $this->validationBody();
+        $body = $this->validationBody();
 
-        $this->solvedText = $queryParams->string('solvedText')->notEmpty()->val();
-        $this->id = $queryParams->uuid('id')->notEmpty()->val();
+        $this->solvedText = $body->string('solvedText')->notEmpty()->val();
+        $this->id = $body->uuid('id')->notEmpty()->val();
     }
 
     #[\Override]
@@ -53,7 +53,7 @@ class CaptchaPublicSolveController extends \SetCMS\Controller\ControllerViaPSR7
         }
 
         if ($object instanceof CaptchaPublicSolveView) {
-            $object->captcha = $this->captcha ?? null;
+            $object->captcha = $this->captcha;
         }
     }
 

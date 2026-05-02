@@ -10,17 +10,12 @@ use Module\Captcha\CaptchaEntity;
 class CaptchaPublicSolveView extends ViewJson
 {
 
-    public ?CaptchaEntity $captcha = null;
+    public CaptchaEntity $captcha;
 
     #[\Override]
     protected function data(): array
     {
-        $data = [];
-
-        if (!$this->captcha) {
-            return [];
-        }
-
+        $data = parent::data();
         $data['isSolved'] = $this->captcha->isSolved;
         $data['isUsed'] = $this->captcha->isUsed;
 

@@ -7,5 +7,13 @@ namespace Module\User\View;
 class UserPublicRestoreView extends \SetCMS\View\ViewTwig
 {
 
-    public bool $useCaptcha;
+    protected bool $useCaptcha;
+
+    #[\Override]
+    protected function init(): void
+    {
+        parent::init();
+
+        $this->useCaptcha = boolval($this->env()['CAPTCHA_USE_USER_RESTORE'] ?? true);
+    }
 }

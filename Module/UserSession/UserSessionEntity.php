@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Module\UserSession;
 
-use SetCMS\Entity\EntityBasic;
+use SetCMS\Entity\Entity;
 use SetCMS\UUID;
 
-class UserSessionEntity extends EntityBasic
+class UserSessionEntity extends Entity
 {
 
     public string $device;
     public UUID $userId;
     public \DateTimeImmutable $dateExpiries;
+    public \DateTimeImmutable $dateCreated;
 }
