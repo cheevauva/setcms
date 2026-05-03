@@ -9,12 +9,14 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\View\ViewInternalServerError;
+use SetCMS\Event\AppErrorEvent;
 
 class MiddlewareExceptionHandler implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {
 
     use \UUA\Traits\ContainerTrait;
     use \UUA\Traits\BuildTrait;
+    use \UUA\Traits\EventDispatcherTrait;
 
     #[\Override]
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
@@ -35,8 +37,12 @@ class MiddlewareExceptionHandler implements MiddlewareInterface, \UUA\ContainerC
                 $view->ex = $ex;
                 $view->serve();
             } else {
-                error_log($ex->getMessage() . "\n" . $ex->getTraceAsString());
-                
+                (new AppErrorEvent($ex->getMessage(), [
+                    __METHOD__,
+                    $ex->getFile(),
+                    $ex->getLine(),
+                ]))->dispatch($this->eventDispatcher());
+
                 $view = ViewInternalServerError::new($this->container);
                 $view->ex = $ex;
                 $view->serve();

@@ -135,18 +135,32 @@ abstract class ViewHtml extends View
     {
         $data = null;
 
-//        try {
-//            return $this->scCall($path, $params);
-//        } catch (\Throwable $ex) {
-//            (new AppErrorEvent($ex->getMessage(), [
-//                __METHOD__,
-//                $path,
-//                $params,
-//                $ex->getFile(),
-//                $ex->getLine(),
-//            ]))->dispatch($this->eventDispatcher());
-//        }
+        try {
+            $routerMatch = $this->router()->match($path, 'SETCMS');
 
+            $ctx = $this->ctx;
+            $ctx['view'] = $this;
+
+            $controller = ControllerViaPSR7::as(($routerMatch->target)::new($this->container));
+            $controller->name = $routerMatch->name;
+            $controller->params = $routerMatch->params;
+            $controller->ctx = $ctx;
+            $controller->request = $this->serverRequestFactory()->createServerRequest('GET', $path)->withQueryParams($params);
+            $controller->serve();
+
+            return get_object_vars($controller);
+        } catch (\Throwable $ex) {
+            (new AppErrorEvent($ex->getMessage(), [
+                __METHOD__,
+                $path,
+                $params,
+                $ex->getFile(),
+                $ex->getLine(),
+            ]))->dispatch($this->eventDispatcher());
+
+            return null;
+        }
+        
         return $data;
     }
 
@@ -188,14 +202,14 @@ abstract class ViewHtml extends View
     private function templateNameByClass(): string
     {
         $reflectionClass = (new \ReflectionClass(static::class));
-        
+
         $shortName = $reflectionClass->getShortName();
-        
+
         if ($reflectionClass->isAnonymous()) {
             if (!$reflectionClass->getParentClass()) {
                 throw new \Exception('Анонимный класс без наследования не разрешен');
             }
-            
+
             $shortName = $reflectionClass->getParentClass()->getShortName();
         }
 
