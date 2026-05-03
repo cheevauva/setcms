@@ -7,7 +7,7 @@ namespace Module\Captcha\Controller;
 use SetCMS\UUID;
 use Module\Captcha\Exception\CaptchaException;
 use Module\Captcha\Servant\CaptchaResolveServant;
-use Module\Captcha\CaptchaEntity;
+use Module\Captcha\Entity\CaptchaEntity;
 use Module\Captcha\View\CaptchaPublicSolveView;
 
 class CaptchaPublicSolveController extends \SetCMS\Controller\ControllerViaPSR7
@@ -61,10 +61,6 @@ class CaptchaPublicSolveController extends \SetCMS\Controller\ControllerViaPSR7
     public function from(object $object): void
     {
         parent::from($object);
-
-        if ($object instanceof CaptchaException) {
-            $this->catch($object);
-        }
 
         if ($object instanceof CaptchaResolveServant) {
             $this->captcha = $object->captcha;

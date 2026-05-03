@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Page\Exception;
+namespace Module\Captcha\Exception;
 
-class PageEntitiesNotFoundException extends \Exception
+class CaptchasNotFoundException extends CaptchaException
 {
 
     /**

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Captcha\Servant;
 
 use Module\Captcha\DAO\CaptchaRetrieveManyByCriteriaDAO;
-use Module\Captcha\CaptchaEntity;
+use Module\Captcha\Entity\CaptchaEntity;
 
 class CaptchaByIdServant extends \UUA\Servant
 {

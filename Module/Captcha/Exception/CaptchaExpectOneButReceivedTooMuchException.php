@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Module\Page\Exception;
+namespace Module\Captcha\Exception;
 
-class PageEntityExpectOneButReceivedTooMuchException extends \Exception
+class CaptchaExpectOneButReceivedTooMuchException extends CaptchaException
 {
-
     /**
      * @var string
      */

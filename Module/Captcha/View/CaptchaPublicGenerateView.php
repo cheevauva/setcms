@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace Module\Captcha\View;
 
 use SetCMS\View\ViewJson;
-use Module\Captcha\CaptchaEntity;
+use Module\Captcha\Entity\CaptchaEntity;
 
 class CaptchaPublicGenerateView extends ViewJson
 {
+    use \UUA\Traits\EnvTrait;
 
     private const BACKGROUND_MIN = 160;
     private const TEXT_MAX = 50;
 
-    public bool $includeLines = true;
-    public bool $includePixels = true;
+    protected bool $includeLines = true;
+    protected bool $includePixels = true;
 
     /**
      * @var int<1, max>
@@ -26,6 +27,14 @@ class CaptchaPublicGenerateView extends ViewJson
      */
     protected int $height = 50;
     public CaptchaEntity $captcha;
+
+    protected function init(): void
+    {
+        parent::init();
+
+        $this->includeLines = boolval($this->env()['CAPTCHA_GENERATE_LINES'] ?? true);
+        $this->includePixels = boolval($this->env()['CAPTCHA_GENERATE_PIXELS'] ?? true);
+    }
 
     #[\Override]
     protected function data(): array
@@ -175,12 +184,11 @@ class CaptchaPublicGenerateView extends ViewJson
     protected function intColor(mixed $value): int
     {
         $value = (int) $value;
-        
+
         if ($value < 0 || $value > 255) {
             throw new \RuntimeException('int<0, 255>');
         }
-        
+
         return $value;
     }
-
 }

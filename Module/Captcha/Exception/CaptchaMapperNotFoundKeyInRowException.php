@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Module99\Exception;
+namespace Module\Captcha\Exception;
 
-class Entity99MapperNotFoundKeyInRowException extends \Exception
+class CaptchaMapperNotFoundKeyInRowException extends \Exception
 {
 
     use \SetCMS\Exception\EntityMapperNotFoundKeyInRowExceptionTrait;

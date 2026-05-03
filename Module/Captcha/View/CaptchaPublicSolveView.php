@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Captcha\View;
 
 use SetCMS\View\ViewJson;
-use Module\Captcha\CaptchaEntity;
+use Module\Captcha\Entity\CaptchaEntity;
 
 class CaptchaPublicSolveView extends ViewJson
 {

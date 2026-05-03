@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Captcha\Servant;
 
 use SetCMS\UUID;
-use Module\Captcha\CaptchaEntity;
+use Module\Captcha\Entity\CaptchaEntity;
 use Module\Captcha\Servant\CaptchaByIdServant;
 use Module\Captcha\DAO\CaptchaUpdateDAO;
 use Module\Captcha\Exception\CaptchaUnsolvedException;

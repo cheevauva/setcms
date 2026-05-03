@@ -8,8 +8,8 @@ use SetCMS\Database\DatabaseQueryBuilder;
 use Module\Page\Mapper\PageFromRowMapper;
 use Module\Page\Entity\PageEntity;
 use Module\Page\Exception\PageNotFoundException;
-use Module\Page\Exception\PageEntitiesNotFoundException;
-use Module\Page\Exception\PageEntityExpectOneButReceivedTooMuchException;
+use Module\Page\Exception\PagesNotFoundException;
+use Module\Page\Exception\PageExpectOneButReceivedTooMuchException;
 
 class PageRetrieveByCriteriaDAO extends \UUA\DAO
 {
@@ -48,13 +48,13 @@ class PageRetrieveByCriteriaDAO extends \UUA\DAO
     #[\Override]
     protected function entitiesNotFoundException(): \Throwable
     {
-        return new PageEntitiesNotFoundException;
+        return new PagesNotFoundException;
     }
 
     #[\Override]
     protected function entityExpectOneButReceivedTooMuchException(): \Throwable
     {
-        return new PageEntityExpectOneButReceivedTooMuchException;
+        return new PageExpectOneButReceivedTooMuchException;
     }
 
     #[\Override]

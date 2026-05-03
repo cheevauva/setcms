@@ -35,11 +35,13 @@ class MiddlewareExceptionHandler implements MiddlewareInterface, \UUA\ContainerC
                 $view->ex = $ex;
                 $view->serve();
             } else {
+                error_log($ex->getMessage() . "\n" . $ex->getTraceAsString());
+                
                 $view = ViewInternalServerError::new($this->container);
                 $view->ex = $ex;
                 $view->serve();
             }
-            
+
             return $view->response;
         }
     }

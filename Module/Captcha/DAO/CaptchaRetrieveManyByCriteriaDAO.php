@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Captcha\DAO;
 
-use Module\Captcha\Exception\CaptchaNotFoundException;
+use Module\Captcha\Entity\CaptchaEntity;
 use Module\Captcha\Mapper\CaptchaFromRowMapper;
-use Module\Captcha\CaptchaEntity;
+use Module\Captcha\Exception\CaptchasNotFoundException;
+use Module\Captcha\Exception\CaptchaNotFoundException;
+use Module\Captcha\Exception\CaptchaExpectOneButReceivedTooMuchException;
 
 class CaptchaRetrieveManyByCriteriaDAO extends \UUA\DAO
 {
@@ -24,13 +26,13 @@ class CaptchaRetrieveManyByCriteriaDAO extends \UUA\DAO
     #[\Override]
     protected function entitiesNotFoundException(): \Throwable
     {
-        return new CaptchaNotFoundException;
+        return new CaptchasNotFoundException;
     }
 
     #[\Override]
     protected function entityExpectOneButReceivedTooMuchException(): \Throwable
     {
-        return new CaptchaNotFoundException;
+        return new CaptchaExpectOneButReceivedTooMuchException;
     }
 
     #[\Override]

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Captcha;
+namespace Module\Captcha\Entity;
 
 use DateTimeImmutable;
 use Module\Captcha\Exception\CaptchaAlreadyUsedException;

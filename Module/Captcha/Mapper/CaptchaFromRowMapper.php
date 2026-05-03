@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Captcha\Mapper;
 
-use Module\Captcha\CaptchaEntity;
+use Module\Captcha\Entity\CaptchaEntity;
+use Module\Captcha\Exception\CaptchaMapperNotFoundKeyInRowException;
 
 class CaptchaFromRowMapper extends \UUA\Mapper
 {
@@ -29,6 +30,6 @@ class CaptchaFromRowMapper extends \UUA\Mapper
     #[\Override]
     protected function notFoundKeyInRowException(string $key): \Throwable
     {
-        return new \Exception($key);
+        return new CaptchaMapperNotFoundKeyInRowException($key);
     }
 }

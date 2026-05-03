@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Captcha\Traits;
 
 use Psr\Container\ContainerInterface;
-use Module\Captcha\CaptchaEntity;
+use Module\Captcha\Entity\CaptchaEntity;
 
 trait CaptchaCallTrait
 {
