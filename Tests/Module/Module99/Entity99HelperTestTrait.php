@@ -20,7 +20,7 @@ trait Entity99HelperTestTrait
             'created_by' => ADMIN_USER_UUID,
             'modified_by' => ADMIN_USER_UUID,
             'assigned_by' => ADMIN_USER_UUID,
-            'entity_type' => 'entity01lc',
+            'entity_type' => Entity99Entity::class,
             'date_created' => '2025-11-29 19:56:10',
             'date_modified' => '2025-11-29 19:56:10',
             'deleted' => 0,

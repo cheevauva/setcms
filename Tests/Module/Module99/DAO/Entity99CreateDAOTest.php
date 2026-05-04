@@ -19,6 +19,8 @@ class Entity99CreateDAOTest extends \Tests\TestEasy
     #[\Override]
     protected function setUp(): void
     {
+        parent::setUp();
+        
         self::$qb = null;
     }
 

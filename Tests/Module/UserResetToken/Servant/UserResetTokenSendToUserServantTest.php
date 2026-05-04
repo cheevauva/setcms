@@ -10,6 +10,7 @@ use Module\UserResetToken\Servant\UserResetTokenSendToUserServant;
 use Module\UserResetToken\DAO\UserResetTokenRetrieveManyByCriteriaDAO;
 use Module\UserResetToken\Servant\UserResetTokenSaveServant;
 use Module\Template\Servant\TemplateRenderUserResetPasswordServant;
+use Module\Template\VO\TemplateRenderedVO;
 use Module\Email\Servant\EmailSendServant;
 use Module\User\Entity\UserEntity;
 use Module\UserResetToken\Entity\UserResetTokenEntity;
@@ -31,15 +32,20 @@ class UserResetTokenSendToUserServantTest extends \Tests\TestEasy
 
     public function testMain(): void
     {
+        self::$env['EMAIL_ADDRESS_FOR_SENDING_SERVICE_MESSAGES'] = 'test@test';
+        
+        $user = new UserEntity;
+        $user->email = 'email@email';
+
         $sendToUser = UserResetTokenSendToUserServant::new(self::$container);
-        $sendToUser->user = new UserEntity;
+        $sendToUser->user = $user;
         $sendToUser->serve();
     }
 
     #[\Override]
     public function mocks(ContainerInterface $c): array
     {
-        return array_merge(parent::mocks($c), [
+        return [
             UserResetTokenRetrieveManyByCriteriaDAO::class => fn() => new class($c) extends UserResetTokenRetrieveManyByCriteriaDAO {
 
                 #[\Override]
@@ -61,7 +67,9 @@ class UserResetTokenSendToUserServantTest extends \Tests\TestEasy
                 #[\Override]
                 public function serve(): void
                 {
-                    
+                    $this->templateRendered = new TemplateRenderedVO;
+                    $this->templateRendered->content = 'content';
+                    $this->templateRendered->title = 'title';
                 }
             },
             EmailSendServant::class => fn() => new class($c) extends EmailSendServant {
@@ -72,6 +80,6 @@ class UserResetTokenSendToUserServantTest extends \Tests\TestEasy
                     
                 }
             },
-        ]);
+        ];
     }
 }

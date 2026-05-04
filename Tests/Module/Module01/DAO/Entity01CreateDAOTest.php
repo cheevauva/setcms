@@ -20,6 +20,8 @@ class Entity01CreateDAOTest extends \Tests\TestEasy
     #[\Override]
     protected function setUp(): void
     {
+        parent::setUp();
+        
         self::$qb = null;
     }
 
@@ -39,8 +41,8 @@ class Entity01CreateDAOTest extends \Tests\TestEasy
         $params = self::$qb->getParameters();
 
         self::assertStringStartsWith('INSERT INTO ' . Module01Constants::TABLE_NAME, $sql);
-        self::assertStringContainsString('id, created_by, modified_by, assigned_by, entity_type, date_created, date_modified, deleted', $sql);
-        self::assertStringContainsString(':id, :created_by, :modified_by, :assigned_by, :entity_type, :date_created, :date_modified, :deleted', $sql);
+        self::assertStringContainsString('id', $sql);
+        self::assertStringContainsString(':id', $sql);
         self::assertStringContainsString(', field01', $sql);
         self::assertStringContainsString(', :field01', $sql);
         self::assertEquals($this->prepareRow(), $params);

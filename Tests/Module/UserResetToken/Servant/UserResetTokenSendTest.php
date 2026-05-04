@@ -23,15 +23,23 @@ class UserResetTokenSendTest extends \Tests\TestEasy
 
     public static string $userId = '4c751162-8b67-4f22-b431-ed24c17f0048';
     public static string $userResetToken = '2b9d1c09-b417-43f5-bd7b-5b4db4dd6620';
-    public static bool $userResetTokenRefreshExists = false;
     public static string $userResetTokenId = '4662e5e9-7f55-42ad-afe5-0fb50b7c37ce';
     public static ?UserResetTokenEntity $userResetTokenSaved = null;
     public static ?UserResetTokenEntity $userResetTokenRetrived = null;
     public static ?EmailEntity $sendedEmail = null;
 
+    #[\Override]
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        self::$env['EMAIL_ADDRESS_FOR_SENDING_SERVICE_MESSAGES'] = 'test@test';
+        self::$env['USER_RESET_TOKEN_EXPIRED_SECONDS'] = 120;
+        self::$env['USER_RESET_TOKEN_REFRESH_EXISTS'] = true;
+    }
+
     public function testNotExistUser(): void
     {
-        UserResetTokenSendTest::$userResetTokenRefreshExists = true;
         UserResetTokenSendTest::$userResetTokenRetrived = null;
         UserResetTokenSendTest::$userResetTokenSaved = null;
 
@@ -44,7 +52,6 @@ class UserResetTokenSendTest extends \Tests\TestEasy
 
     public function testExistUserRefreshCases(): void
     {
-        UserResetTokenSendTest::$userResetTokenRefreshExists = true;
         UserResetTokenSendTest::$userResetTokenRetrived = null;
         UserResetTokenSendTest::$userResetTokenSaved = null;
         UserResetTokenSendTest::$sendedEmail = null;
@@ -63,7 +70,8 @@ class UserResetTokenSendTest extends \Tests\TestEasy
         $this->assertEquals(UserResetTokenSendTest::$userId, $sendedEmail->subject);
         $this->assertEquals(UserResetTokenSendTest::$userResetTokenId, $sendedEmail->body);
 
-        UserResetTokenSendTest::$userResetTokenRefreshExists = false;
+        self::$env['USER_RESET_TOKEN_REFRESH_EXISTS'] = false;
+        
         UserResetTokenSendTest::$userResetTokenRetrived = null;
         UserResetTokenSendTest::$userResetTokenSaved = null;
         UserResetTokenSendTest::$sendedEmail = null;
@@ -105,11 +113,6 @@ class UserResetTokenSendTest extends \Tests\TestEasy
     public function mocks(ContainerInterface $c): array
     {
         return [
-            'env' => [
-                'EMAIL_ADDRESS_FOR_SENDING_SERVICE_MESSAGES' => 'test@test',
-                'USER_RESET_TOKEN_REFRESH_EXISTS' => UserResetTokenSendTest::$userResetTokenRefreshExists,
-                'USER_RESET_TOKEN_EXPIRED_SECONDS' => 120,
-            ],
             EmailSendServant::class => fn() => new class($c) extends EmailSendServant {
 
                 #[\Override]

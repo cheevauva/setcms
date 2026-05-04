@@ -4,7 +4,7 @@
     bootstrap="bootstrap.php" 
     colors="true"
     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd" 
-    cacheDirectory=".phpunit.cache">
+    cacheDirectory="cache/.phpunit.cache">
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>Tests/</directory>

@@ -6,6 +6,7 @@ namespace Tests;
 
 use Psr\Container\ContainerInterface;
 use UUA\Container\Container;
+use UUA\ArrayObjectStrict;
 
 class TestEasy extends \PHPUnit\Framework\TestCase
 {
@@ -13,9 +14,9 @@ class TestEasy extends \PHPUnit\Framework\TestCase
     public static ContainerInterface $container;
 
     /**
-     * @var array<string, mixed>
+     * @var ArrayObjectStrict<string, mixed>
      */
-    public static array $env;
+    public static ArrayObjectStrict $env;
 
     /**
      * @var array<object>
@@ -27,9 +28,11 @@ class TestEasy extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
 
-        self::$container = $this->container($this->mocks(...));
-        self::$env = [];
+        self::$env = new ArrayObjectStrict([]);
         self::$events = [];
+        self::$container = $this->container(fn(ContainerInterface $c) => array_merge([
+            'env' => self::$env
+        ], $this->mocks($c)));
     }
 
     protected function container(\Closure $mocks): ContainerInterface
@@ -43,8 +46,6 @@ class TestEasy extends \PHPUnit\Framework\TestCase
      */
     protected function mocks(ContainerInterface $c): array
     {
-        return [
-            'env' => array_merge($c->get('env'), self::$env)
-        ];
+        return [];
     }
 }

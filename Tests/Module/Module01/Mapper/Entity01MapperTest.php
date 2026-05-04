@@ -56,7 +56,6 @@ class Entity01MapperTest extends \Tests\TestEasy
     {
         return [
             ['id'],
-            ['entity_type'],
             ['field01'],
         ];
     }

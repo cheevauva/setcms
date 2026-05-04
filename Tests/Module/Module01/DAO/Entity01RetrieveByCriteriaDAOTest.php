@@ -54,7 +54,7 @@ class Entity01RetrieveByCriteriaDAOTest extends \Tests\TestEasy
         $sql = self::$qb->getSQL();
         $params = self::$qb->getParameters();
 
-        self::assertStringContainsString('FROM ' . Module01Constants::TABLE_NAME, $sql);
+        self::assertStringContainsString('FROM ' . Module01Constants::TABLE_NAME . ' t', $sql);
         self::assertStringContainsString('id = :id', $sql);
         self::assertStringContainsString('LIMIT 1', $sql);
         self::assertStringContainsString('OFFSET 2', $sql);
@@ -79,7 +79,7 @@ class Entity01RetrieveByCriteriaDAOTest extends \Tests\TestEasy
         $sql = self::$qb->getSQL();
         $params = self::$qb->getParameters();
 
-        self::assertEquals('SELECT * FROM ' . Module01Constants::TABLE_NAME, $sql);
+        self::assertEquals('SELECT t.* FROM ' . Module01Constants::TABLE_NAME . ' t', $sql);
         self::assertEmpty($params);
     }
 

@@ -27,8 +27,8 @@ trait DAOEntityRetrieveByCriteriaBasicTrait
     protected function addCriteriaBasic(DatabaseQueryBuilder $qb): void
     {
         if (isset($this->createdBy)) {
-            $qb->andWhere('date_created = :createdBy');
-            $qb->setParameter('created_by', $this->createdBy->uuid);
+            $qb->andWhere('created_by = :createdBy');
+            $qb->setParameter('createdBy', $this->createdBy->uuid);
         }
 
         if (isset($this->modifiedBy)) {
@@ -82,11 +82,11 @@ trait DAOEntityRetrieveByCriteriaBasicTrait
             $qb->setParameter('dateModifiedTo', $this->dateModifiedTo->format('Y-m-d H:i:s'));
         }
 
-        if (isset($this->sortDateCreatedAsc)) {
+        if (isset($this->sortDateCreatedASC)) {
             $qb->addOrderBy('date_created', $this->sortDateCreatedASC ? 'ASC' : 'DESC');
         }
 
-        if (isset($this->sortDateModifiedAsc)) {
+        if (isset($this->sortDateModifiedASC)) {
             $qb->addOrderBy('date_modified', $this->sortDateModifiedASC ? 'ASC' : 'DESC');
         }
     }

@@ -133,8 +133,6 @@ abstract class ViewHtml extends View
      */
     protected function scFetch(string $path, array $params = []): mixed
     {
-        $data = null;
-
         try {
             $routerMatch = $this->router()->match($path, 'SETCMS');
 
@@ -160,8 +158,6 @@ abstract class ViewHtml extends View
 
             return null;
         }
-        
-        return $data;
     }
 
     #[\ReturnTypeWillChange]

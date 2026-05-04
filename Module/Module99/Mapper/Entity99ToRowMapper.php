@@ -14,8 +14,8 @@ class Entity99ToRowMapper extends \UUA\Mapper
     #[\Override]
     public function serve(): void
     {
-        $this->mappingBasic($this->entity99);
         $this->mappingDefault($this->entity99);
+        $this->mappingBasic($this->entity99);
         $this->row['field99'] = $this->entity99->field99;
     }
 }

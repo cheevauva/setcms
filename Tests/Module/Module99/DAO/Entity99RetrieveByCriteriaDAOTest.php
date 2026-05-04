@@ -30,6 +30,8 @@ class Entity99RetrieveByCriteriaDAOTest extends \Tests\TestEasy
     #[\Override]
     protected function setUp(): void
     {
+        parent::setUp();
+        
         self::$qb = null;
         self::$rows = [];
     }
@@ -39,7 +41,7 @@ class Entity99RetrieveByCriteriaDAOTest extends \Tests\TestEasy
         $id = new UUID();
 
         $retrieveByCriteria = Entity99RetrieveByCriteriaDAO::new(self::$container);
-        $retrieveByCriteria->entityType = 'test';
+        $retrieveByCriteria->entityType = Entity99Entity::class;
         $retrieveByCriteria->id = $id;
         $retrieveByCriteria->assignedBy = $id;
         $retrieveByCriteria->createdBy = $id;
@@ -64,17 +66,17 @@ class Entity99RetrieveByCriteriaDAOTest extends \Tests\TestEasy
         $sql = self::$qb->getSQL();
         $params = self::$qb->getParameters();
 
-        self::assertStringContainsString('FROM ' . Module99Constants::TABLE_NAME, $sql);
+        self::assertStringContainsString('FROM ' . Module99Constants::TABLE_NAME . ' t', $sql);
         self::assertStringContainsString('deleted = :deleted', $sql);
         self::assertStringContainsString('id = :id', $sql);
-        self::assertStringContainsString('created_by = :created_by', $sql);
-        self::assertStringContainsString('modified_by = :modified_by', $sql);
-        self::assertStringContainsString('assigned_by = :assigned_by', $sql);
+        self::assertStringContainsString('created_by = :createdBy', $sql);
+        self::assertStringContainsString('modified_by = :modifiedBy', $sql);
+        self::assertStringContainsString('assigned_by = :assignedBy', $sql);
         self::assertStringContainsString('date_created >= :dateCreatedFrom', $sql);
         self::assertStringContainsString('date_created <= :dateCreatedTo', $sql);
         self::assertStringContainsString('date_modified >= :dateModifiedFrom', $sql);
         self::assertStringContainsString('date_modified <= :dateModifiedTo', $sql);
-        self::assertStringContainsString('entity_type = :entity_type', $sql);
+        self::assertStringContainsString('entity_type = :entityType', $sql);
         self::assertStringContainsString('date_created ASC', $sql);
         self::assertStringContainsString('date_modified ASC', $sql);
         self::assertStringContainsString('LIMIT 1', $sql);
@@ -84,12 +86,12 @@ class Entity99RetrieveByCriteriaDAOTest extends \Tests\TestEasy
             'dateCreatedTo' => '2020-02-02 02:02:02',
             'dateModifiedFrom' => '2020-02-01 01:01:01',
             'dateModifiedTo' => '2020-02-01 02:02:02',
-            'created_by' => $id->uuid,
-            'modified_by' => $id->uuid,
-            'assigned_by' => $id->uuid,
+            'createdBy' => $id->uuid,
+            'modifiedBy' => $id->uuid,
+            'assignedBy' => $id->uuid,
             'id' => $id->uuid,
             'deleted' => 1,
-            'entity_type' => 'test',
+            'entityType' => Entity99Entity::class,
         ], $params);
     }
 
@@ -109,7 +111,7 @@ class Entity99RetrieveByCriteriaDAOTest extends \Tests\TestEasy
         $sql = self::$qb->getSQL();
         $params = self::$qb->getParameters();
 
-        self::assertEquals('SELECT * FROM ' . Module99Constants::TABLE_NAME, $sql);
+        self::assertEquals('SELECT t.* FROM ' . Module99Constants::TABLE_NAME . ' t', $sql);
         self::assertEmpty($params);
     }
 

@@ -17,7 +17,6 @@ trait Entity01HelperTestTrait
     {
         return [
             'id' => '331c1832-d5e1-43a6-aef0-6fa6ffbe01a6',
-            'entity_type' => 'entity01lc',
             'field01' => 'field01',
         ];
     }
