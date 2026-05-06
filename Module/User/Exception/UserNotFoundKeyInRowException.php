@@ -7,5 +7,5 @@ namespace Module\User\Exception;
 class UserNotFoundKeyInRowException extends \Exception
 {
 
-    use \SetCMS\Exception\EntityMapperNotFoundKeyInRowExceptionTrait;
+    use \SetCMS\Exception\ExceptionEntityMapperNotFoundKeyInRowTrait;
 }

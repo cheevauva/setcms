@@ -17,7 +17,7 @@ class PageMenuActionsByRequestServant extends \UUA\Servant
     /**
      * @var MenuActionEntity[]
      */
-    public array $actions = [];
+    public protected(set) array $actions;
 
     /**
      * @var array<string, mixed>
@@ -26,6 +26,8 @@ class PageMenuActionsByRequestServant extends \UUA\Servant
 
     public function serve(): void
     {
+        $this->actions = [];
+        
         $view = $this->ctx['view'] ?? null;
 
         if ($view instanceof PagePublicReadView) {
@@ -73,7 +75,7 @@ class PageMenuActionsByRequestServant extends \UUA\Servant
         $createAction->label = 'Создать страницу';
         $createAction->route = 'AdminPageNew';
         $createAction->params = [
-            'id' => new UUID(),
+            'id' => new UUID()->uuid,
         ];
 
         return $createAction;

@@ -7,5 +7,5 @@ namespace Module\Captcha\Exception;
 class CaptchaMapperNotFoundKeyInRowException extends \Exception
 {
 
-    use \SetCMS\Exception\EntityMapperNotFoundKeyInRowExceptionTrait;
+    use \SetCMS\Exception\ExceptionEntityMapperNotFoundKeyInRowTrait;
 }

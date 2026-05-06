@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Page\Exception;
+namespace Module\Email\Exception;
 
-class PageExpectOneButReceivedTooMuchException extends PageException
+class EmailExpectOneButReceivedTooMuchException extends EmailException
 {
 
     use \SetCMS\Exception\ExceptionEntityExpectOneButReceivedTooMuchTrait;

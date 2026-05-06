@@ -6,8 +6,6 @@ namespace Module\Captcha\Exception;
 
 class CaptchaNotFoundException extends CaptchaException
 {
-    /**
-     * @var string
-     */
-    protected $message = 'Каптча не найдена';
+
+    use \SetCMS\Exception\ExceptionNotFoundTrait;
 }

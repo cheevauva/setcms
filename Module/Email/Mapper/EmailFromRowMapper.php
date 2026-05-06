@@ -6,6 +6,7 @@ namespace Module\Email\Mapper;
 
 use Module\Email\Entity\EmailEntity;
 use Module\Email\Enum\EmailStatusEnum;
+use Module\Email\Exception\EmailMapperNotFoundKeyInRowException;
 
 class EmailFromRowMapper extends \UUA\Mapper
 {
@@ -30,6 +31,6 @@ class EmailFromRowMapper extends \UUA\Mapper
     #[\Override]
     protected function notFoundKeyInRowException(string $key): \Throwable
     {
-        throw new \Exception($key);
+        throw new EmailMapperNotFoundKeyInRowException($key);
     }
 }

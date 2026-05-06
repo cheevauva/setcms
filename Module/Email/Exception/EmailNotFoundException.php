@@ -6,5 +6,6 @@ namespace Module\Email\Exception;
 
 class EmailNotFoundException extends EmailException
 {
-    //put your code here
+
+    use \SetCMS\Exception\ExceptionNotFoundTrait;
 }

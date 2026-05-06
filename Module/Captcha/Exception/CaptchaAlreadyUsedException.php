@@ -7,8 +7,8 @@ namespace Module\Captcha\Exception;
 class CaptchaAlreadyUsedException extends CaptchaException
 {
 
-    public function __construct(string $message = 'Код уже использован, обновите картинку')
-    {
-        parent::__construct($message);
-    }
+    /**
+     * @var string
+     */
+    protected $message = 'Код уже использован, обновите картинку';
 }

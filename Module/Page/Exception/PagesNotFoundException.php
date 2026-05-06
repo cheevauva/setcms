@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Page\Exception;
 
-class PagesNotFoundException extends \Exception
+class PagesNotFoundException extends PageException
 {
 
-    /**
-     * @var string
-     */
-    protected $message = 'Записи не найдены';
+    use \SetCMS\Exception\ExceptionEntitiesNotFoundTrait;
 }

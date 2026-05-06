@@ -6,5 +6,4 @@ namespace Module\Email\Exception;
 
 class EmailException extends \Exception
 {
-    //put your code here
 }

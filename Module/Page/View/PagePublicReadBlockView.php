@@ -9,6 +9,6 @@ use Module\Page\Entity\PageEntity;
 class PagePublicReadBlockView extends \SetCMS\View\ViewTwig
 {
 
-    public ?PageEntity $page;
+    public PageEntity $page;
     public string $slug;
 }

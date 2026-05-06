@@ -14,7 +14,7 @@ class PostPrivateUpdateController extends ControllerViaPSR7
 {
 
     protected PostEntity $post;
-    private PostEntity $newPost;
+    protected PostEntity $newPost;
 
     #[\Override]
     protected function domainUnits(): array
@@ -37,12 +37,13 @@ class PostPrivateUpdateController extends ControllerViaPSR7
     protected function fromRequest(): void
     {
         $body = $this->validationBody();
+        $body->array('post')->notEmpty()->validate();
 
         $this->newPost = new PostEntity;
-        $this->newPost->id = $body->uuid('entity.id')->notEmpty()->val();
-        $this->newPost->slug = $body->string('entity.slug')->notEmpty()->val();
-        $this->newPost->title = $body->string('entity.title')->notEmpty()->val();
-        $this->newPost->message = $body->string('entity.message')->notEmpty()->val();
+        $this->newPost->id = $body->uuid('post.id')->notEmpty()->val();
+        $this->newPost->slug = $body->string('post.slug')->notEmpty()->val();
+        $this->newPost->title = $body->string('post.title')->notEmpty()->val();
+        $this->newPost->message = $body->string('post.message')->notEmpty()->val();
     }
 
     #[\Override]
@@ -62,7 +63,7 @@ class PostPrivateUpdateController extends ControllerViaPSR7
         }
 
         if ($object instanceof PostPrivateUpdateView) {
-            $object->entity = $this->entity ?? null;
+            $object->post = $this->post;
         }
     }
 

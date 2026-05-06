@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Module01\Exception;
+namespace Module\Email\Exception;
 
-class Entity01MapperNotFoundKeyInRowException extends \Exception
+class EmailMapperNotFoundKeyInRowException extends \Exception
 {
 
     use \SetCMS\Exception\ExceptionEntityMapperNotFoundKeyInRowTrait;

@@ -10,5 +10,5 @@ use Module\Email\Entity\EmailEntity;
 class EmailPrivateUpdateView extends ViewJson
 {
 
-    public ?EmailEntity $email = null;
+    public EmailEntity $email;
 }

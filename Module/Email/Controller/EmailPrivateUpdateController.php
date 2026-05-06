@@ -37,6 +37,7 @@ class EmailPrivateUpdateController extends ControllerViaPSR7
     protected function fromRequest(): void
     {
         $body = $this->validationBody();
+        $body->array('email')->notEmpty()->validate();
 
         $this->newemail = new EmailEntity;
         $this->newemail->id = $body->uuid('email.id')->notEmpty()->val();
@@ -61,7 +62,7 @@ class EmailPrivateUpdateController extends ControllerViaPSR7
         }
 
         if ($object instanceof EmailPrivateUpdateView) {
-            $object->email = $this->email ?? null;
+            $object->email = $this->email;
         }
     }
 

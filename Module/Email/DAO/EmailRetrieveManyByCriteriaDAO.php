@@ -6,6 +6,8 @@ namespace Module\Email\DAO;
 
 use Module\Email\Entity\EmailEntity;
 use Module\Email\Exception\EmailNotFoundException;
+use Module\Email\Exception\EmailsNotFoundException;
+use Module\Email\Exception\EmailExpectOneButReceivedTooMuchException;
 use Module\Email\Mapper\EmailFromRowMapper;
 
 class EmailRetrieveManyByCriteriaDAO extends \UUA\DAO
@@ -17,20 +19,20 @@ class EmailRetrieveManyByCriteriaDAO extends \UUA\DAO
     /**
      * @var array<EmailEntity>
      */
-    public array $emails;
-    public EmailEntity $email;
-    public ?EmailEntity $emailOrNull = null;
+    public protected(set) array $emails;
+    public protected(set) EmailEntity $email;
+    public protected(set) ?EmailEntity $emailOrNull = null;
 
     #[\Override]
     protected function entitiesNotFoundException(): \Throwable
     {
-        return new EmailNotFoundException();
+        return new EmailsNotFoundException();
     }
 
     #[\Override]
     protected function entityExpectOneButReceivedTooMuchException(): \Throwable
     {
-        return new EmailNotFoundException();
+        return new EmailExpectOneButReceivedTooMuchException;
     }
 
     #[\Override]

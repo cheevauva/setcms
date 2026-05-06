@@ -7,8 +7,8 @@ namespace Module\Captcha\Exception;
 class CaptchaAlreadySolvedException extends CaptchaException
 {
 
-    public function __construct(string $message = 'Вы уже указали правильный код')
-    {
-        parent::__construct($message);
-    }
+    /**
+     * @var string
+     */
+    protected $message = 'Вы уже указали правильный код';
 }

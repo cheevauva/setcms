@@ -10,8 +10,6 @@ use SetCMS\ACL\VO\ACLRoleVO;
 use Module\Menu\MenuAction\Entity\MenuActionEntity;
 use Module\Post\View\PostPublicReadBySlugView;
 use Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
-use Module\Post\Entity\PostEntity;
-use Module\Post\Exception\PostNotFoundException;
 
 class PostMenuActionsByRequestServant extends \UUA\Servant
 {
@@ -19,7 +17,7 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
     /**
      * @var MenuActionEntity[]
      */
-    public array $actions = [];
+    public protected(set) array $actions;
 
     /**
      * @var array<string, mixed>
@@ -29,6 +27,8 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
     #[\Override]
     public function serve(): void
     {
+        $this->actions = [];
+        
         $view = $this->ctx['view'] ?? null;
 
         if ($view instanceof PostPublicReadBySlugView) {
@@ -58,13 +58,16 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
     {
         $retrieveBySlug = PostRetrieveManyByCriteriaDAO::new($this->container);
         $retrieveBySlug->slug = $slug;
+        $retrieveBySlug->limit = 1;
+        $retrieveBySlug->allowEmptyResult = false;
+        $retrieveBySlug->expectOne = true;
         $retrieveBySlug->serve();
-        
+
         $editAction = new MenuActionEntity();
         $editAction->label = 'Редактировать пост';
         $editAction->route = 'AdminPostEdit';
         $editAction->params = [
-            'id' => PostEntity::as($retrieveBySlug->first ?? throw new PostNotFoundException())->id->uuid,
+            'id' => $retrieveBySlug->post->id->uuid,
         ];
 
         return $editAction;
@@ -76,7 +79,7 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
         $createAction->label = 'Создать пост';
         $createAction->route = 'AdminPostNew';
         $createAction->params = [
-            'id' => new UUID(),
+            'id' => new UUID()->uuid,
         ];
 
         return $createAction;

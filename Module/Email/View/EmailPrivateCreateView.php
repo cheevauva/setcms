@@ -9,5 +9,5 @@ use Module\Email\Entity\EmailEntity;
 class EmailPrivateCreateView extends \SetCMS\View\ViewJson
 {
 
-    public ?EmailEntity $email = null;
+    public EmailEntity $email;
 }

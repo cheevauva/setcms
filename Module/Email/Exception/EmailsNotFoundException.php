@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Module\Captcha\Exception;
+namespace Module\Email\Exception;
 
-class CaptchasNotFoundException extends CaptchaException
+class EmailsNotFoundException extends EmailException
 {
 
     use \SetCMS\Exception\ExceptionEntitiesNotFoundTrait;

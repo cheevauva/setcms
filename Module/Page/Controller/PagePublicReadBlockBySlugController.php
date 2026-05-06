@@ -46,7 +46,7 @@ class PagePublicReadBlockBySlugController extends \SetCMS\Controller\ControllerV
         }
 
         if ($object instanceof PagePublicReadBlockView) {
-            $object->page = $this->page ?? null;
+            $object->page = $this->page;
             $object->slug = $this->slug;
         }
     }

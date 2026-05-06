@@ -6,8 +6,6 @@ namespace Module\Page\Exception;
 
 class PageNotFoundException extends PageException
 {
-    /**
-     * @var string
-     */
-    protected $message = 'Запись не найдена';
+
+    use \SetCMS\Exception\ExceptionNotFoundTrait;
 }

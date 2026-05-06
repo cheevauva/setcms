@@ -7,8 +7,8 @@ namespace Module\Captcha\Exception;
 class CaptchaExpiredException extends CaptchaException
 {
 
-    public function __construct(string $message = 'Картинка и код для неё уже не действительны')
-    {
-        parent::__construct($message);
-    }
+    /**
+     * @var string
+     */
+    protected $message = 'Картинка и код для неё уже не действительны';
 }

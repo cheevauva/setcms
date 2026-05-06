@@ -19,9 +19,9 @@ class CaptchaRetrieveManyByCriteriaDAO extends \UUA\DAO
     /**
      * @var array<CaptchaEntity>
      */
-    public array $captchas;
-    public CaptchaEntity $captcha;
-    public ?CaptchaEntity $captchaOrNull;
+    public protected(set) array $captchas;
+    public protected(set) CaptchaEntity $captcha;
+    public protected(set) ?CaptchaEntity $captchaOrNull;
 
     #[\Override]
     protected function entitiesNotFoundException(): \Throwable
