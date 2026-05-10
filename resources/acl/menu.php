@@ -13,6 +13,7 @@ $acl['rules'][UserRoleConstants::GUEST]['routes']['menuMainSub'] = true;
 $acl['rules'][UserRoleConstants::ADMIN]['routes']['admin_menu'] = true;
 $acl['rules'][UserRoleConstants::ADMIN]['routes']['AdminMenuIndex'] = true;
 $acl['rules'][UserRoleConstants::ADMIN]['routes']['AdminMenuEdit'] = true;
+$acl['rules'][UserRoleConstants::ADMIN]['routes']['AdminMenuRead'] = true;
 $acl['rules'][UserRoleConstants::ADMIN]['routes']['AdminMenuCreate'] = true;
 $acl['rules'][UserRoleConstants::ADMIN]['routes']['AdminMenuNew'] = true;
 $acl['rules'][UserRoleConstants::ADMIN]['routes']['AdminMenuUpdate'] = true;

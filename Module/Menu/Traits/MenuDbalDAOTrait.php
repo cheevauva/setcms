@@ -11,7 +11,6 @@ trait MenuDbalDAOTrait
 
     use \SetCMS\Traits\TraitsDatabaseMain;
 
-    #[\Override]
     protected function table(): string
     {
         return MenuConstrants::TABLE_NAME;

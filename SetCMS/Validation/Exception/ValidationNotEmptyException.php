@@ -7,8 +7,8 @@ namespace SetCMS\Validation\Exception;
 class ValidationNotEmptyException extends \Exception
 {
 
-    public function __construct()
-    {
-        parent::__construct('Поле должно быть заполнено');
-    }
+    /**
+     * @var string
+     */
+    protected $message = 'Поле должно быть заполнено';
 }

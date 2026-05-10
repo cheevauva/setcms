@@ -1,0 +1,20 @@
+{% extends scShortPath(layout ?? 'layout_admin.twig') %}
+
+{% block title %}{{ options.title }} - {{ menu.title }}{% endblock %}
+
+{% block content_toolbar %}
+    {% if scHasAccess('AdminMenuIndex') %}
+        <a href="{{ scLink('AdminMenuIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    {% endif %}
+    {% if scHasAccess('AdminMenuEdit') %}
+        <a href="{{ scLink('AdminMenuEdit', {id: menu.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+        <p>
+            {{ menu.route }}
+            {{ menu.label }}
+        <pre>{{ menu.params|json_encode }}</pre>
+{% endblock %}

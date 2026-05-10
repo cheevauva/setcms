@@ -12,6 +12,12 @@ class MenuPrivateNewController extends MenuPrivateEditController
     #[\Override]
     protected function domainUnits(): array
     {
+        return [];
+    }
+    
+    #[\Override]
+    protected function viewUnits(): array
+    {
         return [
             MenuPrivateNewView::class,
         ];

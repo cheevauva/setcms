@@ -13,7 +13,6 @@ class MenuCreateDAO extends \UUA\DAO
     use \Module\Menu\Traits\MenuCallTrait;
     use \Module\Menu\Traits\MenuDbalDAOTrait;
 
-    #[\Override]
     protected function row(): array
     {
         return MenuToRowMapper::call($this->container, $this->menu)->row;

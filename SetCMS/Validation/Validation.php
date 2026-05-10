@@ -33,6 +33,11 @@ class Validation
         return new Arr($this->data, $path, $this->messages);
     }
 
+    public function json(string $path): Json
+    {
+        return new Json($this->data, $path, $this->messages);
+    }
+
     public function string(string $path): Str
     {
         return new Str($this->data, $path, $this->messages);

@@ -2,6 +2,7 @@
 {% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_toolbar %}
+    <a href="{{ scLink('AdminMenuNew', {id: scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать</a>
 {% endblock %}
 
 {% block content_title %}Меню{% endblock %}

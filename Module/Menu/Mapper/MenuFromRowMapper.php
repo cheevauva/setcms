@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Menu\Mapper;
 
 use Module\Menu\Entity\MenuEntity;
+use Module\Menu\Exception\MenuMapperNotFoundKeyInRowException;
 
 class MenuFromRowMapper extends \UUA\Mapper
 {
@@ -26,6 +27,6 @@ class MenuFromRowMapper extends \UUA\Mapper
     #[\Override]
     protected function notFoundKeyInRowException(string $key): \Throwable
     {
-        return new \Exception($key);
+        return new MenuMapperNotFoundKeyInRowException($key);
     }
 }

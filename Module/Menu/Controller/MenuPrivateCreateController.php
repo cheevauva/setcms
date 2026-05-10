@@ -8,7 +8,6 @@ use SetCMS\Controller\ControllerViaPSR7;
 use Module\Menu\DAO\MenuCreateDAO;
 use Module\Menu\Entity\MenuEntity;
 use Module\Menu\View\MenuPrivateCreateView;
-use Module\Menu\Exception\MenuParamsInvalidJsonException;
 
 class MenuPrivateCreateController extends ControllerViaPSR7
 {
@@ -37,16 +36,10 @@ class MenuPrivateCreateController extends ControllerViaPSR7
         $body = $this->validationBody();
         $body->array('menu')->notEmpty()->validate();
 
-        $params = $body->string('menu.params')->notEmpty()->val();
-
-        if (!json_validate($params)) {
-            $this->messages->attach(new MenuParamsInvalidJsonException('Невалидный json'), 'menu.params');
-        }
-        
         $this->menu = new MenuEntity();
         $this->menu->label = $body->string('menu.label')->notEmpty()->val();
         $this->menu->route = $body->string('menu.route')->notEmpty()->val();
-        $this->menu->params = json_decode($params, true) ?? [];
+        $this->menu->params = $body->json('menu.params')->notEmpty()->asArray()->val();
     }
 
     #[\Override]

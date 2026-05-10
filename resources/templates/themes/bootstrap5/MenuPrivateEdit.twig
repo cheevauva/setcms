@@ -6,8 +6,8 @@
 {% block content %}
     {{ 
         crud.editview({
-            action: scLink(menu.id ? 'action_record_admin' : 'action_admin', {module: 'Menu', action: menu ? 'update': 'create', id: menu.id}),
-            redirect: scLink('action_record_admin', {module: 'Menu', action: 'read', 'id': '${menu.id.uuid}'}),
+            action: scLink(menu.id ? 'AdminMenuUpdate' : 'AdminMenuCreate', {id: (menu ? menu.id : scUUID()) }),
+            redirect: scLink('AdminMenuRead', {id: '${menu.id.uuid}'}),
             actions: {
                 fields: [
                     {

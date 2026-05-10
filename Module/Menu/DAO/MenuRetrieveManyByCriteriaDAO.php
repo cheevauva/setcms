@@ -6,6 +6,7 @@ namespace Module\Menu\DAO;
 
 use Module\Menu\Entity\MenuEntity;
 use Module\Menu\Exception\MenuNotFoundException;
+use Module\Menu\Exception\MenusNotFoundException;
 use Module\Menu\Mapper\MenuFromRowMapper;
 
 class MenuRetrieveManyByCriteriaDAO extends \UUA\DAO
@@ -31,13 +32,13 @@ class MenuRetrieveManyByCriteriaDAO extends \UUA\DAO
     #[\Override]
     protected function entitiesNotFoundException(): \Throwable
     {
-        return new MenuNotFoundException();
+        return new MenusNotFoundException();
     }
 
     #[\Override]
     protected function entityExpectOneButReceivedTooMuchException(): \Throwable
     {
-        return new MenuNotFoundException();
+        return new MenuExpectOneButReceivedTooMuchException();
     }
 
     #[\Override]

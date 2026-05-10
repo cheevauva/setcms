@@ -8,7 +8,6 @@ use Module\Menu\DAO\MenuRetrieveManyByCriteriaDAO;
 use Module\Menu\DAO\MenuUpdateDAO;
 use Module\Menu\Entity\MenuEntity;
 use Module\Menu\View\MenuPrivateUpdateView;
-use Module\Menu\Exception\MenuParamsInvalidJsonException;
 
 class MenuPrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
 {
@@ -26,12 +25,20 @@ class MenuPrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
     }
 
     #[\Override]
+    protected function viewUnits(): array
+    {
+        return [
+            MenuPrivateUpdateView::class,
+        ];
+    }
+
+    #[\Override]
     public function from(object $object): void
     {
         parent::from($object);
 
         if ($object instanceof MenuRetrieveManyByCriteriaDAO) {
-            $this->menu = MenuEntity::as($object->menu);
+            $this->menu = $object->menu;
         }
     }
 
@@ -44,14 +51,7 @@ class MenuPrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
         $this->newMenu->id = $body->uuid('menu.id')->notEmpty()->val();
         $this->newMenu->route = $body->string('menu.route')->notEmpty()->val();
         $this->newMenu->label = $body->string('menu.label')->notEmpty()->val();
-
-        $params = $body->string('menu.params')->notEmpty()->val();
-        
-        if (!json_validate($params)) {
-            throw new MenuParamsInvalidJsonException('Невалидный json');
-        }
-         
-        $this->newMenu->params = json_decode($params, true) ?? [];
+        $this->newMenu->params = $body->json('menu.params')->notEmpty()->asArray()->val();
     }
 
     #[\Override]
@@ -61,12 +61,18 @@ class MenuPrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
 
         if ($object instanceof MenuRetrieveManyByCriteriaDAO) {
             $object->id = $this->newMenu->id;
+            $object->limit = 1;
+            $object->expectOne = true;
+            $object->allowEmptyResult = false;
         }
 
         if ($object instanceof MenuUpdateDAO) {
             $object->menu = $this->menu;
+            $object->menu->label = $this->newMenu->label;
+            $object->menu->route = $this->newMenu->route;
+            $object->menu->params = $this->newMenu->params;
         }
-        
+
         if ($object instanceof MenuPrivateUpdateView) {
             $object->menu = $this->menu;
         }

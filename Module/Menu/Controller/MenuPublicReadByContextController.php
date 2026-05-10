@@ -40,11 +40,11 @@ class MenuPublicReadByContextController extends \SetCMS\Controller\ControllerVia
         parent::from($object);
 
         if ($object instanceof PostMenuActionsByRequestServant) {
-            $this->appendActions($object->actions);
+            array_push($this->items, ...$object->actions);
         }
 
         if ($object instanceof PageMenuActionsByRequestServant) {
-            $this->appendActions($object->actions);
+            array_push($this->items, ...$object->actions);
         }
     }
 
