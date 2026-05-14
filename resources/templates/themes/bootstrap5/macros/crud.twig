@@ -20,8 +20,19 @@
             <ul class="dropdown-menu">
                 {% for action in column.actions %}
                     {% if scHasAccess(action.route) %}
-                        <li><a class="dropdown-item"  href="{{ scLink(action.route, action.params) }}">{{ action.label }}</a></li>
-
+                        {% if action.type == 'action-btn' %}
+                            <li><a 
+                                    class="dropdown-item setcms-action-btn"  
+                                    setcms-method="POST" 
+                                    setcms-action="{{ scLink(action.route, action.params) }}"  
+                                    setcms-redirect="{{ scLink('AdminModule01Index') }}">
+                                    {{ action.label }}
+                                </a></li>
+                        {% endif %}
+                        
+                        {% if action.type is empty %}
+                            <li><a class="dropdown-item"  href="{{ scLink(action.route, action.params) }}">{{ action.label }}</a></li>
+                        {% endif %}
                     {% endif %}
                 {% endfor %}
             </ul>

@@ -13,5 +13,5 @@ class Entity01PrivateIndexView extends ViewTwig
     /**
      * @var Entity01Entity[]
      */
-    public array $entities = [];
+    public array $entity01s;
 }

@@ -1,0 +1,28 @@
+{% extends scShortPath(layout ?? 'layout_admin.twig') %}
+
+{% block title %}{{ options.title }} - {{ entity99.title }}{% endblock %}
+
+{% block content_toolbar %}
+    {% if scHasAccess('AdminModule01Index') %}
+        <a href="{{ scLink('AdminModule01Index') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    {% endif %}
+    {% if scHasAccess('AdminModule01Edit') %}
+        <a href="{{ scLink('AdminModule01Edit', {id: entity99.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if entity99 %}
+        <article class="blog-entity99">
+            <h2 class="blog-entity99-title">{{ entity99.title }}</h2>
+            <p class="blog-entity99-meta">
+                <a href="{{ scLink('AdminUserRead', {id : entity99.createdBy}) }}">{{ createdBy.username }}</a> опубликовал в {{ entity99.dateCreated.format('H:i') }} {{ entity99.dateCreated.format('d.m.Y') }} /
+                <a href="{{ scLink('AdminUserRead', {id : entity99.modifiedBy }) }}">{{ modifiedBy.username }}</a> изменил в {{ entity99.dateCreated.format('H:i') }} {{ entity99.dateCreated.format('d.m.Y') }} /
+                <a href="{{ scLink('AdminUserRead', {id : entity99.assignedBy }) }}">{{ assignedBy.username }}</a> ответственный
+            </p>
+            <p>
+                {{ entity99.field01 }}
+            </p>
+        </article>
+    {% endif %}
+{% endblock %}

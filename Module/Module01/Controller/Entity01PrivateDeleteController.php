@@ -5,23 +5,24 @@ declare(strict_types=1);
 namespace Module\Module01\Controller;
 
 use SetCMS\Controller\ControllerViaPSR7;
+use SetCMS\UUID;
 use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\Servant\Entity01GetByIdServant;
-use Module\Module01\DAO\Entity01UpdateDAO;
-use Module\Module01\View\Entity01PrivateUpdateView;
+use Module\Module01\DAO\Entity01DeleteByIdDAO;
+use Module\Module01\View\Entity01PrivateDeleteView;
 
-class Entity01PrivateUpdateController extends ControllerViaPSR7
+class Entity01PrivateDeleteController extends ControllerViaPSR7
 {
 
-    protected Entity01Entity $entity01;
-    protected Entity01Entity $newEntity01;
+    public Entity01Entity $entity01;
+    public UUID $id;
 
     #[\Override]
     protected function domainUnits(): array
     {
         return [
             Entity01GetByIdServant::class,
-            Entity01UpdateDAO::class,
+            Entity01DeleteByIdDAO::class,
         ];
     }
 
@@ -29,18 +30,14 @@ class Entity01PrivateUpdateController extends ControllerViaPSR7
     protected function viewUnits(): array
     {
         return [
-            Entity01PrivateUpdateView::class,
+            Entity01PrivateDeleteView::class,
         ];
     }
 
     #[\Override]
     protected function fromRequest(): void
     {
-        $body = $this->validationBody();
-
-        $this->newEntity01 = new Entity01Entity;
-        $this->newEntity01->id = $body->uuid('entity01.id')->notEmpty()->val();
-        $this->newEntity01->field01 = $body->string('entity01.field01')->notEmpty()->val();
+        $this->id = $this->validationParams()->uuid('id')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]
@@ -49,16 +46,15 @@ class Entity01PrivateUpdateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof Entity01GetByIdServant) {
-            $object->id = $this->newEntity01->id;
+            $object->id = $this->id;
         }
 
-        if ($object instanceof Entity01UpdateDAO) {
+        if ($object instanceof Entity01PrivateDeleteView) {
             $object->entity01 = $this->entity01;
-            $object->entity01->field01 = $this->newEntity01->field01;
         }
 
-        if ($object instanceof Entity01PrivateUpdateView) {
-            $object->entity01 = $this->entity01;
+        if ($object instanceof Entity01DeleteByIdDAO) {
+            $object->id = $this->entity01->id;
         }
     }
 

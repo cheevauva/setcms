@@ -7,6 +7,7 @@ namespace Module\Menu\DAO;
 use Module\Menu\Entity\MenuEntity;
 use Module\Menu\Exception\MenuNotFoundException;
 use Module\Menu\Exception\MenusNotFoundException;
+use Module\Menu\Exception\MenuExpectOneButReceivedTooMuchException;
 use Module\Menu\Mapper\MenuFromRowMapper;
 
 class MenuRetrieveManyByCriteriaDAO extends \UUA\DAO

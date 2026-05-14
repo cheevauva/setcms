@@ -7,5 +7,9 @@ namespace Module\Email\Exception;
 class EmailNotFoundException extends EmailException
 {
 
-    use \SetCMS\Exception\ExceptionNotFoundTrait;
+    /**
+     * @var string
+     * @phpstan-ignore missingType.property
+     */
+    protected $message = 'Запись не найдена';
 }

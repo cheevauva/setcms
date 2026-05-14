@@ -7,5 +7,9 @@ namespace Module\Page\Exception;
 class PageNotFoundException extends PageException
 {
 
-    use \SetCMS\Exception\ExceptionNotFoundTrait;
+    /**
+     * @var string
+     * @phpstan-ignore missingType.property
+     */
+    protected $message = 'Запись не найдена';
 }

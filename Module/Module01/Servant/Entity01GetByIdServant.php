@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Module\Module01\DAO;
+namespace Module\Module01\Servant;
 
 use Module\Module01\DAO\Entity01RetrieveByCriteriaDAO;
 use Module\Module01\Entity\Entity01Entity;
 
-class Entity01GetByIdDAO extends \UUA\DAO
+class Entity01GetByIdServant extends \UUA\Servant
 {
 
     use \SetCMS\Traits\TraitsCallWithUUID;
@@ -21,6 +21,7 @@ class Entity01GetByIdDAO extends \UUA\DAO
         $getOne->expectOne = true;
         $getOne->allowEmptyResult = false;
         $getOne->id = $this->id;
+        $getOne->limit = 1;
         $getOne->serve();
 
         $this->entity01 = $getOne->entity01;

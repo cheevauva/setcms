@@ -7,5 +7,9 @@ namespace Module\Captcha\Exception;
 class CaptchaExpectOneButReceivedTooMuchException extends CaptchaException
 {
 
-    use \SetCMS\Exception\ExceptionEntityExpectOneButReceivedTooMuchTrait;
+    /**
+     * @var string
+     * @phpstan-ignore missingType.property
+     */
+    protected $message = 'Ожидалась одна запись, но вернулось больше';
 }

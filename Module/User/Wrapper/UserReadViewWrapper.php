@@ -26,9 +26,9 @@ class UserReadViewWrapper extends \UUA\Wrapper
 
             $entity = EntityBasic::as($entity);
 
-            new SignedDTO('assignedBy', UserGetByIdServant::call($this->container, $entity->assignedBy)->user)->to($root);
-            new SignedDTO('createdBy', UserGetByIdServant::call($this->container, $entity->createdBy)->user)->to($root);
-            new SignedDTO('modifiedBy', UserGetByIdServant::call($this->container, $entity->modifiedBy)->user)->to($root);
+            $root->from(new SignedDTO('assignedBy', UserGetByIdServant::call($this->container, $entity->assignedBy)->user));
+            $root->from(new SignedDTO('createdBy', UserGetByIdServant::call($this->container, $entity->createdBy)->user));
+            $root->from(new SignedDTO('modifiedBy', UserGetByIdServant::call($this->container, $entity->modifiedBy)->user));
         }
     }
 

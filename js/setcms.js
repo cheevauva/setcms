@@ -123,6 +123,60 @@ jQuery().ready(function () {
         $image.trigger('click');
     });
 
+    $('.setcms-action-btn').on('click', function () {
+        var $button;
+
+        $button = $(this);
+
+        $.ajax({
+            url: $button.attr('setcms-action'),
+            type: $button.attr('setcms-method') || 'POST',
+            data: JSON.stringify($button.data()),
+            headers: {
+                'X-CSRF-Token': getCookie('X-CSRF-Token'),
+                'Content-type': "application/json; charset=utf-8",
+                Accept: "application/json; charset=utf-8"
+            },
+            error: function (ts) {
+                var message;
+                var data;
+
+                try {
+                    data = JSON.parse(ts.responseText);
+                    if (data.messages && data.messages[0] && data.messages[0].message) {
+                        message = data.messages[0].message;
+                    }
+                } catch (e) {
+                    message = ts.responseText;
+                }
+
+                return altMessage(message, 'Ошибка');
+            },
+            success: function (data) {
+                if ($button.attr('setcms-handler')) {
+                    handlers[$button.attr('setcms-handler')](data);
+                }
+
+                if (data.result && $button.attr('setcms-redirect')) {
+                    String.prototype.interpolate = function (params) {
+                        const names = Object.keys(params);
+                        const vals = Object.values(params);
+                        return new Function(...names, `return \`${this}\`;`)(...vals);
+                    };
+
+                    window.location.href = $button.attr('setcms-redirect').interpolate(data.data);
+                    return;
+                }
+
+                $.each(data.messages, function (index, msg) {
+                    var message = msg.message || null;
+
+                    altMessage(message);
+                });
+            }
+        });
+    });
+
     $('.setcms-form .setcms-submit-button').on('click', function () {
         var $form;
 

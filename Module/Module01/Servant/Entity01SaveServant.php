@@ -13,6 +13,7 @@ class Entity01SaveServant extends \UUA\Servant
 
     use \Module\Module01\Traits\Entity01CallTrait;
 
+    #[\Override]
     public function serve(): void
     {
         if (Entity01HasByIdDAO::call($this->container, $this->entity01->id)->isExists) {

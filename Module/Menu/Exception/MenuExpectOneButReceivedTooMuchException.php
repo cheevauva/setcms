@@ -7,5 +7,9 @@ namespace Module\Menu\Exception;
 class MenuExpectOneButReceivedTooMuchException extends MenuException
 {
 
-    use \SetCMS\Exception\ExceptionEntityExpectOneButReceivedTooMuchTrait;
+    /**
+     * @var string
+     * @phpstan-ignore missingType.property
+     */
+    protected $message = 'Ожидалась одна запись, но вернулось больше';
 }

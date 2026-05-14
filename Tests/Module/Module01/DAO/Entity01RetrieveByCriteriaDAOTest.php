@@ -95,10 +95,10 @@ class Entity01RetrieveByCriteriaDAOTest extends \Tests\TestEasy
         $findMany->allowEmptyResult = true;
         $findMany->serve();
 
-        self::assertNotEmpty($findMany->entities);
-        self::assertCount(2, $findMany->entities);
-        self::assertInstanceOf(Entity01Entity::class, $findMany->entities[0]);
-        self::assertInstanceOf(Entity01Entity::class, $findMany->entities[1]);
+        self::assertNotEmpty($findMany->entity01s);
+        self::assertCount(2, $findMany->entity01s);
+        self::assertInstanceOf(Entity01Entity::class, $findMany->entity01s[0]);
+        self::assertInstanceOf(Entity01Entity::class, $findMany->entity01s[1]);
     }
 
     public function testEntity01FindManyByCriteriaDAONotFound(): void
@@ -108,7 +108,7 @@ class Entity01RetrieveByCriteriaDAOTest extends \Tests\TestEasy
         $findMany->allowEmptyResult = true;
         $findMany->serve();
 
-        self::assertEmpty($findMany->entities);
+        self::assertEmpty($findMany->entity01s);
     }
 
     public function testEntity01FindOneByCriteriaDAOEmpty(): void
@@ -183,10 +183,10 @@ class Entity01RetrieveByCriteriaDAOTest extends \Tests\TestEasy
         $getMany->allowEmptyResult = false;
         $getMany->serve();
 
-        self::assertNotEmpty($getMany->entities);
-        self::assertCount(2, $getMany->entities);
-        self::assertInstanceOf(Entity01Entity::class, $getMany->entities[0]);
-        self::assertInstanceOf(Entity01Entity::class, $getMany->entities[1]);
+        self::assertNotEmpty($getMany->entity01s);
+        self::assertCount(2, $getMany->entity01s);
+        self::assertInstanceOf(Entity01Entity::class, $getMany->entity01s[0]);
+        self::assertInstanceOf(Entity01Entity::class, $getMany->entity01s[1]);
     }
 
     public function testEntity01GetOneByCriteriaDAOFoundOneRow(): void

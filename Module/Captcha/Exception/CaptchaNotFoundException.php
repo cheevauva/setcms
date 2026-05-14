@@ -7,5 +7,9 @@ namespace Module\Captcha\Exception;
 class CaptchaNotFoundException extends CaptchaException
 {
 
-    use \SetCMS\Exception\ExceptionNotFoundTrait;
+    /**
+     * @var string
+     * @phpstan-ignore missingType.property
+     */
+    protected $message = 'Запись не найдена';
 }

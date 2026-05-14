@@ -1,12 +1,12 @@
 {% extends scShortPath(layout ?? 'layout_admin.twig') %}
 {% import scShortPath('macros/crud.twig') as crud %}
 
-{% block content_title %}{% if entity.id %}Редактировать{% else %}Создать{% endif %}{% endblock %}
+{% block content_title %}{% if entity01.id %}Редактировать{% else %}Создать{% endif %}{% endblock %}
 {% block content %}
     {{ 
         crud.editview({
-            action: scLink(entity.id ? 'AdminModule01Update' : 'AdminModule01Create', {id: (entity ? entity.id : scUUID()) }),
-            redirect: scLink('AdminModule01Read', {id: '${entity.id.uuid}'}),
+            action: scLink(entity01.id ? 'AdminModule01Update' : 'AdminModule01Create', {id: (entity0101 ? entity01.id : scUUID()) }),
+            redirect: scLink('AdminModule01Read', {id: '${entity01.id.uuid}'}),
             actions: {
                 fields: [
                     {
@@ -23,32 +23,12 @@
                     fields: [
                         {
                             type: 'hidden',
-                            name: 'entity.id',
-                            value: entity.id|default(scUUID())
+                            name: 'entity01.id',
+                            value: entity01.id|default(scUUID())
                         },
-                        {name: 'entity.field01', value: entity.field01, type: 'input', label: 'field01'},
+                        {name: 'entity01.field01', value: entity01.field01, type: 'input', label: 'field01'},
                     ]
                 }, 
-                {
-                    name: 'services',
-                    label: 'Служебные данные',
-                    fields: [
-                        {
-                            name: 'entity.dateCreated',
-                            value: entity.dateCreated.format('Y-m-d H:i:s'),
-                            type: 'input',
-                            label: 'Дата создания',
-                            disabled: true
-                        },
-                        {
-                            name: 'entity.dateModified',
-                            value: entity.dateCreated.format('Y-m-d H:i:s'),
-                            type: 'input',
-                            label: 'Дата изменения',
-                            disabled: true
-                        },
-                    ]
-                }
             ]
         }) 
     }}

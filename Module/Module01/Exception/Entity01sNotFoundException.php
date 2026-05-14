@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Exception;
+namespace Module\Module01\Exception;
 
-trait ExceptionNotFoundTrait
+class Entity01sNotFoundException extends Entity01Exception
 {
 
     /**

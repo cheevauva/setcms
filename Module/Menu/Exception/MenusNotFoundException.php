@@ -7,5 +7,9 @@ namespace Module\Menu\Exception;
 class MenusNotFoundException extends MenuException
 {
 
-    use \SetCMS\Exception\ExceptionEntitiesNotFoundTrait;
+    /**
+     * @var string
+     * @phpstan-ignore missingType.property
+     */
+    protected $message = 'Записи не найдены';
 }
