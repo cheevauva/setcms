@@ -1,57 +1,30 @@
 {% extends scShortPath(layout ?? 'layout_admin.twig') %}
-{% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_title %}{% if entity.id %}Редактировать{% else %}Создать{% endif %}{% endblock %}
 {% block content %}
-    {{ 
-        crud.editview({
-            action: scLink(entity.id ? 'AdminPageUpdate' : 'AdminPageCreate', {id: (entity ? entity.id : scUUID()) }),
-            redirect: scLink('AdminPageRead', {id: '${entity.id.uuid}'}),
-            actions: {
-                fields: [
-                    {
-                        type: 'submit',
-                        label: 'Сохранить',
-                    },
-                ],
-            },
-            panels: [
-                {
-                    name: 'default',
-                    label: 'Основные данные',
-                    active: true,
-                    fields: [
-                        {
-                            type: 'hidden',
-                            name: 'entity.id',
-                            value: entity.id|default(scUUID())
-                        },
-                        {name: 'entity.slug', value: entity.slug, type: 'input', label: 'slug'},
-                        {name: 'entity.title', value: entity.title, type: 'input', label: 'title'},
-                        {name: 'entity.content', value: entity.content, type: 'textarea', label: 'content'},
-                    ]
-                }, 
-                {
-                    name: 'services',
-                    label: 'Служебные данные',
-                    fields: [
-                        {
-                            name: 'entity.dateCreated',
-                            value: entity.dateCreated.format('Y-m-d H:i:s'),
-                            type: 'input',
-                            label: 'Дата создания',
-                            disabled: true
-                        },
-                        {
-                            name: 'entity.dateModified',
-                            value: entity.dateCreated.format('Y-m-d H:i:s'),
-                            type: 'input',
-                            label: 'Дата изменения',
-                            disabled: true
-                        },
-                    ]
-                }
-            ]
-        }) 
-    }}
+    <setcms-editview>
+        <action>{{ scLink(entity.id ? 'AdminPageUpdate' : 'AdminPageCreate', {id: (entity.id ?: scUUID()) }) }}</action>
+        <redirect>{{ scLink('AdminPageRead', {id: '${entity.id.uuid}'}) }}</redirect>
+        <actions>
+            <fields>
+                <field type="submit" label="Сохранить"></field>
+            </fields>
+        </actions>
+        <panels>
+            <panel name="default" label="Основные данные" active="true">
+                <fields>
+                    <field type="hidden" name="entity.id" value="{{ entity.id|default(scUUID()) }}"></field>
+                    <field type="input" name="entity.slug" label="slug" value="{{ entity.slug }}"></field>
+                    <field type="input" name="entity.title" label="title" value="{{ entity.title }}"></field>
+                    <field type="textarea" name="entity.content" label="content" value="{{ entity.content }}"></field>
+                </fields>
+            </panel>
+            <panel name="services" label="Служебные данные" active="false">
+                <fields>
+                    <field type="input" name="entity.dateCreated" label="Дата создания" disabled="1" value="{{ entity.dateCreated.format('Y-m-d H:i:s') }}"></field>
+                    <field type="input" name="entity.dateModified" label="Дата изменения" disabled="1" value="{{ entity.dateCreated.format('Y-m-d H:i:s') }}"></field>
+                </fields>
+            </panel>
+        </panels>
+    </setcms-editview>
 {% endblock %}

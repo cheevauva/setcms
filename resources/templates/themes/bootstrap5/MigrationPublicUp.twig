@@ -1,13 +1,12 @@
 {% extends scShortPath(layout ?? 'layout_popup.twig') %}
-{% import scShortPath('macros/forms.twig') as forms %}
 
 {% block content %}
     <form class="setcms-form row g-1" 
           setcms-action="{{ scLink('MigrationDoUp') }}"
           setcms-redirect="{{ scLink('Home') }}"
           >
-        {{ forms.input({name: 'dbName', placeholder: 'База данных'}) }}
-        {{ forms.input({name: 'secretKey', placeholder: 'Секретный ключ'}) }}
-        {{ forms.submit({label: 'Отправить'}) }}
+        <setcms-field name="dbName" placeholder="База данных" type="text"></setcms-field>
+        <setcms-field name="secretKey" placeholder="Секретный ключ" type="password"></setcms-field>
+        <setcms-field  label="Отправить" type="submit"></setcms-field>
     </form>
 {% endblock %}

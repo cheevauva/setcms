@@ -1,66 +1,35 @@
 {% extends scShortPath(layout ?? 'layout_admin.twig') %}
-{% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_title %}Сохранить пользователя{% endblock %}
 
 {% block content %}
-    {{ 
-        crud.editview({
-            action: scLink(user.id ? 'AdminUserUpdate' : 'AdminUserCreate', {id: user ? user.id : scUUID()} ),
-            redirect: scLink('AdminUserRead', {'id': '${user.id.uuid}'}),
-            actions: {
-                fields: [
-                    {
-                        type: 'submit',
-                        label: 'Сохранить',
-                    },
-                ],
-            },
-            panels: [
-                {
-                    name: 'default',
-                    label: 'Основные данные',
-                    active: true,
-                    fields: [
-                        {
-                            type: 'hidden',
-                            name: 'user.id',
-                            value: user.id|default(scUUID())
-                        },
-                        {
-                            name: 'user.role',
-                            value: user.role.value,
-                            type: 'input',
-                            label: 'Роль',
-                            options: {
+    <setcms-editview>
+        <action>{{ scLink(user.id ? 'AdminUserUpdate' : 'AdminUserCreate', {id: (user.id ?: scUUID()) }) }}</action>
+        <redirect>{{ scLink('AdminUserRead', {id: '${user.id.uuid}'}) }}</redirect>
+        <actions>
+            <fields>
+                <field type="submit" label="Сохранить"></field>
+            </fields>
+        </actions>
+        <panels>
+            <panel name="default" label="Основные данные" active="true">
+                <fields>
+                    <field type="hidden" name="user.id" value="{{ user.id|default(scUUID()) }}"></field>
+                    <field type="select" name="user.role" label="Роль" value="{{ user.role.value }}">
+                        <options>{{ {
                                 'guest': 'Гость',
                                 'user': 'Пользователь',
                                 'admin': 'Админ'
-                            }
-                        },
-                    ]
-                }, 
-                {
-                    name: 'services',
-                    label: 'Служебные данные',
-                    fields: [
-                        {
-                            name: 'user.dateCreated',
-                            value: user.dateCreated.format('Y-m-d H:i:s'),
-                            type: 'input',
-                            label: 'Дата создания',
-                            disabled: true
-                        },
-                        {
-                            name: 'user.dateModified',
-                            value: user.dateCreated.format('Y-m-d H:i:s'),
-                            type: 'input',
-                            label: 'Дата изменения',
-                            disabled: true
-                        },
-                    ]
-                }
-            ]
-        }) 
-    }}
+                            }|json_encode() }}</options>
+                    </field>
+                </fields>
+            </panel>
+            <panel name="services" label="Служебные данные" active="false">
+                <fields>
+                    <field type="input" name="user.dateCreated" label="Дата создания" disabled="1" value="{{ user.dateCreated.format('Y-m-d H:i:s') }}"></field>
+                    <field type="input" name="user.dateModified" label="Дата изменения" disabled="1" value="{{ user.dateCreated.format('Y-m-d H:i:s') }}"></field>
+                </fields>
+            </panel>
+        </panels>
+    </setcms-editview>
 {% endblock %}

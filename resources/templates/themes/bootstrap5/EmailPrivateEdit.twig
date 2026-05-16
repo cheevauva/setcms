@@ -3,53 +3,28 @@
 
 {% block content_title %}{% if email.id %}Редактировать{% else %}Создать{% endif %}{% endblock %}
 {% block content %}
-    {{ 
-        crud.editview({
-            action: scLink(email.id ? 'AdminEmailUpdate' : 'AdminEmailCreate', {id: (email ? email.id : scUUID()) }),
-            redirect: scLink('AdminEmailRead', {id: '${email.id.uuid}'}),
-            actions: {
-                fields: [
-                    {
-                        type: 'submit',
-                        label: 'Сохранить',
-                    },
-                ],
-            },
-            panels: [
-                {
-                    name: 'default',
-                    label: 'Основные данные',
-                    active: true,
-                    fields: [
-                        {
-                            type: 'hidden',
-                            name: 'email.id',
-                            value: email.id|default(scUUID())
-                        },
-                        {name: 'email.subject', value: email.subject, type: 'input', label: 'subject'},
-                    ]
-                }, 
-                {
-                    name: 'services',
-                    label: 'Служебные данные',
-                    fields: [
-                        {
-                            name: 'email.dateCreated',
-                            value: email.dateCreated.format('Y-m-d H:i:s'),
-                            type: 'input',
-                            label: 'Дата создания',
-                            disabled: true
-                        },
-                        {
-                            name: 'email.dateModified',
-                            value: email.dateCreated.format('Y-m-d H:i:s'),
-                            type: 'input',
-                            label: 'Дата изменения',
-                            disabled: true
-                        },
-                    ]
-                }
-            ]
-        }) 
-    }}
+    <setcms-editview>
+        <action>{{ scLink(email.id ? 'AdminEmailUpdate' : 'AdminEmailCreate', {id: (email.id ?: scUUID()) }) }}</action>
+        <redirect>{{ scLink('AdminEmailRead', {id: '${email.id.uuid}'}) }}</redirect>
+        <actions>
+            <fields>
+                <field type="submit" label="Сохранить"></field>
+            </fields>
+        </actions>
+        <panels>
+            <panel name="default" label="Основные данные" active="true">
+                <fields>
+                    <field type="hidden" name="email.id" value="{{ email.id|default(scUUID()) }}"></field>
+                    <field type="input" name="email.subject" label="Subject" value="{{ email.subject }}"></field>
+                </fields>
+            </panel>
+            <panel name="services" label="Служебные данные" active="false">
+                <fields>
+                    <field type="input" name="email.dateCreated" label="Дата создания" disabled="1" value="{{ email.dateCreated.format('Y-m-d H:i:s') }}"></field>
+                    <field type="input" name="email.dateModified" label="Дата изменения" disabled="1" value="{{ email.dateCreated.format('Y-m-d H:i:s') }}"></field>
+                </fields>
+            </panel>
+        </panels>
+    </setcms-editview>
+    <script src="/js/setcms-crud.js"></script>
 {% endblock %}

@@ -1,5 +1,4 @@
 {% extends scShortPath(layout ?? 'layout.twig') %}
-{% import scShortPath('macros/forms.twig') as forms %}
 
 {% block content %}
     <form class="setcms-form row g-1" 
@@ -7,14 +6,16 @@
           setcms-redirect="{{ scLink('UserProfile') }}"
           setcms-handler="login"
           >
-        {{ forms.input({name: 'email', placeholder: 'Электронная почта'}) }}
-        {{ forms.input({name: 'password', placeholder: 'Пароль', type: 'password'}) }}
-        {% if useCaptcha %}
-            {{ forms.captcha({name: 'captcha', label: 'Код с картинки'}) }}
-        {% endif %}
+        <setcms-field name="email" placeholder="Электронная почта" type="email"></setcms-field>
+        <setcms-field name="password" placeholder="Пароль" type="password"></setcms-field>
+        <setcms-field name="captcha" label="Код с картинки" type="captcha">
+            <use>{{ useCaptcha }}</use>
+            <generate>{{ scLink('CaptchaGenerate') }}</generate>
+            <solve>{{ scLink('CaptchaSolve') }}</solve>
+        </setcms-field>
         <div class="mb-2">
             <a href="{{ scLink('UserRestore') }}">Забыли пароль?</a>
         </div>
-        {{ forms.submit({label: 'Отправить'}) }}
+        <setcms-field type="submit" label="Отправить"></setcms-field>
     </form>
 {% endblock %}

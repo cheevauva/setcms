@@ -79,7 +79,7 @@
                         {% if scope.hasMessages() %}
                             {% for message in scope.getMessages() %}
                                 <div class="alert alert-danger" role="alert">
-                                {{ message.field }}: {{ message.message }} <br/>
+                                    {{ message.field }}: {{ message.message }} <br/>
                                 </div>
                             {% endfor %} 
                         {% endif %}
