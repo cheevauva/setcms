@@ -10,5 +10,5 @@ use Module\Post\Entity\PostEntity;
 class PostPrivateReadView extends ViewTwig
 {
 
-    public PostEntity $entity;
+    public PostEntity $post;
 }

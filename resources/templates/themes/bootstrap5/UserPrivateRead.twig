@@ -1,16 +1,18 @@
 {% extends scShortPath(layout ?? 'layout_admin.twig') %}
-{% import scShortPath('macros/forms.twig') as forms %}
 
 {% block content_title %}{{ post.title }}{% endblock %}
 
 {% block content_toolbar %}
-    <a href="{{ scLink('action_admin', {module: 'User', action: 'index'}) }}" class="btn btn-sm btn-outline-secondary">Список</a> 
-    <a href="{{ scLink('action_record_admin', {module: 'User', action: 'edit', id: entity.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    <a href="{{ scLink('AdminUserIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    <a href="{{ scLink('AdminPostEdit', {id: user.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
 {% endblock %}
 
 {% block content %}
     <form class="setcms-form g-3" >
-        {{ forms.input({entity: user, name: 'username', label: 'Пользователь'}) }}
-        {{ forms.select({value: user.role.value, name: 'role', options: {'guest': 'Гость', 'entity': 'Пользователь', 'admin': 'Админ'}, label: 'Роль'}) }}
+        <setcms-field type="input" name="username" label="Пользователь" disabled="1" value="{{ user.username }}"></setcms-field>
+        <setcms-field type="input" name="email" label="Email" disabled="1" value="{{ user.email }}"></setcms-field>
+        <setcms-field type="select" name="role" label="Роль" disabled="1" value="{{ user.role.value }}">
+            <options>{{ {'guest': 'Гость', 'entity': 'Пользователь', 'admin': 'Админ'}|json_encode() }}</options>
+        </setcms-field>
     </form>
 {% endblock %}

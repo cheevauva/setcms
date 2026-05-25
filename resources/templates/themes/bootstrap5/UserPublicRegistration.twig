@@ -1,17 +1,18 @@
 {% extends scShortPath(layout ?? 'layout.twig') %}
-{% import scShortPath('macros/forms.twig') as forms %}
 
 {% block content %}
     <form class="setcms-form row g-0" 
           setcms-action="{{ scLink('UserDoRegistration') }}" 
           setcms-redirect="{{ scLink('UserLogin') }}"
           >
-        {{ forms.input({entity: entity, name: 'email', type: 'text', placeholder: 'Электронная почта'}) }}
-        {{ forms.input({entity: entity, name: 'password', type: 'password', placeholder: 'Пароль'}) }}
-        {{ forms.input({entity: entity, name: 'password2', type: 'password', placeholder: 'Пароль (еще раз)'}) }}
-        {% if useCaptcha %}
-            {{ forms.captcha({name: 'captcha', placeholder: 'Код с картинки'}) }}
-        {% endif %}
-        {{ forms.submit({label: 'Зарегистрироваться'}) }}
+        <setcms-field name="email" placeholder="Электронная почта" type="email"></setcms-field>
+        <setcms-field name="password" placeholder="Пароль" type="password"></setcms-field>
+        <setcms-field name="password2" placeholder="Пароль (еще раз)" type="password"></setcms-field>
+        <setcms-field name="captcha" label="Код с картинки" type="captcha">
+            <use>{{ useCaptcha }}</use>
+            <generate>{{ scLink('CaptchaGenerate') }}</generate>
+            <solve>{{ scLink('CaptchaSolve') }}</solve>
+        </setcms-field>
+        <setcms-field type="submit" label="Отправить"></setcms-field>
     </form>
 {% endblock %}

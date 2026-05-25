@@ -48,7 +48,7 @@ class PostPrivateReadController extends ControllerViaPSR7
         }
 
         if ($object instanceof PostPrivateReadView) {
-            $object->entity = $this->post;
+            $object->post = $this->post;
         }
     }
 

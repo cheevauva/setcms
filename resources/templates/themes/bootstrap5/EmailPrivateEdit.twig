@@ -1,5 +1,4 @@
 {% extends scShortPath(layout ?? 'layout_admin.twig') %}
-{% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_title %}{% if email.id %}Редактировать{% else %}Создать{% endif %}{% endblock %}
 {% block content %}
@@ -26,5 +25,4 @@
             </panel>
         </panels>
     </setcms-editview>
-    <script src="/js/setcms-crud.js"></script>
 {% endblock %}

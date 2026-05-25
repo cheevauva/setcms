@@ -49,12 +49,12 @@ class SetCMSField extends HTMLElement {
             </div>
         `;
     }
-    
+
     text(field) {
         field.type = 'text';
         return this.input(field);
     }
-    
+
     email(field) {
         field.type = 'email';
         return this.input(field);
@@ -149,13 +149,11 @@ class SetCMSField extends HTMLElement {
                 <div class="invalid-feedback"></div>
             </div>
         </div>
-        `
+        `;
     }
 }
 
-customElements.define('setcms-field', SetCMSField);
-
-class EditView extends HTMLElement {
+class SetCMSEditView extends HTMLElement {
     constructor() {
         super();
         this.action = '';
@@ -247,10 +245,6 @@ class EditView extends HTMLElement {
     field(field) {
         const fieldElem = document.createElement('setcms-field');
 
-        if (this.querySelectorAll('options')) {
-            fieldElem.setAttribute('options', this.querySelector('options').textContent);
-        }
-
         for (let i = 0; i < field.attributes.length; i++) {
             const attr = field.attributes[i];
 
@@ -264,7 +258,6 @@ class EditView extends HTMLElement {
                 fieldElem.setAttribute(`data-${attr.name}`, JSON.stringify(attr.value));
             }
         }
-
 
         return fieldElem;
     }
@@ -285,7 +278,68 @@ class EditView extends HTMLElement {
     }
 }
 
-// Регистрируем компонент
+
+class SetCMSListView extends HTMLElement {
+    constructor() {
+        super();
+    }
+
+    connectedCallback() {
+        this.render();
+    }
 
 
-customElements.define('setcms-editview', EditView);
+    tableData(data) {
+        const td = document.createElement('td');
+
+        switch (data.attributes.type.value) {
+            case 'text':
+                td.textContent = data.attributes.value.value;
+                break;
+            case 'checkbox':
+                td.innerHTML = `<input type="checkbox" name="${data.attributes.name.value}" value="${data.attributes.value.value}" />`;
+                break;
+            case 'actions':
+                td.innerHTML = `        
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        Действия
+                    </button>
+                    <ul class="dropdown-menu">            
+                    </ul>
+                </div>`;
+                break;
+        }
+
+        return td;
+    }
+
+    tableRow(row) {
+        const tr = document.createElement('tr');
+        
+        tr.innerHTML =Array.from(row.querySelectorAll('columns field')).map(field => this.tableData(field).outerHTML).join('');
+        
+        return tr;
+    }
+
+    render() {
+        this.innerHTML = `
+            <div >
+                <form>
+                    <table class="table">
+                        <thead>
+                            ${Array.from(this.querySelectorAll('header rows row')).map(row => this.tableRow(row).outerHTML).join('')}
+                        </thead>
+                        <tbody>
+                            ${Array.from(this.querySelectorAll('data rows row')).map(row => this.tableRow(row).outerHTML).join('')}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        `;
+    }
+}
+
+customElements.define('setcms-field', SetCMSField);
+customElements.define('setcms-editview', SetCMSEditView);
+customElements.define('setcms-listview', SetCMSListView);

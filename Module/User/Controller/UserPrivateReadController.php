@@ -7,6 +7,7 @@ namespace Module\User\Controller;
 use SetCMS\UUID;
 use Module\User\Servant\UserGetByIdServant;
 use Module\User\Entity\UserEntity;
+use Module\User\View\UserPrivateReadView;
 
 class UserPrivateReadController extends UserPrivateController
 {
@@ -19,6 +20,14 @@ class UserPrivateReadController extends UserPrivateController
     {
         return [
             UserGetByIdServant::class,
+        ];
+    }
+    
+    #[\Override]
+    protected function viewUnits(): array
+    {
+        return [
+            UserPrivateReadView::class,
         ];
     }
 
@@ -45,6 +54,10 @@ class UserPrivateReadController extends UserPrivateController
 
         if ($object instanceof UserGetByIdServant) {
             $object->id = $this->id;
+        }
+        
+        if ($object instanceof UserPrivateReadView) {
+            $object->user = $this->user;
         }
     }
 }

@@ -1,73 +1,31 @@
 {% extends scShortPath(layout ?? 'layout_admin.twig') %}
-{% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_title %}Создать пост{% endblock %}
 
 {% block content %}
-    {{ 
-        crud.editview({
-            action: scLink(entity.id ? 'AdminPostUpdate' : 'AdminPostCreate', {id: entity ? entity.id : scUUID()}),
-            redirect: scLink('AdminPostRead', {id: '${entity.id.uuid}'}),
-            actions: {
-                fields: [
-                    {
-                        type: 'submit',
-                        label: 'Сохранить',
-                    },
-                ],
-            },
-            panels: [
-                {
-                    name: 'default',
-                    label: 'Основные данные',
-                    active: true,
-                    fields: [
-                        {
-                            type: 'hidden',
-                            name: 'entity.id',
-                            value: entity.id|default(scUUID())
-                        },
-                        {
-                            name: 'entity.slug',
-                            value: entity.slug,
-                            type: 'input',
-                            label: 'Псевдоним'
-                        },
-                        {
-                            name: 'entity.title',
-                            value: entity.title,
-                            type: 'input',
-                            label: 'Заголовок'
-                        },
-                        {
-                            name: 'entity.message',
-                            type: 'textarea',
-                            value: entity.message,
-                            label: 'Сообщение'
-                        },
-                    ]
-                }, 
-                {
-                    name: 'services',
-                    label: 'Служебные данные',
-                    fields: [
-                        {
-                            name: 'entity.dateCreated',
-                            value: entity.dateCreated.format('Y-m-d H:i:s'),
-                            type: 'input',
-                            label: 'Дата создания',
-                            disabled: true
-                        },
-                        {
-                            name: 'entity.dateModified',
-                            value: entity.dateCreated.format('Y-m-d H:i:s'),
-                            type: 'input',
-                            label: 'Дата изменения',
-                            disabled: true
-                        },
-                    ]
-                }
-            ]
-        }) 
-    }}
+    <setcms-editview>
+        <action>{{ scLink(post.id ? 'AdminPostUpdate' : 'AdminPostCreate', {id: (post.id ?: scUUID()) }) }}</action>
+        <redirect>{{ scLink('AdminPostRead', {id: '${post.id.uuid}'}) }}</redirect>
+        <actions>
+            <fields>
+                <field type="submit" label="Сохранить"></field>
+            </fields>
+        </actions>
+        <panels>
+            <panel name="default" label="Основные данные" active="true">
+                <fields>
+                    <field type="hidden" name="post.id" value="{{ post.id|default(scUUID()) }}"></field>
+                    <field type="input" name="post.slug" label="Псевдоним" value="{{ post.slug }}"></field>
+                    <field type="input" name="post.title" label="Заголовок" value="{{ post.title }}"></field>
+                    <field type="textarea" name="post.message" label="Сообщение" value="{{ post.message }}"></field>
+                </fields>
+            </panel>
+            <panel name="services" label="Служебные данные" active="false">
+                <fields>
+                    <field type="input" name="post.dateCreated" label="Дата создания" disabled="1" value="{{ post.dateCreated.format('Y-m-d H:i:s') }}"></field>
+                    <field type="input" name="post.dateModified" label="Дата изменения" disabled="1" value="{{ post.dateCreated.format('Y-m-d H:i:s') }}"></field>
+                </fields>
+            </panel>
+        </panels>
+    </setcms-editview>
 {% endblock %}
