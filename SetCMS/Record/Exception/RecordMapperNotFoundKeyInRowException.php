@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Exception;
+namespace SetCMS\Record\Exception;
 
 class RecordMapperNotFoundKeyInRowException extends \Exception
 {

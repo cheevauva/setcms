@@ -27,7 +27,13 @@
                         <columns>
                             <field type="checkbox" name="id[]" value="{{ user.id.uuid }}"></field>
                             <field type="text" value="{{ user.username }}"></field>
-                            <field type="text" value="{{ user.role.value }}"></field>
+                            <field type="select" value="{{ user.role.value }}">
+                                <options>{{ {
+                                'guest': 'Гость',
+                                'user': 'Пользователь',
+                                'admin': 'Админ'
+                            }|json_encode() }}</options>
+                            </field>
                             <field type="actions">
                                 <actions>
                                     <action label="Просмотр" route="{{ scLink('AdminUserRead', {id: user.id}) }}">

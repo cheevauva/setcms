@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Exception;
+namespace SetCMS\Entity\Exception;
 
-trait ExceptionEntityMapperNotFoundKeyInRowTrait
+trait EntityMapperNotFoundKeyInRowExceptionTrait
 {
 
     public function __construct(public string $key)

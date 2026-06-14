@@ -8,8 +8,8 @@ use SetCMS\Controller\ControllerViaPSR7;
 use Module\Migration\Servant\MigrationUpServant;
 use Module\Migration\View\MigrationPublicDoUpView;
 use Module\Migration\VO\MigrationCandidateVO;
-use SetCMS\Servant\SecretKeyServant;
-use SetCMS\Exception\SecretKeyException;
+use SetCMS\UseCase\SecretKey\Servant\SecretKeyServant;
+use SetCMS\UseCase\SecretKey\Exception\SecretKeyWrongException;
 
 class MigrationPublicDoUpController extends ControllerViaPSR7
 {
@@ -88,7 +88,7 @@ class MigrationPublicDoUpController extends ControllerViaPSR7
     {
         parent::catch($object);
 
-        if ($object instanceof SecretKeyException) {
+        if ($object instanceof SecretKeyWrongException) {
             $this->messages->attach($object, 'secretKey');
         }
 

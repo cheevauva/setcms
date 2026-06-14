@@ -13,42 +13,36 @@ use Module\User\Entity\UserEntity;
 class UserSessionRetrieveUserServant extends \UUA\Servant
 {
 
-    public string $token;
-    public ?UserSessionEntity $userSession = null;
-    public ?UserEntity $user = null;
+    public UUID $sessionId;
+    public protected(set) ?UserSessionEntity $userSession = null;
+    public protected(set) ?UserEntity $user = null;
 
     #[\Override]
     public function serve(): void
     {
-        try {
-            $sessionId = new UUID($this->token);
-        } catch (\Exception $ex) {
+        $userSessionById = UserSessionRetrieveManyByCriteriaDAO::new($this->container);
+        $userSessionById->allowEmptyResult = true;
+        $userSessionById->expectOne = true;
+        $userSessionById->id = $this->sessionId;
+        $userSessionById->limit = 1;
+        $userSessionById->serve();
+
+        if (empty($userSessionById->userSession)) {
             return;
         }
 
-        $retrieveSession = UserSessionRetrieveManyByCriteriaDAO::new($this->container);
-        $retrieveSession->allowEmptyResult = true;
-        $retrieveSession->expectOne = true;
-        $retrieveSession->id = $sessionId;
-        $retrieveSession->limit = 1;
-        $retrieveSession->serve();
+        $userById = UserRetrieveManyByCriteriaDAO::new($this->container);
+        $userById->id = $userSessionById->userSession->userId;
+        $userById->allowEmptyResult = true;
+        $userById->expectOne = true;
+        $userById->limit = 1;
+        $userById->serve();
 
-        if (empty($retrieveSession->userSession)) {
+        if (empty($userById->user)) {
             return;
         }
 
-        $retrieveUser = UserRetrieveManyByCriteriaDAO::new($this->container);
-        $retrieveUser->id = $retrieveSession->userSession->userId;
-        $retrieveUser->allowEmptyResult = true;
-        $retrieveUser->expectOne = true;
-        $retrieveUser->limit = 1;
-        $retrieveUser->serve();
-
-        if (empty($retrieveUser->user)) {
-            return;
-        }
-
-        $this->user = $retrieveUser->user;
-        $this->userSession = $retrieveSession->userSession;
+        $this->user = $userById->user;
+        $this->userSession = $userSessionById->userSession;
     }
 }

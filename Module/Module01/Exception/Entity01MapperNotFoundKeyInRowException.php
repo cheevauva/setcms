@@ -7,5 +7,5 @@ namespace Module\Module01\Exception;
 class Entity01MapperNotFoundKeyInRowException extends \Exception
 {
 
-    use \SetCMS\Exception\ExceptionEntityMapperNotFoundKeyInRowTrait;
+    use \SetCMS\Entity\Exception\EntityMapperNotFoundKeyInRowExceptionTrait;
 }

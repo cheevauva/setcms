@@ -6,7 +6,7 @@ namespace SetCMS\Mapper;
 
 use UUA\Mapper;
 use SetCMS\Record\Record;
-use SetCMS\Exception\RecordMapperNotFoundKeyInRowException;
+use SetCMS\Record\Exception\RecordMapperNotFoundKeyInRowException;
 
 /**
  * @template T of Record

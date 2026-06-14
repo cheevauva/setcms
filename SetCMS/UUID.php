@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace SetCMS;
 
+use SetCMS\UUID\Exception\UUIDInvalidException;
+
 class UUID
 {
 
@@ -17,7 +19,7 @@ class UUID
             $this->uuid = $uuid;
 
             if (!$this->isValid()) {
-                throw new \RuntimeException('UUID имеет неправильный формат');
+                throw new UUIDInvalidException('UUID имеет неправильный формат');
             }
         } else {
             $this->uuid = $this->generate();

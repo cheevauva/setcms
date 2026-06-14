@@ -127,7 +127,6 @@ class SetCMSField extends HTMLElement {
     }
 
     captcha(field) {
-        console.log(field);
         if (!(field.use || 0)) {
             return '';
         }
@@ -244,6 +243,10 @@ class SetCMSEditView extends HTMLElement {
 
     field(field) {
         const fieldElem = document.createElement('setcms-field');
+        
+        if (this.querySelectorAll('options')) {
+            fieldElem.setAttribute('options', this.querySelector('options').textContent);
+        }
 
         for (let i = 0; i < field.attributes.length; i++) {
             const attr = field.attributes[i];
@@ -288,7 +291,6 @@ class SetCMSListView extends HTMLElement {
         this.render();
     }
 
-
     tableData(data) {
         const td = document.createElement('td');
 
@@ -299,13 +301,24 @@ class SetCMSListView extends HTMLElement {
             case 'checkbox':
                 td.innerHTML = `<input type="checkbox" name="${data.attributes.name.value}" value="${data.attributes.value.value}" />`;
                 break;
+            case 'select':
+                const options = Object.entries(JSON.parse(data.querySelector('options')?.textContent));
+                td.innerHTML = `
+                <select disabled>
+                    ${options.map(option => `<option value="${option[0]}" ${option[0] === data.attributes.value.value ? 'selected' : ''}>${option[1]}</option>`).join('')}
+                </select>`;
+                break;
             case 'actions':
+                const actions = data.querySelectorAll('actions action');
                 td.innerHTML = `        
                 <div class="btn-group" role="group">
                     <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                         Действия
                     </button>
-                    <ul class="dropdown-menu">            
+                    <ul class="dropdown-menu">        
+                        ${Array.from(actions).map(action => `
+                            <li><a class="dropdown-item"  href="${action.attributes.route.value}">${action.attributes.label.value}</a></li>
+                        `).join('')}
                     </ul>
                 </div>`;
                 break;
@@ -316,9 +329,9 @@ class SetCMSListView extends HTMLElement {
 
     tableRow(row) {
         const tr = document.createElement('tr');
-        
-        tr.innerHTML =Array.from(row.querySelectorAll('columns field')).map(field => this.tableData(field).outerHTML).join('');
-        
+
+        tr.innerHTML = Array.from(row.querySelectorAll('columns field')).map(field => this.tableData(field).outerHTML).join('');
+
         return tr;
     }
 
