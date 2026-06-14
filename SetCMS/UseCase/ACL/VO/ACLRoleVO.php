@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\ACL\VO;
+namespace SetCMS\UseCase\ACL\VO;
 
 class ACLRoleVO extends \UUA\VO
 {

@@ -5,16 +5,17 @@ declare(strict_types=1);
 namespace SetCMS;
 
 use UUA\UnitInterface;
-use UUA\SymbiontCustomizer;
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\StoppableEventInterface;
+use SetCMS\Contract\ContractObjectInteraction;
 
 class EventDispatcher implements EventDispatcherInterface, \UUA\ContainerConstructInterface
 {
 
     use \UUA\Traits\AsTrait;
     use \UUA\Traits\ContainerTrait;
+    use \UUA\Traits\WrappingTrait;
 
     /**
      * 
@@ -37,28 +38,30 @@ class EventDispatcher implements EventDispatcherInterface, \UUA\ContainerConstru
     protected function callListeners(string $eventName, object $event): void
     {
         $listeners = $this->listeners[get_class($event)] ?? [];
-        
+
         foreach ($listeners as $listener) {
             if ($event instanceof StoppableEventInterface && $event->isPropagationStopped()) {
                 break;
             }
 
-            $unit = $listener[0]::new($this->container);
+            $unit = $listener::new($this->container);
 
             if (!($unit instanceof UnitInterface)) {
-                throw new \Exception(sprintf('Обработчик "%s" для события "%s" должен имплементировать UnitInterface', $listener[0], $eventName));
+                throw new \Exception(sprintf('Обработчик "%s" для события "%s" должен имплементировать UnitInterface', $listener, $eventName));
             }
 
-            $symbiont = isset($listener[1]) ? new $listener[1]($event) : null;
-
-            if ($symbiont instanceof SymbiontCustomizer) {
-                $symbiont->to($unit);
+            if (is_callable($unit)) {
+                $unit($event);
             }
 
-            $unit->serve();
+            if ($unit instanceof ContractObjectInteraction) {
+                $unit->from($event);
+            }
 
-            if ($symbiont instanceof SymbiontCustomizer) {
-                $symbiont->from($unit);
+            $this->wrapping($unit)->serve();
+
+            if ($unit instanceof ContractObjectInteraction) {
+                $unit->to($event);
             }
         }
     }
@@ -67,7 +70,7 @@ class EventDispatcher implements EventDispatcherInterface, \UUA\ContainerConstru
     public function dispatch(object $event): object
     {
         $this->callListeners(get_class($event), $event);
-        
+
         return $event;
     }
 }

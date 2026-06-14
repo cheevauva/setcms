@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Page\Servant;
 
 use SetCMS\UUID;
-use SetCMS\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
-use SetCMS\ACL\VO\ACLRoleVO;
+use SetCMS\UseCase\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
+use SetCMS\UseCase\ACL\VO\ACLRoleVO;
 use Module\Menu\MenuAction\Entity\MenuActionEntity;
 use Module\Page\View\PagePublicReadView;
 use Module\Page\DAO\PageGetBySlugDAO;
@@ -27,7 +27,7 @@ class PageMenuActionsByRequestServant extends \UUA\Servant
     public function serve(): void
     {
         $this->actions = [];
-        
+
         $view = $this->ctx['view'] ?? null;
 
         if ($view instanceof PagePublicReadView) {
@@ -83,12 +83,6 @@ class PageMenuActionsByRequestServant extends \UUA\Servant
 
     protected function hasAccess(string $route): bool
     {
-        $checkRole = ACLCheckByRoleAndPrivilegeServant::new($this->container);
-        $checkRole->role = ACLRoleVO::as($this->ctx['currentUserRole'] ?? null);
-        $checkRole->throwExceptions = false;
-        $checkRole->privilege = $route;
-        $checkRole->serve();
-
-        return $checkRole->isAllow;
+        return ACLCheckByRoleAndPrivilegeServant::call($this->container, ACLRoleVO::as($this->ctx['currentUserRole'] ?? null), $route)->isAllow;
     }
 }

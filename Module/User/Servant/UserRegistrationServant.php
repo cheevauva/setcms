@@ -7,7 +7,6 @@ namespace Module\User\Servant;
 use Module\User\Entity\UserEntity;
 use Module\User\DAO\UserCreateDAO;
 use Module\User\DAO\UserRetrieveManyByCriteriaDAO;
-use Module\User\Event\UserRegistrationEvent;
 use Module\User\Exception\UserAlreadyExistsException;
 
 class UserRegistrationServant extends \UUA\Servant
@@ -16,7 +15,9 @@ class UserRegistrationServant extends \UUA\Servant
     public string $email;
     public string $password;
     public protected(set) UserEntity $user;
+    public protected(set) bool $success = false;
 
+    #[\Override]
     public function serve(): void
     {
         $userByEmail = UserRetrieveManyByCriteriaDAO::new($this->container);
@@ -38,6 +39,6 @@ class UserRegistrationServant extends \UUA\Servant
 
         UserCreateDAO::call($this->container, $this->user);
 
-        new UserRegistrationEvent($user)->dispatch($this->eventDispatcher());
+        $this->success = true;
     }
 }

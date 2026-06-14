@@ -1,6 +1,6 @@
 <?php
 
-namespace SetCMS\ACL;
+namespace SetCMS\UseCase\ACL;
 
 use Laminas\Permissions\Acl\Acl as LaminasAcl;
 use Psr\Container\ContainerInterface;

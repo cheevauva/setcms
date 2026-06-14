@@ -15,7 +15,7 @@ trait WrappingTrait
     protected function wrapping(Unit $unit): Unit
     {
         $decorators = $this->container->get('wrappers')[$unit::class] ?? null;
-
+  
         if (empty($decorators)) {
             return $unit;
         }

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Module\Post\Servant;
 
 use SetCMS\UUID;
-use SetCMS\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
-use SetCMS\ACL\VO\ACLRoleVO;
+use SetCMS\UseCase\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
+use SetCMS\UseCase\ACL\VO\ACLRoleVO;
 use Module\Menu\MenuAction\Entity\MenuActionEntity;
 use Module\Post\View\PostPublicReadBySlugView;
 use Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
@@ -87,12 +87,6 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
 
     protected function hasAccess(string $route): bool
     {
-        $checkRole = ACLCheckByRoleAndPrivilegeServant::new($this->container);
-        $checkRole->role = ACLRoleVO::as($this->ctx['currentUserRole'] ?? null);
-        $checkRole->throwExceptions = false;
-        $checkRole->privilege = $route;
-        $checkRole->serve();
-
-        return $checkRole->isAllow;
+        return ACLCheckByRoleAndPrivilegeServant::call($this->container, ACLRoleVO::as($this->ctx['currentUserRole'] ?? null), $route)->isAllow;
     }
 }

@@ -7,9 +7,8 @@ namespace SetCMS\View;
 use SetCMS\Controller\ControllerViaPSR7;
 use SetCMS\UUID;
 use SetCMS\Event\AppErrorEvent;
-use SetCMS\Router\Exception\RouterNotFoundException;
-use SetCMS\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
-use SetCMS\ACL\VO\ACLRoleVO;
+use SetCMS\UseCase\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
+use SetCMS\UseCase\ACL\VO\ACLRoleVO;
 use SetCMS\Controller\Exception\ControllerEmptyResponseException;
 
 abstract class ViewHtml extends View
@@ -227,13 +226,7 @@ abstract class ViewHtml extends View
 
     protected function scHasAccess(string $route): bool
     {
-        $checkRole = ACLCheckByRoleAndPrivilegeServant::new($this->container);
-        $checkRole->role = ACLRoleVO::as($this->ctx['currentUserRole'] ?? null);
-        $checkRole->throwExceptions = false;
-        $checkRole->privilege = $route;
-        $checkRole->serve();
-
-        return $checkRole->isAllow;
+        return ACLCheckByRoleAndPrivilegeServant::call($this->container, ACLRoleVO::as($this->ctx['currentUserRole'] ?? null), $route)->isAllow;
     }
 
     protected function rootPath(): string

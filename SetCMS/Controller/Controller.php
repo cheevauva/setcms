@@ -88,7 +88,6 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
         $viewUnits = $this->overrideViewUnits($this->viewUnits());
 
         try {
-            $this->onBeforeProcess();
             $this->process();
             $this->runUnits($domainUnits, $this->stopRunningDomainUnits(...));
         } catch (\Throwable $ex) {
@@ -98,11 +97,6 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
 
         $this->throwUncatchedExceptions();
         $this->runUnits($viewUnits, $this->stopRunningViewUnits(...));
-    }
-
-    protected function onBeforeProcess(): void
-    {
-        
     }
 
     /**
@@ -160,7 +154,7 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
             if (($stopRunningUnits)()) {
                 return;
             }
-            
+
             if (is_string($unit)) {
                 $unit = $unit::new($this->container);
             }

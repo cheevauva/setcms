@@ -1,11 +1,11 @@
 <?php
 
 $events = [
-    SetCMS\Controller\Event\ControllerOnBeforeServeEvent::class => [
-        [SetCMS\ACL\Servant\ACLCheckByRoleAndPrivilegeServant::class, \SetCMS\ACL\Symbiont\ACLUserScopeProtectionSymbiont::class],
+    \SetCMS\Controller\Event\ControllerOnBeforeServeEvent::class => [
+        \SetCMS\UseCase\ACL\Servant\ACLControllerServant::class,
     ],
     \SetCMS\Event\AppErrorEvent::class => [
-        [\SetCMS\Logger\Servant\LoggerServant::class, \SetCMS\Logger\Symbiont\LoggerAppErrorSymbiont::class],
+        \SetCMS\UseCase\Logger\Servant\LoggerServant::class,
     ]
 ];
 

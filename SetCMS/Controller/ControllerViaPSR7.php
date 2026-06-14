@@ -8,7 +8,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\View\View;
 use SetCMS\Responder;
-use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
 use SetCMS\Validation\Validation;
 use SetCMS\View\ViewJsonErrorHandler;
 use SetCMS\View\ViewHtmlErrorHandler;
@@ -104,15 +103,6 @@ abstract class ControllerViaPSR7 extends Controller
         }
     }
 
-    #[\Override]
-    protected function onBeforeProcess(): void
-    {
-        $onBeforeServe = new ControllerOnBeforeServeEvent();
-        $onBeforeServe->controller = $this;
-        $onBeforeServe->ctx = $this->ctx;
-        $onBeforeServe->route = $this->name;
-        $onBeforeServe->dispatch($this->eventDispatcher());
-    }
 
     #[\Override]
     protected function stopRunningViewUnits(): bool
