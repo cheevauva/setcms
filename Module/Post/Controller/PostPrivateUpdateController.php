@@ -9,6 +9,7 @@ use Module\Post\Entity\PostEntity;
 use Module\Post\DAO\PostGetByIdDAO;
 use Module\Post\DAO\PostUpdateDAO;
 use Module\Post\View\PostPrivateUpdateView;
+use Module\Post\Mapper\PostFromRequestMapper;
 
 class PostPrivateUpdateController extends ControllerViaPSR7
 {
@@ -20,6 +21,7 @@ class PostPrivateUpdateController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            PostFromRequestMapper::class,
             PostGetByIdDAO::class,
             PostUpdateDAO::class,
         ];
@@ -31,19 +33,6 @@ class PostPrivateUpdateController extends ControllerViaPSR7
         return [
             PostPrivateUpdateView::class,
         ];
-    }
-
-    #[\Override]
-    protected function fromRequest(): void
-    {
-        $body = $this->validationBody();
-        $body->array('post')->notEmpty()->validate();
-
-        $this->newPost = new PostEntity;
-        $this->newPost->id = $body->uuid('post.id')->notEmpty()->val();
-        $this->newPost->slug = $body->string('post.slug')->notEmpty()->val();
-        $this->newPost->title = $body->string('post.title')->notEmpty()->val();
-        $this->newPost->message = $body->string('post.message')->notEmpty()->val();
     }
 
     #[\Override]
@@ -71,7 +60,11 @@ class PostPrivateUpdateController extends ControllerViaPSR7
     public function from(object $object): void
     {
         parent::from($object);
-
+        
+        if ($object instanceof PostFromRequestMapper) {
+            $this->newPost = $object->post;
+        }
+        
         if ($object instanceof PostGetByIdDAO) {
             $this->post = $object->post;
         }

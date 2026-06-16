@@ -9,6 +9,7 @@ use SetCMS\Controller\ControllerViaPSR7;
 use Module\Post\Entity\PostEntity;
 use Module\Post\DAO\PostGetByIdDAO;
 use Module\Post\View\PostPrivateReadView;
+use SetCMS\Mapper\MapperIdFromRequest;
 
 class PostPrivateReadController extends ControllerViaPSR7
 {
@@ -20,6 +21,7 @@ class PostPrivateReadController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            MapperIdFromRequest::class,
             PostGetByIdDAO::class,
         ];
     }
@@ -30,12 +32,6 @@ class PostPrivateReadController extends ControllerViaPSR7
         return [
             PostPrivateReadView::class,
         ];
-    }
-
-    #[\Override]
-    protected function fromRequest(): void
-    {
-        $this->id = $this->validationParams()->uuid('id')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]
@@ -59,6 +55,10 @@ class PostPrivateReadController extends ControllerViaPSR7
 
         if ($object instanceof PostGetByIdDAO) {
             $this->post = $object->post;
+        }
+
+        if ($object instanceof MapperIdFromRequest) {
+            $this->id = $object->id;
         }
     }
 }

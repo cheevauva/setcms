@@ -244,7 +244,7 @@ class SetCMSEditView extends HTMLElement {
     field(field) {
         const fieldElem = document.createElement('setcms-field');
         
-        if (this.querySelectorAll('options')) {
+        if (this.querySelector('options')) {
             fieldElem.setAttribute('options', this.querySelector('options').textContent);
         }
 

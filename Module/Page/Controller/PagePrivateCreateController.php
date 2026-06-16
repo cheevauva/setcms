@@ -8,6 +8,7 @@ use SetCMS\Controller\ControllerViaPSR7;
 use Module\Page\Entity\PageEntity;
 use Module\Page\DAO\PageCreateDAO;
 use Module\Page\View\PagePrivateCreateView;
+use Module\Page\Mapper\PageFromRequestMapper;
 
 class PagePrivateCreateController extends ControllerViaPSR7
 {
@@ -18,6 +19,7 @@ class PagePrivateCreateController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            PageFromRequestMapper::class,
             PageCreateDAO::class,
         ];
     }
@@ -31,19 +33,6 @@ class PagePrivateCreateController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function fromRequest(): void
-    {
-        $body = $this->validationBody();
-        $body->array('entity')->notEmpty()->validate();
-
-        $this->page = new PageEntity();
-        $this->page->id = $body->uuid('entity.id')->val();
-        $this->page->slug = $body->string('entity.slug')->notEmpty()->val();
-        $this->page->title = $body->string('entity.title')->notEmpty()->val();
-        $this->page->content = $body->string('entity.content')->notEmpty()->val();
-    }
-
-    #[\Override]
     public function to(object $object): void
     {
         parent::to($object);
@@ -54,6 +43,16 @@ class PagePrivateCreateController extends ControllerViaPSR7
 
         if ($object instanceof PagePrivateCreateView) {
             $object->entity = $this->page;
+        }
+    }
+
+    #[\Override]
+    public function from(object $object): void
+    {
+        parent::from($object);
+
+        if ($object instanceof PageFromRequestMapper) {
+            $this->page = $object->page;
         }
     }
 }

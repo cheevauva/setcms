@@ -8,6 +8,7 @@ use SetCMS\Controller\ControllerViaPSR7;
 use Module\Post\Entity\PostEntity;
 use Module\Post\DAO\PostCreateDAO;
 use Module\Post\View\PostPrivateCreateView;
+use Module\Post\Mapper\PostFromRequestMapper;
 
 class PostPrivateCreateController extends ControllerViaPSR7
 {
@@ -18,6 +19,7 @@ class PostPrivateCreateController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            PostFromRequestMapper::class,
             PostCreateDAO::class,
         ];
     }
@@ -31,19 +33,6 @@ class PostPrivateCreateController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function fromRequest(): void
-    {
-        $body = $this->validationBody();
-        $body->array('entity')->notEmpty()->validate();
-
-        $this->post = new PostEntity();
-        $this->post->id = $body->uuid('entity.id')->val();
-        $this->post->slug = $body->string('entity.slug')->notEmpty()->val();
-        $this->post->title = $body->string('entity.title')->notEmpty()->val();
-        $this->post->message = $body->string('entity.message')->notEmpty()->val();
-    }
-
-    #[\Override]
     public function to(object $object): void
     {
         parent::to($object);
@@ -54,6 +43,16 @@ class PostPrivateCreateController extends ControllerViaPSR7
 
         if ($object instanceof PostPrivateCreateView) {
             $object->entity = $this->post;
+        }
+    }
+
+    #[\Override]
+    public function from(object $object): void
+    {
+        parent::from($object);
+
+        if ($object instanceof PostFromRequestMapper) {
+            $this->post = $object->post;
         }
     }
 }

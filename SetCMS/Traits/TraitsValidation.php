@@ -11,16 +11,11 @@ trait TraitsValidation
 {
 
     /**
-     * @var SplObjectStorage<\Throwable|object, mixed>
-     */
-    protected SplObjectStorage $messages;
-
-    /**
      * @param array<string, mixed> $data
      * @return Validation
      */
     protected function validation(array $data): Validation
     {
-        return new Validation($data, $this->messages);
+        return new Validation($data, $this->messages ??= new SplObjectStorage());
     }
 }

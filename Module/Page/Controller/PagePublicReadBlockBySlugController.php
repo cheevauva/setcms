@@ -7,6 +7,7 @@ namespace Module\Page\Controller;
 use Module\Page\Entity\PageEntity;
 use Module\Page\DAO\PageGetBySlugDAO;
 use Module\Page\View\PagePublicReadBlockView;
+use Module\Page\Mapper\PageSlugFromRequest;
 
 class PagePublicReadBlockBySlugController extends \SetCMS\Controller\ControllerViaPSR7
 {
@@ -18,6 +19,7 @@ class PagePublicReadBlockBySlugController extends \SetCMS\Controller\ControllerV
     protected function domainUnits(): array
     {
         return [
+            PageSlugFromRequest::class,
             PageGetBySlugDAO::class,
         ];
     }
@@ -28,12 +30,6 @@ class PagePublicReadBlockBySlugController extends \SetCMS\Controller\ControllerV
         return [
             PagePublicReadBlockView::class,
         ];
-    }
-
-    #[\Override]
-    protected function fromRequest(): void
-    {
-        $this->slug = $this->validationParams()->string('slug')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]
@@ -58,6 +54,10 @@ class PagePublicReadBlockBySlugController extends \SetCMS\Controller\ControllerV
 
         if ($object instanceof PageGetBySlugDAO) {
             $this->page = $object->page;
+        }
+
+        if ($object instanceof PageSlugFromRequest) {
+            $this->slug = $object->slug;
         }
     }
 }

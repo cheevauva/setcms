@@ -11,6 +11,7 @@ use SetCMS\Responder;
 use SetCMS\Validation\Validation;
 use SetCMS\View\ViewJsonErrorHandler;
 use SetCMS\View\ViewHtmlErrorHandler;
+use SetCMS\Mapper\MapperFromRequest;
 
 abstract class ControllerViaPSR7 extends Controller
 {
@@ -28,7 +29,6 @@ abstract class ControllerViaPSR7 extends Controller
 
     protected function fromRequest(): void
     {
-        $this->validationBody();
     }
 
     protected function validationBody(): Validation
@@ -92,6 +92,12 @@ abstract class ControllerViaPSR7 extends Controller
     {
         parent::to($object);
 
+        if ($object instanceof MapperFromRequest) {
+            $object->request = $this->request;
+            $object->params = $this->params;
+            $object->messages = $this->messages;
+        }
+
         if ($object instanceof Responder) {
             $object->ctx = $this->ctx;
             $object->messages = $this->messages;
@@ -102,7 +108,6 @@ abstract class ControllerViaPSR7 extends Controller
             $object->messages = $this->messages;
         }
     }
-
 
     #[\Override]
     protected function stopRunningViewUnits(): bool

@@ -9,6 +9,7 @@ use Module\Page\Entity\PageEntity;
 use Module\Page\Servant\PageGetByIdServant;
 use Module\Page\DAO\PageUpdateDAO;
 use Module\Page\View\PagePrivateUpdateView;
+use Module\Page\Mapper\PageFromRequestMapper;
 
 class PagePrivateUpdateController extends ControllerViaPSR7
 {
@@ -20,6 +21,7 @@ class PagePrivateUpdateController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            PageFromRequestMapper::class,
             PageGetByIdServant::class,
             PageUpdateDAO::class,
         ];
@@ -31,18 +33,6 @@ class PagePrivateUpdateController extends ControllerViaPSR7
         return [
             PagePrivateUpdateView::class,
         ];
-    }
-
-    #[\Override]
-    protected function fromRequest(): void
-    {
-        $body = $this->validationBody();
-
-        $this->newPage = new PageEntity;
-        $this->newPage->id = $body->uuid('entity.id')->notEmpty()->val();
-        $this->newPage->slug = $body->string('entity.slug')->notEmpty()->val();
-        $this->newPage->title = $body->string('entity.title')->notEmpty()->val();
-        $this->newPage->content = $body->string('entity.content')->notEmpty()->val();
     }
 
     #[\Override]
@@ -73,6 +63,10 @@ class PagePrivateUpdateController extends ControllerViaPSR7
 
         if ($object instanceof PageGetByIdServant) {
             $this->page = $object->page;
+        }
+
+        if ($object instanceof PageFromRequestMapper) {
+            $this->newPage = $object->page;
         }
     }
 }

@@ -8,6 +8,7 @@ use SetCMS\Controller\ControllerViaPSR7;
 use Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 use Module\Post\Entity\PostEntity;
 use Module\Post\View\PostPublicReadBySlugView;
+use Module\Post\Mapper\PostSlugFromRequestMapper;
 
 class PostPublicReadBySlugController extends ControllerViaPSR7
 {
@@ -19,6 +20,7 @@ class PostPublicReadBySlugController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            PostSlugFromRequestMapper::class,
             PostRetrieveManyByCriteriaDAO::class,
         ];
     }
@@ -29,12 +31,6 @@ class PostPublicReadBySlugController extends ControllerViaPSR7
         return [
             PostPublicReadBySlugView::class,
         ];
-    }
-
-    #[\Override]
-    protected function fromRequest(): void
-    {
-        $this->slug = $this->validationParams()->string('slug')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]
@@ -61,6 +57,10 @@ class PostPublicReadBySlugController extends ControllerViaPSR7
 
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
             $this->post = $object->post;
+        }
+
+        if ($object instanceof PostSlugFromRequestMapper) {
+            $this->slug = $object->slug;
         }
     }
 }
