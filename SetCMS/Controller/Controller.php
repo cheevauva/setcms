@@ -29,11 +29,6 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
     public protected(set) bool $hasACLCheck = true;
 
     /**
-     * @var array<string, mixed|object>
-     */
-    public array $ctx = [];
-
-    /**
      * @var SplObjectStorage<\Throwable|object, mixed>
      */
     protected SplObjectStorage $messages;

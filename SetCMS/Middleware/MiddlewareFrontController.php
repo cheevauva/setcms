@@ -30,7 +30,6 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
         $controller->name = $routerMatch->name;
         $controller->params = $routerMatch->params;
         $controller->request = $request;
-        $controller->ctx = $request->getAttributes();
 
         new ControllerOnBeforeServeEvent($controller)->dispatch($this->eventDispatcher());
         

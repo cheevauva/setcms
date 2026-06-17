@@ -44,12 +44,12 @@ abstract class ControllerViaPSR7 extends Controller
         }
 
         if ($object instanceof Responder) {
-            $object->ctx = $this->ctx;
+            $object->request = $this->request;
             $object->messages = $this->messages;
         }
 
         if ($object instanceof View) {
-            $object->ctx = $this->ctx;
+            $object->request = $this->request;
             $object->messages = $this->messages;
         }
     }

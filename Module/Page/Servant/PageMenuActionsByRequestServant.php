@@ -10,6 +10,8 @@ use SetCMS\UseCase\ACL\VO\ACLRoleVO;
 use Module\Menu\MenuAction\Entity\MenuActionEntity;
 use Module\Page\View\PagePublicReadView;
 use Module\Page\DAO\PageGetBySlugDAO;
+use SetCMS\Responder;
+use SetCMS\View\View;
 
 class PageMenuActionsByRequestServant extends \UUA\Servant
 {
@@ -18,17 +20,14 @@ class PageMenuActionsByRequestServant extends \UUA\Servant
      * @var MenuActionEntity[]
      */
     public protected(set) array $actions;
-
-    /**
-     * @var array<string, mixed>
-     */
-    public array $ctx;
+    public View|Responder $view;
+    public ACLRoleVO $role;
 
     public function serve(): void
     {
         $this->actions = [];
 
-        $view = $this->ctx['view'] ?? null;
+        $view = $this->view;
 
         if ($view instanceof PagePublicReadView) {
             $this->actions[] = $this->prepareEditAction($view->page->slug);
@@ -83,6 +82,6 @@ class PageMenuActionsByRequestServant extends \UUA\Servant
 
     protected function hasAccess(string $route): bool
     {
-        return ACLCheckByRoleAndPrivilegeServant::call($this->container, ACLRoleVO::as($this->ctx['currentUserRole'] ?? null), $route)->isAllow;
+        return ACLCheckByRoleAndPrivilegeServant::call($this->container, $this->role, $route)->isAllow;
     }
 }

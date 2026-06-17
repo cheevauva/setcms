@@ -8,6 +8,10 @@ use Module\Menu\MenuAction\Entity\MenuActionEntity;
 use Module\Post\Servant\PostMenuActionsByRequestServant;
 use Module\Page\Servant\PageMenuActionsByRequestServant;
 use Module\Menu\View\MenuPublicActionsViaContextView;
+use Module\Menu\Mapper\MenuReadByContextFromRequestMapper;
+use SetCMS\View\View;
+use SetCMS\Responder;
+use SetCMS\UseCase\ACL\VO\ACLRoleVO;
 
 class MenuPublicReadByContextController extends \SetCMS\Controller\ControllerViaPSR7
 {
@@ -16,11 +20,14 @@ class MenuPublicReadByContextController extends \SetCMS\Controller\ControllerVia
      * @var MenuActionEntity[]
      */
     protected array $items = [];
+    protected View|Responder $view;
+    protected ACLRoleVO $role;
 
     #[\Override]
     protected function domainUnits(): array
     {
         return [
+            MenuReadByContextFromRequestMapper::class,
             PostMenuActionsByRequestServant::class,
             PageMenuActionsByRequestServant::class,
         ];
@@ -46,15 +53,11 @@ class MenuPublicReadByContextController extends \SetCMS\Controller\ControllerVia
         if ($object instanceof PageMenuActionsByRequestServant) {
             array_push($this->items, ...$object->actions);
         }
-    }
 
-    /**
-     * @param MenuActionEntity[] $actions
-     * @return void
-     */
-    protected function appendActions(array $actions): void
-    {
-        $this->items = array_merge($this->items, $actions);
+        if ($object instanceof MenuReadByContextFromRequestMapper) {
+            $this->view = $object->view;
+            $this->role = $object->role;
+        }
     }
 
     #[\Override]
@@ -63,11 +66,13 @@ class MenuPublicReadByContextController extends \SetCMS\Controller\ControllerVia
         parent::to($object);
 
         if ($object instanceof PostMenuActionsByRequestServant) {
-            $object->ctx = $this->ctx;
+            $object->view = $this->view;
+            $object->role = $this->role;
         }
 
         if ($object instanceof PageMenuActionsByRequestServant) {
-            $object->ctx = $this->ctx;
+            $object->view = $this->view;
+            $object->role = $this->role;
         }
 
         if ($object instanceof MenuPublicActionsViaContextView) {

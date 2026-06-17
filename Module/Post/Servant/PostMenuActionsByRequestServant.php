@@ -10,6 +10,8 @@ use SetCMS\UseCase\ACL\VO\ACLRoleVO;
 use Module\Menu\MenuAction\Entity\MenuActionEntity;
 use Module\Post\View\PostPublicReadBySlugView;
 use Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
+use SetCMS\Responder;
+use SetCMS\View\View;
 
 class PostMenuActionsByRequestServant extends \UUA\Servant
 {
@@ -18,18 +20,15 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
      * @var MenuActionEntity[]
      */
     public protected(set) array $actions;
-
-    /**
-     * @var array<string, mixed>
-     */
-    public array $ctx;
+    public View|Responder $view;
+    public ACLRoleVO $role;
 
     #[\Override]
     public function serve(): void
     {
         $this->actions = [];
-        
-        $view = $this->ctx['view'] ?? null;
+
+        $view = $this->view;
 
         if ($view instanceof PostPublicReadBySlugView) {
             $this->actions[] = $this->prepareEditAction($view->post->slug);
@@ -87,6 +86,6 @@ class PostMenuActionsByRequestServant extends \UUA\Servant
 
     protected function hasAccess(string $route): bool
     {
-        return ACLCheckByRoleAndPrivilegeServant::call($this->container, ACLRoleVO::as($this->ctx['currentUserRole'] ?? null), $route)->isAllow;
+        return ACLCheckByRoleAndPrivilegeServant::call($this->container, $this->role, $route)->isAllow;
     }
 }

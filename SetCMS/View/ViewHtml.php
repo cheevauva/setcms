@@ -10,6 +10,7 @@ use SetCMS\Event\AppErrorEvent;
 use SetCMS\UseCase\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
 use SetCMS\UseCase\ACL\VO\ACLRoleVO;
 use SetCMS\Controller\Exception\ControllerEmptyResponseException;
+use Laminas\Diactoros\Uri;
 
 abstract class ViewHtml extends View
 {
@@ -41,7 +42,7 @@ abstract class ViewHtml extends View
         }
 
         $this->assign('scope', $this);
-        $this->assign('ctx', $this->ctx);
+        $this->assign('ctx', $this->request->getAttributes());
 
         $this->registerFunctions();
 
@@ -60,14 +61,14 @@ abstract class ViewHtml extends View
 
     protected function registerFunctions(): void
     {
-        $this->addFunction('scRender', \Closure::fromCallable([$this, 'scRender']));
-        $this->addFunction('scFetch', \Closure::fromCallable([$this, 'scFetch']));
-        $this->addFunction('scUUID', \Closure::fromCallable([$this, 'scUUID']));
-        $this->addFunction('scLink', \Closure::fromCallable([$this, 'scLink']));
-        $this->addFunction('scLongPath', \Closure::fromCallable([$this, 'scLongPath']));
-        $this->addFunction('scShortPath', \Closure::fromCallable([$this, 'scShortPath']));
-        $this->addFunction('scBaseUrl', \Closure::fromCallable([$this, 'scBaseUrl']));
-        $this->addFunction('scHasAccess', \Closure::fromCallable([$this, 'scHasAccess']));
+        $this->addFunction('scRender', $this->scRender(...));
+        $this->addFunction('scFetch', $this->scFetch(...));
+        $this->addFunction('scUUID', $this->scUUID(...));
+        $this->addFunction('scLink', $this->scLink(...));
+        $this->addFunction('scLongPath', $this->scLongPath(...));
+        $this->addFunction('scShortPath', $this->scShortPath(...));
+        $this->addFunction('scBaseUrl', $this->scBaseUrl(...));
+        $this->addFunction('scHasAccess', $this->scHasAccess(...));
     }
 
     abstract protected function assign(string $name, mixed $value): void;
@@ -98,14 +99,10 @@ abstract class ViewHtml extends View
         try {
             $routerMatch = $this->router()->match($path, 'SETCMS');
 
-            $ctx = $this->ctx;
-            $ctx['view'] = $this;
-
             $controller = ControllerViaPSR7::as(($routerMatch->target)::new($this->container));
             $controller->name = $routerMatch->name;
             $controller->params = $routerMatch->params;
-            $controller->ctx = $ctx;
-            $controller->request = $this->serverRequestFactory()->createServerRequest('GET', $path)->withQueryParams($params);
+            $controller->request = $this->request->withAttribute('parentRequest', $this->request)->withQueryParams($params)->withAttribute('view', $this)->withMethod('GET')->withUri(new Uri($path));
             $controller->serve();
 
             $body = ($controller->response ?? throw new ControllerEmptyResponseException($routerMatch->target))->getBody();
@@ -135,14 +132,10 @@ abstract class ViewHtml extends View
         try {
             $routerMatch = $this->router()->match($path, 'SETCMS');
 
-            $ctx = $this->ctx;
-            $ctx['view'] = $this;
-
             $controller = ControllerViaPSR7::as(($routerMatch->target)::new($this->container));
             $controller->name = $routerMatch->name;
             $controller->params = $routerMatch->params;
-            $controller->ctx = $ctx;
-            $controller->request = $this->serverRequestFactory()->createServerRequest('GET', $path)->withQueryParams($params);
+            $controller->request = $this->request->withAttribute('parentRequest', $this->request)->withQueryParams($params)->withAttribute('view', $this)->withMethod('GET')->withUri(new Uri($path));
             $controller->serve();
 
             return get_object_vars($controller);
@@ -226,7 +219,7 @@ abstract class ViewHtml extends View
 
     protected function scHasAccess(string $route): bool
     {
-        return ACLCheckByRoleAndPrivilegeServant::call($this->container, ACLRoleVO::as($this->ctx['currentUserRole'] ?? null), $route)->isAllow;
+        return ACLCheckByRoleAndPrivilegeServant::call($this->container, ACLRoleVO::as($this->request->getAttribute('currentUserRole')), $route)->isAllow;
     }
 
     protected function rootPath(): string

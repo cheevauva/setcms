@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SetCMS\UseCase\ACL\Servant;
 
-use SetCMS\Controller\Controller;
+use SetCMS\Controller\ControllerViaPSR7;
 use SetCMS\UseCase\ACL\VO\ACLRoleVO;
 use SetCMS\UseCase\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
 use SetCMS\UseCase\ACL\Exception\ACLNotAllowException;
@@ -13,13 +13,13 @@ use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
 class ACLControllerServant extends \UUA\Servant
 {
 
-    public Controller $controller;
+    public ControllerViaPSR7 $controller;
 
     #[\Override]
     public function serve(): void
     {
         $controller = $this->controller;
-        $role = ACLRoleVO::as($controller->ctx['currentUserRole'] ?? null);
+        $role = ACLRoleVO::as($controller->request->getAttribute('currentUserRole'));
         $privilege = $controller->name;
 
         if (!ACLCheckByRoleAndPrivilegeServant::call($this->container, $role, $privilege)->isAllow) {
