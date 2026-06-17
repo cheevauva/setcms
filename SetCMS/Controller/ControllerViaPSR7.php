@@ -8,7 +8,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\View\View;
 use SetCMS\Responder;
-use SetCMS\Validation\Validation;
 use SetCMS\View\ViewJsonErrorHandler;
 use SetCMS\View\ViewHtmlErrorHandler;
 use SetCMS\Mapper\MapperFromRequest;
@@ -29,48 +28,7 @@ abstract class ControllerViaPSR7 extends Controller
 
     protected function fromRequest(): void
     {
-    }
-
-    protected function validationBody(): Validation
-    {
-        $body = $this->request->getParsedBody() ?: [];
-
-        if (!is_array($body)) {
-            throw new \Exception('body must be array');
-        }
-
-        return $this->validation($body);
-    }
-
-    protected function validationParams(): Validation
-    {
-        return $this->validation($this->params);
-    }
-
-    protected function validationQuery(): Validation
-    {
-        return $this->validation($this->request->getQueryParams());
-    }
-
-    protected function validationAttributes(): Validation
-    {
-        return $this->validation($this->request->getAttributes());
-    }
-
-    protected function validationHeaders(): Validation
-    {
-        $headers = [];
-
-        foreach ($this->request->getHeaders() as $name => $values) {
-            $headers[$name] = implode(', ', $values);
-        }
-
-        return $this->validation($headers);
-    }
-
-    protected function validationCookie(): Validation
-    {
-        return $this->validation($this->request->getCookieParams());
+        
     }
 
     #[\Override]

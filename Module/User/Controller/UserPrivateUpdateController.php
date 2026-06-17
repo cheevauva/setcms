@@ -8,7 +8,7 @@ use Module\User\DAO\UserRetrieveManyByCriteriaDAO;
 use Module\User\DAO\UserUpdateDAO;
 use Module\User\Entity\UserEntity;
 use Module\User\View\UserPrivateUpdateView;
-use Module\User\Enum\UserRoleEnum;
+use Module\User\Mapper\UserFromRequestMapper;
 
 class UserPrivateUpdateController extends UserPrivateController
 {
@@ -20,6 +20,7 @@ class UserPrivateUpdateController extends UserPrivateController
     protected function domainUnits(): array
     {
         return [
+            UserFromRequestMapper::class,
             UserRetrieveManyByCriteriaDAO::class,
             UserUpdateDAO::class,
         ];
@@ -34,23 +35,17 @@ class UserPrivateUpdateController extends UserPrivateController
     }
 
     #[\Override]
-    protected function fromRequest(): void
-    {
-        $body = $this->validationBody();
-
-        $this->newUser = new UserEntity();
-        $this->newUser->id = $body->uuid('user.id')->notEmpty()->val();
-        $this->newUser->role = UserRoleEnum::from($body->string('user.role')->notEmpty()->val());
-    }
-
-    #[\Override]
     public function from(object $object): void
     {
         parent::from($object);
 
         if ($object instanceof UserRetrieveManyByCriteriaDAO) {
-            $this->user = UserEntity::as($object->user);
+            $this->user = $object->user;
             $this->user->role = $this->newUser->role;
+        }
+
+        if ($object instanceof UserFromRequestMapper) {
+            $this->newUser = $object->user;
         }
     }
 
@@ -64,7 +59,7 @@ class UserPrivateUpdateController extends UserPrivateController
         }
 
         if ($object instanceof UserPrivateUpdateView) {
-            $object->user = UserEntity::as($this->user);
+            $object->user = $this->user;
         }
 
         if ($object instanceof UserUpdateDAO) {

@@ -17,6 +17,9 @@ abstract class MapperFromRequest extends \UUA\Mapper
      * @var SplObjectStorage<\Throwable|object, mixed>
      */
     public SplObjectStorage $messages;
+    /**
+     * @var array<string, mixed>
+     */
     public array $params;
     public ServerRequestInterface $request;
 

@@ -14,6 +14,7 @@ use Module\Captcha\Exception\CaptchaException;
 use Module\User\Exception\UserNotFoundException;
 use Module\User\Exception\UserIncorrectPasswordException;
 use Module\User\View\UserPublicDoLoginView;
+use Module\User\Mapper\UserLoginFromRequestMapper;
 use SetCMS\UUID;
 
 class UserPublicDoLoginController extends ControllerViaPSR7
@@ -22,7 +23,7 @@ class UserPublicDoLoginController extends ControllerViaPSR7
     protected string $username;
     protected string $password;
     protected string $email;
-    protected UUID $captcha;
+    protected ?UUID $captcha = null;
     protected string $device;
     protected UserEntity $user;
     protected UserSessionEntity $session;
@@ -41,6 +42,7 @@ class UserPublicDoLoginController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return array_filter([
+            UserLoginFromRequestMapper::class,
             $this->useCaptcha ? CaptchaUseResolvedCaptchaServant::class : null,
             UserLoginServant::class,
             UserSessionCreateByUserServant::class,
@@ -56,27 +58,16 @@ class UserPublicDoLoginController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function fromRequest(): void
-    {
-        $body = $this->validationBody();
-        $headers = $this->validationHeaders();
-
-        $this->email = $body->string('email')->notEmpty()->val();
-        $this->password = $body->string('password')->notEmpty()->val();
-        $this->device = $headers->string('user-agent')->notEmpty()->val();
-
-        if ($this->useCaptcha) {
-            $this->captcha = $body->uuid('captcha')->notEmpty()->val();
-        }
-    }
-
-    #[\Override]
     public function to(object $object): void
     {
         parent::to($object);
 
+        if ($object instanceof UserLoginFromRequestMapper) {
+            $object->useCaptcha = $this->useCaptcha;
+        }
+
         if ($object instanceof CaptchaUseResolvedCaptchaServant) {
-            $object->captcha = $this->captcha;
+            $object->captcha = $this->captcha ?? throw new \Exception('captcha undefined');
         }
 
         if ($object instanceof UserLoginServant) {
@@ -98,6 +89,13 @@ class UserPublicDoLoginController extends ControllerViaPSR7
     public function from(object $object): void
     {
         parent::from($object);
+
+        if ($object instanceof UserLoginFromRequestMapper) {
+            $this->email = $object->email;
+            $this->password = $object->password;
+            $this->device = $object->device;
+            $this->captcha = $object->captcha;
+        }
 
         if ($object instanceof UserLoginServant) {
             $this->user = $object->user;

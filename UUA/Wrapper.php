@@ -10,8 +10,8 @@ abstract class Wrapper extends Unit
     use Traits\ContainerTrait;
     use Traits\BuildTrait;
 
-    public Unit $rootUnit;
-    public Unit $nextUnit;
+    public UnitInterface $rootUnit;
+    public UnitInterface $nextUnit;
 
     #[\Override]
     public function serve(): void

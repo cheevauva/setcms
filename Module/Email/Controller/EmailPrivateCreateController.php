@@ -8,6 +8,7 @@ use SetCMS\Controller\ControllerViaPSR7;
 use Module\Email\Entity\EmailEntity;
 use Module\Email\DAO\EmailCreateDAO;
 use Module\Email\View\EmailPrivateCreateView;
+use Module\Email\Mapper\EmailFromRequestMapper;
 
 class EmailPrivateCreateController extends ControllerViaPSR7
 {
@@ -18,6 +19,7 @@ class EmailPrivateCreateController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            EmailFromRequestMapper::class,
             EmailCreateDAO::class,
         ];
     }
@@ -31,17 +33,6 @@ class EmailPrivateCreateController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function fromRequest(): void
-    {
-        $body = $this->validationBody();
-        $body->array('email')->notEmpty()->validate();
-
-        $this->email = new EmailEntity();
-        $this->email->id = $body->uuid('email.id')->val();
-        $this->email->subject = $body->string('email.subject')->notEmpty()->val();
-    }
-
-    #[\Override]
     public function to(object $object): void
     {
         parent::to($object);
@@ -52,6 +43,16 @@ class EmailPrivateCreateController extends ControllerViaPSR7
 
         if ($object instanceof EmailPrivateCreateView) {
             $object->email = $this->email;
+        }
+    }
+
+    #[\Override]
+    public function from(object $object): void
+    {
+        parent::from($object);
+
+        if ($object instanceof EmailFromRequestMapper) {
+            $this->email = $object->email;
         }
     }
 }

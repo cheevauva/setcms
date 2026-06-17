@@ -8,6 +8,7 @@ use SetCMS\UUID;
 use SetCMS\Controller\ControllerViaPSR7;
 use Module\UserSession\DAO\UserSessionDeleteByIdDAO;
 use Module\User\View\UserPublicLogoutView;
+use Module\User\Mapper\UserTokenFromRequestMapper;
 
 class UserPublicLogoutController extends ControllerViaPSR7
 {
@@ -18,6 +19,7 @@ class UserPublicLogoutController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            UserTokenFromRequestMapper::class,
             UserSessionDeleteByIdDAO::class,
         ];
     }
@@ -31,18 +33,22 @@ class UserPublicLogoutController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function fromRequest(): void
-    {
-        $this->token = $this->validationCookie()->uuid('X-CSRF-Token')->notEmpty()->notQuiet()->val();
-    }
-
-    #[\Override]
     public function to(object $object): void
     {
         parent::to($object);
 
         if ($object instanceof UserSessionDeleteByIdDAO) {
             $object->id = $this->token;
+        }
+    }
+
+    #[\Override]
+    public function from(object $object): void
+    {
+        parent::from($object);
+        
+        if ($object instanceof UserTokenFromRequestMapper) {
+            $this->token = $object->token;
         }
     }
 }

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Module\User\Controller;
 
 use Module\User\View\UserPrivateEditView;
-use Module\User\Entity\UserEntity;
 
 class UserPrivateEditController extends UserPrivateReadController
 {
@@ -24,7 +23,7 @@ class UserPrivateEditController extends UserPrivateReadController
         parent::to($object);
 
         if ($object instanceof UserPrivateEditView) {
-            $object->user = UserEntity::as($this->user);
+            $object->user = $this->user;
         }
     }
 }

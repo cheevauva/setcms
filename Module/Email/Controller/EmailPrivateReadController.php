@@ -9,6 +9,7 @@ use SetCMS\Controller\ControllerViaPSR7;
 use Module\Email\Entity\EmailEntity;
 use Module\Email\DAO\EmailRetrieveManyByCriteriaDAO;
 use Module\Email\View\EmailPrivateReadView;
+use SetCMS\Mapper\MapperIdFromRequest;
 
 class EmailPrivateReadController extends ControllerViaPSR7
 {
@@ -20,6 +21,7 @@ class EmailPrivateReadController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            MapperIdFromRequest::class,
             EmailRetrieveManyByCriteriaDAO::class,
         ];
     }
@@ -30,12 +32,6 @@ class EmailPrivateReadController extends ControllerViaPSR7
         return [
             EmailPrivateReadView::class,
         ];
-    }
-
-    #[\Override]
-    protected function fromRequest(): void
-    {
-        $this->id = $this->validationParams()->uuid('id')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]
@@ -62,6 +58,10 @@ class EmailPrivateReadController extends ControllerViaPSR7
 
         if ($object instanceof EmailRetrieveManyByCriteriaDAO) {
             $this->email = $object->email;
+        }
+
+        if ($object instanceof MapperIdFromRequest) {
+            $this->id = $object->id;
         }
     }
 }

@@ -9,7 +9,7 @@ use SetCMS\UUID;
 class MapperIdFromRequest extends MapperFromRequest
 {
 
-    public UUID $id;
+    public protected(set) UUID $id;
 
     #[\Override]
     public function serve(): void

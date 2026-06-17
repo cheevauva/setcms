@@ -9,7 +9,7 @@ use Module\Page\Entity\PageEntity;
 class PageFromRequestMapper extends \SetCMS\Mapper\MapperFromRequest
 {
 
-    public PageEntity $page;
+    public protected(set) PageEntity $page;
 
     #[\Override]
     public function serve(): void

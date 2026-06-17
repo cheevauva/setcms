@@ -7,7 +7,7 @@ namespace Module\Page\Mapper;
 class PageSlugFromRequest extends \SetCMS\Mapper\MapperFromRequest
 {
 
-    public string $slug;
+    public protected(set) string $slug;
 
     #[\Override]
     public function serve(): void

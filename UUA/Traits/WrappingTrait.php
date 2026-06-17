@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace UUA\Traits;
 
-use UUA\Unit;
+use UUA\UnitInterface;
 use UUA\Wrapper;
 
 trait WrappingTrait
@@ -12,7 +12,7 @@ trait WrappingTrait
 
     use ContainerTrait;
 
-    protected function wrapping(Unit $unit): Unit
+    protected function wrapping(UnitInterface $unit): UnitInterface
     {
         $decorators = $this->container->get('wrappers')[$unit::class] ?? null;
   

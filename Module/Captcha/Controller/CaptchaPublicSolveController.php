@@ -9,6 +9,7 @@ use Module\Captcha\Exception\CaptchaException;
 use Module\Captcha\Servant\CaptchaResolveServant;
 use Module\Captcha\Entity\CaptchaEntity;
 use Module\Captcha\View\CaptchaPublicSolveView;
+use Module\Captcha\Mapper\CaptchaSolveFromRequestMapper;
 
 class CaptchaPublicSolveController extends \SetCMS\Controller\ControllerViaPSR7
 {
@@ -21,6 +22,7 @@ class CaptchaPublicSolveController extends \SetCMS\Controller\ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            CaptchaSolveFromRequestMapper::class,
             CaptchaResolveServant::class,
         ];
     }
@@ -31,15 +33,6 @@ class CaptchaPublicSolveController extends \SetCMS\Controller\ControllerViaPSR7
         return [
             CaptchaPublicSolveView::class,
         ];
-    }
-
-    #[\Override]
-    protected function fromRequest(): void
-    {
-        $body = $this->validationBody();
-
-        $this->solvedText = $body->string('solvedText')->notEmpty()->val();
-        $this->id = $body->uuid('id')->notEmpty()->val();
     }
 
     #[\Override]
@@ -64,6 +57,11 @@ class CaptchaPublicSolveController extends \SetCMS\Controller\ControllerViaPSR7
 
         if ($object instanceof CaptchaResolveServant) {
             $this->captcha = $object->captcha;
+        }
+
+        if ($object instanceof CaptchaSolveFromRequestMapper) {
+            $this->solvedText = $object->solvedText;
+            $this->id = $object->id;
         }
     }
 

@@ -8,6 +8,7 @@ use SetCMS\UUID;
 use Module\User\Servant\UserGetByIdServant;
 use Module\User\Entity\UserEntity;
 use Module\User\View\UserPrivateReadView;
+use SetCMS\Mapper\MapperIdFromRequest;
 
 class UserPrivateReadController extends UserPrivateController
 {
@@ -19,10 +20,11 @@ class UserPrivateReadController extends UserPrivateController
     protected function domainUnits(): array
     {
         return [
+            MapperIdFromRequest::class,
             UserGetByIdServant::class,
         ];
     }
-    
+
     #[\Override]
     protected function viewUnits(): array
     {
@@ -32,18 +34,16 @@ class UserPrivateReadController extends UserPrivateController
     }
 
     #[\Override]
-    protected function fromRequest(): void
-    {
-        $this->id = $this->validationParams()->uuid('id')->notEmpty()->notQuiet()->val();
-    }
-
-    #[\Override]
     public function from(object $object): void
     {
         parent::from($object);
 
         if ($object instanceof UserGetByIdServant) {
             $this->user = $object->user;
+        }
+
+        if ($object instanceof MapperIdFromRequest) {
+            $this->id = $object->id;
         }
     }
 
@@ -55,7 +55,7 @@ class UserPrivateReadController extends UserPrivateController
         if ($object instanceof UserGetByIdServant) {
             $object->id = $this->id;
         }
-        
+
         if ($object instanceof UserPrivateReadView) {
             $object->user = $this->user;
         }

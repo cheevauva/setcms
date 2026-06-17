@@ -14,6 +14,7 @@ use Module\User\Servant\UserRegistrationServant;
 use Module\User\Exception\UserPasswordsNotEqualException;
 use Module\User\Exception\UserPasswordMustBeMoreThan8CharactersException;
 use Module\User\View\UserPublicDoRegistrationView;
+use Module\User\Mapper\UserRegistrationFromRequestMapper;
 
 class UserPublicDoRegistrationController extends ControllerViaPSR7
 {
@@ -21,7 +22,7 @@ class UserPublicDoRegistrationController extends ControllerViaPSR7
     protected string $email;
     protected string $password;
     protected string $password2;
-    protected UUID $captcha;
+    protected ?UUID $captcha;
     protected UserEntity $user;
     protected bool $useCaptcha;
 
@@ -37,6 +38,7 @@ class UserPublicDoRegistrationController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return array_filter([
+            UserRegistrationFromRequestMapper::class,
             $this->useCaptcha ? CaptchaUseResolvedCaptchaServant::class : null,
             UserRegistrationServant::class,
         ]);
@@ -51,34 +53,16 @@ class UserPublicDoRegistrationController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function fromRequest(): void
-    {
-        $body = $this->validationBody();
-
-        $this->email = $body->string('email')->notEmpty()->val();
-        $this->password = $body->string('password')->notEmpty()->val();
-        $this->password2 = $body->string('password2')->notEmpty()->val();
-
-        if ($this->useCaptcha) {
-            $this->captcha = $body->uuid('captcha')->notEmpty()->val();
-        }
-
-        if (!empty($this->password) && !empty($this->password2) && $this->password !== $this->password2) {
-            $this->catch(new UserPasswordsNotEqualException());
-        }
-
-        if (mb_strlen($this->password) < 8) {
-            $this->catch(new UserPasswordMustBeMoreThan8CharactersException());
-        }
-    }
-
-    #[\Override]
     public function to(object $object): void
     {
         parent::to($object);
 
+        if ($object instanceof UserRegistrationFromRequestMapper) {
+            $object->useCaptcha = $this->useCaptcha;
+        }
+
         if ($object instanceof CaptchaUseResolvedCaptchaServant) {
-            $object->captcha = $this->captcha;
+            $object->captcha = $this->captcha ?? throw new \Exception('captcha undefined');
         }
 
         if ($object instanceof UserRegistrationServant) {
@@ -91,6 +75,12 @@ class UserPublicDoRegistrationController extends ControllerViaPSR7
     public function from(object $object): void
     {
         parent::from($object);
+
+        if ($object instanceof UserRegistrationFromRequestMapper) {
+            $this->email = $object->email;
+            $this->password = $object->password;
+            $this->captcha = $object->captcha;
+        }
 
         if ($object instanceof UserRegistrationServant) {
             $this->user = $object->user;

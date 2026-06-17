@@ -9,6 +9,7 @@ use Module\Email\Entity\EmailEntity;
 use Module\Email\DAO\EmailRetrieveManyByCriteriaDAO;
 use Module\Email\DAO\EmailUpdateDAO;
 use Module\Email\View\EmailPrivateUpdateView;
+use Module\Email\Mapper\EmailFromRequestMapper;
 
 class EmailPrivateUpdateController extends ControllerViaPSR7
 {
@@ -20,6 +21,7 @@ class EmailPrivateUpdateController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            EmailFromRequestMapper::class,
             EmailRetrieveManyByCriteriaDAO::class,
             EmailUpdateDAO::class,
         ];
@@ -31,17 +33,6 @@ class EmailPrivateUpdateController extends ControllerViaPSR7
         return [
             EmailPrivateUpdateView::class,
         ];
-    }
-
-    #[\Override]
-    protected function fromRequest(): void
-    {
-        $body = $this->validationBody();
-        $body->array('email')->notEmpty()->validate();
-
-        $this->newemail = new EmailEntity;
-        $this->newemail->id = $body->uuid('email.id')->notEmpty()->val();
-        $this->newemail->subject = $body->string('email.subject')->notEmpty()->val();
     }
 
     #[\Override]
@@ -73,6 +64,10 @@ class EmailPrivateUpdateController extends ControllerViaPSR7
 
         if ($object instanceof EmailRetrieveManyByCriteriaDAO) {
             $this->email = $object->email;
+        }
+
+        if ($object instanceof EmailFromRequestMapper) {
+            $this->newemail = $object->email;
         }
     }
 }

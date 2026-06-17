@@ -7,7 +7,7 @@ namespace Module\Post\Mapper;
 class PostSlugFromRequestMapper extends \SetCMS\Mapper\MapperFromRequest
 {
 
-    public string $slug;
+    public protected(set) string $slug;
 
     #[\Override]
     public function serve(): void

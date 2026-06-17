@@ -12,13 +12,14 @@ use Module\User\View\UserPublicDoRestoreView;
 use Module\User\Exception\UserException;
 use Module\User\Entity\UserEntity;
 use Module\UserResetToken\Servant\UserResetTokenSendToEmailServant;
+use Module\User\Mapper\UserRestoreFromRequstMapper;
 
 class UserPublicDoRestoreController extends ControllerViaPSR7
 {
 
     protected bool $useCaptcha = false;
     protected string $email;
-    protected UUID $captcha;
+    protected ?UUID $captcha = null;
     protected UserEntity $user;
     protected ?string $customTemplate = null;
 
@@ -34,6 +35,7 @@ class UserPublicDoRestoreController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return array_filter([
+            UserRestoreFromRequstMapper::class,
             $this->useCaptcha ? CaptchaUseResolvedCaptchaServant::class : null,
             UserResetTokenSendToEmailServant::class,
         ]);
@@ -52,8 +54,12 @@ class UserPublicDoRestoreController extends ControllerViaPSR7
     {
         parent::to($object);
 
+        if ($object instanceof UserRestoreFromRequstMapper) {
+            $object->useCaptcha = $this->useCaptcha;
+        }
+
         if ($object instanceof CaptchaUseResolvedCaptchaServant) {
-            $object->captcha = $this->captcha;
+            $object->captcha = $this->captcha ?? throw new \Exception('captcha undefined');
         }
 
         if ($object instanceof UserResetTokenSendToEmailServant) {
@@ -62,14 +68,13 @@ class UserPublicDoRestoreController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function fromRequest(): void
+    public function from(object $object): void
     {
-        $body = $this->validationBody();
+        parent::from($object);
 
-        $this->email = $body->string('email')->notEmpty()->val();
-
-        if ($this->useCaptcha) {
-            $this->captcha = $body->uuid('captcha')->notEmpty()->val();
+        if ($object instanceof UserRestoreFromRequstMapper) {
+            $this->email = $object->email;
+            $this->captcha = $object->captcha;
         }
     }
 

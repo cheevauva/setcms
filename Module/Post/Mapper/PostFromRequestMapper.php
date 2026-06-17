@@ -9,7 +9,7 @@ use Module\Post\Entity\PostEntity;
 class PostFromRequestMapper extends \SetCMS\Mapper\MapperFromRequest
 {
 
-    public PostEntity $post;
+    public protected(set) PostEntity $post;
 
     #[\Override]
     public function serve(): void
