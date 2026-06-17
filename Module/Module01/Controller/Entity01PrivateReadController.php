@@ -9,6 +9,7 @@ use SetCMS\Controller\ControllerViaPSR7;
 use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\Servant\Entity01GetByIdServant;
 use Module\Module01\View\Entity01PrivateReadView;
+use SetCMS\Mapper\MapperIdFromRequest;
 
 class Entity01PrivateReadController extends ControllerViaPSR7
 {
@@ -20,6 +21,7 @@ class Entity01PrivateReadController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            MapperIdFromRequest::class,
             Entity01GetByIdServant::class,
         ];
     }
@@ -30,12 +32,6 @@ class Entity01PrivateReadController extends ControllerViaPSR7
         return [
             Entity01PrivateReadView::class,
         ];
-    }
-
-    #[\Override]
-    protected function fromRequest(): void
-    {
-        $this->id = $this->validationParams()->uuid('id')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]
@@ -59,6 +55,10 @@ class Entity01PrivateReadController extends ControllerViaPSR7
 
         if ($object instanceof Entity01GetByIdServant) {
             $this->entity01 = $object->entity01;
+        }
+
+        if ($object instanceof MapperIdFromRequest) {
+            $this->id = $object->id;
         }
     }
 }

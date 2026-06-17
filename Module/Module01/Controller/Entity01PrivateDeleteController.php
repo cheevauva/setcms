@@ -10,6 +10,7 @@ use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\Servant\Entity01GetByIdServant;
 use Module\Module01\DAO\Entity01DeleteByIdDAO;
 use Module\Module01\View\Entity01PrivateDeleteView;
+use SetCMS\Mapper\MapperIdFromRequest;
 
 class Entity01PrivateDeleteController extends ControllerViaPSR7
 {
@@ -21,6 +22,7 @@ class Entity01PrivateDeleteController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            MapperIdFromRequest::class,
             Entity01GetByIdServant::class,
             Entity01DeleteByIdDAO::class,
         ];
@@ -32,12 +34,6 @@ class Entity01PrivateDeleteController extends ControllerViaPSR7
         return [
             Entity01PrivateDeleteView::class,
         ];
-    }
-
-    #[\Override]
-    protected function fromRequest(): void
-    {
-        $this->id = $this->validationParams()->uuid('id')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]
@@ -65,6 +61,10 @@ class Entity01PrivateDeleteController extends ControllerViaPSR7
 
         if ($object instanceof Entity01GetByIdServant) {
             $this->entity01 = $object->entity01;
+        }
+        
+        if ($object instanceof MapperIdFromRequest) {
+            $this->id = $object->id;
         }
     }
 }

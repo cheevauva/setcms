@@ -8,6 +8,7 @@ use SetCMS\Controller\ControllerViaPSR7;
 use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\DAO\Entity01CreateDAO;
 use Module\Module01\View\Entity01PrivateCreateView;
+use Module\Module01\Mapper\Entity01FromRequestMapper;
 
 class Entity01PrivateCreateController extends ControllerViaPSR7
 {
@@ -18,6 +19,7 @@ class Entity01PrivateCreateController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            Entity01FromRequestMapper::class,
             Entity01CreateDAO::class,
         ];
     }
@@ -31,18 +33,6 @@ class Entity01PrivateCreateController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function fromRequest(): void
-    {
-        $body = $this->validationBody();
-        $body->array('entity01')->notEmpty()->validate();
-
-        $this->entity01 = new Entity01Entity();
-        $this->entity01->id = $body->uuid('entity01.id')->val();
-        $this->entity01->field01 = $body->string('entity01.field01')->notEmpty()->val();
-    }
-   
-
-    #[\Override]
     public function to(object $object): void
     {
         parent::to($object);
@@ -53,6 +43,16 @@ class Entity01PrivateCreateController extends ControllerViaPSR7
 
         if ($object instanceof Entity01PrivateCreateView) {
             $object->entity01 = $this->entity01;
+        }
+    }
+
+    #[\Override]
+    public function from(object $object): void
+    {
+        parent::from($object);
+
+        if ($object instanceof Entity01FromRequestMapper) {
+            $this->entity01 = $object->entity01;
         }
     }
 }

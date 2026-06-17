@@ -9,6 +9,7 @@ use Module\Template\Entity\TemplateEntity;
 use Module\Template\DAO\TemplateRetrieveManyByCriteriaDAO;
 use Module\Template\DAO\TemplateUpdateDAO;
 use Module\Template\View\TemplatePrivateUpdateView;
+use Module\Template\Mapper\TemplateFromRequestMapper;
 
 class TemplatePrivateUpdateController extends ControllerViaPSR7
 {
@@ -20,6 +21,7 @@ class TemplatePrivateUpdateController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            TemplateFromRequestMapper::class,
             TemplateRetrieveManyByCriteriaDAO::class,
             TemplateUpdateDAO::class,
         ];
@@ -31,18 +33,6 @@ class TemplatePrivateUpdateController extends ControllerViaPSR7
         return [
             TemplatePrivateUpdateView::class,
         ];
-    }
-
-    #[\Override]
-    protected function fromRequest(): void
-    {
-        $body = $this->validationBody();
-
-        $this->newtemplate = new TemplateEntity;
-        $this->newtemplate->id = $body->uuid('template.id')->notEmpty()->val();
-        $this->newtemplate->template = $body->string('template.template')->notEmpty()->val();
-        $this->newtemplate->slug = $body->string('template.slug')->notEmpty()->val();
-        $this->newtemplate->title = $body->string('template.title')->notEmpty()->val();
     }
 
     #[\Override]
@@ -60,10 +50,12 @@ class TemplatePrivateUpdateController extends ControllerViaPSR7
         if ($object instanceof TemplateUpdateDAO) {
             $object->template = $this->template;
             $object->template->template = $this->newtemplate->template;
+            $object->template->title = $this->newtemplate->title;
+            $object->template->slug = $this->newtemplate->slug;
         }
 
         if ($object instanceof TemplatePrivateUpdateView) {
-            $object->template = $this->template ?? null;
+            $object->template = $this->template;
         }
     }
 
@@ -74,6 +66,10 @@ class TemplatePrivateUpdateController extends ControllerViaPSR7
 
         if ($object instanceof TemplateRetrieveManyByCriteriaDAO) {
             $this->template = $object->template;
+        }
+
+        if ($object instanceof TemplateFromRequestMapper) {
+            $this->newtemplate = $object->template;
         }
     }
 }

@@ -18,29 +18,16 @@ abstract class ControllerViaPSR7 extends Controller
     public ServerRequestInterface $request;
     public protected(set) ?ResponseInterface $response = null;
 
-    use \SetCMS\Traits\TraitsValidation;
-
-    #[\Override]
-    protected function process(): void
-    {
-        $this->fromRequest();
-    }
-
-    protected function fromRequest(): void
-    {
-        
-    }
-
     #[\Override]
     public function from(object $object): void
     {
         parent::from($object);
 
-        if ($object instanceof View && isset($object->response)) {
+        if ($object instanceof View) {
             $this->response = $object->response;
         }
 
-        if ($object instanceof Responder && isset($object->response)) {
+        if ($object instanceof Responder) {
             $this->response = $object->response;
         }
     }

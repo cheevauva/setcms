@@ -10,6 +10,7 @@ use Module\Migration\View\MigrationPublicDoUpView;
 use Module\Migration\VO\MigrationCandidateVO;
 use SetCMS\UseCase\SecretKey\Servant\SecretKeyServant;
 use SetCMS\UseCase\SecretKey\Exception\SecretKeyWrongException;
+use Module\Migration\Mapper\MigrationUpFromRequestMapper;
 
 class MigrationPublicDoUpController extends ControllerViaPSR7
 {
@@ -23,6 +24,7 @@ class MigrationPublicDoUpController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            MigrationUpFromRequestMapper::class,
             SecretKeyServant::class,
             MigrationUpServant::class,
         ];
@@ -59,7 +61,7 @@ class MigrationPublicDoUpController extends ControllerViaPSR7
         if ($object instanceof MigrationUpServant) {
             foreach ($object->failded as $fail) {
                 $fail = MigrationCandidateVO::as($fail);
-                
+
                 if (empty($fail->error)) {
                     continue;
                 }
@@ -68,19 +70,15 @@ class MigrationPublicDoUpController extends ControllerViaPSR7
                 $property = $reflection->getProperty('message');
                 $property->setAccessible(true);
                 $property->setValue($fail->error, sprintf('%s: %s', $fail->file, $fail->error->getMessage()));
-                
+
                 $this->messages->attach($fail->error, 'secretKey');
             }
         }
-    }
 
-    #[\Override]
-    protected function fromRequest(): void
-    {
-        $validation = $this->validationBody();
-
-        $this->dbName = $validation->string('dbName')->notEmpty()->val();
-        $this->secretKey = $validation->string('secretKey')->notEmpty()->val();
+        if ($object instanceof MigrationUpFromRequestMapper) {
+            $this->dbName = $object->dbName;
+            $this->secretKey = $object->secretKey;
+        }
     }
 
     #[\Override]

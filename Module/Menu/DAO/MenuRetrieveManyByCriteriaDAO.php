@@ -9,6 +9,7 @@ use Module\Menu\Exception\MenuNotFoundException;
 use Module\Menu\Exception\MenusNotFoundException;
 use Module\Menu\Exception\MenuExpectOneButReceivedTooMuchException;
 use Module\Menu\Mapper\MenuFromRowMapper;
+use SetCMS\Database\DatabaseQueryBuilder;
 
 class MenuRetrieveManyByCriteriaDAO extends \UUA\DAO
 {
@@ -22,6 +23,7 @@ class MenuRetrieveManyByCriteriaDAO extends \UUA\DAO
     public array $menus;
     public MenuEntity $menu;
     public ?MenuEntity $menuOrNull = null;
+    public string $slug;
 
     #[\Override]
     protected function handleRows(array $rows): void
@@ -46,5 +48,17 @@ class MenuRetrieveManyByCriteriaDAO extends \UUA\DAO
     protected function entityNotFoundException(): \Throwable
     {
         return new MenuNotFoundException();
+    }
+
+    protected function createQb(): DatabaseQueryBuilder
+    {
+        $qb = $this->createQuery();
+
+        if (isset($this->slug)) {
+            $qb->andWhere('slug = :slug');
+            $qb->setParameter('slug', $this->slug);
+        }
+
+        return $qb;
     }
 }

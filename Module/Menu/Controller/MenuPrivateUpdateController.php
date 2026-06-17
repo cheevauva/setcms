@@ -8,6 +8,7 @@ use Module\Menu\DAO\MenuRetrieveManyByCriteriaDAO;
 use Module\Menu\DAO\MenuUpdateDAO;
 use Module\Menu\Entity\MenuEntity;
 use Module\Menu\View\MenuPrivateUpdateView;
+use Module\Menu\Mapper\MenuFromRequestMapper;
 
 class MenuPrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
 {
@@ -19,6 +20,7 @@ class MenuPrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            MenuFromRequestMapper::class,
             MenuRetrieveManyByCriteriaDAO::class,
             MenuUpdateDAO::class,
         ];
@@ -40,18 +42,10 @@ class MenuPrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
         if ($object instanceof MenuRetrieveManyByCriteriaDAO) {
             $this->menu = $object->menu;
         }
-    }
 
-    #[\Override]
-    protected function fromRequest(): void
-    {
-        $body = $this->validationBody();
-
-        $this->newMenu = new MenuEntity();
-        $this->newMenu->id = $body->uuid('menu.id')->notEmpty()->val();
-        $this->newMenu->route = $body->string('menu.route')->notEmpty()->val();
-        $this->newMenu->label = $body->string('menu.label')->notEmpty()->val();
-        $this->newMenu->params = $body->json('menu.params')->notEmpty()->asArray()->val();
+        if ($object instanceof MenuFromRequestMapper) {
+            $this->newMenu = $object->menu;
+        }
     }
 
     #[\Override]

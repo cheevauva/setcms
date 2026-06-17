@@ -43,7 +43,6 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
      */
     protected SplObjectStorage $exceptions;
 
-    abstract protected function process(): void;
 
     #[\Override]
     public function from(object $object): void
@@ -88,7 +87,6 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
         $viewUnits = $this->overrideViewUnits($this->viewUnits());
 
         try {
-            $this->process();
             $this->runUnits($domainUnits, $this->stopRunningDomainUnits(...));
         } catch (\Throwable $ex) {
             $this->exceptions->attach($ex);

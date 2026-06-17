@@ -9,6 +9,7 @@ use SetCMS\Controller\ControllerViaPSR7;
 use Module\Template\Entity\TemplateEntity;
 use Module\Template\DAO\TemplateRetrieveManyByCriteriaDAO;
 use Module\Template\View\TemplatePrivateReadView;
+use SetCMS\Mapper\MapperIdFromRequest;
 
 class TemplatePrivateReadController extends ControllerViaPSR7
 {
@@ -20,6 +21,7 @@ class TemplatePrivateReadController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            MapperIdFromRequest::class,
             TemplateRetrieveManyByCriteriaDAO::class,
         ];
     }
@@ -30,12 +32,6 @@ class TemplatePrivateReadController extends ControllerViaPSR7
         return [
             TemplatePrivateReadView::class,
         ];
-    }
-
-    #[\Override]
-    protected function fromRequest(): void
-    {
-        $this->id = $this->validationParams()->uuid('id')->notEmpty()->notQuiet()->val();
     }
 
     #[\Override]
@@ -62,6 +58,10 @@ class TemplatePrivateReadController extends ControllerViaPSR7
 
         if ($object instanceof TemplateRetrieveManyByCriteriaDAO) {
             $this->template = $object->template;
+        }
+        
+        if ($object instanceof MapperIdFromRequest) {
+            $this->id = $object->id;
         }
     }
 }

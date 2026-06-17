@@ -52,4 +52,5 @@ class TemplatePrivateIndexController extends ControllerViaPSR7
             $object->templates = $this->templates;
         }
     }
+
 }

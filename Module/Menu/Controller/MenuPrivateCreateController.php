@@ -8,6 +8,7 @@ use SetCMS\Controller\ControllerViaPSR7;
 use Module\Menu\DAO\MenuCreateDAO;
 use Module\Menu\Entity\MenuEntity;
 use Module\Menu\View\MenuPrivateCreateView;
+use Module\Menu\Mapper\MenuFromRequestMapper;
 
 class MenuPrivateCreateController extends ControllerViaPSR7
 {
@@ -18,6 +19,7 @@ class MenuPrivateCreateController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            MenuFromRequestMapper::class,
             MenuCreateDAO::class
         ];
     }
@@ -31,23 +33,11 @@ class MenuPrivateCreateController extends ControllerViaPSR7
     }
 
     #[\Override]
-    protected function fromRequest(): void
-    {
-        $body = $this->validationBody();
-        $body->array('menu')->notEmpty()->validate();
-
-        $this->menu = new MenuEntity();
-        $this->menu->label = $body->string('menu.label')->notEmpty()->val();
-        $this->menu->route = $body->string('menu.route')->notEmpty()->val();
-        $this->menu->params = $body->json('menu.params')->notEmpty()->asArray()->val();
-    }
-
-    #[\Override]
     public function from(object $object): void
     {
         parent::from($object);
 
-        if ($object instanceof MenuCreateDAO) {
+        if ($object instanceof MenuFromRequestMapper) {
             $this->menu = $object->menu;
         }
     }

@@ -9,6 +9,7 @@ use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\Servant\Entity01GetByIdServant;
 use Module\Module01\DAO\Entity01UpdateDAO;
 use Module\Module01\View\Entity01PrivateUpdateView;
+use Module\Module01\Mapper\Entity01FromRequestMapper;
 
 class Entity01PrivateUpdateController extends ControllerViaPSR7
 {
@@ -20,6 +21,7 @@ class Entity01PrivateUpdateController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
+            Entity01FromRequestMapper::class,
             Entity01GetByIdServant::class,
             Entity01UpdateDAO::class,
         ];
@@ -31,16 +33,6 @@ class Entity01PrivateUpdateController extends ControllerViaPSR7
         return [
             Entity01PrivateUpdateView::class,
         ];
-    }
-
-    #[\Override]
-    protected function fromRequest(): void
-    {
-        $body = $this->validationBody();
-
-        $this->newEntity01 = new Entity01Entity;
-        $this->newEntity01->id = $body->uuid('entity01.id')->notEmpty()->val();
-        $this->newEntity01->field01 = $body->string('entity01.field01')->notEmpty()->val();
     }
 
     #[\Override]
@@ -69,6 +61,10 @@ class Entity01PrivateUpdateController extends ControllerViaPSR7
 
         if ($object instanceof Entity01GetByIdServant) {
             $this->entity01 = $object->entity01;
+        }
+
+        if ($object instanceof Entity01FromRequestMapper) {
+            $this->newEntity01 = $object->entity01;
         }
     }
 }
