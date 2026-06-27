@@ -15,7 +15,6 @@ return [
     'files' => [
         '%s/resources/acl/entity02lc.php',
         '%s/resources/routes/entity02lc.php',
-        '%s/resources/entities/entity02lc.php',
         '%s/resources/migrations/sqlite/main/u.YmdHis.Table02.sql',
         '%s/resources/migrations/sqlite/main/d.YmdHis.Table02.sql',
         '%s/resources/templates/themes/bootstrap5/Entity02PrivateIndex.twig',

@@ -15,7 +15,6 @@ return [
     'files' => [
         '%s/resources/acl/entity01lc.php',
         '%s/resources/routes/entity01lc.php',
-        '%s/resources/entities/entity01lc.php',
         '%s/resources/wrappers/entity01lc.php',
         '%s/resources/migrations/sqlite/main/u.YmdHis.Table01.sql',
         '%s/resources/migrations/sqlite/main/d.YmdHis.Table01.sql',
