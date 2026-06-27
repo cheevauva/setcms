@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Module\Page\Servant;
+namespace Module\Page\MenuAction\Servant;
 
 use SetCMS\UUID;
 use Module\Page\View\PagePublicReadView;
 use Module\Page\DAO\PageGetBySlugDAO;
 
-class PageMenuActionsByRequestServant extends \Module\Menu\Servant\MenuActionsByRequestServant
+class PageMenuActionsByRequestServant extends \Module\Menu\MenuAction\Servant\MenuActionsByRequestServant
 {
 
     protected function prepareIndexAction(): void

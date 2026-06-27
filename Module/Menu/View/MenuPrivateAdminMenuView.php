@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\Menu\View;
 
 use SetCMS\View\ViewTwig;
+use SetCMS\Compiler;
 
 class MenuPrivateAdminMenuView extends ViewTwig
 {
@@ -14,17 +15,12 @@ class MenuPrivateAdminMenuView extends ViewTwig
      */
     public array $items = [];
 
+    #[\Override]
     protected function init(): void
     {
         parent::init();
 
-        $rootPath = $this->container->get('rootPath');
-
-        if (file_exists($rootPath . 'cache/module/menu/adminMenu.php')) {
-            $this->items = require $rootPath . 'cache/module/menu/adminMenu.php';
-        } else {
-            $this->items = require $rootPath . 'resources/module/menu/adminMenu.php';
-        }
+        $this->items = Compiler::singleton($this->container)->getAsArray('adminMenu');
     }
 
     #[\Override]

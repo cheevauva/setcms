@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Menu\Controller;
 
+use SetCMS\Compiler;
 use Module\Menu\MenuAction\Entity\MenuActionEntity;
-use Module\Post\Servant\PostMenuActionsByRequestServant;
-use Module\Page\Servant\PageMenuActionsByRequestServant;
+use Module\Menu\MenuAction\Servant\MenuActionsByRequestServant;
 use Module\Menu\View\MenuPublicActionsViaContextView;
 use Module\Menu\Mapper\MenuReadByContextFromRequestMapper;
 use SetCMS\View\View;
@@ -26,11 +26,11 @@ class MenuPublicReadByContextController extends \SetCMS\Controller\ControllerVia
     #[\Override]
     protected function domainUnits(): array
     {
-        return [
+        $menuActions = Compiler::singleton($this->container)->getAsArray('menuActions');
+
+        return array_merge([
             MenuReadByContextFromRequestMapper::class,
-            PostMenuActionsByRequestServant::class,
-            PageMenuActionsByRequestServant::class,
-        ];
+        ], $menuActions);
     }
 
     #[\Override]
@@ -46,11 +46,7 @@ class MenuPublicReadByContextController extends \SetCMS\Controller\ControllerVia
     {
         parent::from($object);
 
-        if ($object instanceof PostMenuActionsByRequestServant) {
-            array_push($this->items, ...$object->actions);
-        }
-
-        if ($object instanceof PageMenuActionsByRequestServant) {
+        if ($object instanceof MenuActionsByRequestServant) {
             array_push($this->items, ...$object->actions);
         }
 
@@ -65,12 +61,7 @@ class MenuPublicReadByContextController extends \SetCMS\Controller\ControllerVia
     {
         parent::to($object);
 
-        if ($object instanceof PostMenuActionsByRequestServant) {
-            $object->view = $this->view;
-            $object->role = $this->role;
-        }
-
-        if ($object instanceof PageMenuActionsByRequestServant) {
+        if ($object instanceof MenuActionsByRequestServant) {
             $object->view = $this->view;
             $object->role = $this->role;
         }

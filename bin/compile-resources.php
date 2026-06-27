@@ -7,7 +7,9 @@ require dirname(__DIR__) . '/bootstrap.php';
 $rootPath = \SetCMS\Bootstrap::instance()->rootPath();
 $paths = require $rootPath . 'resources/compiler.php';
 
-foreach ($paths as $from => $to) {
+foreach ($paths as $name => $meta) {
+    list($from, $to) = $meta;
+    
     if (!is_dir(dirname($to))) {
         mkdir(dirname($to), 0777, true);
     }

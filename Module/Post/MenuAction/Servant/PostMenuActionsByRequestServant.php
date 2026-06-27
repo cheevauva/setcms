@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Module\Post\Servant;
+namespace Module\Post\MenuAction\Servant;
 
 use SetCMS\UUID;
 use Module\Post\View\PostPublicReadBySlugView;
 use Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 
-class PostMenuActionsByRequestServant extends \Module\Menu\Servant\MenuActionsByRequestServant
+class PostMenuActionsByRequestServant extends \Module\Menu\MenuAction\Servant\MenuActionsByRequestServant
 {
 
     protected function prepareIndexAction(): void

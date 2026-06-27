@@ -37,7 +37,11 @@ class Container implements \Psr\Container\ContainerInterface
         if (!isset($this->assetsResolved[$id])) {
             throw new ContainerNotFoundException($id);
         }
-
+        
+        if ($this->assetsResolved[$id] instanceof  \Closure) {
+            return $this->assetsResolved[$id]($this);
+        }
+  
         return $this->assetsResolved[$id];
     }
 

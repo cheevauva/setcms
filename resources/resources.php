@@ -10,4 +10,5 @@ return [
     'middlewares' => require __DIR__ . '/middlewares.php',
     'exceptionHandlers' => require __DIR__ . '/exceptionHandlers.php',
     'wrappers' => require __DIR__ . '/wrappers.php',
+    'compiler' => require __DIR__ . '/compiler.php',
 ];

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Module\Menu\Servant;
+namespace Module\Menu\MenuAction\Servant;
 
 use Module\Menu\MenuAction\Entity\MenuActionEntity;
 use SetCMS\UseCase\ACL\VO\ACLRoleVO;
@@ -34,13 +34,13 @@ abstract class MenuActionsByRequestServant extends \UUA\Servant
 
         foreach ($this->actions as $index => $action) {
             $action = MenuActionEntity::as($action);
-            
+
             if (!$this->hasAccess($action->route)) {
                 unset($this->actions[$index]);
             }
         }
     }
-    
+
     abstract protected function prepareMenuActions(): void;
 
     protected function menuAction(): MenuActionEntity
