@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Module\Migration\Mapper;
 
 use Module\Migration\Entity\MigrationEntity;
+use Module\Migration\Exception\MigrationMapperNotFoundKeyInRowException;
 
-class MigraionFromRowMapper extends \UUA\Mapper
+class MigraionFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
 {
-
-    use \SetCMS\Mapper\MapperEntityFromRowTrait;
 
     public protected(set) MigrationEntity $migration;
 
@@ -23,8 +22,8 @@ class MigraionFromRowMapper extends \UUA\Mapper
     }
 
     #[\Override]
-    protected function notFoundKeyInRowException(string $key): \Throwable
+    protected function notFoundKeyInRowException(string $key): MigrationMapperNotFoundKeyInRowException
     {
-        throw new \Exception($key);
+        throw new MigrationMapperNotFoundKeyInRowException($key);
     }
 }

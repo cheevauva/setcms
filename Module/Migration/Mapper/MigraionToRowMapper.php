@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Module\Migration\Mapper;
 
-class MigraionToRowMapper extends \UUA\Mapper
+class MigraionToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
 {
 
-    use \SetCMS\Mapper\MapperEntityToRowTrait;
     use \Module\Migration\Traits\MigrationCallTrait;
 
     #[\Override]

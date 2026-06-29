@@ -6,7 +6,7 @@ namespace Module\User\Mapper;
 
 use Module\User\Entity\UserEntity;
 
-class UserCurrentFromRequestMapper extends \SetCMS\Mapper\MapperFromRequest
+class UserCurrentFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
     public protected(set) UserEntity $user;

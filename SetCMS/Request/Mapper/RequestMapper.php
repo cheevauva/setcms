@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Mapper;
+namespace SetCMS\Request\Mapper;
 
 use Psr\Http\Message\ServerRequestInterface;
 use SplObjectStorage;
 use SetCMS\Validation\Validation;
 
-abstract class MapperFromRequest extends \UUA\Mapper
+abstract class RequestMapper extends \UUA\Mapper
 {
 
     use \SetCMS\Traits\TraitsValidation;
@@ -17,6 +17,7 @@ abstract class MapperFromRequest extends \UUA\Mapper
      * @var SplObjectStorage<\Throwable|object, mixed>
      */
     public SplObjectStorage $messages;
+
     /**
      * @var array<string, mixed>
      */

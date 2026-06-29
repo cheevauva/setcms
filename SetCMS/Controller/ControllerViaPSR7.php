@@ -10,7 +10,7 @@ use SetCMS\View\View;
 use SetCMS\Responder;
 use SetCMS\View\ViewJsonErrorHandler;
 use SetCMS\View\ViewHtmlErrorHandler;
-use SetCMS\Mapper\MapperFromRequest;
+use SetCMS\Request\Mapper\RequestMapper;
 
 abstract class ControllerViaPSR7 extends Controller
 {
@@ -37,7 +37,7 @@ abstract class ControllerViaPSR7 extends Controller
     {
         parent::to($object);
 
-        if ($object instanceof MapperFromRequest) {
+        if ($object instanceof RequestMapper) {
             $object->request = $this->request;
             $object->params = $this->params;
             $object->messages = $this->messages;

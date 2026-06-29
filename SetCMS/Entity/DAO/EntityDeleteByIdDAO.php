@@ -2,22 +2,20 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\DAO;
+namespace SetCMS\Entity\DAO;
 
 use SetCMS\Database\DatabaseQueryBuilder;
 use SetCMS\Database\Database;
 
-trait DAOEntityHasByIdTrait
+abstract class EntityDeleteByIdDAO extends \UUA\DAO
 {
 
     use \SetCMS\Traits\TraitsCallWithUUID;
 
-    public protected(set) bool $isExists;
-
     #[\Override]
     public function serve(): void
     {
-        $this->isExists = !!$this->createQuery()->fetchOne();
+        $this->createQuery()->executeQuery();
     }
 
     abstract protected function table(): string;
@@ -27,11 +25,9 @@ trait DAOEntityHasByIdTrait
     protected function createQuery(): DatabaseQueryBuilder
     {
         $qb = $this->db()->createQueryBuilder();
-        $qb->select('id');
-        $qb->from($this->table());
+        $qb->delete($this->table());
         $qb->andWhere('id = :id');
-        $qb->setParameter('id', $this->id);
-        $qb->setMaxResults(1);
+        $qb->setParameter('id', $this->id->uuid);
 
         return $qb;
     }

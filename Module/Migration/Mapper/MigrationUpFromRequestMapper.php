@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Migration\Mapper;
 
-class MigrationUpFromRequestMapper extends \SetCMS\Mapper\MapperFromRequest
+class MigrationUpFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
     public protected(set) string $dbName;

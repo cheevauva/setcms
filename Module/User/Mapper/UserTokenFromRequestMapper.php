@@ -6,7 +6,7 @@ namespace Module\User\Mapper;
 
 use SetCMS\UUID;
 
-class UserTokenFromRequestMapper extends \SetCMS\Mapper\MapperFromRequest
+class UserTokenFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
     public protected(set) UUID $token;

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Module\UserSession\DAO;
 
-class UserSessionHasByIdDAO extends \UUA\DAO
+class UserSessionHasByIdDAO extends \SetCMS\Entity\DAO\EntityHasByIdDAO
 {
 
-    use \SetCMS\DAO\DAOEntityHasByIdTrait;
     use \Module\UserSession\Traits\UserSessionDbalDAOTrait;
 }

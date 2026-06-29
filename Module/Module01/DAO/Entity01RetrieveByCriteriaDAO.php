@@ -11,10 +11,9 @@ use Module\Module01\Exception\Entity01EntityNotFoundException;
 use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\Mapper\Entity01FromRowMapper;
 
-class Entity01RetrieveByCriteriaDAO extends \UUA\DAO
+class Entity01RetrieveByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
 {
 
-    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaTrait;
     use \Module\Module01\Traits\Entity01DbalDAOTrait;
 
     // field-repeat-start

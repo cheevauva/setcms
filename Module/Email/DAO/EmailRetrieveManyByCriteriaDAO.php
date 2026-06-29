@@ -10,10 +10,9 @@ use Module\Email\Exception\EmailsNotFoundException;
 use Module\Email\Exception\EmailExpectOneButReceivedTooMuchException;
 use Module\Email\Mapper\EmailFromRowMapper;
 
-class EmailRetrieveManyByCriteriaDAO extends \UUA\DAO
+class EmailRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
 {
 
-    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaTrait;
     use \Module\Email\Traits\EmailDbalDAOTrait;
 
     /**

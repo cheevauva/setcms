@@ -9,7 +9,7 @@ use SetCMS\Controller\ControllerViaPSR7;
 use Module\Page\Entity\PageEntity;
 use Module\Page\Servant\PageGetByIdServant;
 use Module\Page\View\PagePrivateReadView;
-use SetCMS\Mapper\MapperIdFromRequest;
+use SetCMS\Request\Mapper\RequestToIdMapper;
 
 class PagePrivateReadController extends ControllerViaPSR7
 {
@@ -21,7 +21,7 @@ class PagePrivateReadController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
-            MapperIdFromRequest::class,
+            RequestToIdMapper::class,
             PageGetByIdServant::class,
         ];
     }
@@ -57,7 +57,7 @@ class PagePrivateReadController extends ControllerViaPSR7
             $this->page = $object->page;
         }
         
-        if ($object instanceof MapperIdFromRequest) {
+        if ($object instanceof RequestToIdMapper) {
             $this->id = $object->id;
         }
     }

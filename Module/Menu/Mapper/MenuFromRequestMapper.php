@@ -6,7 +6,7 @@ namespace Module\Menu\Mapper;
 
 use Module\Menu\Entity\MenuEntity;
 
-class MenuFromRequestMapper extends \SetCMS\Mapper\MapperFromRequest
+class MenuFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
     public protected(set) MenuEntity $menu;

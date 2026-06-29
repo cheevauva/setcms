@@ -7,10 +7,8 @@ namespace Module\Page\Mapper;
 use Module\Page\Entity\PageEntity;
 use Module\Page\Exception\PageMapperNotFoundKeyInRowException;
 
-class PageFromRowMapper extends \UUA\Mapper
+class PageFromRowMapper extends \SetCMS\Entity\Mapper\EntityBasicFromRowMapper
 {
-
-    use \SetCMS\Mapper\MapperEntityFromRowBasicTrait;
 
     public protected(set) PageEntity $page;
 
@@ -21,13 +19,12 @@ class PageFromRowMapper extends \UUA\Mapper
         $this->page->slug = $this->string('slug');
         $this->page->title = $this->string('title');
         $this->page->content = $this->string('content');
-
-        $this->mappingDefault($this->page);
-        $this->mappingBasic($this->page);
+        $this->id($this->page);
+        $this->basic($this->page);
     }
 
     #[\Override]
-    protected function notFoundKeyInRowException(string $key): \Throwable
+    protected function notFoundKeyInRowException(string $key): PageMapperNotFoundKeyInRowException
     {
         return new PageMapperNotFoundKeyInRowException($key);
     }

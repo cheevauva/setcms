@@ -7,12 +7,11 @@ namespace Module\Migration\DAO;
 use Module\Migration\Mapper\MigraionToRowMapper;
 use Module\Migration\Entity\MigrationEntity;
 
-class MigrationCreateDAO extends \UUA\DAO
+class MigrationCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
 {
 
-    use \SetCMS\DAO\DAOEntityCreateTrait;
     use \Module\Migration\Traits\MigrationDbalDAOTrait;
-    
+
     public MigrationEntity $migration;
 
     #[\Override]

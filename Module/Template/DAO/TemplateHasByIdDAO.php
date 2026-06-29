@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Template\DAO;
 
-class TemplateHasByIdDAO extends \UUA\DAO
+class TemplateHasByIdDAO extends \SetCMS\Entity\DAO\EntityHasByIdDAO
 {
 
-    use \SetCMS\DAO\DAOEntityHasByIdTrait;
     use \Module\Template\Traits\TemplateDbalDAOTrait;
 }

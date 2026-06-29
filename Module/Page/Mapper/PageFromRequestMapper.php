@@ -6,7 +6,7 @@ namespace Module\Page\Mapper;
 
 use Module\Page\Entity\PageEntity;
 
-class PageFromRequestMapper extends \SetCMS\Mapper\MapperFromRequest
+class PageFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
     public protected(set) PageEntity $page;

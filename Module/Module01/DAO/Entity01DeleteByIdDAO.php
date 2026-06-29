@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Module01\DAO;
 
-class Entity01DeleteByIdDAO extends \UUA\DAO
+class Entity01DeleteByIdDAO extends \SetCMS\Entity\DAO\EntityDeleteByIdDAO
 {
 
-    use \SetCMS\DAO\DAOEntityDeleteByIdTrait;
     use \Module\Module01\Traits\Entity01DbalDAOTrait;
 }

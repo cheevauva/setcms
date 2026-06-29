@@ -6,10 +6,9 @@ namespace Module\Menu\DAO;
 
 use Module\Menu\Mapper\MenuToRowMapper;
 
-class MenuUpdateDAO extends \UUA\DAO
+class MenuUpdateDAO extends \SetCMS\Entity\DAO\EntityUpdateDAO
 {
 
-    use \SetCMS\DAO\DAOEntityUpdateTrait;
     use \Module\Menu\Traits\MenuCallTrait;
     use \Module\Menu\Traits\MenuDbalDAOTrait;
 

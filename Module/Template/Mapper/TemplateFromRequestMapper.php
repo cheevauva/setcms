@@ -6,7 +6,7 @@ namespace Module\Template\Mapper;
 
 use Module\Template\Entity\TemplateEntity;
 
-class TemplateFromRequestMapper extends \SetCMS\Mapper\MapperFromRequest
+class TemplateFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
     public protected(set) TemplateEntity $template;

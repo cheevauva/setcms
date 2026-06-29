@@ -9,7 +9,7 @@ use SetCMS\Responder;
 use SetCMS\UseCase\ACL\VO\ACLRoleVO;
 use Psr\Http\Message\ServerRequestInterface;
 
-class MenuReadByContextFromRequestMapper extends \SetCMS\Mapper\MapperFromRequest
+class MenuReadByContextFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
     public protected(set) View|Responder $view;

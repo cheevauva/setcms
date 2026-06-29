@@ -6,7 +6,7 @@ namespace Module\Email\Mapper;
 
 use Module\Email\Entity\EmailEntity;
 
-class EmailFromRequestMapper extends \SetCMS\Mapper\MapperFromRequest
+class EmailFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
     public protected(set) EmailEntity $email;

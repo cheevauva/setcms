@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace SetCMS\Mapper;
 
-use Psr\Container\ContainerInterface;
-use SetCMS\Entity\Entity;
 use SetCMS\UUID;
+use Psr\Container\ContainerInterface;
 
-trait MapperEntityFromRowTrait
+abstract class MapperFromRow extends \UUA\Mapper
 {
 
     /**
@@ -16,39 +15,32 @@ trait MapperEntityFromRowTrait
      */
     public array $row;
 
-    abstract protected function notFoundKeyInRowException(string $key): \Throwable;
-
-    private function mappingDefault(Entity $entity): void
-    {
-        $entity->id = $this->uuid('id');
-    }
-
-    private function uuid(string $key): UUID
+    protected function uuid(string $key): UUID
     {
         return new UUID(strval($this->row[$key] ?? throw $this->notFoundKeyInRowException($key)));
     }
 
-    private function string(string $key): string
+    protected function string(string $key): string
     {
         return strval($this->row[$key] ?? throw $this->notFoundKeyInRowException($key));
     }
 
-    private function dateTime(string $key): \DateTimeImmutable
+    protected function dateTime(string $key): \DateTimeImmutable
     {
         return new \DateTimeImmutable(strval($this->row[$key] ?? throw $this->notFoundKeyInRowException($key)));
     }
 
-    private function dateTimeOrNull(string $key): ?\DateTimeImmutable
+    protected function dateTimeOrNull(string $key): ?\DateTimeImmutable
     {
         return isset($this->row[$key]) ? new \DateTimeImmutable(strval($this->row[$key])) : null;
     }
 
-    private function bool(string $key): bool
+    protected function bool(string $key): bool
     {
         return boolval($this->row[$key] ?? throw $this->notFoundKeyInRowException($key));
     }
 
-    private function int(string $key): int
+    protected function int(string $key): int
     {
         return intval($this->row[$key] ?? throw $this->notFoundKeyInRowException($key));
     }
@@ -57,10 +49,12 @@ trait MapperEntityFromRowTrait
      * @param string $key
      * @return array<mixed, mixed>|array<mixed>
      */
-    private function json(string $key): array
+    protected function json(string $key): array
     {
         return json_decode($this->row[$key] ?? throw $this->notFoundKeyInRowException($key), true);
     }
+
+    abstract protected function notFoundKeyInRowException(string $key): \Throwable;
 
     /**
      * @param ContainerInterface $container

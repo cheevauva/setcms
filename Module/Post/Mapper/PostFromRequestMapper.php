@@ -6,7 +6,7 @@ namespace Module\Post\Mapper;
 
 use Module\Post\Entity\PostEntity;
 
-class PostFromRequestMapper extends \SetCMS\Mapper\MapperFromRequest
+class PostFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
     public protected(set) PostEntity $post;

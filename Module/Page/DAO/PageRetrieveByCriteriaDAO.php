@@ -11,10 +11,9 @@ use Module\Page\Exception\PageNotFoundException;
 use Module\Page\Exception\PagesNotFoundException;
 use Module\Page\Exception\PageExpectOneButReceivedTooMuchException;
 
-class PageRetrieveByCriteriaDAO extends \UUA\DAO
+class PageRetrieveByCriteriaDAO extends \SetCMS\Entity\DAO\EntityBasicRetrieveByCriteriaDAO
 {
 
-    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaTrait;
     use \Module\Page\Traits\PageDbalDAOTrait;
 
     /**
@@ -24,7 +23,6 @@ class PageRetrieveByCriteriaDAO extends \UUA\DAO
     public protected(set) PageEntity $page;
     public protected(set) ?PageEntity $pageOrNull = null;
     public string $slug;
-    public bool $deleted = false;
 
     #[\Override]
     protected function handleRows(array $rows): void
@@ -36,6 +34,8 @@ class PageRetrieveByCriteriaDAO extends \UUA\DAO
     protected function createQb(): DatabaseQueryBuilder
     {
         $qb = $this->createQuery();
+
+        $this->basicQb($qb);
 
         if (isset($this->slug)) {
             $qb->andWhere('slug = :slug');

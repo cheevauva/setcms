@@ -11,11 +11,9 @@ use Module\Post\Exception\PostNotFoundException;
 use Module\Post\Exception\PostsNotFoundException;
 use Module\Post\Mapper\PostFromRowMapper;
 
-class PostRetrieveManyByCriteriaDAO extends \UUA\DAO
+class PostRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityBasicRetrieveByCriteriaDAO
 {
 
-    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaTrait;
-    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaBasicTrait;
     use \Module\Post\Traits\PostDbalDAOTrait;
 
     public string $slug;
@@ -30,8 +28,8 @@ class PostRetrieveManyByCriteriaDAO extends \UUA\DAO
     protected function createQb(): DatabaseQueryBuilder
     {
         $qb = $this->createQuery();
-        
-        $this->addCriteriaBasic($qb);
+
+        $this->basicQb($qb);
 
         if (isset($this->slug)) {
             $qb->andWhere('slug = :slug');

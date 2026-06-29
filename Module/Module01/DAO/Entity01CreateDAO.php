@@ -6,10 +6,9 @@ namespace Module\Module01\DAO;
 
 use Module\Module01\Mapper\Entity01ToRowMapper;
 
-class Entity01CreateDAO extends \UUA\DAO
+class Entity01CreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
 {
 
-    use \SetCMS\DAO\DAOEntityCreateTrait;
     use \Module\Module01\Traits\Entity01CallTrait;
     use \Module\Module01\Traits\Entity01DbalDAOTrait;
 

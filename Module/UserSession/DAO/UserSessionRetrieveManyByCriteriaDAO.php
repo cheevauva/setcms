@@ -8,10 +8,9 @@ use Module\UserSession\UserSessionEntity;
 use Module\UserSession\Exception\UserSessionNotFoundException;
 use Module\UserSession\Mapper\UserSessionFromRowMapper;
 
-class UserSessionRetrieveManyByCriteriaDAO extends \UUA\DAO
+class UserSessionRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
 {
 
-    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaTrait;
     use \Module\UserSession\Traits\UserSessionDbalDAOTrait;
 
     /**

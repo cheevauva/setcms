@@ -6,10 +6,9 @@ namespace Module\Captcha\DAO;
 
 use Module\Captcha\Mapper\CaptchaToRowMapper;
 
-class CaptchaCreateDAO extends \UUA\DAO
+class CaptchaCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
 {
 
-    use \SetCMS\DAO\DAOEntityCreateTrait;
     use \Module\Captcha\Traits\CaptchaDbalDAOTrait;
     use \Module\Captcha\Traits\CaptchaCallTrait;
 

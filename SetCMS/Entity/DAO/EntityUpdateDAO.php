@@ -2,14 +2,15 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\DAO;
+namespace SetCMS\Entity\DAO;
 
 use SetCMS\Database\Database;
 use SetCMS\Database\DatabaseQueryBuilder;
 
-trait DAOEntityUpdateTrait
+abstract class EntityUpdateDAO extends \UUA\DAO
 {
 
+    #[\Override]
     public function serve(): void
     {
         $this->createQuery()->executeQuery();

@@ -7,10 +7,8 @@ namespace Module\Module01\Mapper;
 use Module\Module01\Entity\Entity01Entity;
 use Module\Module01\Exception\Entity01MapperNotFoundKeyInRowException;
 
-class Entity01FromRowMapper extends \UUA\Mapper
+class Entity01FromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
 {
-
-    use \SetCMS\Mapper\MapperEntityFromRowTrait;
 
     public Entity01Entity $entity01;
 
@@ -19,12 +17,11 @@ class Entity01FromRowMapper extends \UUA\Mapper
     {
         $this->entity01 = new Entity01Entity();
         $this->entity01->field01 = $this->string('field01');
-
-        $this->mappingDefault($this->entity01);
+        $this->id($this->entity01);
     }
 
     #[\Override]
-    protected function notFoundKeyInRowException(string $key): \Throwable
+    protected function notFoundKeyInRowException(string $key): Entity01MapperNotFoundKeyInRowException
     {
         return new Entity01MapperNotFoundKeyInRowException($key);
     }

@@ -7,10 +7,9 @@ namespace Module\Post\DAO;
 use Module\Post\Entity\PostEntity;
 use Module\Post\Mapper\PostToRowMapper;
 
-class PostCreateDAO extends \UUA\DAO
+class PostCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
 {
 
-    use \SetCMS\DAO\DAOEntityCreateTrait;
     use \Module\Post\Traits\PostDbalDAOTrait;
     use \Module\Post\Traits\PostCallTrait;
 

@@ -8,10 +8,9 @@ use Module\Migration\Mapper\MigraionFromRowMapper;
 use Module\Migration\Exception\MigrationNotFoundException;
 use Module\Migration\Entity\MigrationEntity;
 
-class MigrationRetrieveManyByCriteriaDAO extends \UUA\DAO
+class MigrationRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
 {
 
-    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaTrait;
     use \Module\Migration\Traits\MigrationDbalDAOTrait;
 
     /**

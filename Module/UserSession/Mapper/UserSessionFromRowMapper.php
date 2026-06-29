@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace Module\UserSession\Mapper;
 
 use Module\UserSession\UserSessionEntity;
+use Module\UserSession\Exception\UserSessionMapperNotFoundKeyInRowException;
 
-class UserSessionFromRowMapper extends \UUA\Mapper
+class UserSessionFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
 {
-
-    use \SetCMS\Mapper\MapperEntityFromRowTrait;
 
     public UserSessionEntity $userSession;
 
@@ -17,15 +16,16 @@ class UserSessionFromRowMapper extends \UUA\Mapper
     public function serve(): void
     {
         $this->userSession = new UserSessionEntity;
+        $this->userSession->id = $this->uuid('id');
         $this->userSession->device = $this->string('device');
         $this->userSession->userId = $this->uuid('user_id');
         $this->userSession->dateExpiries = $this->dateTime('date_expiries');
-        $this->mappingDefault($this->userSession);
+        $this->id($this->userSession);
     }
 
     #[\Override]
-    protected function notFoundKeyInRowException(string $key): \Throwable
+    protected function notFoundKeyInRowException(string $key): UserSessionMapperNotFoundKeyInRowException
     {
-        return new \Exception($key);
+        return new UserSessionMapperNotFoundKeyInRowException($key);
     }
 }

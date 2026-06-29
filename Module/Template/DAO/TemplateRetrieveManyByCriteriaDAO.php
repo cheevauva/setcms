@@ -9,10 +9,9 @@ use Module\Template\Exception\TemplateNotFoundException;
 use Module\Template\Mapper\TemplateFromRowMapper;
 use SetCMS\Database\DatabaseQueryBuilder;
 
-class TemplateRetrieveManyByCriteriaDAO extends \UUA\DAO
+class TemplateRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
 {
 
-    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaTrait;
     use \Module\Template\Traits\TemplateDbalDAOTrait;
 
     /**

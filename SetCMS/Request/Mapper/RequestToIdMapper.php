@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Mapper;
+namespace SetCMS\Request\Mapper;
 
 use SetCMS\UUID;
 
-class MapperIdFromRequest extends MapperFromRequest
+class RequestToIdMapper extends RequestMapper
 {
 
     public protected(set) UUID $id;

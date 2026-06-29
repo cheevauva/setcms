@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Mapper;
+namespace SetCMS\Entity\Mapper;
 
 use SetCMS\Entity\Entity;
 
-trait MapperEntityToRowTrait
+abstract class EntityToRowMapper extends \UUA\Mapper
 {
 
     /**
@@ -14,7 +14,7 @@ trait MapperEntityToRowTrait
      */
     public protected(set) array $row = [];
 
-    private function mappingDefault(Entity $entity): void
+    protected function id(Entity $entity): void
     {
         $this->row['id'] = $entity->id->uuid;
     }
@@ -22,11 +22,11 @@ trait MapperEntityToRowTrait
     public function json(mixed $value): string
     {
         $json = json_encode($value, JSON_UNESCAPED_UNICODE);
-        
+
         if ($json === false) {
             throw new \Exception('json encode failed');
         }
-        
+
         return $json;
     }
 }

@@ -8,7 +8,7 @@ use SetCMS\UUID;
 use Module\User\Servant\UserGetByIdServant;
 use Module\User\Entity\UserEntity;
 use Module\User\View\UserPrivateReadView;
-use SetCMS\Mapper\MapperIdFromRequest;
+use SetCMS\Request\Mapper\RequestToIdMapper;
 
 class UserPrivateReadController extends UserPrivateController
 {
@@ -20,7 +20,7 @@ class UserPrivateReadController extends UserPrivateController
     protected function domainUnits(): array
     {
         return [
-            MapperIdFromRequest::class,
+            RequestToIdMapper::class,
             UserGetByIdServant::class,
         ];
     }
@@ -42,7 +42,7 @@ class UserPrivateReadController extends UserPrivateController
             $this->user = $object->user;
         }
 
-        if ($object instanceof MapperIdFromRequest) {
+        if ($object instanceof RequestToIdMapper) {
             $this->id = $object->id;
         }
     }

@@ -6,10 +6,9 @@ namespace Module\Email\DAO;
 
 use Module\Email\Mapper\EmailToRowMapper;
 
-class EmailCreateDAO extends \UUA\DAO
+class EmailCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
 {
 
-    use \SetCMS\DAO\DAOEntityCreateTrait;
     use \Module\Email\Traits\EmailDbalDAOTrait;
     use \Module\Email\Traits\EmailCallTrait;
 

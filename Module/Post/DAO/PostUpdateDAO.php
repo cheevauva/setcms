@@ -6,10 +6,9 @@ namespace Module\Post\DAO;
 
 use Module\Post\Mapper\PostToRowMapper;
 
-class PostUpdateDAO extends \UUA\DAO
+class PostUpdateDAO extends \SetCMS\Entity\DAO\EntityUpdateDAO
 {
 
-    use \SetCMS\DAO\DAOEntityUpdateTrait;
     use \Module\Post\Traits\PostCallTrait;
     use \Module\Post\Traits\PostDbalDAOTrait;
 

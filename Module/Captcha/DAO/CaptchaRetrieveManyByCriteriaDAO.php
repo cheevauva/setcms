@@ -10,10 +10,9 @@ use Module\Captcha\Exception\CaptchasNotFoundException;
 use Module\Captcha\Exception\CaptchaNotFoundException;
 use Module\Captcha\Exception\CaptchaExpectOneButReceivedTooMuchException;
 
-class CaptchaRetrieveManyByCriteriaDAO extends \UUA\DAO
+class CaptchaRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
 {
 
-    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaTrait;
     use \Module\Captcha\Traits\CaptchaDbalDAOTrait;
 
     /**

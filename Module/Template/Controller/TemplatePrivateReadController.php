@@ -9,7 +9,7 @@ use SetCMS\Controller\ControllerViaPSR7;
 use Module\Template\Entity\TemplateEntity;
 use Module\Template\DAO\TemplateRetrieveManyByCriteriaDAO;
 use Module\Template\View\TemplatePrivateReadView;
-use SetCMS\Mapper\MapperIdFromRequest;
+use SetCMS\Request\Mapper\RequestToIdMapper;
 
 class TemplatePrivateReadController extends ControllerViaPSR7
 {
@@ -21,7 +21,7 @@ class TemplatePrivateReadController extends ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
-            MapperIdFromRequest::class,
+            RequestToIdMapper::class,
             TemplateRetrieveManyByCriteriaDAO::class,
         ];
     }
@@ -60,7 +60,7 @@ class TemplatePrivateReadController extends ControllerViaPSR7
             $this->template = $object->template;
         }
         
-        if ($object instanceof MapperIdFromRequest) {
+        if ($object instanceof RequestToIdMapper) {
             $this->id = $object->id;
         }
     }

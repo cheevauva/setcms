@@ -6,10 +6,9 @@ namespace Module\UserSession\DAO;
 
 use Module\UserSession\Mapper\UserSessionToRowMapper;
 
-class UserSessionCreateDAO extends \UUA\DAO
+class UserSessionCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
 {
 
-    use \SetCMS\DAO\DAOEntityCreateTrait;
     use \Module\UserSession\Traits\UserSessionCallTrait;
     use \Module\UserSession\Traits\UserSessionDbalDAOTrait;
 

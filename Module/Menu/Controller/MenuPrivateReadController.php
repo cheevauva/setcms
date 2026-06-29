@@ -8,7 +8,7 @@ use SetCMS\UUID;
 use Module\Menu\View\MenuPrivateReadView;
 use Module\Menu\DAO\MenuRetrieveManyByCriteriaDAO;
 use Module\Menu\Entity\MenuEntity;
-use SetCMS\Mapper\MapperIdFromRequest;
+use SetCMS\Request\Mapper\RequestToIdMapper;
 
 class MenuPrivateReadController extends \SetCMS\Controller\ControllerViaPSR7
 {
@@ -20,7 +20,7 @@ class MenuPrivateReadController extends \SetCMS\Controller\ControllerViaPSR7
     protected function domainUnits(): array
     {
         return [
-            MapperIdFromRequest::class,
+            RequestToIdMapper::class,
             MenuRetrieveManyByCriteriaDAO::class
         ];
     }
@@ -59,7 +59,7 @@ class MenuPrivateReadController extends \SetCMS\Controller\ControllerViaPSR7
             $this->menu = $object->menu;
         }
 
-        if ($object instanceof MapperIdFromRequest) {
+        if ($object instanceof RequestToIdMapper) {
             $this->id = $object->id;
         }
     }

@@ -11,12 +11,11 @@ use Module\Menu\Exception\MenuExpectOneButReceivedTooMuchException;
 use Module\Menu\Mapper\MenuFromRowMapper;
 use SetCMS\Database\DatabaseQueryBuilder;
 
-class MenuRetrieveManyByCriteriaDAO extends \UUA\DAO
+class MenuRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
 {
 
     use \Module\Menu\Traits\MenuDbalDAOTrait;
-    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaTrait;
-
+    
     /**
      * @var array<MenuEntity>
      */

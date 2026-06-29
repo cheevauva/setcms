@@ -8,7 +8,7 @@ use Module\User\Exception\UserPasswordsNotEqualException;
 use Module\User\Exception\UserPasswordMustBeMoreThan8CharactersException;
 use SetCMS\UUID;
 
-class UserRegistrationFromRequestMapper extends \SetCMS\Mapper\MapperFromRequest
+class UserRegistrationFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
     public bool $useCaptcha = false;

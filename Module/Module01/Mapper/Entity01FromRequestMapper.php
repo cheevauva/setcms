@@ -6,7 +6,7 @@ namespace Module\Module01\Mapper;
 
 use Module\Module01\Entity\Entity01Entity;
 
-class Entity01FromRequestMapper extends \SetCMS\Mapper\MapperFromRequest
+class Entity01FromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
     public protected(set) Entity01Entity $entity01;

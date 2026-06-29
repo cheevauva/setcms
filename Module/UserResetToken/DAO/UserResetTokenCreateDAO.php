@@ -6,10 +6,9 @@ namespace Module\UserResetToken\DAO;
 
 use Module\UserResetToken\Mapper\UserResetTokenToRowMapper;
 
-class UserResetTokenCreateDAO extends \UUA\DAO
+class UserResetTokenCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
 {
 
-    use \SetCMS\DAO\DAOEntityCreateTrait;
     use \Module\UserResetToken\Traits\UserResetTokenCallTrait;
     use \Module\UserResetToken\Traits\UserResetTokenDbalDAOTrait;
 

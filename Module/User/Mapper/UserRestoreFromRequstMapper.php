@@ -6,7 +6,7 @@ namespace Module\User\Mapper;
 
 use SetCMS\UUID;
 
-class UserRestoreFromRequstMapper extends \SetCMS\Mapper\MapperFromRequest
+class UserRestoreFromRequstMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
     public bool $useCaptcha = false;

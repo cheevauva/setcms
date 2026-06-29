@@ -7,10 +7,8 @@ namespace Module\Menu\Mapper;
 use Module\Menu\Entity\MenuEntity;
 use Module\Menu\Exception\MenuMapperNotFoundKeyInRowException;
 
-class MenuFromRowMapper extends \UUA\Mapper
+class MenuFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
 {
-
-    use \SetCMS\Mapper\MapperEntityFromRowTrait;
 
     public protected(set) MenuEntity $menu;
 
@@ -18,14 +16,15 @@ class MenuFromRowMapper extends \UUA\Mapper
     public function serve(): void
     {
         $this->menu = new MenuEntity();
+        $this->menu->id = $this->uuid('id');
         $this->menu->label = $this->string('label');
         $this->menu->route = $this->string('route');
         $this->menu->params = $this->json('params');
-        $this->mappingDefault($this->menu);
+        $this->id($this->menu);
     }
 
     #[\Override]
-    protected function notFoundKeyInRowException(string $key): \Throwable
+    protected function notFoundKeyInRowException(string $key): MenuMapperNotFoundKeyInRowException
     {
         return new MenuMapperNotFoundKeyInRowException($key);
     }

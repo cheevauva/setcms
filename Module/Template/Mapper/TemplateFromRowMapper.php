@@ -5,18 +5,17 @@ declare(strict_types=1);
 namespace Module\Template\Mapper;
 
 use Module\Template\Entity\TemplateEntity;
+use Module\Template\Exception\TemplateMapperNotFoundKeyInRowException;
 
-class TemplateFromRowMapper extends \UUA\Mapper
+class TemplateFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
 {
-
-    use \SetCMS\Mapper\MapperEntityFromRowTrait;
 
     public protected(set) TemplateEntity $template;
 
     #[\Override]
-    protected function notFoundKeyInRowException(string $key): \Throwable
+    protected function notFoundKeyInRowException(string $key): TemplateMapperNotFoundKeyInRowException
     {
-        throw new \Exception($key);
+        throw new TemplateMapperNotFoundKeyInRowException($key);
     }
 
     #[\Override]
@@ -26,6 +25,6 @@ class TemplateFromRowMapper extends \UUA\Mapper
         $this->template->template = $this->string('template');
         $this->template->title = $this->string('title');
         $this->template->slug = $this->string('slug');
-        $this->mappingDefault($this->template);
+        $this->id($this->template);
     }
 }

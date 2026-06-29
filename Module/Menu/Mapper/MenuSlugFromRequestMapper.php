@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Menu\Mapper;
 
-class MenuSlugFromRequestMapper extends \SetCMS\Mapper\MapperFromRequest
+class MenuSlugFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
     public protected(set) string $slug;

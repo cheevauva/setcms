@@ -12,11 +12,10 @@ use Module\UserResetToken\Entity\UserResetTokenEntity;
 use Module\UserResetToken\Mapper\UserResetTokenFromRowMapper;
 use SetCMS\UUID;
 
-class UserResetTokenRetrieveManyByCriteriaDAO extends \UUA\DAO
+class UserResetTokenRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
 {
 
     use \Module\UserResetToken\Traits\UserResetTokenDbalDAOTrait;
-    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaTrait;
 
     /**
      * @var UserResetTokenEntity[]

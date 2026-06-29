@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace Module\Email\Mapper;
 
-class EmailToRowMapper extends \UUA\Mapper
+class EmailToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
 {
 
     use \Module\Email\Traits\EmailCallTrait;
-    use \SetCMS\Mapper\MapperEntityToRowBasicTrait;
 
     #[\Override]
     public function serve(): void
     {
-        $this->mappingDefault($this->email);
+        $this->id($this->email);
         $this->row['subject'] = $this->email->subject;
         $this->row['status'] = $this->email->status->value;
         $this->row['from_addr'] = $this->email->from;

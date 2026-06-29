@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\DAO;
+namespace SetCMS\Entity\DAO;
 
 use SetCMS\UUID;
 use SetCMS\Database\DatabaseQueryBuilder;
 
-trait DAOEntityRetrieveByCriteriaBasicTrait
+abstract class EntityBasicRetrieveByCriteriaDAO extends EntityRetrieveByCriteriaDAO
 {
 
     public bool $deleted;
@@ -24,7 +24,7 @@ trait DAOEntityRetrieveByCriteriaBasicTrait
     public bool $sortDateCreatedASC;
     public bool $sortDateModifiedASC;
 
-    protected function addCriteriaBasic(DatabaseQueryBuilder $qb): void
+    protected function basicQb(DatabaseQueryBuilder $qb): void
     {
         if (isset($this->createdBy)) {
             $qb->andWhere('created_by = :createdBy');

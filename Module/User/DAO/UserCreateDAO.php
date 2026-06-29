@@ -6,12 +6,11 @@ namespace Module\User\DAO;
 
 use Module\User\Mapper\UserToRowMapper;
 
-class UserCreateDAO extends \UUA\DAO
+class UserCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
 {
 
     use \Module\User\Traits\UserCallTrait;
     use \Module\User\Traits\UserDbalTrait;
-    use \SetCMS\DAO\DAOEntityCreateTrait;
 
     #[\Override]
     protected function row(): array

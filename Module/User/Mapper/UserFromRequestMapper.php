@@ -7,7 +7,7 @@ namespace Module\User\Mapper;
 use Module\User\Entity\UserEntity;
 use Module\User\Enum\UserRoleEnum;
 
-class UserFromRequestMapper extends \SetCMS\Mapper\MapperFromRequest
+class UserFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
     public protected(set) UserEntity $user;

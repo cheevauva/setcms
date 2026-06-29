@@ -2,16 +2,14 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Mapper;
+namespace SetCMS\Entity\Mapper;
 
 use SetCMS\Entity\EntityBasic;
 
-trait MapperEntityFromRowBasicTrait
+abstract class EntityBasicFromRowMapper extends EntityFromRowMapper
 {
 
-    use MapperEntityFromRowTrait;
-
-    private function mappingBasic(EntityBasic $entity): void
+    protected function basic(EntityBasic $entity): void
     {
         $entity->assignedBy = $this->uuid('assigned_by');
         $entity->createdBy = $this->uuid('created_by');

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Module\User\Exception;
 
-class UserNotFoundKeyInRowException extends \Exception
+class UserNotFoundKeyInRowException extends \SetCMS\Entity\Exception\EntityMapperNotFoundKeyInRowException
 {
-
-    use \SetCMS\Entity\Exception\EntityMapperNotFoundKeyInRowExceptionTrait;
+    
 }

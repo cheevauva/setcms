@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Module\UserResetToken\Mapper;
 
-use Module\UserResetToken\Exception\UserResetTokenException;
+use Module\UserResetToken\Exception\UserResetTokenMapperNotFoundKeyInRowException;
 use Module\UserResetToken\Entity\UserResetTokenEntity;
 
-class UserResetTokenFromRowMapper extends \UUA\Mapper
+class UserResetTokenFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
 {
-
-    use \SetCMS\Mapper\MapperEntityFromRowTrait;
 
     public UserResetTokenEntity $userResetToken;
 
@@ -18,16 +16,16 @@ class UserResetTokenFromRowMapper extends \UUA\Mapper
     public function serve(): void
     {
         $this->userResetToken = new UserResetTokenEntity;
+        $this->userResetToken->id = $this->uuid('id');
         $this->userResetToken->dateExpired = $this->dateTime('date_expired');
         $this->userResetToken->token = $this->string('token');
         $this->userResetToken->userId = $this->uuid('user_id');
-
-        $this->mappingDefault($this->userResetToken);
+        $this->id($this->userResetToken);
     }
 
     #[\Override]
-    protected function notFoundKeyInRowException(string $key): \Throwable
+    protected function notFoundKeyInRowException(string $key): UserResetTokenMapperNotFoundKeyInRowException
     {
-        return new UserResetTokenException($key);
+        return new UserResetTokenMapperNotFoundKeyInRowException($key);
     }
 }

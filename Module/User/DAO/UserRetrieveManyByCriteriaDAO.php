@@ -9,10 +9,9 @@ use Module\User\Exception\UserNotFoundException;
 use Module\User\Mapper\UserFromRowMapper;
 use SetCMS\Database\DatabaseQueryBuilder;
 
-class UserRetrieveManyByCriteriaDAO extends \UUA\DAO
+class UserRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
 {
 
-    use \SetCMS\DAO\DAOEntityRetrieveByCriteriaTrait;
     use \Module\User\Traits\UserDbalTrait;
 
     public string $email;

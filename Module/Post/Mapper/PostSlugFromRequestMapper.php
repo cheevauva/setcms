@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Post\Mapper;
 
-class PostSlugFromRequestMapper extends \SetCMS\Mapper\MapperFromRequest
+class PostSlugFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
     public protected(set) string $slug;

@@ -8,10 +8,8 @@ use Module\Email\Entity\EmailEntity;
 use Module\Email\Enum\EmailStatusEnum;
 use Module\Email\Exception\EmailMapperNotFoundKeyInRowException;
 
-class EmailFromRowMapper extends \UUA\Mapper
+class EmailFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
 {
-
-    use \SetCMS\Mapper\MapperEntityFromRowTrait;
 
     public protected(set) EmailEntity $email;
 
@@ -25,11 +23,11 @@ class EmailFromRowMapper extends \UUA\Mapper
         $this->email->body = $this->string('body');
         $this->email->dateSent = $this->dateTimeOrNull('date_sent');
         $this->email->status = EmailStatusEnum::from($this->string('status'));
-        $this->mappingDefault($this->email);
+        $this->id($this->email);
     }
 
     #[\Override]
-    protected function notFoundKeyInRowException(string $key): \Throwable
+    protected function notFoundKeyInRowException(string $key): EmailMapperNotFoundKeyInRowException
     {
         throw new EmailMapperNotFoundKeyInRowException($key);
     }

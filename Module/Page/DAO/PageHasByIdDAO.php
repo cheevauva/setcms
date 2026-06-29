@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Module\Page\DAO;
 
-class PageHasByIdDAO extends \UUA\DAO
+class PageHasByIdDAO extends \SetCMS\Entity\DAO\EntityHasByIdDAO
 {
 
-    use \SetCMS\DAO\DAOEntityHasByIdTrait;
     use \Module\Page\Traits\PageDbalDAOTrait;
 }

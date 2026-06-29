@@ -8,10 +8,8 @@ use Module\User\Entity\UserEntity;
 use Module\User\Exception\UserNotFoundKeyInRowException;
 use Module\User\Enum\UserRoleEnum;
 
-class UserFromRowMapper extends \UUA\Mapper
+class UserFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
 {
-
-    use \SetCMS\Mapper\MapperEntityFromRowTrait;
 
     public UserEntity $user;
 
@@ -23,12 +21,11 @@ class UserFromRowMapper extends \UUA\Mapper
         $this->user->password = $this->string('password');
         $this->user->email = $this->string('email');
         $this->user->role = UserRoleEnum::from($this->string('user_role'));
-        
-        $this->mappingDefault($this->user);
+        $this->id($this->user);
     }
 
     #[\Override]
-    protected function notFoundKeyInRowException(string $key): \Throwable
+    protected function notFoundKeyInRowException(string $key): UserNotFoundKeyInRowException
     {
         return new UserNotFoundKeyInRowException($key);
     }

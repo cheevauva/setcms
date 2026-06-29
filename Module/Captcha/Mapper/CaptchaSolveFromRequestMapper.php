@@ -6,7 +6,7 @@ namespace Module\Captcha\Mapper;
 
 use SetCMS\UUID;
 
-class CaptchaSolveFromRequestMapper extends \SetCMS\Mapper\MapperFromRequest
+class CaptchaSolveFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
     public protected(set) string $solvedText;

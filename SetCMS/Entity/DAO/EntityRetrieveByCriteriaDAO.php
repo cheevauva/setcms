@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\DAO;
+namespace SetCMS\Entity\DAO;
 
 use SetCMS\UUID;
 use SetCMS\Database\DatabaseQueryBuilder;
 use SetCMS\Database\Database;
 
-trait DAOEntityRetrieveByCriteriaTrait
+abstract class EntityRetrieveByCriteriaDAO extends \UUA\DAO
 {
 
     public bool $expectOne = false;
@@ -34,7 +34,7 @@ trait DAOEntityRetrieveByCriteriaTrait
     public function serve(): void
     {
         $rows = $this->createQb()->fetchAllAssociative();
-        
+
         $this->checkRows($rows);
         $this->handleRows($rows);
     }
@@ -85,7 +85,7 @@ trait DAOEntityRetrieveByCriteriaTrait
             $qb->andWhere('id = :id');
             $qb->setParameter('id', $this->id->uuid);
         }
-        
+
         if (isset($this->sortIdAsc)) {
             $qb->addOrderBy('id', $this->sortIdAsc ? 'ASC' : 'DESC');
         }

@@ -6,10 +6,9 @@ namespace Module\Page\DAO;
 
 use Module\Page\Mapper\PageToRowMapper;
 
-class PageCreateDAO extends \UUA\DAO
+class PageCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
 {
 
-    use \SetCMS\DAO\DAOEntityCreateTrait;
     use \Module\Page\Traits\PageCallTrait;
     use \Module\Page\Traits\PageDbalDAOTrait;
 

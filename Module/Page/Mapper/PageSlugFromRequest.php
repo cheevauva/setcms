@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Page\Mapper;
 
-class PageSlugFromRequest extends \SetCMS\Mapper\MapperFromRequest
+class PageSlugFromRequest extends \SetCMS\Request\Mapper\RequestMapper
 {
 
     public protected(set) string $slug;

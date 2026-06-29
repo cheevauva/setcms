@@ -6,10 +6,9 @@ namespace Module\Template\DAO;
 
 use Module\Template\Mapper\TemplateToRowMapper;
 
-class TemplateCreateDAO extends \UUA\DAO
+class TemplateCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
 {
 
-    use \SetCMS\DAO\DAOEntityCreateTrait;
     use \Module\Template\Traits\TemplateDbalDAOTrait;
     use \Module\Template\Traits\TemplateCallTrait;
 
