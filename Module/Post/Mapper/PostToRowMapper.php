@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Post\Mapper;
 
-class PostToRowMapper extends \SetCMS\Entity\Mapper\EntityBasicToRowMapper
+class PostToRowMapper extends \Module\Basic\Mapper\BasicEntityToRowMapper
 {
 
     use \Module\Post\Traits\PostCallTrait;

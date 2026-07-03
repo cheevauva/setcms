@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\User\Wrapper;
 
-use SetCMS\Entity\EntityBasic;
+use Module\Basic\Entity\BasicEntity;
 use Module\User\Servant\UserGetByIdServant;
 use SetCMS\View\View;
 use UUA\DTO\SignedDTO;
@@ -24,7 +24,7 @@ class UserReadViewWrapper extends \UUA\Wrapper
                 return;
             }
 
-            $entity = EntityBasic::as($entity);
+            $entity = BasicEntity::as($entity);
 
             $root->from(new SignedDTO('assignedBy', UserGetByIdServant::call($this->container, $entity->assignedBy)->user));
             $root->from(new SignedDTO('createdBy', UserGetByIdServant::call($this->container, $entity->createdBy)->user));

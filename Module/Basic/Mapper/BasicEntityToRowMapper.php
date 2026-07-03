@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Entity\Mapper;
+namespace Module\Basic\Mapper;
 
-use SetCMS\Entity\EntityBasic;
+use Module\Basic\Entity\BasicEntity;
 
-abstract class EntityBasicToRowMapper extends EntityToRowMapper
+abstract class BasicEntityToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
 {
 
-    protected function basic(EntityBasic $entity): void
+    protected function basic(BasicEntity $entity): void
     {
         $this->row['created_by'] = $entity->createdBy->uuid;
         $this->row['modified_by'] = $entity->modifiedBy->uuid;

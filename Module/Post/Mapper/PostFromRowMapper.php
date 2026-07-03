@@ -7,7 +7,7 @@ namespace Module\Post\Mapper;
 use Module\Post\Entity\PostEntity;
 use Module\Post\Exception\PostMapperNotFoundKeyInRowException;
 
-class PostFromRowMapper extends \SetCMS\Entity\Mapper\EntityBasicFromRowMapper
+class PostFromRowMapper extends \Module\Basic\Mapper\BasicEntityFromRowMapper
 {
 
     public protected(set) PostEntity $post;

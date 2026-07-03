@@ -7,7 +7,7 @@ namespace Module\Page\Mapper;
 use Module\Page\Entity\PageEntity;
 use Module\Page\Exception\PageMapperNotFoundKeyInRowException;
 
-class PageFromRowMapper extends \SetCMS\Entity\Mapper\EntityBasicFromRowMapper
+class PageFromRowMapper extends \Module\Basic\Mapper\BasicEntityFromRowMapper 
 {
 
     public protected(set) PageEntity $page;

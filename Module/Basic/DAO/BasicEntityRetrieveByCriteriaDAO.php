@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Entity\DAO;
+namespace Module\Basic\DAO;
 
 use SetCMS\UUID;
 use SetCMS\Database\DatabaseQueryBuilder;
 
-abstract class EntityBasicRetrieveByCriteriaDAO extends EntityRetrieveByCriteriaDAO
+abstract class BasicEntityRetrieveByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
 {
 
     public bool $deleted;

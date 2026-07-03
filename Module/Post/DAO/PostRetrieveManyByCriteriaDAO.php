@@ -11,7 +11,7 @@ use Module\Post\Exception\PostNotFoundException;
 use Module\Post\Exception\PostsNotFoundException;
 use Module\Post\Mapper\PostFromRowMapper;
 
-class PostRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityBasicRetrieveByCriteriaDAO
+class PostRetrieveManyByCriteriaDAO extends \Module\Basic\DAO\BasicEntityRetrieveByCriteriaDAO
 {
 
     use \Module\Post\Traits\PostDbalDAOTrait;

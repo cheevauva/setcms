@@ -11,7 +11,7 @@ use Module\Module99\Exception\Entity99EntityNotFoundException;
 use Module\Module99\Entity\Entity99Entity;
 use Module\Module99\Mapper\Entity99FromRowMapper;
 
-abstract class Entity99RetrieveByCriteriaDAO extends \SetCMS\Entity\DAO\EntityBasicRetrieveByCriteriaDAO
+abstract class Entity99RetrieveByCriteriaDAO extends \Module\Basic\DAO\BasicEntityRetrieveByCriteriaDAO
 {
 
     use \Module\Module99\Traits\Entity99DbalDAOTrait;

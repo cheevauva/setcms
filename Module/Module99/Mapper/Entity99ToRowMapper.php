@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Module99\Mapper;
 
-class Entity99ToRowMapper extends \SetCMS\Entity\Mapper\EntityBasicToRowMapper
+class Entity99ToRowMapper extends \Module\Basic\Mapper\BasicEntityToRowMapper
 {
 
     use \Module\Module99\Traits\Entity99CallTrait;

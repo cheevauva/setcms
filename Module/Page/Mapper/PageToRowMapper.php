@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Page\Mapper;
 
-class PageToRowMapper extends \SetCMS\Entity\Mapper\EntityBasicToRowMapper
+class PageToRowMapper extends \Module\Basic\Mapper\BasicEntityToRowMapper
 {
 
     use \Module\Page\Traits\PageCallTrait;

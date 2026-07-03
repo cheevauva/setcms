@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\Entity;
+namespace Module\Basic\Entity;
 
 use SetCMS\UUID;
 
-class EntityBasic extends Entity
+class BasicEntity extends \SetCMS\Entity\Entity
 {
 
     public \DateTimeImmutable $dateCreated;

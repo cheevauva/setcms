@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Module99\Entity;
 
-use SetCMS\Entity\EntityBasic;
-
-class Entity99Entity extends EntityBasic
+class Entity99Entity extends \Module\Basic\Entity\BasicEntity
 {
 
     public mixed $field99;

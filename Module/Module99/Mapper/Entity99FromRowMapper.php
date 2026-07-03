@@ -7,7 +7,7 @@ namespace Module\Module99\Mapper;
 use Module\Module99\Entity\Entity99Entity;
 use Module\Module99\Exception\Entity99MapperNotFoundKeyInRowException;
 
-class Entity99FromRowMapper extends \SetCMS\Entity\Mapper\EntityBasicFromRowMapper
+class Entity99FromRowMapper extends \Module\Basic\Mapper\BasicEntityFromRowMapper
 {
 
     public Entity99Entity $entity99;

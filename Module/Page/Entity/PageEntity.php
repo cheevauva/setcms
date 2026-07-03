@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Page\Entity;
 
-use SetCMS\Entity\EntityBasic;
-
-class PageEntity extends EntityBasic
+class PageEntity extends \Module\Basic\Entity\BasicEntity
 {
 
     public string $slug;

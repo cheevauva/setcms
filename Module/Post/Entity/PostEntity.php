@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Module\Post\Entity;
 
-use SetCMS\Entity\EntityBasic;
-
-class PostEntity extends EntityBasic
+class PostEntity extends \Module\Basic\Entity\BasicEntity
 {
 
     public string $slug;

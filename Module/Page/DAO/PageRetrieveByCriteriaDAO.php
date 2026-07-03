@@ -11,7 +11,7 @@ use Module\Page\Exception\PageNotFoundException;
 use Module\Page\Exception\PagesNotFoundException;
 use Module\Page\Exception\PageExpectOneButReceivedTooMuchException;
 
-class PageRetrieveByCriteriaDAO extends \SetCMS\Entity\DAO\EntityBasicRetrieveByCriteriaDAO
+class PageRetrieveByCriteriaDAO extends \Module\Basic\DAO\BasicEntityRetrieveByCriteriaDAO
 {
 
     use \Module\Page\Traits\PageDbalDAOTrait;
