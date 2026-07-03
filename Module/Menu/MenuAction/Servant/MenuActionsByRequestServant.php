@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Module\Menu\MenuAction\Servant;
 
 use Module\Menu\MenuAction\Entity\MenuActionEntity;
-use SetCMS\UseCase\ACL\VO\ACLRoleVO;
+use Module\ACL\VO\ACLRoleVO;
 use SetCMS\Responder;
 use SetCMS\View\View;
-use SetCMS\UseCase\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
+use Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
 
 abstract class MenuActionsByRequestServant extends \UUA\Servant
 {

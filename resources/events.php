@@ -2,7 +2,7 @@
 
 $events = [
     \SetCMS\Controller\Event\ControllerOnBeforeServeEvent::class => [
-        \SetCMS\UseCase\ACL\Servant\ACLControllerServant::class,
+        \Module\ACL\Servant\ACLControllerServant::class,
     ],
     \SetCMS\Event\AppErrorEvent::class => [
         \SetCMS\UseCase\Logger\Servant\LoggerServant::class,

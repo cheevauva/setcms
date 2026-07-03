@@ -11,7 +11,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Module\UserSession\Servant\UserSessionRetrieveUserServant;
 use Module\User\Entity\UserEntity;
-use SetCMS\UseCase\ACL\VO\ACLRoleVO;
+use Module\ACL\VO\ACLRoleVO;
 
 class UserRetrieveCurrentUserMiddleware implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {

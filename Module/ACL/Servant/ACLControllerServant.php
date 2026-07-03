@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\UseCase\ACL\Servant;
+namespace Module\ACL\Servant;
 
 use SetCMS\Controller\ControllerViaPSR7;
-use SetCMS\UseCase\ACL\VO\ACLRoleVO;
-use SetCMS\UseCase\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
-use SetCMS\UseCase\ACL\Exception\ACLNotAllowException;
+use Module\ACL\VO\ACLRoleVO;
+use Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
+use Module\ACL\Exception\ACLNotAllowException;
 use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
 
 class ACLControllerServant extends \UUA\Servant

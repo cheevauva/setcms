@@ -6,7 +6,7 @@ namespace Module\Menu\Mapper;
 
 use SetCMS\View\View;
 use SetCMS\Responder;
-use SetCMS\UseCase\ACL\VO\ACLRoleVO;
+use Module\ACL\VO\ACLRoleVO;
 use Psr\Http\Message\ServerRequestInterface;
 
 class MenuReadByContextFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper

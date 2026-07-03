@@ -7,8 +7,8 @@ namespace SetCMS\View;
 use SetCMS\Controller\ControllerViaPSR7;
 use SetCMS\UUID;
 use SetCMS\Event\AppErrorEvent;
-use SetCMS\UseCase\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
-use SetCMS\UseCase\ACL\VO\ACLRoleVO;
+use Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
+use Module\ACL\VO\ACLRoleVO;
 use SetCMS\Controller\Exception\ControllerEmptyResponseException;
 use Laminas\Diactoros\Uri;
 

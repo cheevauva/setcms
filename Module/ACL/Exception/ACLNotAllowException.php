@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\UseCase\ACL\Exception;
+namespace Module\ACL\Exception;
 
 class ACLNotAllowException extends \Exception
 {

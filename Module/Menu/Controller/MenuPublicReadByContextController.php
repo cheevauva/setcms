@@ -11,7 +11,7 @@ use Module\Menu\View\MenuPublicActionsViaContextView;
 use Module\Menu\Mapper\MenuReadByContextFromRequestMapper;
 use SetCMS\View\View;
 use SetCMS\Responder;
-use SetCMS\UseCase\ACL\VO\ACLRoleVO;
+use Module\ACL\VO\ACLRoleVO;
 
 class MenuPublicReadByContextController extends \SetCMS\Controller\ControllerViaPSR7
 {

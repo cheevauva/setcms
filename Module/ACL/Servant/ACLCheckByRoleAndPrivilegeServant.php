@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\UseCase\ACL\Servant;
+namespace Module\ACL\Servant;
 
 use Psr\Container\ContainerInterface;
-use SetCMS\UseCase\ACL\ACL;
-use SetCMS\UseCase\ACL\VO\ACLRoleVO;
+use Module\ACL\ACL;
+use Module\ACL\VO\ACLRoleVO;
 
 class ACLCheckByRoleAndPrivilegeServant extends \UUA\Servant
 {
