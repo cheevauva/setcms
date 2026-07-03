@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\RAD\VO;
+namespace Module\RAD\VO;
 
 class RADMetadataVO extends \UUA\VO
 {

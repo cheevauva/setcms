@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\RAD\Exception;
+namespace Module\RAD\Exception;
 
 class RADMetadataNotFoundException extends \Exception
 {

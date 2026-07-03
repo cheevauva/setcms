@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\RAD\Servant;
+namespace Module\RAD\Servant;
 
-use SetCMS\RAD\DAO\RADFileFindManyDAO;
-use SetCMS\RAD\VO\RADContextVO;
-use SetCMS\RAD\VO\RADMetadataVO;
-use SetCMS\RAD\VO\RADFsVO;
-use SetCMS\RAD\VO\RADFsFileVO;
-use SetCMS\RAD\VO\RADFsDirVO;
-use SetCMS\RAD\Filesystem\FilesystemBase;
+use Module\RAD\DAO\RADFileFindManyDAO;
+use Module\RAD\VO\RADContextVO;
+use Module\RAD\VO\RADMetadataVO;
+use Module\RAD\VO\RADFsVO;
+use Module\RAD\VO\RADFsFileVO;
+use Module\RAD\VO\RADFsDirVO;
+use Module\RAD\Filesystem\FilesystemBase;
 
 class RADGenerateServant extends \UUA\Servant
 {

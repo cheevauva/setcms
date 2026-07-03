@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\RAD\DAO;
 
-use SetCMS\RAD\Filesystem\FilesystemMemory;
-use SetCMS\RAD\DAO\RADFileSaveDAO;
-use SetCMS\RAD\VO\RADFsFileVO;
-use SetCMS\RAD\VO\RADFsDirVO;
+use Module\RAD\Filesystem\FilesystemMemory;
+use Module\RAD\DAO\RADFileSaveDAO;
+use Module\RAD\VO\RADFsFileVO;
+use Module\RAD\VO\RADFsDirVO;
 
 class RADFileSaveDAOTest extends \Tests\TestEasy
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\RAD\Filesystem;
+namespace Module\RAD\Filesystem;
 
 class FilesystemMemory extends FilesystemBase
 {

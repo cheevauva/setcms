@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Tests\RAD\Servant;
 
 use Psr\Container\ContainerInterface;
-use SetCMS\RAD\Servant\RADGenerateServant;
-use SetCMS\RAD\Filesystem\FilesystemMemory;
-use SetCMS\RAD\DAO\RADFileFindManyDAO;
-use SetCMS\RAD\VO\RADContextVO;
-use SetCMS\RAD\VO\RADMetadataVO;
-use SetCMS\RAD\VO\RADFsFileVO;
-use SetCMS\RAD\VO\RADFsDirVO;
+use Module\RAD\Servant\RADGenerateServant;
+use Module\RAD\Filesystem\FilesystemMemory;
+use Module\RAD\DAO\RADFileFindManyDAO;
+use Module\RAD\VO\RADContextVO;
+use Module\RAD\VO\RADMetadataVO;
+use Module\RAD\VO\RADFsFileVO;
+use Module\RAD\VO\RADFsDirVO;
 
 class RADGenerateServantTest extends \Tests\TestEasy
 {

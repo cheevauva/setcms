@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\RAD\Servant;
+namespace Module\RAD\Servant;
 
-use SetCMS\RAD\DAO\RADFileSaveDAO;
+use Module\RAD\DAO\RADFileSaveDAO;
 
 class RADGenerateAndCommitServant extends RADGenerateServant
 {

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\RAD\DAO;
+namespace Module\RAD\DAO;
 
-use SetCMS\RAD\Filesystem\FilesystemBase;
-use SetCMS\RAD\VO\RADMetadataVO;
-use SetCMS\RAD\Mapper\RADMetadataVOFromArrayMapper;
-use SetCMS\RAD\Exception\RADMetadataNotFoundException;
+use Module\RAD\Filesystem\FilesystemBase;
+use Module\RAD\VO\RADMetadataVO;
+use Module\RAD\Mapper\RADMetadataVOFromArrayMapper;
+use Module\RAD\Exception\RADMetadataNotFoundException;
 
 class RADMetadataGetByNameDAO extends \UUA\DAO
 {

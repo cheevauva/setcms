@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\RAD\DAO;
 
-use SetCMS\RAD\Filesystem\FilesystemMemory;
-use SetCMS\RAD\DAO\RADFileFindManyDAO;
-use SetCMS\RAD\VO\RADFsDirVO;
-use SetCMS\RAD\VO\RADFsFileVO;
+use Module\RAD\Filesystem\FilesystemMemory;
+use Module\RAD\DAO\RADFileFindManyDAO;
+use Module\RAD\VO\RADFsDirVO;
+use Module\RAD\VO\RADFsFileVO;
 
 class RADFileFindManyDAOTest extends \Tests\TestEasy
 {

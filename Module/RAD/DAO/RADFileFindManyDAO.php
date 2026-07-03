@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\RAD\DAO;
+namespace Module\RAD\DAO;
 
-use SetCMS\RAD\VO\RADFsFileVO;
-use SetCMS\RAD\VO\RADFsDirVO;
-use SetCMS\RAD\VO\RADFsVO;
-use SetCMS\RAD\Filesystem\FilesystemBase;
+use Module\RAD\VO\RADFsFileVO;
+use Module\RAD\VO\RADFsDirVO;
+use Module\RAD\VO\RADFsVO;
+use Module\RAD\Filesystem\FilesystemBase;
 
 class RADFileFindManyDAO extends \UUA\DAO
 {

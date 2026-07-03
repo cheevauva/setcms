@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SetCMS\RAD\Mapper;
+namespace Module\RAD\Mapper;
 
-use SetCMS\RAD\VO\RADMetadataVO;
+use Module\RAD\VO\RADMetadataVO;
 
 class RADMetadataVOFromArrayMapper extends \UUA\Mapper
 {
