@@ -1,9 +1,6 @@
 <?php
 
 $events = [
-    \SetCMS\Controller\Event\ControllerOnBeforeServeEvent::class => [
-        \Module\ACL\Servant\ACLControllerServant::class,
-    ],
     \SetCMS\Event\AppErrorEvent::class => [
         \SetCMS\UseCase\Logger\Servant\LoggerServant::class,
     ]
