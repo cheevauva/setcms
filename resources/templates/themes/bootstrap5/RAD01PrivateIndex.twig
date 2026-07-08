@@ -30,7 +30,7 @@
             }
         ]
     %}
-    {% for entity in entities %}
+    {% for entity in rad01s %}
         {%  
             set rows = rows|merge([{
                 type: 'row',
@@ -58,6 +58,15 @@
                             {
                                 label: 'Редактировать',
                                 route: 'AdminRAD01Edit',
+                                params: {
+                                    id: entity.id
+                                }
+                            },
+                            {
+                                label: 'Удалить',
+                                type: 'action-btn',
+                                redirect: scLink('AdminRAD01Index'),
+                                route: 'AdminRAD01Delete',
                                 params: {
                                     id: entity.id
                                 }

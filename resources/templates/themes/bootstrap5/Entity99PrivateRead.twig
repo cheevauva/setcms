@@ -3,11 +3,11 @@
 {% block title %}{{ options.title }} - {{ entity99.title }}{% endblock %}
 
 {% block content_toolbar %}
-    {% if scHasAccess('AdminModule01Index') %}
-        <a href="{{ scLink('AdminModule01Index') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    {% if scHasAccess('AdminRAD01Index') %}
+        <a href="{{ scLink('AdminRAD01Index') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
     {% endif %}
-    {% if scHasAccess('AdminModule01Edit') %}
-        <a href="{{ scLink('AdminModule01Edit', {id: entity99.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    {% if scHasAccess('AdminRAD01Edit') %}
+        <a href="{{ scLink('AdminRAD01Edit', {id: entity99.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
     {% endif %}
 {% endblock %}
 

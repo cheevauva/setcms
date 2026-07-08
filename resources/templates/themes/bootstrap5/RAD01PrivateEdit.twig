@@ -1,0 +1,35 @@
+{% extends scShortPath(layout ?? 'layout_admin.twig') %}
+{% import scShortPath('macros/crud.twig') as crud %}
+
+{% block content_title %}{% if rad01.id %}Редактировать{% else %}Создать{% endif %}{% endblock %}
+{% block content %}
+    {{ 
+        crud.editview({
+            action: scLink(rad01.id ? 'AdminRAD01Update' : 'AdminRAD01Create', {id: (rad0101 ? rad01.id : scUUID()) }),
+            redirect: scLink('AdminRAD01Read', {id: '${rad01.id.uuid}'}),
+            actions: {
+                fields: [
+                    {
+                        type: 'submit',
+                        label: 'Сохранить',
+                    },
+                ],
+            },
+            panels: [
+                {
+                    name: 'default',
+                    label: 'Основные данные',
+                    active: true,
+                    fields: [
+                        {
+                            type: 'hidden',
+                            name: 'rad01.id',
+                            value: rad01.id|default(scUUID())
+                        },
+                        {name: 'rad01.field01', value: rad01.field01, type: 'input', label: 'field01'},
+                    ]
+                }, 
+            ]
+        }) 
+    }}
+{% endblock %}
