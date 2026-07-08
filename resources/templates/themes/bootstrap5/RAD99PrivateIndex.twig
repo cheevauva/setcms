@@ -42,7 +42,7 @@
                     },
                     {
                         type: 'text',
-                        value: entity.field01
+                        value: entity.field99
                     },
                     {
                         name: 'actions',
@@ -58,15 +58,6 @@
                             {
                                 label: 'Редактировать',
                                 route: 'AdminRAD99Edit',
-                                params: {
-                                    id: entity.id
-                                }
-                            },
-                            {
-                                label: 'Удалить',
-                                type: 'action-btn',
-                                redirect: scLink('AdminRAD99Index'),
-                                route: 'AdminRAD99Delete',
                                 params: {
                                     id: entity.id
                                 }

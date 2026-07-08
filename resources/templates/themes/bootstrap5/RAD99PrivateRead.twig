@@ -1,0 +1,28 @@
+{% extends scShortPath(layout ?? 'layout_admin.twig') %}
+
+{% block title %}{{ options.title }} - {{ rad99.title }}{% endblock %}
+
+{% block content_toolbar %}
+    {% if scHasAccess('AdminRAD99Index') %}
+        <a href="{{ scLink('AdminRAD99Index') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    {% endif %}
+    {% if scHasAccess('AdminRAD99Edit') %}
+        <a href="{{ scLink('AdminRAD99Edit', {id: rad99.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if rad99 %}
+        <article class="blog-rad99">
+            <h2 class="blog-rad99-title">{{ rad99.title }}</h2>
+            <p class="blog-rad99-meta">
+                <a href="{{ scLink('AdminUserRead', {id : rad99.createdBy}) }}">{{ createdBy.username }}</a> опубликовал в {{ rad99.dateCreated.format('H:i') }} {{ rad99.dateCreated.format('d.m.Y') }} /
+                <a href="{{ scLink('AdminUserRead', {id : rad99.modifiedBy }) }}">{{ modifiedBy.username }}</a> изменил в {{ rad99.dateCreated.format('H:i') }} {{ rad99.dateCreated.format('d.m.Y') }} /
+                <a href="{{ scLink('AdminUserRead', {id : rad99.assignedBy }) }}">{{ assignedBy.username }}</a> ответственный
+            </p>
+            <p>
+                {{ rad99.field01 }}
+            </p>
+        </article>
+    {% endif %}
+{% endblock %}
