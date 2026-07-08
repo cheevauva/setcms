@@ -2,10 +2,10 @@
 {% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_toolbar %}
-    <a href="{{ scLink('AdminRAD99New', {'id': scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать</a>
+    <a href="{{ scLink('AdminRAD01New', {'id': scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать</a>
 {% endblock %}
 
-{% block content_title %}RAD99{% endblock %}
+{% block content_title %}RAD01{% endblock %}
 
 {% block content %}
     {%  
@@ -30,7 +30,7 @@
             }
         ]
     %}
-    {% for entity in rad99s %}
+    {% for entity in rad01s %}
         {%  
             set rows = rows|merge([{
                 type: 'row',
@@ -50,14 +50,14 @@
                         actions: [
                             {
                                 label: 'Просмотр',
-                                route: 'AdminRAD99Read',
+                                route: 'AdminRAD01Read',
                                 params: {
                                     id: entity.id
                                 }
                             },
                             {
                                 label: 'Редактировать',
-                                route: 'AdminRAD99Edit',
+                                route: 'AdminRAD01Edit',
                                 params: {
                                     id: entity.id
                                 }
@@ -65,8 +65,8 @@
                             {
                                 label: 'Удалить',
                                 type: 'action-btn',
-                                redirect: scLink('AdminRAD99Index'),
-                                route: 'AdminRAD99Delete',
+                                redirect: scLink('AdminRAD01Index'),
+                                route: 'AdminRAD01Delete',
                                 params: {
                                     id: entity.id
                                 }

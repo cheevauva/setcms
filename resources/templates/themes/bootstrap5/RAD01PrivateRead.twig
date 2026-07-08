@@ -1,19 +1,19 @@
 {% extends scShortPath(layout ?? 'layout_admin.twig') %}
 
-{% block title %}{{ options.title }} - {{ rad99.title }}{% endblock %}
+{% block title %}{{ options.title }} - {{ rad01.title }}{% endblock %}
 
 {% block content_toolbar %}
-    {% if scHasAccess('AdminRAD99Index') %}
-        <a href="{{ scLink('AdminRAD99Index') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    {% if scHasAccess('AdminRAD01Index') %}
+        <a href="{{ scLink('AdminRAD01Index') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
     {% endif %}
-    {% if scHasAccess('AdminRAD99Edit') %}
-        <a href="{{ scLink('AdminRAD99Edit', {id: rad99.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    {% if scHasAccess('AdminRAD01Edit') %}
+        <a href="{{ scLink('AdminRAD01Edit', {id: rad01.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
     {% endif %}
-    {% if scHasAccess('AdminRAD99Delete') %}
+    {% if scHasAccess('AdminRAD01Delete') %}
         <a class="setcms-action-btn btn btn-sm btn-outline-secondary" 
            setcms-method="POST" 
-           setcms-action="{{ scLink('AdminRAD99Delete', {id: rad99.id}) }}"  
-           setcms-redirect="{{ scLink('AdminRAD99Index') }}">
+           setcms-action="{{ scLink('AdminRAD01Delete', {id: rad01.id}) }}"  
+           setcms-redirect="{{ scLink('AdminRAD01Index') }}">
             Удалить
         </a>
     {% endif %}
@@ -22,7 +22,7 @@
 {% block content %}
     <table class="table">
         <tr>
-            <td>field01</td><td>{{ rad99.field01 }}</td>
+            <td>field01</td><td>{{ rad01.field01 }}</td>
         </tr>
     </table>
 {% endblock %}
