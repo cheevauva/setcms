@@ -1,15 +1,13 @@
-FROM php:8.4-fpm
+FROM dunglas/frankenphp:1-php8.4-bookworm
 
-WORKDIR /setcms
+RUN install-php-extensions pdo pdo_sqlite gd zip
 
-RUN apt-get update
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+    && php -r "unlink('composer-setup.php');"
 
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+WORKDIR /var/www/html
 
-RUN apt-get install -y zlib1g-dev
-RUN apt-get install -y libpq-dev
-RUN apt-get install -y libpng-dev
-RUN apt-get install -y libzip-dev
-RUN docker-php-ext-install pdo pdo_pgsql pgsql gd zip
+EXPOSE 80
 
-CMD ["php-fpm"]
+CMD ["frankenphp", "php-server"]
