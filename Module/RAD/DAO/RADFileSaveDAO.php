@@ -17,7 +17,7 @@ class RADFileSaveDAO extends \UUA\DAO
     public FilesystemBase $filesystem;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $path = $this->fileOrDir->path;
 

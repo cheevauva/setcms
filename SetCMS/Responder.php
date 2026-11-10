@@ -8,8 +8,9 @@ use SplObjectStorage;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-abstract class Responder extends \UUA\Responder
+abstract class Responder extends \UUA\Unit
 {
+    
 
     /**
      * @var SplObjectStorage<object, mixed>

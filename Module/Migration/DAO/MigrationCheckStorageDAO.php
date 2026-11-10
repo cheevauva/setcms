@@ -12,7 +12,7 @@ class MigrationCheckStorageDAO extends \UUA\DAO
     public protected(set) bool $isOk;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->isOk = $this->db()->createSchemaManager()->tableExists($this->table());
     }

@@ -15,7 +15,7 @@ class PageGetByIdServant extends \UUA\Servant
     public protected(set) PageEntity $page;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $getOne = PageRetrieveByCriteriaDAO::new($this->container);
         $getOne->expectOne = true;

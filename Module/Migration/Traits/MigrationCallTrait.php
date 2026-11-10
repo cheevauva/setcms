@@ -6,18 +6,14 @@ namespace Module\Migration\Traits;
 
 use Module\Migration\Entity\MigrationEntity;
 use Psr\Container\ContainerInterface;
+use UUA\WithContainterInterface;
 
 trait MigrationCallTrait
 {
 
     public MigrationEntity $migration;
 
-    /**
-     * @param ContainerInterface $container
-     * @param MigrationEntity $migration
-     * @return static
-     */
-    public static function call(ContainerInterface $container, MigrationEntity $migration): self
+    public static function call(WithContainterInterface|ContainerInterface $container, MigrationEntity $migration): self
     {
         $self = self::new($container);
         $self->migration = $migration;

@@ -10,7 +10,7 @@ class TemplateToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
     use \Module\Template\Traits\TemplateCallTrait;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->id($this->template);
         $this->row['template'] = $this->template->template;

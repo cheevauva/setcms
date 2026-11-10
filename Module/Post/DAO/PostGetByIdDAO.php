@@ -15,7 +15,7 @@ class PostGetByIdDAO extends \UUA\DAO
     public PostEntity $post;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $getById = PostRetrieveManyByCriteriaDAO::new($this->container);
         $getById->expectOne = true;
@@ -23,7 +23,7 @@ class PostGetByIdDAO extends \UUA\DAO
         $getById->id = $this->id;
         $getById->deleted = false;
         $getById->serve();
-        
+
         $this->post = $getById->post;
     }
 }

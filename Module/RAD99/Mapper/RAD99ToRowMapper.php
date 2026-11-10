@@ -10,7 +10,7 @@ class RAD99ToRowMapper extends \Module\Basic\Mapper\BasicEntityToRowMapper
     use \Module\RAD99\Traits\RAD99CallTrait;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->id($this->rad99);
         $this->basic($this->rad99);

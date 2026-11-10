@@ -12,7 +12,7 @@ class RequestToIdMapper extends RequestMapper
     public protected(set) UUID $id;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->id = $this->validationParams()->uuid('id')->notEmpty()->notQuiet()->val();
     }

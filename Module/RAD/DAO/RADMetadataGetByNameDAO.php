@@ -19,7 +19,7 @@ class RADMetadataGetByNameDAO extends \UUA\DAO
     public FilesystemBase $filesystem;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $filename = sprintf('%s/resources/rad/%s.php', $this->env()['ROOT_PATH'], $this->name);
 

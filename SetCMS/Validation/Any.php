@@ -46,7 +46,7 @@ class Any
     protected function throw(\Throwable $ex): void
     {
         if ($this->quiet) {
-            $this->messages->attach($ex, $this->path);
+            $this->messages->offsetSet($ex, $this->path);
         } else {
             throw $ex;
         }

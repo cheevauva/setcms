@@ -10,7 +10,7 @@ class EmailToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
     use \Module\Email\Traits\EmailCallTrait;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->id($this->email);
         $this->row['subject'] = $this->email->subject;

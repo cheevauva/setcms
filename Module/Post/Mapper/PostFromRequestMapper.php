@@ -12,7 +12,7 @@ class PostFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
     public protected(set) PostEntity $post;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $body = $this->validationBody();
         $body->array('post')->notEmpty()->validate();

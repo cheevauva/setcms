@@ -55,7 +55,7 @@ class TemplateRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetriev
     #[\Override]
     protected function handleRows(array $rows): void
     {
-        $this->templates = array_map(fn($row) => TemplateFromRowMapper::call($this->container, $row)->template, $rows);
+        $this->templates = array_map(fn($row) => TemplateFromRowMapper::call($this, $row)->template, $rows);
         $this->templates ? $this->template = $this->templateOrNull = $this->templates[0] : null;
     }
 }

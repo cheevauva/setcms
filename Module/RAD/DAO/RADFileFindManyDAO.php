@@ -32,7 +32,7 @@ class RADFileFindManyDAO extends \UUA\DAO
     public FilesystemBase $filesystem;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $filesFromDir = [];
 

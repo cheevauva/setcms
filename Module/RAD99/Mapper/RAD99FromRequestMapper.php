@@ -12,7 +12,7 @@ class RAD99FromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
     public protected(set) RAD99Entity $rad99;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $body = $this->validationBody();
         $body->array('rad99')->notEmpty()->validate();

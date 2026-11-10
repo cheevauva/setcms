@@ -15,6 +15,6 @@ class UserResetTokenCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
     #[\Override]
     protected function row(): array
     {
-        return UserResetTokenToRowMapper::call($this->container, $this->userResetToken)->row;
+        return UserResetTokenToRowMapper::call($this, $this->userResetToken)->row;
     }
 }

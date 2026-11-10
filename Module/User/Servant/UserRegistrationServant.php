@@ -18,7 +18,7 @@ class UserRegistrationServant extends \UUA\Servant
     public protected(set) bool $success = false;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $userByEmail = UserRetrieveManyByCriteriaDAO::new($this->container);
         $userByEmail->limit = 1;
@@ -37,7 +37,7 @@ class UserRegistrationServant extends \UUA\Servant
         $user->password = password_hash($this->password, PASSWORD_DEFAULT);
         $user->role = $user->role::USER;
 
-        UserCreateDAO::call($this->container, $this->user);
+        UserCreateDAO::call($this, $this->user);
 
         $this->success = true;
     }

@@ -14,6 +14,6 @@ class MenuCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
 
     protected function row(): array
     {
-        return MenuToRowMapper::call($this->container, $this->menu)->row;
+        return MenuToRowMapper::call($this, $this->menu)->row;
     }
 }

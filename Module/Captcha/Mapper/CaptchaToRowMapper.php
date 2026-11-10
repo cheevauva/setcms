@@ -10,7 +10,7 @@ class CaptchaToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
     use \Module\Captcha\Traits\CaptchaCallTrait;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->id($this->captcha);
         $this->row['text'] = $this->captcha->text;

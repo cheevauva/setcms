@@ -16,7 +16,7 @@ class UserLoginServant extends \UUA\Servant
     public protected(set) UserEntity $user;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $retriveUser = UserRetrieveManyByCriteriaDAO::new($this->container);
         $retriveUser->limit = 1;

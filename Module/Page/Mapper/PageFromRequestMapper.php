@@ -12,7 +12,7 @@ class PageFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
     public protected(set) PageEntity $page;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $body = $this->validationBody();
         $body->array('entity')->notEmpty()->validate();

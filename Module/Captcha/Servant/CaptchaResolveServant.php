@@ -18,12 +18,12 @@ class CaptchaResolveServant extends \UUA\Servant
     public protected(set) CaptchaEntity $captcha;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
-        $this->captcha = CaptchaByIdServant::call($this->container, $this->id)->captcha;
+        $this->captcha = CaptchaByIdServant::call($this, $this->id)->captcha;
         $this->captcha->solve($this->solvedText);
 
-        CaptchaUpdateDAO::call($this->container, $this->captcha);
+        CaptchaUpdateDAO::call($this, $this->captcha);
         
         if (!$this->captcha->isSolved) {
             throw new CaptchaUnsolvedException();

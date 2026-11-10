@@ -41,7 +41,7 @@ class MigrationRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrie
     #[\Override]
     protected function handleRows(array $rows): void
     {
-        $this->migrations = array_map(fn($row) => MigraionFromRowMapper::call($this->container, $row)->migration, $rows);
+        $this->migrations = array_map(fn($row) => MigraionFromRowMapper::call($this, $row)->migration, $rows);
         $this->migrations ? $this->migration = $this->migrationOrNull = $this->migrations[0] : null;
     }
 }

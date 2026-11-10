@@ -18,7 +18,7 @@ class MigrationUpdateServant extends \UUA\Servant
     public MigrationEntity $migration;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $start = microtime(true);
 

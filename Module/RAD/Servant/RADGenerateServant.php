@@ -25,7 +25,7 @@ class RADGenerateServant extends \UUA\Servant
     public array $files;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $findFiles = RADFileFindManyDAO::new($this->container);
         $findFiles->scanDirs = $this->meta->dirs;

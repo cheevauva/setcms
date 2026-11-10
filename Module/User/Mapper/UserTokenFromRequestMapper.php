@@ -12,7 +12,7 @@ class UserTokenFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
     public protected(set) UUID $token;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->token = $this->validationCookie()->uuid('X-CSRF-Token')->notEmpty()->notQuiet()->val();
     }

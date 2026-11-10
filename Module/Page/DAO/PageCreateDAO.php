@@ -15,6 +15,6 @@ class PageCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
     #[\Override]
     protected function row(): array
     {
-        return PageToRowMapper::call($this->container, $this->page)->row;
+        return PageToRowMapper::call($this, $this->page)->row;
     }
 }

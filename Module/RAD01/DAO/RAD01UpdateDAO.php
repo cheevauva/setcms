@@ -15,6 +15,6 @@ class RAD01UpdateDAO extends \SetCMS\Entity\DAO\EntityUpdateDAO
     #[\Override]
     protected function row(): array
     {
-        return RAD01ToRowMapper::call($this->container, $this->rad01)->row;
+        return RAD01ToRowMapper::call($this, $this->rad01)->row;
     }
 }

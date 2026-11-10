@@ -15,6 +15,9 @@ use SetCMS\Request\Mapper\RequestMapper;
 abstract class ControllerViaPSR7 extends Controller
 {
 
+    use \UUA\Traits\AttributesTrait;
+    use \SetCMS\Traits\TraitsWrappingWithParent;
+
     public ServerRequestInterface $request;
     public protected(set) ?ResponseInterface $response = null;
 

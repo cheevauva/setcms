@@ -14,7 +14,7 @@ class UserResetTokenSendToEmailServant extends \UUA\Servant
     public protected(set) bool $success = false;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $retrieveUser = UserRetrieveManyByCriteriaDAO::new($this->container);
         $retrieveUser->email = $this->email;

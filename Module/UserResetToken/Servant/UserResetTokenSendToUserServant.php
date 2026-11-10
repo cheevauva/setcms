@@ -33,7 +33,7 @@ class UserResetTokenSendToUserServant extends \UUA\Servant
     }
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $userResetToken = null;
 

@@ -15,6 +15,6 @@ class RAD99CreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
     #[\Override]
     protected function row(): array
     {
-        return RAD99ToRowMapper::call($this->container, $this->rad99)->row;
+        return RAD99ToRowMapper::call($this, $this->rad99)->row;
     }
 }

@@ -13,7 +13,7 @@ abstract class ViewExceptionHandler extends View
     protected int $statusCode;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $response = $this->newResponse();
         $response->getBody()->write($this->ex->getMessage());

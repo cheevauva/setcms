@@ -15,6 +15,6 @@ class UserCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
     #[\Override]
     protected function row(): array
     {
-        return UserToRowMapper::call($this->container, $this->user)->row;
+        return UserToRowMapper::call($this, $this->user)->row;
     }
 }

@@ -6,18 +6,13 @@ namespace Module\Menu\Traits;
 
 use Psr\Container\ContainerInterface;
 use Module\Menu\Entity\MenuEntity;
-
+use UUA\WithContainterInterface;
 trait MenuCallTrait
 {
 
     public MenuEntity $menu;
 
-    /**
-     * @param ContainerInterface $container
-     * @param MenuEntity $menu
-     * @return static
-     */
-    public static function call(ContainerInterface $container, MenuEntity $menu): self
+    public static function call(WithContainterInterface|ContainerInterface $container, MenuEntity $menu): self
     {
         $self = self::new($container);
         $self->menu = $menu;

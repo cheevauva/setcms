@@ -13,12 +13,8 @@ use SetCMS\Controller\Exception\ControllerUnitMustBeInstanceofUnitException;
 abstract class Controller extends Unit implements ContainerConstructInterface, ContractObjectInteraction
 {
 
-    use \UUA\Traits\AsTrait;
-    use \UUA\Traits\ContainerTrait;
-    use \UUA\Traits\BuildTrait;
     use \UUA\Traits\EventDispatcherTrait;
     use \UUA\Traits\EnvTrait;
-    use \UUA\Traits\WrappingTrait;
 
     public string $name;
 
@@ -73,7 +69,7 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
     }
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->messages = new SplObjectStorage();
         $this->exceptions = new SplObjectStorage();
@@ -84,7 +80,7 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
         try {
             $this->runUnits($domainUnits, $this->stopRunningDomainUnits(...));
         } catch (\Throwable $ex) {
-            $this->exceptions->attach($ex);
+            $this->exceptions->offsetSet($ex);
             $this->catch($ex);
         }
 
@@ -119,7 +115,7 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
         while ($this->exceptions->valid()) {
             $uncatchedMessage = $this->exceptions->current();
 
-            if (!$this->messages->contains($uncatchedMessage)) {
+            if (!$this->messages->offsetExists($uncatchedMessage)) {
                 throw $uncatchedMessage;
             }
 
@@ -157,7 +153,7 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
             }
 
             $this->to($unit);
-            $this->wrapping($unit)->serve();
+            $unit->serve();
             $this->from($unit);
         }
     }

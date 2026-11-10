@@ -16,7 +16,7 @@ class UserSessionCreateByUserServant extends \UUA\Servant
     public protected(set) UserSessionEntity $session;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $session = new UserSessionEntity;
         $session->userId = $this->user->id;

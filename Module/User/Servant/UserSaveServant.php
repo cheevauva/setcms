@@ -14,12 +14,12 @@ class UserSaveServant extends \UUA\Servant
     use \Module\User\Traits\UserCallTrait;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
-        if (UserHasByIdDAO::call($this->container, $this->user->id)->isExists) {
-            UserCreateDAO::call($this->container, $this->user);
+        if (UserHasByIdDAO::call($this, $this->user->id)->isExists) {
+            UserCreateDAO::call($this, $this->user);
         } else {
-            UserUpdateDAO::call($this->container, $this->user);
+            UserUpdateDAO::call($this, $this->user);
         }
     }
 }

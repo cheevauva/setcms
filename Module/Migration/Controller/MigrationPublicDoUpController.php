@@ -71,7 +71,7 @@ class MigrationPublicDoUpController extends ControllerViaPSR7
                 $property->setAccessible(true);
                 $property->setValue($fail->error, sprintf('%s: %s', $fail->file, $fail->error->getMessage()));
 
-                $this->messages->attach($fail->error, 'secretKey');
+                $this->messages->offsetSet($fail->error, 'secretKey');
             }
         }
 
@@ -87,11 +87,11 @@ class MigrationPublicDoUpController extends ControllerViaPSR7
         parent::catch($object);
 
         if ($object instanceof SecretKeyWrongException) {
-            $this->messages->attach($object, 'secretKey');
+            $this->messages->offsetSet($object, 'secretKey');
         }
 
         if ($object instanceof \RuntimeException) {
-            $this->messages->attach($object, 'dbName');
+            $this->messages->offsetSet($object, 'dbName');
         }
     }
 }

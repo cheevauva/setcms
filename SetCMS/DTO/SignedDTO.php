@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace UUA\DTO;
+namespace SetCMS\DTO;
 
 use SetCMS\Contract\ContractObjectInteraction;
 

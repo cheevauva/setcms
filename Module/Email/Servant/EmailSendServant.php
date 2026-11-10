@@ -14,9 +14,9 @@ class EmailSendServant extends \UUA\Servant
     public bool $immediate = false;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
-        EmailSaveServant::call($this->container, $this->email);
+        EmailSaveServant::call($this, $this->email);
 
         if ($this->immediate) {
             // отправка почты

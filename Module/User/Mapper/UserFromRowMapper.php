@@ -14,7 +14,7 @@ class UserFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
     public UserEntity $user;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->user = new UserEntity;
         $this->user->username = $this->string('username');

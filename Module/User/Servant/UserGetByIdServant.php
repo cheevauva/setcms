@@ -15,7 +15,7 @@ class UserGetByIdServant extends \UUA\Servant
     public UserEntity $user;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $userById = UserRetrieveManyByCriteriaDAO::new($this->container);
         $userById->allowEmptyResult = false;

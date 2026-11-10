@@ -18,7 +18,7 @@ class UserRegistrationFromRequestMapper extends \SetCMS\Request\Mapper\RequestMa
     public protected(set) ?UUID $captcha = null;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $body = $this->validationBody();
 

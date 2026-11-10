@@ -12,7 +12,7 @@ class EmailFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
     public protected(set) EmailEntity $email;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $body = $this->validationBody();
         $body->array('email')->notEmpty()->validate();

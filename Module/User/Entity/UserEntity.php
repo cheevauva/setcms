@@ -8,7 +8,7 @@ use Module\User\Enum\UserRoleEnum;
 
 class UserEntity extends \SetCMS\Entity\Entity
 {
-
+    
     public string $email;
     public string $username;
     public string $password;

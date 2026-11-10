@@ -35,7 +35,7 @@ class MigrationUpServant extends Servant
     public protected(set) array $failded;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $db = DatabaseFactory::singleton($this->container)->make($this->dbName);
 

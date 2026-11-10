@@ -9,6 +9,7 @@ use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\View\ViewInternalServerError;
+use SetCMS\View\ViewExceptionHandler;
 use SetCMS\Event\AppErrorEvent;
 
 class MiddlewareExceptionHandler implements MiddlewareInterface, \UUA\ContainerConstructInterface
@@ -21,34 +22,35 @@ class MiddlewareExceptionHandler implements MiddlewareInterface, \UUA\ContainerC
     #[\Override]
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $ex = null;
+
         try {
             $exceptionHandlers = $this->container->get('exceptionHandlers');
 
-            if (!is_array($exceptionHandlers)) {
-                throw new \Exception('exceptionHandlers должен быть массивом');
-            }
+            is_array($exceptionHandlers) ?: throw new \Exception('exceptionHandlers должен быть массивом');
 
             return $handler->handle($request);
         } catch (\Throwable $ex) {
             $exceptionHandlers ??= [];
+            $exceptionHandlers[$ex::class] ??= ViewInternalServerError::class;
 
-            if (!empty($exceptionHandlers[$ex::class])) {
-                $view = ($exceptionHandlers[$ex::class])::new($this->container);
-                $view->ex = $ex;
-                $view->serve();
-            } else {
+            if (!($exceptionHandlers[$ex::class] instanceof ViewExceptionHandler)) {
+                $exceptionHandlers[$ex::class] = ViewInternalServerError::class;
+            }
+
+            $view = ViewExceptionHandler::as(($exceptionHandlers[$ex::class])::new($this->container));
+            $view->ex = $ex;
+            $view->serve();
+
+            return $view->response ?? throw $ex;
+        } finally {
+            if ($ex instanceof ViewInternalServerError) {
                 (new AppErrorEvent($ex->getMessage(), [
                     __METHOD__,
                     $ex->getFile(),
                     $ex->getLine(),
                 ]))->dispatch($this->eventDispatcher());
-
-                $view = ViewInternalServerError::new($this->container);
-                $view->ex = $ex;
-                $view->serve();
             }
-
-            return $view->response;
         }
     }
 }

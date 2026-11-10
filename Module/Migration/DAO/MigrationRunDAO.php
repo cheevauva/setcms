@@ -15,7 +15,7 @@ class MigrationRunDAO extends \UUA\DAO
     public string $sql;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->db->executeQuery($this->sql);
     }

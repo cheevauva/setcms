@@ -91,20 +91,19 @@ class UserPublicDoRegistrationController extends ControllerViaPSR7
     protected function catch(\Throwable $object): void
     {
         if ($object instanceof UserPasswordsNotEqualException) {
-            $this->messages->attach($object, 'password');
-            $this->messages->attach($object, 'password2');
+            $this->messages[$object] = 'password2';
         }
 
         if ($object instanceof UserPasswordMustBeMoreThan8CharactersException) {
-            $this->messages->attach($object, 'password');
+            $this->messages[$object] = 'password';
         }
 
         if ($object instanceof CaptchaException) {
-            $this->messages->attach($object, 'captcha');
+            $this->messages[$object] = 'captcha';
         }
 
         if ($object instanceof UserAlreadyExistsException) {
-            $this->messages->attach($object, 'email');
+            $this->messages[$object] = 'email';
         }
     }
 }

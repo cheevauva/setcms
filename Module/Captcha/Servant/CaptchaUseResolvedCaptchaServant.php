@@ -14,11 +14,11 @@ class CaptchaUseResolvedCaptchaServant extends \UUA\Servant
     public UUID $captcha;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
-        $captcha = CaptchaByIdServant::call($this->container, $this->captcha)->captcha;
+        $captcha = CaptchaByIdServant::call($this, $this->captcha)->captcha;
         $captcha->use();
 
-        CaptchaUpdateDAO::call($this->container, $captcha);
+        CaptchaUpdateDAO::call($this, $captcha);
     }
 }

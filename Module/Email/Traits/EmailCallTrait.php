@@ -6,18 +6,14 @@ namespace Module\Email\Traits;
 
 use Psr\Container\ContainerInterface;
 use Module\Email\Entity\EmailEntity;
+use UUA\WithContainterInterface;
 
 trait EmailCallTrait
 {
 
     public EmailEntity $email;
 
-    /**
-     * @param ContainerInterface $container
-     * @param EmailEntity $email
-     * @return static
-     */
-    public static function call(ContainerInterface $container, EmailEntity $email): self
+    public static function call(WithContainterInterface|ContainerInterface $container, EmailEntity $email): self
     {
         $self = self::new($container);
         $self->email = $email;

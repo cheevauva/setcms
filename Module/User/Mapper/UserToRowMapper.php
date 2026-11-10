@@ -10,7 +10,7 @@ class UserToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
     use \Module\User\Traits\UserCallTrait;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->id($this->user);
         $this->row['username'] = $this->user->username;

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-$decorators = [];
+$wrappers = [];
 
 foreach (glob(__DIR__ . '/wrappers/*.php') ?: [] as $file) {
     require $file;
 }
 
-return $decorators;
+return $wrappers;

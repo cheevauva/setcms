@@ -14,7 +14,7 @@ class PageGetBySlugDAO extends \UUA\DAO
     public protected(set) PageEntity $page;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $getBySlug = PageRetrieveByCriteriaDAO::new($this->container);
         $getBySlug->expectOne = true;

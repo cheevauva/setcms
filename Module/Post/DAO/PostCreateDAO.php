@@ -18,6 +18,6 @@ class PostCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
     #[\Override]
     protected function row(): array
     {
-        return PostToRowMapper::call($this->container, $this->post)->row;
+        return PostToRowMapper::call($this, $this->post)->row;
     }
 }

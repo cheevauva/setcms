@@ -10,7 +10,7 @@ class PageToRowMapper extends \Module\Basic\Mapper\BasicEntityToRowMapper
     use \Module\Page\Traits\PageCallTrait;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->id($this->page);
         $this->basic($this->page);

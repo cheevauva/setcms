@@ -62,7 +62,7 @@ class UserRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByC
     #[\Override]
     protected function handleRows(array $rows): void
     {
-        $this->users = array_map(fn($row) => UserFromRowMapper::call($this->container, $row)->user, $rows);
+        $this->users = array_map(fn($row) => UserFromRowMapper::call($this, $row)->user, $rows);
         $this->users ? $this->user = $this->userOrNull = $this->users[0] : null;
     }
 }

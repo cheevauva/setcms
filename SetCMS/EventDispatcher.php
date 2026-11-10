@@ -15,7 +15,6 @@ class EventDispatcher implements EventDispatcherInterface, \UUA\ContainerConstru
 
     use \UUA\Traits\AsTrait;
     use \UUA\Traits\ContainerTrait;
-    use \UUA\Traits\WrappingTrait;
 
     /**
      * 
@@ -58,7 +57,7 @@ class EventDispatcher implements EventDispatcherInterface, \UUA\ContainerConstru
                 $unit->from($event);
             }
 
-            $this->wrapping($unit)->serve();
+            $unit->serve();
 
             if ($unit instanceof ContractObjectInteraction) {
                 $unit->to($event);

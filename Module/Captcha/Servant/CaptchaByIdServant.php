@@ -15,7 +15,7 @@ class CaptchaByIdServant extends \UUA\Servant
     public CaptchaEntity $captcha;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $captchaById = CaptchaRetrieveManyByCriteriaDAO::new($this->container);
         $captchaById->id = $this->id;

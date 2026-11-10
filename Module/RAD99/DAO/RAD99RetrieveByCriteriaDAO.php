@@ -33,7 +33,7 @@ class RAD99RetrieveByCriteriaDAO extends \Module\Basic\DAO\BasicEntityRetrieveBy
     #[\Override]
     protected function handleRows(array $rows): void
     {
-        $this->rad99s = array_map(fn($row) => RAD99FromRowMapper::call($this->container, $row)->rad99, $rows);
+        $this->rad99s = array_map(fn($row) => RAD99FromRowMapper::call($this, $row)->rad99, $rows);
         $this->rad99s ? $this->rad99 = $this->rad99OrNull = $this->rad99s[0] : null;
     }
 

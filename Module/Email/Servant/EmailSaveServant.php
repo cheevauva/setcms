@@ -14,12 +14,12 @@ class EmailSaveServant extends \UUA\Servant
     use \Module\Email\Traits\EmailCallTrait;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
-        if (EmailHasByIdDAO::call($this->container, $this->email->id)->isExists) {
-            EmailUpdateDAO::call($this->container, $this->email);
+        if (EmailHasByIdDAO::call($this, $this->email->id)->isExists) {
+            EmailUpdateDAO::call($this, $this->email);
         } else {
-            EmailCreateDAO::call($this->container, $this->email);
+            EmailCreateDAO::call($this, $this->email);
         }
     }
 }

@@ -13,7 +13,7 @@ class MigraionFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
     public protected(set) MigrationEntity $migration;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->migration = new MigrationEntity();
         $this->migration->version = $this->string('version');

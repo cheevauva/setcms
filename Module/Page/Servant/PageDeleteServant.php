@@ -13,11 +13,11 @@ class PageDeleteServant extends \UUA\Servant
     use \SetCMS\Traits\TraitsCallWithUUID;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
-        $page = PageGetByIdServant::call($this->container, $this->id)->page;
+        $page = PageGetByIdServant::call($this, $this->id)->page;
         $page->markDeleted();
 
-        PageUpdateDAO::call($this->container, $page);
+        PageUpdateDAO::call($this, $page);
     }
 }

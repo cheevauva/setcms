@@ -13,7 +13,7 @@ class UserResetTokenFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMap
     public UserResetTokenEntity $userResetToken;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->userResetToken = new UserResetTokenEntity;
         $this->userResetToken->id = $this->uuid('id');

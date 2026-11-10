@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\User\Traits;
 
 use Psr\Container\ContainerInterface;
+use UUA\WithContainterInterface;
 use Module\User\Entity\UserEntity;
 
 trait UserCallTrait
@@ -12,12 +13,7 @@ trait UserCallTrait
 
     public UserEntity $user;
 
-    /**
-     * @param ContainerInterface $container
-     * @param UserEntity $user
-     * @return static
-     */
-    public static function call(ContainerInterface $container, UserEntity $user): self
+    public static function call(WithContainterInterface|ContainerInterface $container, UserEntity $user): self
     {
         $self = self::new($container);
         $self->user = $user;

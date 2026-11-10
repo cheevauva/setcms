@@ -10,7 +10,7 @@ class PostToRowMapper extends \Module\Basic\Mapper\BasicEntityToRowMapper
     use \Module\Post\Traits\PostCallTrait;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->id($this->post);
         $this->basic($this->post);

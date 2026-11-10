@@ -27,7 +27,7 @@ class PageRetrieveByCriteriaDAO extends \Module\Basic\DAO\BasicEntityRetrieveByC
     #[\Override]
     protected function handleRows(array $rows): void
     {
-        $this->pages = array_map(fn($row) => PageFromRowMapper::call($this->container, $row)->page, $rows);
+        $this->pages = array_map(fn($row) => PageFromRowMapper::call($this, $row)->page, $rows);
         $this->pages ? $this->page = $this->pageOrNull = $this->pages[0] : null;
     }
 

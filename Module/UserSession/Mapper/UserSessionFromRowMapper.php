@@ -13,7 +13,7 @@ class UserSessionFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
     public UserSessionEntity $userSession;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->userSession = new UserSessionEntity;
         $this->userSession->id = $this->uuid('id');

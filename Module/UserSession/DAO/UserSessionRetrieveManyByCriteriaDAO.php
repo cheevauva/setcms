@@ -41,7 +41,7 @@ class UserSessionRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetr
     #[\Override]
     protected function handleRows(array $rows): void
     {
-        $this->userSessions = array_map(fn($row) => UserSessionFromRowMapper::call($this->container, $row)->userSession, $rows);
+        $this->userSessions = array_map(fn($row) => UserSessionFromRowMapper::call($this, $row)->userSession, $rows);
         $this->userSessions ? $this->userSession = $this->userSessionOrNull = $this->userSessions[0] : null;
     }
 }

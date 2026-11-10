@@ -13,7 +13,7 @@ class UserPublicLogoutView extends View
     use \SetCMS\Traits\TraitsResponse;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->response = $this->newResponse()->withStatus(302)->withHeader('Location', $this->router()->generate('Home'));
     }

@@ -15,6 +15,6 @@ class UserResetTokenUpdateDAO extends \SetCMS\Entity\DAO\EntityUpdateDAO
     #[\Override]
     protected function row(): array
     {
-        return UserResetTokenToRowMapper::call($this->container, $this->userResetToken)->row;
+        return UserResetTokenToRowMapper::call($this, $this->userResetToken)->row;
     }
 }

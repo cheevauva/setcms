@@ -16,7 +16,7 @@ class RADMetadataVOFromArrayMapper extends \UUA\Mapper
     public RADMetadataVO $metadata;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $dirs = $this->array['dirs'] ?? throw new \Exception('dirs должен быть задан');
         $files = $this->array['files'] ?? throw new \Exception('files должен быть задан');

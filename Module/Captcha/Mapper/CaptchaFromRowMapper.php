@@ -13,7 +13,7 @@ class CaptchaFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
     public protected(set) CaptchaEntity $captcha;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->captcha = new CaptchaEntity();
         $this->captcha->text = $this->string('text');

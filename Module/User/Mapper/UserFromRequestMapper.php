@@ -13,7 +13,7 @@ class UserFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
     public protected(set) UserEntity $user;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $body = $this->validationBody();
 

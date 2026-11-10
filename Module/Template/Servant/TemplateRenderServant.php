@@ -21,7 +21,7 @@ abstract class TemplateRenderServant extends \UUA\Servant
     public TemplateRenderedVO $templateRendered;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $template = $this->template();
 

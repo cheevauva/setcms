@@ -13,7 +13,7 @@ class MigrationDownServant extends \UUA\Servant
     public string $dbName;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $db = DatabaseFactory::singleton($this->container)->make($this->dbName);
 

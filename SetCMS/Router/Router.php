@@ -16,7 +16,6 @@ class Router implements ContractRouter, \UUA\ContainerConstructInterface
     use \UUA\Traits\ContainerTrait;
 
     private AltoRouter $altoRouter;
-    protected ContainerInterface $container;
 
     /**
      * @var array<string, string>

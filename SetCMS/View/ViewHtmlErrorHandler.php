@@ -9,12 +9,12 @@ use SetCMS\View\ViewTwig;
 class ViewHtmlErrorHandler extends ViewTwig
 {
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         if ($this->messages->count() === 0) {
             return;
         }
         
-        parent::serve();
+        parent::run();
     }
 }

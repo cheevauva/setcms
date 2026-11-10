@@ -15,7 +15,7 @@ class ViewJson extends View
     public public(set) ServerRequestInterface $request;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $json = json_encode([
             'result' => $this->messages->count() === 0,

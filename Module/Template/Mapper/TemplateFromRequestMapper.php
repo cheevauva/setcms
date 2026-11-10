@@ -12,7 +12,7 @@ class TemplateFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
     public protected(set) TemplateEntity $template;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $body = $this->validationBody();
         $body->array('template')->notEmpty()->validate();

@@ -10,7 +10,7 @@ class PostSlugFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
     public protected(set) string $slug;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->slug = $this->validationParams()->string('slug')->notEmpty()->notQuiet()->val();
     }

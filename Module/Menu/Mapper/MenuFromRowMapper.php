@@ -13,7 +13,7 @@ class MenuFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
     public protected(set) MenuEntity $menu;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->menu = new MenuEntity();
         $this->menu->id = $this->uuid('id');

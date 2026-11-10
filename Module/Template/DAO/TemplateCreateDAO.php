@@ -15,6 +15,6 @@ class TemplateCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
     #[\Override]
     protected function row(): array
     {
-        return TemplateToRowMapper::call($this->container, $this->template)->row;
+        return TemplateToRowMapper::call($this, $this->template)->row;
     }
 }

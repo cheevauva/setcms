@@ -16,13 +16,13 @@ class ACLControllerServant extends \UUA\Servant
     public ControllerViaPSR7 $controller;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $controller = $this->controller;
         $role = ACLRoleVO::as($controller->request->getAttribute('currentUserRole'));
         $privilege = $controller->name;
 
-        if (!ACLCheckByRoleAndPrivilegeServant::call($this->container, $role, $privilege)->isAllow) {
+        if (!ACLCheckByRoleAndPrivilegeServant::call($this, $role, $privilege)->isAllow) {
             throw new ACLNotAllowException((string) $role, $privilege);
         }
     }

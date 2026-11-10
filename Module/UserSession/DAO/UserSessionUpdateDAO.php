@@ -15,6 +15,6 @@ class UserSessionUpdateDAO extends \SetCMS\Entity\DAO\EntityUpdateDAO
     #[\Override]
     protected function row(): array
     {
-        return UserSessionToRowMapper::call($this->container, $this->userSession)->row;
+        return UserSessionToRowMapper::call($this, $this->userSession)->row;
     }
 }

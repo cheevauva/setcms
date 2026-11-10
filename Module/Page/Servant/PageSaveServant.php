@@ -14,12 +14,12 @@ class PageSaveServant extends \UUA\Servant
     use \Module\Page\Traits\PageCallTrait;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
-        if (PageHasByIdDAO::call($this->container, $this->page->id)->isExists) {
-            PageUpdateDAO::call($this->container, $this->page);
+        if (PageHasByIdDAO::call($this, $this->page->id)->isExists) {
+            PageUpdateDAO::call($this, $this->page);
         } else {
-            PageCreateDAO::call($this->container, $this->page);
+            PageCreateDAO::call($this, $this->page);
         }
     }
 }

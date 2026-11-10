@@ -10,7 +10,7 @@ class RAD01ToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
     use \Module\RAD01\Traits\RAD01CallTrait;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->id($this->rad01);
         $this->row['field01'] = $this->rad01->field01;

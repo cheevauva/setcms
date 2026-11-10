@@ -6,9 +6,13 @@ namespace Module\Basic\DAO;
 
 use SetCMS\UUID;
 use SetCMS\Database\DatabaseQueryBuilder;
+use Module\Basic\Entity\BasicEntity;
+use SetCMS\Collection;
 
 abstract class BasicEntityRetrieveByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
 {
+
+    use \SetCMS\Traits\TraitsWrappingWithParent;
 
     public bool $deleted;
     public string $entityType;

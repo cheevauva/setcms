@@ -1,4 +1,4 @@
-FROM dunglas/frankenphp:1-php8.4-bookworm
+FROM dunglas/frankenphp:1-php8.5.12-bookworm
 
 RUN install-php-extensions pdo pdo_sqlite gd zip
 

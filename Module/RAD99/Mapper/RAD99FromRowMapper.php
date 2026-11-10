@@ -13,7 +13,7 @@ class RAD99FromRowMapper extends \Module\Basic\Mapper\BasicEntityFromRowMapper
     public RAD99Entity $rad99;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->rad99 = new RAD99Entity();
         $this->rad99->field99 = $this->string('field99');

@@ -12,7 +12,7 @@ class UserCurrentFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
     public protected(set) UserEntity $user;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->user = UserEntity::as($this->validationAttributes()->object('currentUser')->notEmpty()->notQuiet()->val());
     }

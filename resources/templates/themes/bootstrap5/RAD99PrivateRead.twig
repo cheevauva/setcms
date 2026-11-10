@@ -16,9 +16,9 @@
         <article class="blog-rad99">
             <h2 class="blog-rad99-title">{{ rad99.title }}</h2>
             <p class="blog-rad99-meta">
-                <a href="{{ scLink('AdminUserRead', {id : rad99.createdBy}) }}">{{ createdBy.username }}</a> опубликовал в {{ rad99.dateCreated.format('H:i') }} {{ rad99.dateCreated.format('d.m.Y') }} /
-                <a href="{{ scLink('AdminUserRead', {id : rad99.modifiedBy }) }}">{{ modifiedBy.username }}</a> изменил в {{ rad99.dateCreated.format('H:i') }} {{ rad99.dateCreated.format('d.m.Y') }} /
-                <a href="{{ scLink('AdminUserRead', {id : rad99.assignedBy }) }}">{{ assignedBy.username }}</a> ответственный
+                <a href="{{ scLink('AdminUserRead', {id : rad99.createdBy}) }}">{{ rad99.attr('createdBy').username }}</a> опубликовал в {{ rad99.dateCreated.format('H:i') }} {{ rad99.dateCreated.format('d.m.Y') }} /
+                <a href="{{ scLink('AdminUserRead', {id : rad99.modifiedBy }) }}">{{ rad99.attr('modifiedBy').username }}</a> изменил в {{ rad99.dateCreated.format('H:i') }} {{ rad99.dateCreated.format('d.m.Y') }} /
+                <a href="{{ scLink('AdminUserRead', {id : rad99.assignedBy }) }}">{{ rad99.attr('assignedBy').username }}</a> ответственный
             </p>
             <p>
                 {{ rad99.field01 }}

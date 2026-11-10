@@ -15,6 +15,6 @@ class MenuUpdateDAO extends \SetCMS\Entity\DAO\EntityUpdateDAO
     #[\Override]
     protected function row(): array
     {
-        return MenuToRowMapper::call($this->container, $this->menu)->row;
+        return MenuToRowMapper::call($this, $this->menu)->row;
     }
 }

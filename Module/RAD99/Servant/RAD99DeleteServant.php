@@ -13,11 +13,11 @@ class RAD99DeleteServant extends \UUA\Servant
     use \SetCMS\Traits\TraitsCallWithUUID;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
-        $rad99 = RAD99GetByIdDAO::call($this->container, $this->id)->rad99;
+        $rad99 = RAD99GetByIdDAO::call($this, $this->id)->rad99;
         $rad99->markDeleted();
 
-        RAD99UpdateDAO::call($this->container, $rad99);
+        RAD99UpdateDAO::call($this, $rad99);
     }
 }

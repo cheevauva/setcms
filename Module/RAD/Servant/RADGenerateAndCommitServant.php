@@ -10,9 +10,9 @@ class RADGenerateAndCommitServant extends RADGenerateServant
 {
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
-        parent::serve();
+        parent::run();
 
         foreach ($this->files as $file) {
             $targetSave = RADFileSaveDAO::new($this->container);

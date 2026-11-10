@@ -43,7 +43,7 @@ class EmailRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveBy
     #[\Override]
     protected function handleRows(array $rows): void
     {
-        $this->emails = array_map(fn($row) => EmailFromRowMapper::call($this->container, $row)->email, $rows);
+        $this->emails = array_map(fn($row) => EmailFromRowMapper::call($this, $row)->email, $rows);
         $this->emails ? $this->email = $this->emailOrNull = $this->emails[0] : null;
     }
 }

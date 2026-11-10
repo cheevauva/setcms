@@ -14,12 +14,12 @@ class RAD01SaveServant extends \UUA\Servant
     use \Module\RAD01\Traits\RAD01CallTrait;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
-        if (RAD01HasByIdDAO::call($this->container, $this->rad01->id)->isExists) {
-            RAD01UpdateDAO::call($this->container, $this->rad01);
+        if (RAD01HasByIdDAO::call($this, $this->rad01->id)->isExists) {
+            RAD01UpdateDAO::call($this, $this->rad01);
         } else {
-            RAD01CreateDAO::call($this->container, $this->rad01);
+            RAD01CreateDAO::call($this, $this->rad01);
         }
     }
 }

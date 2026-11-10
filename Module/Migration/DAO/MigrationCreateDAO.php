@@ -17,6 +17,6 @@ class MigrationCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
     #[\Override]
     protected function row(): array
     {
-        return MigraionToRowMapper::call($this->container, $this->migration)->row;
+        return MigraionToRowMapper::call($this, $this->migration)->row;
     }
 }

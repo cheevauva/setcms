@@ -19,7 +19,7 @@ class MigrationCandidateRetrieveManyDAO extends \UUA\DAO
     public string $dbType;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $basePath = sprintf('resources/migrations/%s/%s/', $this->dbType, $this->dbName);
 

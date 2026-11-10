@@ -13,7 +13,7 @@ class RAD01FromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
     public RAD01Entity $rad01;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->rad01 = new RAD01Entity();
         $this->rad01->field01 = $this->string('field01');

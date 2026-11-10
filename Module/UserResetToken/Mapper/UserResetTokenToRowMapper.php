@@ -10,7 +10,7 @@ class UserResetTokenToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
     use \Module\UserResetToken\Traits\UserResetTokenCallTrait;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->id($this->userResetToken);
         $this->row['user_id'] = $this->userResetToken->userId->uuid;

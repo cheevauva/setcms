@@ -16,7 +16,7 @@ class SecretKeyServant extends \UUA\Servant
     public string $secretKeyType;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $secretKey = ($this->env()[$this->secretKeyType] ?? null) ?: throw new SecretKeyTypeIndefinedException(sprintf('Ключ "%s" не указан в окружении', $this->secretKeyType));
 

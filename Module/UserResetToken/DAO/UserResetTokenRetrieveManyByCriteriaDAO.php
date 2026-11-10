@@ -28,7 +28,7 @@ class UserResetTokenRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityR
     #[\Override]
     protected function handleRows(array $rows): void
     {
-        $this->userResetTokens = array_map(fn($row) => UserResetTokenFromRowMapper::call($this->container, $row)->userResetToken, $rows);
+        $this->userResetTokens = array_map(fn($row) => UserResetTokenFromRowMapper::call($this, $row)->userResetToken, $rows);
         $this->userResetTokens ? $this->userResetToken = $this->userResetTokenOrNull = $this->userResetTokens[0] : null;
     }
 

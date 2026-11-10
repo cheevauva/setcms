@@ -6,18 +6,14 @@ namespace Module\Page\Traits;
 
 use Psr\Container\ContainerInterface;
 use Module\Page\Entity\PageEntity;
+use UUA\WithContainterInterface;
 
 trait PageCallTrait
 {
 
     public PageEntity $page;
 
-    /**
-     * @param ContainerInterface $container
-     * @param PageEntity $page
-     * @return static
-     */
-    public static function call(ContainerInterface $container, PageEntity $page): self
+    public static function call(WithContainterInterface|ContainerInterface $container, PageEntity $page): self
     {
         $self = self::new($container);
         $self->page = $page;

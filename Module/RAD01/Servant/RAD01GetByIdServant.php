@@ -15,7 +15,7 @@ class RAD01GetByIdServant extends \UUA\Servant
     public protected(set) RAD01Entity $rad01;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $getOne = RAD01RetrieveByCriteriaDAO::new($this->container);
         $getOne->expectOne = true;

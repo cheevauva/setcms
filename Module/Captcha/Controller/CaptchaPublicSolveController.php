@@ -69,7 +69,7 @@ class CaptchaPublicSolveController extends \SetCMS\Controller\ControllerViaPSR7
     protected function catch(\Throwable $object): void
     {
         if ($object instanceof CaptchaException) {
-            $this->messages->attach($object, 'id');
+            $this->messages->offsetSet($object, 'id');
         }
     }
 }

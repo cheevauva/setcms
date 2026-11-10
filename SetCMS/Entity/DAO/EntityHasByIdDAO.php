@@ -15,7 +15,7 @@ abstract class EntityHasByIdDAO extends \UUA\DAO
     public protected(set) bool $isExists;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->isExists = !!$this->createQuery()->fetchOne();
     }

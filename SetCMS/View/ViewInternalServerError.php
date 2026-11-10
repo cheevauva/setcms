@@ -20,7 +20,7 @@ class ViewInternalServerError extends ViewExceptionHandler
     }
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         if ($this->isDebug) {
             $message = sprintf('%s: %s<pre>%s</pre>', $this->ex::class, $this->ex->getMessage(), $this->ex->getTraceAsString());

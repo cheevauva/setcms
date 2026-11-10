@@ -13,7 +13,7 @@ class PageFromRowMapper extends \Module\Basic\Mapper\BasicEntityFromRowMapper
     public protected(set) PageEntity $page;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->page = new PageEntity();
         $this->page->slug = $this->string('slug');

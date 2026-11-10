@@ -27,7 +27,7 @@ class MenuRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByC
     #[\Override]
     protected function handleRows(array $rows): void
     {
-        $this->menus = array_map(fn($row) => MenuFromRowMapper::call($this->container, $row)->menu, $rows);
+        $this->menus = array_map(fn($row) => MenuFromRowMapper::call($this, $row)->menu, $rows);
         $this->menus ? $this->menu = $this->menuOrNull = $this->menus[0] : null;
     }
 

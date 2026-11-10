@@ -10,7 +10,7 @@ class UserSessionToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
     use \Module\UserSession\Traits\UserSessionCallTrait;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->id($this->userSession);
         $this->row['device'] = mb_substr($this->userSession->device, 0, 50);

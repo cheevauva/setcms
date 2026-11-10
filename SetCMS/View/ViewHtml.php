@@ -20,6 +20,7 @@ abstract class ViewHtml extends View
     use \SetCMS\Traits\TraitsRouter;
     use \SetCMS\Traits\TraitsResponse;
     use \SetCMS\Traits\TraitsServerRequestFactory;
+    use \UUA\Traits\WrappingTrait;
 
     protected ?string $templateName = null;
 
@@ -33,7 +34,8 @@ abstract class ViewHtml extends View
         return $this->templateName;
     }
 
-    public function serve(): void
+    #[\Override]
+    protected function run(): void
     {
         $templateName = $this->templateName() ?? $this->templateNameByClass();
 
@@ -103,6 +105,7 @@ abstract class ViewHtml extends View
             $controller->name = $routerMatch->name;
             $controller->params = $routerMatch->params;
             $controller->request = $this->request->withAttribute('parentRequest', $this->request)->withQueryParams($params)->withAttribute('view', $this)->withMethod('GET')->withUri(new Uri($path));
+            $controller->withAttr('skipACL', true);
             $controller->serve();
 
             $body = ($controller->response ?? throw new ControllerEmptyResponseException($routerMatch->target))->getBody();
@@ -136,6 +139,7 @@ abstract class ViewHtml extends View
             $controller->name = $routerMatch->name;
             $controller->params = $routerMatch->params;
             $controller->request = $this->request->withAttribute('parentRequest', $this->request)->withQueryParams($params)->withAttribute('view', $this)->withMethod('GET')->withUri(new Uri($path));
+            $controller->withAttr('skipACL', true);
             $controller->serve();
 
             return get_object_vars($controller);
@@ -219,7 +223,7 @@ abstract class ViewHtml extends View
 
     protected function scHasAccess(string $route): bool
     {
-        return ACLCheckByRoleAndPrivilegeServant::call($this->container, ACLRoleVO::as($this->request->getAttribute('currentUserRole')), $route)->isAllow;
+        return ACLCheckByRoleAndPrivilegeServant::call($this, ACLRoleVO::as($this->request->getAttribute('currentUserRole')), $route)->isAllow;
     }
 
     protected function rootPath(): string

@@ -13,11 +13,11 @@ class PostDeleteServant extends \UUA\Servant
     use \SetCMS\Traits\TraitsCallWithUUID;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
-        $post = PostGetByIdDAO::call($this->container, $this->id)->post;
+        $post = PostGetByIdDAO::call($this, $this->id)->post;
         $post->markDeleted();
 
-        PostUpdateDAO::call($this->container, $post);
+        PostUpdateDAO::call($this, $post);
     }
 }

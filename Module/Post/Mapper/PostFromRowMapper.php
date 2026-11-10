@@ -13,7 +13,7 @@ class PostFromRowMapper extends \Module\Basic\Mapper\BasicEntityFromRowMapper
     public protected(set) PostEntity $post;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->post = new PostEntity;
         $this->post->slug = $this->string('slug');

@@ -17,7 +17,7 @@ class PostRetrieveManyByCriteriaDAO extends \Module\Basic\DAO\BasicEntityRetriev
     use \Module\Post\Traits\PostDbalDAOTrait;
 
     public string $slug;
-
+    
     /**
      * @var array<PostEntity>
      */
@@ -25,6 +25,7 @@ class PostRetrieveManyByCriteriaDAO extends \Module\Basic\DAO\BasicEntityRetriev
     public protected(set) PostEntity $post;
     public protected(set) ?PostEntity $postOrNull;
 
+    #[\Override]
     protected function createQb(): DatabaseQueryBuilder
     {
         $qb = $this->createQuery();

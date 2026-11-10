@@ -19,7 +19,7 @@ class LoggerServant extends \UUA\Servant
     public array $context = [];
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $msg = sprintf('%s [%s]: %s %s', date('Y-m-d H:i:s'), getmypid(), $this->message, json_encode($this->context, JSON_UNESCAPED_UNICODE));
         error_log($msg, 0);

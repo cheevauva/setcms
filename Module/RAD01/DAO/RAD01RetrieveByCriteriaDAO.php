@@ -33,7 +33,7 @@ class RAD01RetrieveByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCrit
     #[\Override]
     protected function handleRows(array $rows): void
     {
-        $this->rad01s = array_map(fn($row) => RAD01FromRowMapper::call($this->container, $row)->rad01, $rows);
+        $this->rad01s = array_map(fn($row) => RAD01FromRowMapper::call($this, $row)->rad01, $rows);
         $this->rad01s ? $this->rad01 = $this->rad01OrNull = $this->rad01s[0] : null;
     }
 

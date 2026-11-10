@@ -15,6 +15,6 @@ class PostUpdateDAO extends \SetCMS\Entity\DAO\EntityUpdateDAO
     #[\Override]
     protected function row(): array
     {
-        return PostToRowMapper::call($this->container, $this->post)->row;
+        return PostToRowMapper::call($this, $this->post)->row;
     }
 }

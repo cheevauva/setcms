@@ -6,6 +6,7 @@ namespace SetCMS\Mapper;
 
 use SetCMS\UUID;
 use Psr\Container\ContainerInterface;
+use UUA\WithContainterInterface;
 
 abstract class MapperFromRow extends \UUA\Mapper
 {
@@ -57,11 +58,11 @@ abstract class MapperFromRow extends \UUA\Mapper
     abstract protected function notFoundKeyInRowException(string $key): \Throwable;
 
     /**
-     * @param ContainerInterface $container
+     * @param WithContainterInterface|ContainerInterface $container
      * @param array<string, mixed> $row
      * @return static
      */
-    public static function call(ContainerInterface $container, array $row): self
+    public static function call(WithContainterInterface|ContainerInterface $container, array $row): static
     {
         $self = static::new($container);
         $self->row = $row;

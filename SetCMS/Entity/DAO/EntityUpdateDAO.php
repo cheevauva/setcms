@@ -11,7 +11,7 @@ abstract class EntityUpdateDAO extends \UUA\DAO
 {
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->createQuery()->executeQuery();
     }

@@ -16,7 +16,7 @@ class DatabaseTransactionServant extends \UUA\Servant
     public Unit $servant;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->db ??= DatabaseFactory::new($this->container)->make('main');
         $this->db->beginTransaction();

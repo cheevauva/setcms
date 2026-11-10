@@ -14,7 +14,7 @@ class EmailFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
     public protected(set) EmailEntity $email;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->email = new EmailEntity();
         $this->email->subject = $this->string('subject');

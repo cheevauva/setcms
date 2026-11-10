@@ -10,7 +10,7 @@ class MenuToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
     use \Module\Menu\Traits\MenuCallTrait;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->id($this->menu);
         $this->row['label'] = $this->menu->label;

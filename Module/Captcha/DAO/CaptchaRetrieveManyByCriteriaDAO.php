@@ -43,7 +43,7 @@ class CaptchaRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieve
     #[\Override]
     protected function handleRows(array $rows): void
     {
-        $this->captchas = array_map(fn($row) => CaptchaFromRowMapper::call($this->container, $row)->captcha, $rows);
+        $this->captchas = array_map(fn($row) => CaptchaFromRowMapper::call($this, $row)->captcha, $rows);
         $this->captchas ? $this->captcha = $this->captchaOrNull = $this->captchas[0] : null;
     }
 }

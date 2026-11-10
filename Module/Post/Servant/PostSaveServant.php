@@ -14,12 +14,12 @@ class PostSaveServant extends \UUA\Servant
     use \Module\Post\Traits\PostCallTrait;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
-        if (PostHasByIdDAO::call($this->container, $this->post->id)->isExists) {
-            PostUpdateDAO::call($this->container, $this->post);
+        if (PostHasByIdDAO::call($this, $this->post->id)->isExists) {
+            PostUpdateDAO::call($this, $this->post);
         } else {
-            PostCreateDAO::call($this->container, $this->post);
+            PostCreateDAO::call($this, $this->post);
         }
     }
 }

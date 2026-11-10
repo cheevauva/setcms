@@ -16,7 +16,7 @@ class MenuReadByContextFromRequestMapper extends \SetCMS\Request\Mapper\RequestM
     public protected(set) ACLRoleVO $role;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->view = $this->request->getAttribute('view') ?: throw new \Exception('view undefined');
         $this->role = $this->parentRequest()->getAttribute('currentUserRole') ?: throw new \Exception('currentUserRole undefined');

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Module\ACL\Servant;
 
 use Psr\Container\ContainerInterface;
+use UUA\WithContainterInterface;
 use Module\ACL\ACL;
 use Module\ACL\VO\ACLRoleVO;
 
@@ -17,7 +18,7 @@ class ACLCheckByRoleAndPrivilegeServant extends \UUA\Servant
     public protected(set) ?\Throwable $exception = null;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $acl = ACL::singleton($this->container);
 
@@ -28,7 +29,7 @@ class ACLCheckByRoleAndPrivilegeServant extends \UUA\Servant
         $this->isAllow = $acl->isAllowed((string) $this->role, 'routes', $this->privilege);
     }
     
-    public static function call(ContainerInterface $container, ACLRoleVO $role, string $privilege): self
+    public static function call(WithContainterInterface|ContainerInterface $container, ACLRoleVO $role, string $privilege): self
     {
         $self = self::new($container);
         $self->role = $role;

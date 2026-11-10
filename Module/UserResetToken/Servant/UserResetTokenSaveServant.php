@@ -13,12 +13,12 @@ class UserResetTokenSaveServant extends \UUA\Servant
     use \Module\UserResetToken\Traits\UserResetTokenCallTrait;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         if (!empty($this->userResetToken->id)) {
-            UserResetTokenUpdateDAO::call($this->container, $this->userResetToken);
+            UserResetTokenUpdateDAO::call($this, $this->userResetToken);
         } else {
-            UserResetTokenCreateDAO::call($this->container, $this->userResetToken);
+            UserResetTokenCreateDAO::call($this, $this->userResetToken);
         }
     }
 }

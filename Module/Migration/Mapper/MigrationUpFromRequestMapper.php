@@ -11,7 +11,7 @@ class MigrationUpFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
     public protected(set) string $secretKey;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $validation = $this->validationBody();
 

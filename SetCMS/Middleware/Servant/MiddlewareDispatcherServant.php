@@ -21,7 +21,7 @@ class MiddlewareDispatcherServant extends Servant implements RequestHandlerInter
     public ResponseInterface $response;
     public ServerRequestInterface $request;
 
-    public function serve(): void
+    protected function run(): void
     {
         $this->middlewares = array_values($this->middlewares);
         $this->response = $this->handle($this->request);

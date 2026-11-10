@@ -112,15 +112,15 @@ class UserPublicDoLoginController extends ControllerViaPSR7
         parent::catch($object);
 
         if ($object instanceof UserNotFoundException) {
-            $this->messages->attach($object, 'email');
+            $this->messages->offsetSet($object, 'email');
         }
 
         if ($object instanceof UserIncorrectPasswordException) {
-            $this->messages->attach($object, 'password');
+            $this->messages->offsetSet($object, 'password');
         }
 
         if ($object instanceof CaptchaException) {
-            $this->messages->attach($object, 'captcha');
+            $this->messages->offsetSet($object, 'captcha');
         }
     }
 }

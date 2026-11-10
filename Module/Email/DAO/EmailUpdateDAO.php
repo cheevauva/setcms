@@ -15,6 +15,6 @@ class EmailUpdateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
     #[\Override]
     protected function row(): array
     {
-        return EmailToRowMapper::call($this->container, $this->email)->row;
+        return EmailToRowMapper::call($this, $this->email)->row;
     }
 }

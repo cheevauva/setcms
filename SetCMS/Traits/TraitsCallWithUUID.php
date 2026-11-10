@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SetCMS\Traits;
 
 use Psr\Container\ContainerInterface;
+use UUA\WithContainterInterface;
 use SetCMS\UUID;
 
 trait TraitsCallWithUUID
@@ -12,12 +13,7 @@ trait TraitsCallWithUUID
 
     public UUID $id;
 
-    /**
-     * @param ContainerInterface $container
-     * @param UUID $id
-     * @return static
-     */
-    public static function call(ContainerInterface $container, UUID $id): self
+    public static function call(WithContainterInterface|ContainerInterface $container, UUID $id): self
     {
         $self = self::new($container);
         $self->id = $id;

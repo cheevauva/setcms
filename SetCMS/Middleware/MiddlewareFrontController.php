@@ -10,7 +10,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use SetCMS\Controller\ControllerViaPSR7;
 use SetCMS\Controller\Exception\ControllerEmptyResponseException;
-use SetCMS\Controller\Event\ControllerOnBeforeServeEvent;
 
 class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerConstructInterface
 {
@@ -18,7 +17,6 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
     use \UUA\Traits\BuildTrait;
     use \UUA\Traits\ContainerTrait;
     use \UUA\Traits\EventDispatcherTrait;
-    use \UUA\Traits\WrappingTrait;
     use \SetCMS\Traits\TraitsRouter;
 
     #[\Override]
@@ -30,10 +28,7 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
         $controller->name = $routerMatch->name;
         $controller->params = $routerMatch->params;
         $controller->request = $request;
-
-        new ControllerOnBeforeServeEvent($controller)->dispatch($this->eventDispatcher());
-        
-        $this->wrapping($controller)->serve();
+        $controller->serve();
 
         return $controller->response ?? throw new ControllerEmptyResponseException($routerMatch->target);
     }

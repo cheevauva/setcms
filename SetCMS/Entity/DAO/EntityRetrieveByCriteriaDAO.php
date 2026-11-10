@@ -11,6 +11,8 @@ use SetCMS\Database\Database;
 abstract class EntityRetrieveByCriteriaDAO extends \UUA\DAO
 {
 
+    use \UUA\Traits\WrappingTrait;
+
     public bool $expectOne = false;
     public bool $allowEmptyResult = true;
     //
@@ -31,7 +33,7 @@ abstract class EntityRetrieveByCriteriaDAO extends \UUA\DAO
     abstract protected function entityNotFoundException(): \Throwable;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $rows = $this->createQb()->fetchAllAssociative();
 

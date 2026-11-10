@@ -84,11 +84,11 @@ class UserPublicDoRestoreController extends ControllerViaPSR7
         parent::catch($object);
 
         if ($object instanceof UserException) {
-            $this->messages->attach($object, 'email');
+            $this->messages->offsetSet($object, 'email');
         }
 
         if ($object instanceof CaptchaException) {
-            $this->messages->attach($object, 'captcha');
+            $this->messages->offsetSet($object, 'captcha');
         }
     }
 }

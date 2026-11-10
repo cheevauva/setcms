@@ -19,7 +19,7 @@ class TemplateFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
     }
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->template = new TemplateEntity();
         $this->template->template = $this->string('template');

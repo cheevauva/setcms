@@ -10,6 +10,7 @@ class Entity
 {
 
     use \UUA\Traits\AsTrait;
+    use \UUA\Traits\AttributesTrait;
 
     public UUID $id;
 

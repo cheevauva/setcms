@@ -15,6 +15,6 @@ class CaptchaUpdateDAO extends \SetCMS\Entity\DAO\EntityUpdateDAO
     #[\Override]
     protected function row(): array
     {
-        return CaptchaToRowMapper::call($this->container, $this->captcha)->row;
+        return CaptchaToRowMapper::call($this, $this->captcha)->row;
     }
 }

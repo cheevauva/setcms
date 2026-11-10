@@ -13,7 +13,7 @@ abstract class EntityDeleteByIdDAO extends \UUA\DAO
     use \SetCMS\Traits\TraitsCallWithUUID;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->createQuery()->executeQuery();
     }

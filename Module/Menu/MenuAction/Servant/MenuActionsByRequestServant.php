@@ -22,11 +22,11 @@ abstract class MenuActionsByRequestServant extends \UUA\Servant
 
     protected function hasAccess(string $route): bool
     {
-        return ACLCheckByRoleAndPrivilegeServant::call($this->container, $this->role, $route)->isAllow;
+        return ACLCheckByRoleAndPrivilegeServant::call($this, $this->role, $route)->isAllow;
     }
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $this->actions = [];
 

@@ -8,7 +8,7 @@ use SplObjectStorage;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
-abstract class View extends \UUA\View implements \SetCMS\Contract\ContractObjectInteraction
+abstract class View extends \UUA\Unit implements \SetCMS\Contract\ContractObjectInteraction
 {
 
     /**

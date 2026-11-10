@@ -18,7 +18,7 @@ class UserSessionRetrieveUserServant extends \UUA\Servant
     public protected(set) ?UserEntity $user = null;
 
     #[\Override]
-    public function serve(): void
+    protected function run(): void
     {
         $userSessionById = UserSessionRetrieveManyByCriteriaDAO::new($this->container);
         $userSessionById->allowEmptyResult = true;
