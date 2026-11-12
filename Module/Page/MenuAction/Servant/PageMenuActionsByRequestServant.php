@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Page\MenuAction\Servant;
 
 use SetCMS\UUID;
-use Module\Page\View\PagePublicReadView;
+use Module\Page\Controller\PagePublicReadBySlugController;
 use Module\Page\DAO\PageGetBySlugDAO;
 
 class PageMenuActionsByRequestServant extends \Module\Menu\MenuAction\Servant\MenuActionsByRequestServant
@@ -45,10 +45,8 @@ class PageMenuActionsByRequestServant extends \Module\Menu\MenuAction\Servant\Me
     #[\Override]
     protected function prepareMenuActions(): void
     {
-        $view = $this->view;
-
-        if ($view instanceof PagePublicReadView) {
-            $this->prepareEditAction($view->page->slug);
+        if ($this->route->target === PagePublicReadBySlugController::class) {
+            $this->prepareEditAction($this->route->params['slug']);
         }
 
         $this->prepareIndexAction();

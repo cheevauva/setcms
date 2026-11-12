@@ -6,19 +6,23 @@ namespace Module\Menu\MenuAction\Servant;
 
 use Module\Menu\MenuAction\Entity\MenuActionEntity;
 use Module\ACL\VO\ACLRoleVO;
-use SetCMS\Responder;
-use SetCMS\View\View;
 use Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
+use SetCMS\Router\Exception\RouterNotFoundException;
+use SetCMS\Router\RouterMatchDTO;
 
 abstract class MenuActionsByRequestServant extends \UUA\Servant
 {
+
+    use \SetCMS\Traits\TraitsRouter;
 
     /**
      * @var MenuActionEntity[]
      */
     public protected(set) array $actions;
-    public View|Responder $view;
+    public string $path;
+    public string $queryParams;
     public ACLRoleVO $role;
+    protected RouterMatchDTO $route;
 
     protected function hasAccess(string $route): bool
     {
@@ -29,6 +33,15 @@ abstract class MenuActionsByRequestServant extends \UUA\Servant
     protected function run(): void
     {
         $this->actions = [];
+
+        try {
+            $this->route = $this->router()->match($this->path, 'GET');
+        } catch (RouterNotFoundException $ex) {
+            $this->route = new RouterMatchDTO;
+            $this->route->name = '';
+            $this->route->target = '';
+            $this->route->params = [];
+        }
 
         $this->prepareMenuActions();
 
@@ -45,8 +58,6 @@ abstract class MenuActionsByRequestServant extends \UUA\Servant
 
     protected function menuAction(): MenuActionEntity
     {
-
-
         return $this->actions[] = new MenuActionEntity();
     }
 }

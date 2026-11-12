@@ -9,12 +9,12 @@ use Module\Menu\Controller\MenuPublicMainController;
 use Module\Menu\Controller\MenuPublicMainSubController;
 use Module\Menu\Controller\MenuPublicActionsController;
 
-$routes['SETCMS /menu/for/context menu_read_by_context'] = MenuPublicReadByContextController::class;
-$routes['SETCMS /menu/for/main menuMain'] = MenuPublicMainController::class;
-$routes['SETCMS /menu/for/submain menuMainSub'] = MenuPublicMainSubController::class;
-$routes['SETCMS /menu/for/actions menuActions'] = MenuPublicActionsController::class;
-$routes['SETCMS /menu/for/[a:slug] menu_read_by_slug'] = MenuPublicReadBySlugController::class;
-$routes['SETCMS /~/menu admin_menu'] = MenuPrivateAdminMenuController::class;
+$routes['GET /menu/for/context menu_read_by_context'] = MenuPublicReadByContextController::class;
+$routes['GET /menu/for/main menuMain'] = MenuPublicMainController::class;
+$routes['GET /menu/for/submain menuMainSub'] = MenuPublicMainSubController::class;
+$routes['GET /menu/for/actions menuActions'] = MenuPublicActionsController::class;
+$routes['GET /menu/for/[a:slug] menu_read_by_slug'] = MenuPublicReadBySlugController::class;
+$routes['GET /~/menu admin_menu'] = MenuPrivateAdminMenuController::class;
 $routes['GET /~/menu/index AdminMenuIndex'] = \Module\Menu\Controller\MenuPrivateIndexController::class;
 $routes['GET /~/menu/new/[g:id] AdminMenuNew'] = \Module\Menu\Controller\MenuPrivateNewController::class;
 $routes['POST /~/menu/update/[g:id] AdminMenuUpdate'] = \Module\Menu\Controller\MenuPrivateUpdateController::class;

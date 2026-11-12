@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Module\Post\MenuAction\Servant;
 
 use SetCMS\UUID;
-use Module\Post\View\PostPublicReadBySlugView;
+use Module\Post\Controller\PostPublicReadBySlugController;
 use Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 
 class PostMenuActionsByRequestServant extends \Module\Menu\MenuAction\Servant\MenuActionsByRequestServant
@@ -48,10 +48,8 @@ class PostMenuActionsByRequestServant extends \Module\Menu\MenuAction\Servant\Me
     #[\Override]
     protected function prepareMenuActions(): void
     {
-        $view = $this->view;
-
-        if ($view instanceof PostPublicReadBySlugView) {
-            $this->prepareEditAction($view->post->slug);
+        if ($this->route->target === PostPublicReadBySlugController::class) {
+            $this->prepareEditAction($this->route->params['slug']);
         }
 
         $this->prepareIndexAction();

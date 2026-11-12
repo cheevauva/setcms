@@ -44,6 +44,7 @@ abstract class ViewHtml extends View
         }
 
         $this->assign('scope', $this);
+        $this->assign('scopeName', $this::class);
         $this->assign('ctx', $this->request->getAttributes());
 
         $this->registerFunctions();
@@ -99,13 +100,12 @@ abstract class ViewHtml extends View
         $params ??= [];
 
         try {
-            $routerMatch = $this->router()->match($path, 'SETCMS');
+            $routerMatch = $this->router()->match($path, 'GET');
 
             $controller = ControllerViaPSR7::as(($routerMatch->target)::new($this->container));
             $controller->name = $routerMatch->name;
             $controller->params = $routerMatch->params;
-            $controller->request = $this->request->withAttribute('parentRequest', $this->request)->withQueryParams($params)->withAttribute('view', $this)->withMethod('GET')->withUri(new Uri($path));
-            $controller->withAttr('skipACL', true);
+            $controller->request = $this->request->withQueryParams($params)->withMethod('GET')->withUri(new Uri($path))->withHeader('Root-Context-Path', $this->request->getUri()->getPath())->withHeader('Root-Context-Query', $this->request->getUri()->getQuery());
             $controller->serve();
 
             $body = ($controller->response ?? throw new ControllerEmptyResponseException($routerMatch->target))->getBody();
@@ -113,15 +113,9 @@ abstract class ViewHtml extends View
 
             return $body->getContents();
         } catch (\Throwable $ex) {
-            (new AppErrorEvent($ex->getMessage(), [
-                __METHOD__,
-                $path,
-                $params,
-                $ex->getFile(),
-                $ex->getLine(),
-            ]))->dispatch($this->eventDispatcher());
+            error_log($ex->getMessage() . ' ' . json_encode([$path, $params, __METHOD__, $ex->getFile(), $ex->getLine()], JSON_UNESCAPED_UNICODE));
 
-            return null;
+            return sprintf('ERR: GET %s', $path);
         }
     }
 
@@ -133,25 +127,16 @@ abstract class ViewHtml extends View
     protected function scFetch(string $path, array $params = []): mixed
     {
         try {
-            $routerMatch = $this->router()->match($path, 'SETCMS');
+            $json = (string) $this->scRender($path, $params);
 
-            $controller = ControllerViaPSR7::as(($routerMatch->target)::new($this->container));
-            $controller->name = $routerMatch->name;
-            $controller->params = $routerMatch->params;
-            $controller->request = $this->request->withAttribute('parentRequest', $this->request)->withQueryParams($params)->withAttribute('view', $this)->withMethod('GET')->withUri(new Uri($path));
-            $controller->withAttr('skipACL', true);
-            $controller->serve();
+            if (!json_validate($json)) {
+                throw new \Exception('JSON INVALID');
+            }
 
-            return get_object_vars($controller);
+            return json_decode($json, true);
         } catch (\Throwable $ex) {
-            (new AppErrorEvent($ex->getMessage(), [
-                __METHOD__,
-                $path,
-                $params,
-                $ex->getFile(),
-                $ex->getLine(),
-            ]))->dispatch($this->eventDispatcher());
-
+            error_log($ex->getMessage() . ' ' . json_encode([$path, $params, __METHOD__, $ex->getFile(), $ex->getLine()], JSON_UNESCAPED_UNICODE));
+            
             return null;
         }
     }
