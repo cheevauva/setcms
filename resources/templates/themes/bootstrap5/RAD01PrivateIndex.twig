@@ -2,7 +2,7 @@
 {% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_toolbar %}
-    <a href="{{ scLink('AdminRAD01New', {'id': scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать</a>
+    <a href="{{ url('AdminRAD01New', {'id': UUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать</a>
 {% endblock %}
 
 {% block content_title %}RAD01{% endblock %}
@@ -65,7 +65,7 @@
                             {
                                 label: 'Удалить',
                                 type: 'action-btn',
-                                redirect: scLink('AdminRAD01Index'),
+                                redirect: url('AdminRAD01Index'),
                                 route: 'AdminRAD01Delete',
                                 params: {
                                     id: entity.id

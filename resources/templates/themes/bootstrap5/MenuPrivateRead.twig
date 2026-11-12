@@ -3,11 +3,11 @@
 {% block title %}{{ options.title }} - {{ menu.title }}{% endblock %}
 
 {% block content_toolbar %}
-    {% if scHasAccess('AdminMenuIndex') %}
-        <a href="{{ scLink('AdminMenuIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    {% if can('AdminMenuIndex') %}
+        <a href="{{ url('AdminMenuIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
     {% endif %}
-    {% if scHasAccess('AdminMenuEdit') %}
-        <a href="{{ scLink('AdminMenuEdit', {id: menu.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    {% if can('AdminMenuEdit') %}
+        <a href="{{ url('AdminMenuEdit', {id: menu.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
     {% endif %}
 {% endblock %}
 

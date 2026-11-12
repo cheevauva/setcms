@@ -1,24 +1,24 @@
 <div class="position-sticky">
     <div class="p-4 mb-3 bg-light rounded">
-        {% if scHasAccess('UserProfile') %}
+        {% if can('UserProfile') %}
             Вы авторизованы, как {{ ctx.currentUser.username }}
             <br/>
         {% endif %}
         <span class="navbar-text">
-            {% if scHasAccess('UserLogin') %}
-                <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('UserLogin') }}">Вход</a>
+            {% if can('UserLogin') %}
+                <a class="btn btn-sm btn-outline-secondary" href="{{ url('UserLogin') }}">Вход</a>
             {% endif %}
-            {% if scHasAccess('UserRegistration') %}
-                <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('UserRegistration') }}">Регистрация</a>
+            {% if can('UserRegistration') %}
+                <a class="btn btn-sm btn-outline-secondary" href="{{ url('UserRegistration') }}">Регистрация</a>
             {% endif %}
-            {% if scHasAccess('UserProfile') %}
-                <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('UserProfile') }}">Профиль</a>
+            {% if can('UserProfile') %}
+                <a class="btn btn-sm btn-outline-secondary" href="{{ url('UserProfile') }}">Профиль</a>
             {% endif %}
-            {% if scHasAccess('AdminHome') %}
-                <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('AdminHome') }}">Администрирование</a>
+            {% if can('AdminHome') %}
+                <a class="btn btn-sm btn-outline-secondary" href="{{ url('AdminHome') }}">Администрирование</a>
             {% endif %}
-            {% if scHasAccess('UserLogout') %}
-                <a class="btn btn-sm btn-outline-secondary" href="{{ scLink('UserLogout') }}">Выйти</a>
+            {% if can('UserLogout') %}
+                <a class="btn btn-sm btn-outline-secondary" href="{{ url('UserLogout') }}">Выйти</a>
             {% endif %}
         </span>
     </div>

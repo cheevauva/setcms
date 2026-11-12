@@ -15,7 +15,6 @@ class ViewTwig extends ViewHtml
     private Environment $twig;
     protected ?string $customTemplate = null;
 
-
     protected function twig(): Environment
     {
         if (!empty($this->twig)) {
@@ -59,15 +58,21 @@ class ViewTwig extends ViewHtml
     }
 
     #[\Override]
-    protected function scRender(string $path, ?array $params = []): mixed
+    protected function getHtml(string $path, ?array $params = []): mixed
     {
-        return new Markup(parent::scRender($path, $params), 'UTF-8');
+        return new Markup(parent::getHtml($path, $params), 'UTF-8');
     }
 
     #[\Override]
-    protected function scUUID(): string
+    protected function getJson(string $path, ?array $params = []): ?array
     {
-        return strval(parent::scUUID());
+        return parent::getJson($path, $params);
+    }
+
+    #[\Override]
+    protected function UUID(): string
+    {
+        return strval(parent::UUID());
     }
 
     #[\Override]

@@ -3,8 +3,8 @@
 {% block content_title %}{{ post.title }}{% endblock %}
 
 {% block content_toolbar %}
-    <a href="{{ scLink('AdminPostIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
-    <a href="{{ scLink('AdminPostEdit', {id: post.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    <a href="{{ url('AdminPostIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    <a href="{{ url('AdminPostEdit', {id: post.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
 {% endblock %}
 
 {% block content %}

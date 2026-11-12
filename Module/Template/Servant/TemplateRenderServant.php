@@ -48,7 +48,7 @@ abstract class TemplateRenderServant extends \UUA\Servant
             ]
         ]));
 
-        $twig->addFunction(new TwigFunction('scLink', function (string $route, array $params = [], array|string $query = []) {
+        $twig->addFunction(new TwigFunction('url', function (string $route, array $params = [], array|string $query = []) {
             $link = $this->router()->generate($route, $params);
 
             if ($query && is_string($query)) {

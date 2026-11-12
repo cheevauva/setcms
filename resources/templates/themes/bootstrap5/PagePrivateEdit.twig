@@ -3,8 +3,8 @@
 {% block content_title %}{% if entity.id %}Редактировать{% else %}Создать{% endif %}{% endblock %}
 {% block content %}
     <setcms-editview>
-        <action>{{ scLink(entity.id ? 'AdminPageUpdate' : 'AdminPageCreate', {id: (entity.id ?: scUUID()) }) }}</action>
-        <redirect>{{ scLink('AdminPageRead', {id: '${entity.id.uuid}'}) }}</redirect>
+        <action>{{ url(entity.id ? 'AdminPageUpdate' : 'AdminPageCreate', {id: (entity.id ?: UUID()) }) }}</action>
+        <redirect>{{ url('AdminPageRead', {id: '${entity.id.uuid}'}) }}</redirect>
         <actions>
             <fields>
                 <field type="submit" label="Сохранить"></field>
@@ -13,7 +13,7 @@
         <panels>
             <panel name="default" label="Основные данные" active="true">
                 <fields>
-                    <field type="hidden" name="entity.id" value="{{ entity.id|default(scUUID()) }}"></field>
+                    <field type="hidden" name="entity.id" value="{{ entity.id|default(UUID()) }}"></field>
                     <field type="input" name="entity.slug" label="slug" value="{{ entity.slug }}"></field>
                     <field type="input" name="entity.title" label="title" value="{{ entity.title }}"></field>
                     <field type="textarea" name="entity.content" label="content" value="{{ entity.content }}"></field>

@@ -2,7 +2,7 @@
 {% import scShortPath('macros/crud.twig') as crud %}
 
 {% block content_toolbar %}
-    <a href="{{ scLink('AdminPostNew', {'id': scUUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
+    <a href="{{ url('AdminPostNew', {'id': UUID()}) }}" class="btn btn-sm btn-outline-secondary">Создать запись</a>
 {% endblock %}
 
 {% block content_title %}Посты{% endblock %}

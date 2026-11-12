@@ -3,7 +3,7 @@
         {% for item in items %}
             <li class="nav-item">
                 {% if item.route %}
-                    <a class="nav-link {% if item.route == ctx.request %}active{% endif %}" href="{{ scLink(item.route) }}">
+                    <a class="nav-link {% if item.route == ctx.request %}active{% endif %}" href="{{ url(item.route) }}">
                         {{ item.label }}
                     </a>
                 {% else %}

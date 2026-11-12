@@ -12,7 +12,7 @@ VALUES
     'Сброс пароля', 
     'Здравствуйте, {{ user.username }}
     Вы запроси ссылку на сброс пароля.
-    Ваша ссылка: {{ scBaseUrl() }}{{ scLink(''UserResetPasswordByToken'', {token: userResetToken.token}) }}
+    Ваша ссылка: {{ scBaseUrl() }}{{ url(''UserResetPasswordByToken'', {token: userResetToken.token}) }}
 
     Если это были не вы, то проигнорируйте это сообщение
 

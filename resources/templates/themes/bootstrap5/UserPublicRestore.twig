@@ -2,14 +2,14 @@
 
 {% block content %}
     <form class="setcms-form row g-1" 
-          setcms-action="{{ scLink('UserDoRestore') }}"
-          setcms-redirect="{{ scLink('UserLogin') }}"
+          setcms-action="{{ url('UserDoRestore') }}"
+          setcms-redirect="{{ url('UserLogin') }}"
           >
         <setcms-field name="email" placeholder="Электронная почта" type="email"></setcms-field>
         <setcms-field name="captcha" label="Код с картинки" type="captcha">
             <use>{{ useCaptcha }}</use>
-            <generate>{{ scLink('CaptchaGenerate') }}</generate>
-            <solve>{{ scLink('CaptchaSolve') }}</solve>
+            <generate>{{ url('CaptchaGenerate') }}</generate>
+            <solve>{{ url('CaptchaSolve') }}</solve>
         </setcms-field>
         <setcms-field type="submit" label="Отправить"></setcms-field>
     </form>

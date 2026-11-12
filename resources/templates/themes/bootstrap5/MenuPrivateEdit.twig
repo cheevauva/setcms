@@ -4,8 +4,8 @@
 
 {% block content %}
     <setcms-editview>
-        <action>{{ scLink(menu.id ? 'AdminMenuUpdate' : 'AdminMenuCreate', {id: (menu.id ?: scUUID()) }) }}</action>
-        <redirect>{{ scLink('AdminMenuRead', {id: '${menu.id.uuid}'}) }}</redirect>
+        <action>{{ url(menu.id ? 'AdminMenuUpdate' : 'AdminMenuCreate', {id: (menu.id ?: UUID()) }) }}</action>
+        <redirect>{{ url('AdminMenuRead', {id: '${menu.id.uuid}'}) }}</redirect>
         <actions>
             <fields>
                 <field type="submit" label="Сохранить"></field>
@@ -14,7 +14,7 @@
         <panels>
             <panel name="default" label="Основные данные" active="true">
                 <fields>
-                    <field type="hidden" name="menu.id" value="{{ menu.id|default(scUUID()) }}"></field>
+                    <field type="hidden" name="menu.id" value="{{ menu.id|default(UUID()) }}"></field>
                     <field type="input" name="menu.label" label="Надпись" value="{{ menu.label }}"></field>
                     <field type="input" name="menu.route" label="Маршрут" value="{{ menu.route }}"></field>
                     <field type="textarea" name="menu.params" label="Параметры" value="{{ menu.params|json_encode() }}"></field>

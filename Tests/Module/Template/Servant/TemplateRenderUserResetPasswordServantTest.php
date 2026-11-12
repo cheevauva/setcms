@@ -49,7 +49,7 @@ class TemplateRenderUserResetPasswordServantTest extends \Tests\TestEasy
                     $template = new TemplateEntity();
                     $template->slug = 'resetPassword';
                     $template->title = '{{ user.username }}, ваша ссылка для сброса пароля';
-                    $template->template = "{{ user.username }}, ваша ссылка для сброса пароля {{ scBaseUrl() }}{{ scLink('UserResetPasswordByToken', {token: userResetToken.token}) }}";
+                    $template->template = "{{ user.username }}, ваша ссылка для сброса пароля {{ scBaseUrl() }}{{ url('UserResetPasswordByToken', {token: userResetToken.token}) }}";
 
                     return $template;
                 }

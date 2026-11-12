@@ -3,8 +3,8 @@
 {% block content_title %}{% if email.id %}Редактировать{% else %}Создать{% endif %}{% endblock %}
 {% block content %}
     <setcms-editview>
-        <action>{{ scLink(email.id ? 'AdminEmailUpdate' : 'AdminEmailCreate', {id: (email.id ?: scUUID()) }) }}</action>
-        <redirect>{{ scLink('AdminEmailRead', {id: '${email.id.uuid}'}) }}</redirect>
+        <action>{{ url(email.id ? 'AdminEmailUpdate' : 'AdminEmailCreate', {id: (email.id ?: UUID()) }) }}</action>
+        <redirect>{{ url('AdminEmailRead', {id: '${email.id.uuid}'}) }}</redirect>
         <actions>
             <fields>
                 <field type="submit" label="Сохранить"></field>
@@ -13,7 +13,7 @@
         <panels>
             <panel name="default" label="Основные данные" active="true">
                 <fields>
-                    <field type="hidden" name="email.id" value="{{ email.id|default(scUUID()) }}"></field>
+                    <field type="hidden" name="email.id" value="{{ email.id|default(UUID()) }}"></field>
                     <field type="input" name="email.subject" label="Subject" value="{{ email.subject }}"></field>
                 </fields>
             </panel>

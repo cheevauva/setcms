@@ -1,7 +1,7 @@
 <!doctype html>
-<html>
-    {% set theme = "bootstrap5" %}
-    {% set options = scFetch('/sub/configurations/main').data  %}
+<html data-bs-theme="dark">
+    {% set options = getJson('/sub/configurations/main').data  %}
+    {% set theme = options.theme|default('bootstrap5') %}
     <head>
         <title>{% block title %}{{ options.title }}{% endblock %}</title>
         <meta name="description" content="{{ options.description }}"/>
@@ -30,17 +30,17 @@
             <header class="blog-header py-3">
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <div class="container-fluid">
-                        {% if options.main_page_show %}
-                            <a class="navbar-brand" href="{{ scLink(options.main_page_path) }}">{{ options.main_page_label }}</a>
+                        {% if options.showMainPage %}
+                            <a class="navbar-brand" href="{{ url(options.mainPagePath) }}">{{ options.mainPageLabel }}</a>
                             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                                 <span class="navbar-toggler-icon"></span>
                             </button>
                         {% endif %}
-                        {{ scRender('/menu/for/main') }}
+                        {{ getHtml('/menu/for/main') }}
                     </div>
                 </nav>
             </header>
-            {{ scRender('/menu/for/submain') }}
+            {{ getHtml('/menu/for/submain') }}
         </div>
         <main class="container">
             <div class="row g-5">
@@ -50,11 +50,11 @@
                 <div class="col-md-4">
                     <div class="position-sticky">
                         <div class="p-4 mb-3 bg-light rounded">
-                            {{ scRender('/page/block/demo') }}
+                            {{ getHtml('/page/block/demo') }}
                         </div>
                     </div>
-                    {{ scRender('/menu/for/actions') }}
-                    {{ scRender('/menu/for/context') }}
+                    {{ getHtml('/menu/for/actions') }}
+                    {{ getHtml('/menu/for/context') }}
                 </div>
             </div>
         </main>

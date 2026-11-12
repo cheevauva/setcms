@@ -3,17 +3,17 @@
 {% block title %}{{ options.title }} - {{ rad01.title }}{% endblock %}
 
 {% block content_toolbar %}
-    {% if scHasAccess('AdminRAD01Index') %}
-        <a href="{{ scLink('AdminRAD01Index') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    {% if can('AdminRAD01Index') %}
+        <a href="{{ url('AdminRAD01Index') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
     {% endif %}
-    {% if scHasAccess('AdminRAD01Edit') %}
-        <a href="{{ scLink('AdminRAD01Edit', {id: rad01.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    {% if can('AdminRAD01Edit') %}
+        <a href="{{ url('AdminRAD01Edit', {id: rad01.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
     {% endif %}
-    {% if scHasAccess('AdminRAD01Delete') %}
+    {% if can('AdminRAD01Delete') %}
         <a class="setcms-action-btn btn btn-sm btn-outline-secondary" 
            setcms-method="POST" 
-           setcms-action="{{ scLink('AdminRAD01Delete', {id: rad01.id}) }}"  
-           setcms-redirect="{{ scLink('AdminRAD01Index') }}">
+           setcms-action="{{ url('AdminRAD01Delete', {id: rad01.id}) }}"  
+           setcms-redirect="{{ url('AdminRAD01Index') }}">
             Удалить
         </a>
     {% endif %}

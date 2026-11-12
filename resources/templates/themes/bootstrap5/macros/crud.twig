@@ -19,19 +19,19 @@
             </button>
             <ul class="dropdown-menu">
                 {% for action in column.actions %}
-                    {% if scHasAccess(action.route) %}
+                    {% if can(action.route) %}
                         {% if action.type == 'action-btn' %}
                             <li><a 
                                     class="dropdown-item setcms-action-btn"  
                                     setcms-method="POST" 
-                                    setcms-action="{{ scLink(action.route, action.params) }}"  
-                                    setcms-redirect="{{ scLink('AdminRAD99Index') }}">
+                                    setcms-action="{{ url(action.route, action.params) }}"  
+                                    setcms-redirect="{{ url('AdminRAD99Index') }}">
                                     {{ action.label }}
                                 </a></li>
                         {% endif %}
                         
                         {% if action.type is empty %}
-                            <li><a class="dropdown-item"  href="{{ scLink(action.route, action.params) }}">{{ action.label }}</a></li>
+                            <li><a class="dropdown-item"  href="{{ url(action.route, action.params) }}">{{ action.label }}</a></li>
                         {% endif %}
                     {% endif %}
                 {% endfor %}

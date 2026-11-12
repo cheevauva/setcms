@@ -5,8 +5,8 @@
 {% block content %}
     {{ 
         crud.editview({
-            action: scLink(rad99.id ? 'AdminRAD99Update' : 'AdminRAD99Create', {id: (rad99 ? rad99.id : scUUID()) }),
-            redirect: scLink('AdminRAD99Read', {id: '${rad99.id.uuid}'}),
+            action: url(rad99.id ? 'AdminRAD99Update' : 'AdminRAD99Create', {id: (rad99 ? rad99.id : UUID()) }),
+            redirect: url('AdminRAD99Read', {id: '${rad99.id.uuid}'}),
             actions: {
                 fields: [
                     {
@@ -24,7 +24,7 @@
                         {
                             type: 'hidden',
                             name: 'rad99.id',
-                            value: rad99.id|default(scUUID())
+                            value: rad99.id|default(UUID())
                         },
                         {name: 'rad99.field99', value: rad99.field99, type: 'input', label: 'field99'},
                     ]

@@ -3,11 +3,11 @@
 {% block title %}{{ options.title }} - {{ entity.title }}{% endblock %}
 
 {% block content_toolbar %}
-    {% if scHasAccess('AdminPageIndex') %}
-        <a href="{{ scLink('AdminPageIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    {% if can('AdminPageIndex') %}
+        <a href="{{ url('AdminPageIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
     {% endif %}
-    {% if scHasAccess('AdminPageEdit') %}
-        <a href="{{ scLink('AdminPageEdit', {id: entity.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    {% if can('AdminPageEdit') %}
+        <a href="{{ url('AdminPageEdit', {id: entity.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
     {% endif %}
 {% endblock %}
 

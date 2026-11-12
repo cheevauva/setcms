@@ -5,8 +5,8 @@
 {% block content %}
     {{ 
         crud.editview({
-            action: scLink(template.id ? 'AdminTemplateUpdate' : 'AdminTemplateCreate', {id: (template ? template.id : scUUID()) }),
-            redirect: scLink('AdminTemplateRead', {id: '${template.id.uuid}'}),
+            action: url(template.id ? 'AdminTemplateUpdate' : 'AdminTemplateCreate', {id: (template ? template.id : UUID()) }),
+            redirect: url('AdminTemplateRead', {id: '${template.id.uuid}'}),
             actions: {
                 fields: [
                     {
@@ -24,7 +24,7 @@
                         {
                             type: 'hidden',
                             name: 'template.id',
-                            value: template.id|default(scUUID())
+                            value: template.id|default(UUID())
                         },
                         {name: 'template.slug', value: template.slug, type: 'input', label: 'Алиас'},
                         {name: 'template.title', value: template.title, type: 'input', label: 'Заголовок'},

@@ -3,8 +3,8 @@
 {% block content_title %}{{ post.title }}{% endblock %}
 
 {% block content_toolbar %}
-    <a href="{{ scLink('AdminUserIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
-    <a href="{{ scLink('AdminUserEdit', {id: user.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    <a href="{{ url('AdminUserIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    <a href="{{ url('AdminUserEdit', {id: user.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
 {% endblock %}
 
 {% block content %}

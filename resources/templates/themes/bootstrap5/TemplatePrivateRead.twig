@@ -3,11 +3,11 @@
 {% block title %}{{ options.title }} - {{ template.title }}{% endblock %}
 
 {% block content_toolbar %}
-    {% if scHasAccess('AdminTemplateIndex') %}
-        <a href="{{ scLink('AdminTemplateIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    {% if can('AdminTemplateIndex') %}
+        <a href="{{ url('AdminTemplateIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
     {% endif %}
-    {% if scHasAccess('AdminTemplateEdit') %}
-        <a href="{{ scLink('AdminTemplateEdit', {id: template.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    {% if can('AdminTemplateEdit') %}
+        <a href="{{ url('AdminTemplateEdit', {id: template.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
     {% endif %}
 {% endblock %}
 

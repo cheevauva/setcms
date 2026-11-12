@@ -6,7 +6,6 @@ namespace SetCMS\View;
 
 use SetCMS\Controller\ControllerViaPSR7;
 use SetCMS\UUID;
-use SetCMS\Event\AppErrorEvent;
 use Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
 use Module\ACL\VO\ACLRoleVO;
 use SetCMS\Controller\Exception\ControllerEmptyResponseException;
@@ -64,14 +63,14 @@ abstract class ViewHtml extends View
 
     protected function registerFunctions(): void
     {
-        $this->addFunction('scRender', $this->scRender(...));
-        $this->addFunction('scFetch', $this->scFetch(...));
-        $this->addFunction('scUUID', $this->scUUID(...));
-        $this->addFunction('scLink', $this->scLink(...));
+        $this->addFunction('getJson', $this->getJson(...));
+        $this->addFunction('getHtml', $this->getHtml(...));
+        $this->addFunction('UUID', $this->UUID(...));
+        $this->addFunction('url', $this->url(...));
         $this->addFunction('scLongPath', $this->scLongPath(...));
         $this->addFunction('scShortPath', $this->scShortPath(...));
         $this->addFunction('scBaseUrl', $this->scBaseUrl(...));
-        $this->addFunction('scHasAccess', $this->scHasAccess(...));
+        $this->addFunction('can', $this->can(...));
     }
 
     abstract protected function assign(string $name, mixed $value): void;
@@ -89,33 +88,37 @@ abstract class ViewHtml extends View
         return file_exists($this->scLongPath($name));
     }
 
-    /**
-     * @param string $path`
-     * @param array<string, mixed> $params
-     * @return mixed
-     */
-    #[\ReturnTypeWillChange]
-    protected function scRender(string $path, ?array $params = []): mixed
+    protected function fetch(string $path, ?array $params = []): string
     {
         $params ??= [];
 
+        $routerMatch = $this->router()->match($path, 'GET');
+
+        $controller = ControllerViaPSR7::as(($routerMatch->target)::new($this->container));
+        $controller->name = $routerMatch->name;
+        $controller->params = $routerMatch->params;
+        $controller->request = $this->request->withQueryParams($params)->withMethod('GET')->withUri(new Uri($path))->withHeader('Root-Context-Path', $this->request->getUri()->getPath())->withHeader('Root-Context-Query', $this->request->getUri()->getQuery());
+        $controller->serve();
+
+        $body = ($controller->response ?? throw new ControllerEmptyResponseException($routerMatch->target))->getBody();
+        $body->rewind();
+
+        return $body->getContents();
+    }
+
+    /**
+     * @param string $path
+     * @param array<string,mixed> $params
+     * @return mixed
+     */
+    protected function getHtml(string $path, array $params = []): mixed
+    {
         try {
-            $routerMatch = $this->router()->match($path, 'GET');
-
-            $controller = ControllerViaPSR7::as(($routerMatch->target)::new($this->container));
-            $controller->name = $routerMatch->name;
-            $controller->params = $routerMatch->params;
-            $controller->request = $this->request->withQueryParams($params)->withMethod('GET')->withUri(new Uri($path))->withHeader('Root-Context-Path', $this->request->getUri()->getPath())->withHeader('Root-Context-Query', $this->request->getUri()->getQuery());
-            $controller->serve();
-
-            $body = ($controller->response ?? throw new ControllerEmptyResponseException($routerMatch->target))->getBody();
-            $body->rewind();
-
-            return $body->getContents();
+            return $this->fetch($path, $params);
         } catch (\Throwable $ex) {
             error_log($ex->getMessage() . ' ' . json_encode([$path, $params, __METHOD__, $ex->getFile(), $ex->getLine()], JSON_UNESCAPED_UNICODE));
 
-            return sprintf('ERR: GET %s', $path);
+            return sprintf('<span style="color: black; background-color: red;padding: 5px">ERR: %s</span>', $path);
         }
     }
 
@@ -124,10 +127,10 @@ abstract class ViewHtml extends View
      * @param array<string,mixed> $params
      * @return mixed
      */
-    protected function scFetch(string $path, array $params = []): mixed
+    protected function getJson(string $path, array $params = []): ?array
     {
         try {
-            $json = (string) $this->scRender($path, $params);
+            $json = $this->fetch($path, $params);
 
             if (!json_validate($json)) {
                 throw new \Exception('JSON INVALID');
@@ -136,13 +139,13 @@ abstract class ViewHtml extends View
             return json_decode($json, true);
         } catch (\Throwable $ex) {
             error_log($ex->getMessage() . ' ' . json_encode([$path, $params, __METHOD__, $ex->getFile(), $ex->getLine()], JSON_UNESCAPED_UNICODE));
-            
+
             return null;
         }
     }
 
     #[\ReturnTypeWillChange]
-    protected function scUUID(): string
+    protected function UUID(): string
     {
         return strval(new UUID);
     }
@@ -154,7 +157,7 @@ abstract class ViewHtml extends View
      * @return string
      */
     #[\ReturnTypeWillChange]
-    protected function scLink(string $route, array $params = [], array|string $query = []): string
+    protected function url(string $route, array $params = [], array|string $query = []): string
     {
         $link = $this->router()->generate($route, $params);
 
@@ -206,7 +209,7 @@ abstract class ViewHtml extends View
         return sprintf('themes/%s/%s', $this->theme(), $name);
     }
 
-    protected function scHasAccess(string $route): bool
+    protected function can(string $route): bool
     {
         return ACLCheckByRoleAndPrivilegeServant::call($this, ACLRoleVO::as($this->request->getAttribute('currentUserRole')), $route)->isAllow;
     }

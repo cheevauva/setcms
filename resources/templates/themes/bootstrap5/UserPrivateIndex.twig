@@ -36,11 +36,11 @@
                             </field>
                             <field type="actions">
                                 <actions>
-                                    <action label="Просмотр" route="{{ scLink('AdminUserRead', {id: user.id}) }}">
-                                        <access>{{ scHasAccess('AdminUserRead') }}</access>
+                                    <action label="Просмотр" route="{{ url('AdminUserRead', {id: user.id}) }}">
+                                        <access>{{ can('AdminUserRead') }}</access>
                                     </action>
-                                    <action label="Редактировать" route="{{ scLink('AdminUserEdit', {id: user.id}) }}">
-                                        <access>{{ scHasAccess('AdminUserEdit') }}</access>
+                                    <action label="Редактировать" route="{{ url('AdminUserEdit', {id: user.id}) }}">
+                                        <access>{{ can('AdminUserEdit') }}</access>
                                     </action>
                                 </actions>
                             </field>

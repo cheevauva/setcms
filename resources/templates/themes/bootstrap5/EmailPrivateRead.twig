@@ -3,11 +3,11 @@
 {% block title %}{{ options.title }} - {{ email.title }}{% endblock %}
 
 {% block content_toolbar %}
-    {% if scHasAccess('AdminEmailIndex') %}
-        <a href="{{ scLink('AdminEmailIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
+    {% if can('AdminEmailIndex') %}
+        <a href="{{ url('AdminEmailIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
     {% endif %}
-    {% if scHasAccess('AdminEmailEdit') %}
-        <a href="{{ scLink('AdminEmailEdit', {id: email.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    {% if can('AdminEmailEdit') %}
+        <a href="{{ url('AdminEmailEdit', {id: email.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
     {% endif %}
 {% endblock %}
 

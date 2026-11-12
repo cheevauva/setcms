@@ -2,8 +2,8 @@
 
 {% block content %}
     <form class="setcms-form row g-1" 
-          setcms-action="{{ scLink('MigrationDoUp') }}"
-          setcms-redirect="{{ scLink('Home') }}"
+          setcms-action="{{ url('MigrationDoUp') }}"
+          setcms-redirect="{{ url('Home') }}"
           >
         <setcms-field name="dbName" placeholder="База данных" type="text"></setcms-field>
         <setcms-field name="secretKey" placeholder="Секретный ключ" type="password"></setcms-field>

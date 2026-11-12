@@ -4,8 +4,8 @@
 
 {% block content %}
     <setcms-editview>
-        <action>{{ scLink(user.id ? 'AdminUserUpdate' : 'AdminUserCreate', {id: (user.id ?: scUUID()) }) }}</action>
-        <redirect>{{ scLink('AdminUserRead', {id: '${user.id.uuid}'}) }}</redirect>
+        <action>{{ url(user.id ? 'AdminUserUpdate' : 'AdminUserCreate', {id: (user.id ?: UUID()) }) }}</action>
+        <redirect>{{ url('AdminUserRead', {id: '${user.id.uuid}'}) }}</redirect>
         <actions>
             <fields>
                 <field type="submit" label="Сохранить"></field>
@@ -14,7 +14,7 @@
         <panels>
             <panel name="default" label="Основные данные" active="true">
                 <fields>
-                    <field type="hidden" name="user.id" value="{{ user.id|default(scUUID()) }}"></field>
+                    <field type="hidden" name="user.id" value="{{ user.id|default(UUID()) }}"></field>
                     <field type="select" name="user.role" label="Роль" value="{{ user.role.value }}">
                         <options>{{ {
                                 'guest': 'Гость',

@@ -11,7 +11,8 @@ class ConfigurationPublicMainView extends \SetCMS\View\ViewJson
     public string $title = 'SetCMS';
     public string $description = 'SetCMS - система управления сайтом';
     public string $keywords = 'cms, setcms, setcms4, система управления сайтом';
-    public bool $main_page_show = true;
-    public string $main_page_path = 'Home';
-    public string $main_page_label = 'Главная';
+    public bool $showMainPage = true;
+    public string $mainPagePath = 'Home';
+    public string $mainPageLabel = 'Главная';
+    public string $theme = 'bootstrap5';
 }
