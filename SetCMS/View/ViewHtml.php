@@ -88,6 +88,11 @@ abstract class ViewHtml extends View
         return file_exists($this->scLongPath($name));
     }
 
+    /**
+     * @param string $path
+     * @param array<string, mixed>|null $params
+     * @return string
+     */
     protected function fetch(string $path, ?array $params = []): string
     {
         $params ??= [];
@@ -108,10 +113,10 @@ abstract class ViewHtml extends View
 
     /**
      * @param string $path
-     * @param array<string,mixed> $params
+     * @param array<string, mixed> $params
      * @return mixed
      */
-    protected function getHtml(string $path, array $params = []): mixed
+    protected function getHtml(string $path, ?array $params = []): mixed
     {
         try {
             return $this->fetch($path, $params);
@@ -124,10 +129,10 @@ abstract class ViewHtml extends View
 
     /**
      * @param string $path
-     * @param array<string,mixed> $params
-     * @return mixed
+     * @param array<string, mixed> $params
+     * @return array<mixed, mixed>|null
      */
-    protected function getJson(string $path, array $params = []): ?array
+    protected function getJson(string $path, ?array $params = []): ?array
     {
         try {
             $json = $this->fetch($path, $params);
