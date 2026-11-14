@@ -53,7 +53,7 @@ class EmailPrivateUpdateController extends ControllerViaPSR7
         }
 
         if ($object instanceof EmailPrivateUpdateView) {
-            $object->email = $this->entity;
+            $object->entity = $this->entity;
         }
     }
 

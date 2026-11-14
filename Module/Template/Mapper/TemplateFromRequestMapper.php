@@ -9,18 +9,18 @@ use Module\Template\Entity\TemplateEntity;
 class TemplateFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
-    public protected(set) TemplateEntity $template;
+    public protected(set) TemplateEntity $entity;
 
     #[\Override]
     protected function run(): void
     {
         $body = $this->validationBody();
-        $body->array('template')->notEmpty()->validate();
+        $body->array('entity')->notEmpty()->validate();
 
-        $this->template = new TemplateEntity();
-        $this->template->id = $body->uuid('template.id')->val();
-        $this->template->template = $body->string('template.template')->notEmpty()->val();
-        $this->template->slug = $body->string('template.slug')->notEmpty()->val();
-        $this->template->title = $body->string('template.title')->notEmpty()->val();
+        $this->entity = new TemplateEntity();
+        $this->entity->id = $body->uuid('entity.id')->val();
+        $this->entity->entity = $body->string('entity.entity')->notEmpty()->val();
+        $this->entity->slug = $body->string('entity.slug')->notEmpty()->val();
+        $this->entity->title = $body->string('entity.title')->notEmpty()->val();
     }
 }

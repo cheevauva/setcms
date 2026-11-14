@@ -35,11 +35,12 @@ class UserResetTokenSendToUserServant extends \UUA\Servant
     #[\Override]
     protected function run(): void
     {
+        $user = $this->user;
         $userResetToken = $this->userResetToken = new UserResetTokenEntity();
 
         if ($this->isRefreshExistsToken) {
             $getByUserId = UserResetTokenRetrieveManyByCriteriaDAO::new($this);
-            $getByUserId->userId = $this->user->id;
+            $getByUserId->userId = $user->id;
             $getByUserId->expectOne = true;
             $getByUserId->allowEmptyResult = true;
             $getByUserId->limit = 1;
@@ -48,7 +49,7 @@ class UserResetTokenSendToUserServant extends \UUA\Servant
             $userResetToken = UserResetTokenEntity::as($getByUserId->entityOrNull ?? new UserResetTokenEntity());
         }
 
-        $userResetToken->userId = $this->user->id;
+        $userResetToken->userId = $user->id;
         $userResetToken->dateExpired = new \DateTimeImmutable(sprintf('+%s seconds', $this->tokenExpiredSeconds));
         $userResetToken->token = (new UUID)->uuid;
 
@@ -56,13 +57,13 @@ class UserResetTokenSendToUserServant extends \UUA\Servant
 
         $template = TemplateRenderUserResetPasswordServant::new($this);
         $template->userResetToken = $userResetToken;
-        $template->user = $this->user;
+        $template->user = $user;
         $template->serve();
 
         $email = new EmailEntity();
         $email->subject = $template->templateRendered->title;
         $email->body = $template->templateRendered->content;
-        $email->to = $this->user->email;
+        $email->to = $user->email;
         $email->from = $this->addressFromSending;
 
         $sendEmail = EmailSendServant::new($this);

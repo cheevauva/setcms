@@ -1,9 +1,9 @@
-{% if page %}
-    <h4 class="fst-italic">{{ page.title }}</h4>
+{% if entity %}
+    <h4 class="fst-italic">{{ entity.title }}</h4>
 {% endif %}
 <p class="mb-0">
-    {% if page %}
-        {{ page.content|raw }}
+    {% if entity %}
+        {{ entity.content|raw }}
     {% else %}
         Страница "{{ slug }}" не найдена
     {% endif %}

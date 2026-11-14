@@ -20,7 +20,7 @@ class PageMenuActionsByRequestServant extends \Module\Menu\MenuAction\Servant\Me
 
     protected function prepareEditAction(string $slug): void
     {
-        $getBySlug = PageGetBySlugDAO::new($this->container);
+        $getBySlug = PageGetBySlugDAO::new($this);
         $getBySlug->slug = $slug;
         $getBySlug->serve();
 
@@ -28,7 +28,7 @@ class PageMenuActionsByRequestServant extends \Module\Menu\MenuAction\Servant\Me
         $editAction->label = 'Редактировать страницу';
         $editAction->route = 'AdminPageEdit';
         $editAction->params = [
-            'id' => $getBySlug->page->id->uuid,
+            'id' => $getBySlug->entity->id->uuid,
         ];
     }
 

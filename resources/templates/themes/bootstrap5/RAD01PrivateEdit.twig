@@ -1,12 +1,12 @@
 {% extends scShortPath(layout ?? 'layout_admin.twig') %}
 {% import scShortPath('macros/crud.twig') as crud %}
 
-{% block content_title %}{% if rad01.id %}Редактировать{% else %}Создать{% endif %}{% endblock %}
+{% block content_title %}{% if entity.id %}Редактировать{% else %}Создать{% endif %}{% endblock %}
 {% block content %}
     {{ 
         crud.editview({
-            action: url(rad01.id ? 'AdminRAD01Update' : 'AdminRAD01Create', {id: (rad0101 ? rad01.id : UUID()) }),
-            redirect: url('AdminRAD01Read', {id: '${rad01.id.uuid}'}),
+            action: url(entity.id ? 'AdminRAD01Update' : 'AdminRAD01Create', {id: (rad0101 ? entity.id : UUID()) }),
+            redirect: url('AdminRAD01Read', {id: '${entity.id.uuid}'}),
             actions: {
                 fields: [
                     {
@@ -23,10 +23,10 @@
                     fields: [
                         {
                             type: 'hidden',
-                            name: 'rad01.id',
-                            value: rad01.id|default(UUID())
+                            name: 'entity.id',
+                            value: entity.id|default(UUID())
                         },
-                        {name: 'rad01.field01', value: rad01.field01, type: 'input', label: 'field01'},
+                        {name: 'entity.field01', value: entity.field01, type: 'input', label: 'field01'},
                     ]
                 }, 
             ]

@@ -10,5 +10,5 @@ use Module\Email\Entity\EmailEntity;
 class EmailPrivateReadView extends ViewTwig
 {
 
-    public EmailEntity $email;
+    public EmailEntity $entity;
 }

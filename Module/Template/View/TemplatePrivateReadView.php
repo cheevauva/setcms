@@ -10,5 +10,5 @@ use Module\Template\Entity\TemplateEntity;
 class TemplatePrivateReadView extends ViewTwig
 {
 
-    public TemplateEntity $template;
+    public TemplateEntity $entity;
 }

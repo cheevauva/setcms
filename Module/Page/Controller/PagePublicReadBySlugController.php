@@ -13,7 +13,7 @@ class PagePublicReadBySlugController extends \SetCMS\Controller\ControllerViaPSR
 {
 
     protected string $slug;
-    protected PageEntity $page;
+    protected PageEntity $entity;
 
     #[\Override]
     protected function domainUnits(): array
@@ -42,7 +42,7 @@ class PagePublicReadBySlugController extends \SetCMS\Controller\ControllerViaPSR
         }
 
         if ($object instanceof PagePublicReadView) {
-            $object->page = $this->page;
+            $object->entity = $this->entity;
         }
     }
 
@@ -52,7 +52,7 @@ class PagePublicReadBySlugController extends \SetCMS\Controller\ControllerViaPSR
         parent::from($object);
 
         if ($object instanceof PageGetBySlugDAO) {
-            $this->page = $object->page;
+            $this->entity = $object->entity;
         }
 
         if ($object instanceof PageSlugFromRequest) {

@@ -17,7 +17,7 @@ class RAD99GetByIdDAO extends \UUA\DAO
     #[\Override]
     protected function run(): void
     {
-        $getOne = RAD99RetrieveByCriteriaDAO::new($this->container);
+        $getOne = RAD99RetrieveByCriteriaDAO::new($this);
         $getOne->expectOne = true;
         $getOne->allowEmptyResult = false;
         $getOne->id = $this->id;

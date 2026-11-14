@@ -1,18 +1,18 @@
 {% extends scShortPath(layout ?? 'layout_admin.twig') %}
 
-{% block title %}{{ options.title }} - {{ rad01.title }}{% endblock %}
+{% block title %}{{ options.title }} - {{ entity.title }}{% endblock %}
 
 {% block content_toolbar %}
     {% if can('AdminRAD01Index') %}
         <a href="{{ url('AdminRAD01Index') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
     {% endif %}
     {% if can('AdminRAD01Edit') %}
-        <a href="{{ url('AdminRAD01Edit', {id: rad01.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+        <a href="{{ url('AdminRAD01Edit', {id: entity.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
     {% endif %}
     {% if can('AdminRAD01Delete') %}
         <a class="setcms-action-btn btn btn-sm btn-outline-secondary" 
            setcms-method="POST" 
-           setcms-action="{{ url('AdminRAD01Delete', {id: rad01.id}) }}"  
+           setcms-action="{{ url('AdminRAD01Delete', {id: entity.id}) }}"  
            setcms-redirect="{{ url('AdminRAD01Index') }}">
             Удалить
         </a>
@@ -22,7 +22,7 @@
 {% block content %}
     <table class="table">
         <tr>
-            <td>field01</td><td>{{ rad01.field01 }}</td>
+            <td>field01</td><td>{{ entity.field01 }}</td>
         </tr>
     </table>
 {% endblock %}

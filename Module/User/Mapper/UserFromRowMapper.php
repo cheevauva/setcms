@@ -17,11 +17,11 @@ class UserFromRowMapper extends EntityFromRowMapper
     #[\Override]
     protected function run(): void
     {
-        $user = $this->entity = new UserEntity;
-        $user->username = $this->string('username');
-        $user->password = $this->string('password');
-        $user->email = $this->string('email');
-        $user->role = UserRoleEnum::from($this->string('user_role'));
+        $entity = $this->entity = new UserEntity;
+        $entity->username = $this->string('username');
+        $entity->password = $this->string('password');
+        $entity->email = $this->string('email');
+        $entity->role = UserRoleEnum::from($this->string('user_role'));
 
         parent::run();
     }

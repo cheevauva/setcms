@@ -14,7 +14,7 @@ use SetCMS\Request\Mapper\RequestToIdMapper;
 class TemplatePrivateReadController extends ControllerViaPSR7
 {
 
-    protected TemplateEntity $template;
+    protected TemplateEntity $entity;
     protected UUID $id;
 
     #[\Override]
@@ -47,7 +47,7 @@ class TemplatePrivateReadController extends ControllerViaPSR7
         }
 
         if ($object instanceof TemplatePrivateReadView) {
-            $object->template = $this->template;
+            $object->entity = $this->entity;
         }
     }
 
@@ -57,7 +57,7 @@ class TemplatePrivateReadController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof TemplateRetrieveManyByCriteriaDAO) {
-            $this->template = $object->entity;
+            $this->entity = $object->entity;
         }
         
         if ($object instanceof RequestToIdMapper) {

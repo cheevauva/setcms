@@ -4,8 +4,8 @@
 
 {% block content %}
     <setcms-editview>
-        <action>{{ url(user.id ? 'AdminUserUpdate' : 'AdminUserCreate', {id: (user.id ?: UUID()) }) }}</action>
-        <redirect>{{ url('AdminUserRead', {id: '${user.id.uuid}'}) }}</redirect>
+        <action>{{ url(entity.id ? 'AdminUserUpdate' : 'AdminUserCreate', {id: (entity.id ?: UUID()) }) }}</action>
+        <redirect>{{ url('AdminUserRead', {id: '${entity.id.uuid}'}) }}</redirect>
         <actions>
             <fields>
                 <field type="submit" label="Сохранить"></field>
@@ -14,11 +14,11 @@
         <panels>
             <panel name="default" label="Основные данные" active="true">
                 <fields>
-                    <field type="hidden" name="user.id" value="{{ user.id|default(UUID()) }}"></field>
-                    <field type="select" name="user.role" label="Роль" value="{{ user.role.value }}">
+                    <field type="hidden" name="entity.id" value="{{ entity.id|default(UUID()) }}"></field>
+                    <field type="select" name="entity.role" label="Роль" value="{{ entity.role.value }}">
                         <options>{{ {
                                 'guest': 'Гость',
-                                'user': 'Пользователь',
+                                'entity': 'Пользователь',
                                 'admin': 'Админ'
                             }|json_encode() }}</options>
                     </field>
@@ -26,8 +26,8 @@
             </panel>
             <panel name="services" label="Служебные данные" active="false">
                 <fields>
-                    <field type="input" name="user.dateCreated" label="Дата создания" disabled="1" value="{{ user.dateCreated.format('Y-m-d H:i:s') }}"></field>
-                    <field type="input" name="user.dateModified" label="Дата изменения" disabled="1" value="{{ user.dateCreated.format('Y-m-d H:i:s') }}"></field>
+                    <field type="input" name="entity.dateCreated" label="Дата создания" disabled="1" value="{{ entity.dateCreated.format('Y-m-d H:i:s') }}"></field>
+                    <field type="input" name="entity.dateModified" label="Дата изменения" disabled="1" value="{{ entity.dateCreated.format('Y-m-d H:i:s') }}"></field>
                 </fields>
             </panel>
         </panels>

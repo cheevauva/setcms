@@ -10,5 +10,5 @@ use Module\Template\Entity\TemplateEntity;
 class TemplatePrivateUpdateView extends ViewJson
 {
 
-    public ?TemplateEntity $template = null;
+    public ?TemplateEntity $entity = null;
 }

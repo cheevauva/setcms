@@ -17,7 +17,7 @@ class MigrationDownServant extends \UUA\Servant
     {
         $db = DatabaseFactory::singleton($this->container)->make($this->dbName);
 
-        $retrieveExecuted = MigrationRetrieveManyByCriteriaDAO::new($this->container);
+        $retrieveExecuted = MigrationRetrieveManyByCriteriaDAO::new($this);
         $retrieveExecuted->db = $db;
         $retrieveExecuted->serve();
     }

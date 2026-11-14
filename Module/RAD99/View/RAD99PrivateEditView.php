@@ -9,5 +9,5 @@ use Module\RAD99\Entity\RAD99Entity;
 class RAD99PrivateEditView extends RAD99PrivateReadView
 {
 
-    public RAD99Entity $rad99;
+    public RAD99Entity $entity;
 }

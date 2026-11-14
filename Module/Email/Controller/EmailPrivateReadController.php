@@ -47,7 +47,7 @@ class EmailPrivateReadController extends ControllerViaPSR7
         }
 
         if ($object instanceof EmailPrivateReadView) {
-            $object->email = $this->entity;
+            $object->entity = $this->entity;
         }
     }
 

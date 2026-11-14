@@ -10,5 +10,5 @@ use Module\Page\Entity\PageEntity;
 class PagePublicReadView extends ViewTwig
 {
 
-    public PageEntity $page;
+    public PageEntity $entity;
 }

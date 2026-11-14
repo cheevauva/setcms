@@ -23,25 +23,25 @@ abstract class TemplateRenderServant extends \UUA\Servant
     #[\Override]
     protected function run(): void
     {
-        $template = $this->template();
+        $entity = $this->entity();
 
         $templateRendered = new TemplateRenderedVO();
-        $templateRendered->title = $this->twig($template->title, get_object_vars($this));
-        $templateRendered->content = $this->twig($template->template, get_object_vars($this));
+        $templateRendered->title = $this->twig($entity->title, get_object_vars($this));
+        $templateRendered->content = $this->twig($entity->entity, get_object_vars($this));
 
         $this->templateRendered = $templateRendered;
     }
 
     /**
-     * @param string $template
+     * @param string $entity
      * @param array<string, mixed> $context
      * @return string
      */
-    protected function twig(string $template, array $context = []): string
+    protected function twig(string $entity, array $context = []): string
     {
         $twig = (new Environment(...[
             new ArrayLoader([
-                'template' => $template,
+                'entity' => $entity,
             ]),
             [
                 'cache' => false
@@ -65,12 +65,12 @@ abstract class TemplateRenderServant extends \UUA\Servant
             return $this->env()['BASE_URL'] ?? '';
         }));
 
-        return $twig->render('template', $context);
+        return $twig->render('entity', $context);
     }
 
-    protected function template(): TemplateEntity
+    protected function entity(): TemplateEntity
     {
-        $templateByAlias = TemplateRetrieveManyByCriteriaDAO::new($this->container);
+        $templateByAlias = TemplateRetrieveManyByCriteriaDAO::new($this);
         $templateByAlias->slug = $this->slug;
         $templateByAlias->limit = 1;
         $templateByAlias->expectOne = true;

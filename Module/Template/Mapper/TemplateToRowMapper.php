@@ -13,11 +13,11 @@ class TemplateToRowMapper extends EntityToRowMapper
     #[\Override]
     protected function run(): void
     {
-        $template = TemplateEntity::as($this->entity);
+        $entity = TemplateEntity::as($this->entity);
 
-        $this->row['template'] = $template->template;
-        $this->row['title'] = $template->title;
-        $this->row['slug'] = $template->slug;
+        $this->row['entity'] = $entity->entity;
+        $this->row['title'] = $entity->title;
+        $this->row['slug'] = $entity->slug;
 
         parent::run();
     }

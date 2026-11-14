@@ -16,10 +16,10 @@ class UserResetTokenFromRowMapper extends EntityFromRowMapper
     #[\Override]
     protected function run(): void
     {
-        $userResetToken = $this->entity = new UserResetTokenEntity;
-        $userResetToken->dateExpired = $this->dateTime('date_expired');
-        $userResetToken->token = $this->string('token');
-        $userResetToken->userId = $this->uuid('user_id');
+        $entity = $this->entity = new UserResetTokenEntity;
+        $entity->dateExpired = $this->dateTime('date_expired');
+        $entity->token = $this->string('token');
+        $entity->userId = $this->uuid('user_id');
 
         parent::run();
     }

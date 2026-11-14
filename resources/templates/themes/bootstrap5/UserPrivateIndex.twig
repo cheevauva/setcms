@@ -22,24 +22,24 @@
         </header>
         <data>
             <rows>
-                {% for user in users %}
+                {% for entity in users %}
                     <row>
                         <columns>
-                            <field type="checkbox" name="id[]" value="{{ user.id.uuid }}"></field>
-                            <field type="text" value="{{ user.username }}"></field>
-                            <field type="select" value="{{ user.role.value }}">
+                            <field type="checkbox" name="id[]" value="{{ entity.id.uuid }}"></field>
+                            <field type="text" value="{{ entity.username }}"></field>
+                            <field type="select" value="{{ entity.role.value }}">
                                 <options>{{ {
                                 'guest': 'Гость',
-                                'user': 'Пользователь',
+                                'entity': 'Пользователь',
                                 'admin': 'Админ'
                             }|json_encode() }}</options>
                             </field>
                             <field type="actions">
                                 <actions>
-                                    <action label="Просмотр" route="{{ url('AdminUserRead', {id: user.id}) }}">
+                                    <action label="Просмотр" route="{{ url('AdminUserRead', {id: entity.id}) }}">
                                         <access>{{ can('AdminUserRead') }}</access>
                                     </action>
-                                    <action label="Редактировать" route="{{ url('AdminUserEdit', {id: user.id}) }}">
+                                    <action label="Редактировать" route="{{ url('AdminUserEdit', {id: entity.id}) }}">
                                         <access>{{ can('AdminUserEdit') }}</access>
                                     </action>
                                 </actions>

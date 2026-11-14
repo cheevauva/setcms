@@ -14,7 +14,7 @@ use Module\Template\Mapper\TemplateFromRequestMapper;
 class TemplatePrivateUpdateController extends ControllerViaPSR7
 {
 
-    protected TemplateEntity $template;
+    protected TemplateEntity $entity;
     protected TemplateEntity $newtemplate;
 
     #[\Override]
@@ -48,14 +48,14 @@ class TemplatePrivateUpdateController extends ControllerViaPSR7
         }
 
         if ($object instanceof TemplateUpdateDAO) {
-            $template = $object->entity = $this->template;
-            $template->template = $this->newtemplate->template;
-            $template->title = $this->newtemplate->title;
-            $template->slug = $this->newtemplate->slug;
+            $entity = $object->entity = $this->entity;
+            $entity->entity = $this->newtemplate->entity;
+            $entity->title = $this->newtemplate->title;
+            $entity->slug = $this->newtemplate->slug;
         }
 
         if ($object instanceof TemplatePrivateUpdateView) {
-            $object->template = $this->template;
+            $object->entity = $this->entity;
         }
     }
 
@@ -65,11 +65,11 @@ class TemplatePrivateUpdateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof TemplateRetrieveManyByCriteriaDAO) {
-            $this->template = $object->entity;
+            $this->entity = $object->entity;
         }
 
         if ($object instanceof TemplateFromRequestMapper) {
-            $this->newtemplate = $object->template;
+            $this->newtemplate = $object->entity;
         }
     }
 }

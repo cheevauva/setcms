@@ -17,13 +17,13 @@ class EmailFromRowMapper extends EntityFromRowMapper
     #[\Override]
     protected function run(): void
     {
-        $email = $this->entity = new EmailEntity();
-        $email->subject = $this->string('subject');
-        $email->from = $this->string('from_addr');
-        $email->to = $this->string('to_addr');
-        $email->body = $this->string('body');
-        $email->dateSent = $this->dateTimeOrNull('date_sent');
-        $email->status = EmailStatusEnum::from($this->string('status'));
+        $entity = $this->entity = new EmailEntity();
+        $entity->subject = $this->string('subject');
+        $entity->from = $this->string('from_addr');
+        $entity->to = $this->string('to_addr');
+        $entity->body = $this->string('body');
+        $entity->dateSent = $this->dateTimeOrNull('date_sent');
+        $entity->status = EmailStatusEnum::from($this->string('status'));
         
         parent::run();
     }

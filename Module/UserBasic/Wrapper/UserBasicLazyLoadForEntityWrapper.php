@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Module\User\Wrapper;
+namespace Module\UserBasic\Wrapper;
 
 use Module\Basic\DAO\BasicEntityRetrieveByCriteriaDAO;
 use Module\Basic\Entity\BasicEntity;
 use Module\User\Servant\UserGetByIdServant;
 
-class UserLazyLoadForBasicEntityWrapper extends \UUA\Wrapper
+class UserBasicLazyLoadForEntityWrapper extends \UUA\Wrapper
 {
 
     #[\Override]

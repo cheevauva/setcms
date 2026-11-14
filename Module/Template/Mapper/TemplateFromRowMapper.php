@@ -16,10 +16,10 @@ class TemplateFromRowMapper extends EntityFromRowMapper
     #[\Override]
     protected function run(): void
     {
-        $template = $this->entity = new TemplateEntity();
-        $template->template = $this->string('template');
-        $template->title = $this->string('title');
-        $template->slug = $this->string('slug');
+        $entity = $this->entity = new TemplateEntity();
+        $entity->entity = $this->string('entity');
+        $entity->title = $this->string('title');
+        $entity->slug = $this->string('slug');
 
         parent::run();
     }

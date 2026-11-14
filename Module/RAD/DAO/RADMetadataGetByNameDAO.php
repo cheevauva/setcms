@@ -27,7 +27,7 @@ class RADMetadataGetByNameDAO extends \UUA\DAO
             throw new RADMetadataNotFoundException($this->name);
         }
 
-        $mapper = RADMetadataVOFromArrayMapper::new($this->container);
+        $mapper = RADMetadataVOFromArrayMapper::new($this);
         $mapper->array = $this->filesystem->loadArrayFromPHPFile($filename);
         $mapper->serve();
 

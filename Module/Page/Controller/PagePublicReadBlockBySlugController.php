@@ -13,7 +13,7 @@ class PagePublicReadBlockBySlugController extends \SetCMS\Controller\ControllerV
 {
 
     protected string $slug;
-    protected PageEntity $page;
+    protected PageEntity $entity;
 
     #[\Override]
     protected function domainUnits(): array
@@ -42,7 +42,7 @@ class PagePublicReadBlockBySlugController extends \SetCMS\Controller\ControllerV
         }
 
         if ($object instanceof PagePublicReadBlockView) {
-            $object->page = $this->page;
+            $object->entity = $this->entity;
             $object->slug = $this->slug;
         }
     }
@@ -53,7 +53,7 @@ class PagePublicReadBlockBySlugController extends \SetCMS\Controller\ControllerV
         parent::from($object);
 
         if ($object instanceof PageGetBySlugDAO) {
-            $this->page = $object->page;
+            $this->entity = $object->entity;
         }
 
         if ($object instanceof PageSlugFromRequest) {

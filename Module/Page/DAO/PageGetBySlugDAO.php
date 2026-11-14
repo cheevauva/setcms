@@ -11,18 +11,18 @@ class PageGetBySlugDAO extends \UUA\DAO
 {
 
     public string $slug;
-    public protected(set) PageEntity $page;
+    public protected(set) PageEntity $entity;
 
     #[\Override]
     protected function run(): void
     {
-        $getBySlug = PageRetrieveByCriteriaDAO::new($this->container);
+        $getBySlug = PageRetrieveByCriteriaDAO::new($this);
         $getBySlug->expectOne = true;
         $getBySlug->allowEmptyResult = false;
         $getBySlug->slug = $this->slug;
         $getBySlug->limit = 1;
         $getBySlug->serve();
 
-        $this->page = $getBySlug->entity;
+        $this->entity = $getBySlug->entity;
     }
 }

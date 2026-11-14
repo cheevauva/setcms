@@ -16,10 +16,10 @@ class PageFromRowMapper extends BasicEntityFromRowMapper
     #[\Override]
     protected function run(): void
     {
-        $page = $this->entity = new PageEntity();
-        $page->slug = $this->string('slug');
-        $page->title = $this->string('title');
-        $page->content = $this->string('content');
+        $entity = $this->entity = new PageEntity();
+        $entity->slug = $this->string('slug');
+        $entity->title = $this->string('title');
+        $entity->content = $this->string('content');
 
         parent::run();
     }

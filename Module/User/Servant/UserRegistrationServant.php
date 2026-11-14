@@ -20,7 +20,7 @@ class UserRegistrationServant extends \UUA\Servant
     #[\Override]
     protected function run(): void
     {
-        $userByEmail = UserRetrieveManyByCriteriaDAO::new($this->container);
+        $userByEmail = UserRetrieveManyByCriteriaDAO::new($this);
         $userByEmail->limit = 1;
         $userByEmail->allowEmptyResult = true;
         $userByEmail->expectOne = true;

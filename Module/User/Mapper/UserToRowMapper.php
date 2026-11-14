@@ -12,12 +12,12 @@ class UserToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
     #[\Override]
     protected function run(): void
     {
-        $user = UserEntity::as($this->entity);
+        $entity = UserEntity::as($this->entity);
 
-        $this->row['username'] = $user->username;
-        $this->row['password'] = $user->password;
-        $this->row['user_role'] = $user->role->value;
-        $this->row['email'] = $user->email;
+        $this->row['username'] = $entity->username;
+        $this->row['password'] = $entity->password;
+        $this->row['user_role'] = $entity->role->value;
+        $this->row['email'] = $entity->email;
 
         parent::run();
     }

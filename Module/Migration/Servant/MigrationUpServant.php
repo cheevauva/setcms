@@ -39,14 +39,14 @@ class MigrationUpServant extends Servant
     {
         $db = DatabaseFactory::singleton($this->container)->make($this->dbName);
 
-        $check = MigrationCheckStorageDAO::new($this->container);
+        $check = MigrationCheckStorageDAO::new($this);
         $check->db = $db;
         $check->serve();
 
         $executedMigrations = [];
 
         if ($check->isOk) {
-            $retrieveExecuted = MigrationRetrieveManyByCriteriaDAO::new($this->container);
+            $retrieveExecuted = MigrationRetrieveManyByCriteriaDAO::new($this);
             $retrieveExecuted->db = $db;
             $retrieveExecuted->serve();
 
@@ -55,7 +55,7 @@ class MigrationUpServant extends Servant
 
         $this->executedOld = $executedMigrations;
 
-        $retrieveCandidates = MigrationCandidateRetrieveManyDAO::new($this->container);
+        $retrieveCandidates = MigrationCandidateRetrieveManyDAO::new($this);
         $retrieveCandidates->dbName = $this->dbName;
         $retrieveCandidates->dbType = $db->connectionDriverName();
         $retrieveCandidates->serve();
@@ -73,11 +73,11 @@ class MigrationUpServant extends Servant
             }
             
             try {
-                $updater = MigrationUpdateServant::new($this->container);
+                $updater = MigrationUpdateServant::new($this);
                 $updater->db = $db;
                 $updater->candidate = $candidate;
 
-                $transaction = DatabaseTransactionServant::new($this->container);
+                $transaction = DatabaseTransactionServant::new($this);
                 $transaction->db = $db;
                 $transaction->servant = $updater;
                 $transaction->serve();

@@ -9,5 +9,5 @@ use Module\Template\Entity\TemplateEntity;
 class TemplatePrivateEditView extends TemplatePrivateReadView
 {
 
-    public TemplateEntity $template;
+    public TemplateEntity $entity;
 }

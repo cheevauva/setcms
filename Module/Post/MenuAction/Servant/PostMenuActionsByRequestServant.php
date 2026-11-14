@@ -20,7 +20,7 @@ class PostMenuActionsByRequestServant extends \Module\Menu\MenuAction\Servant\Me
 
     protected function prepareEditAction(string $slug): void
     {
-        $retrieveBySlug = PostRetrieveManyByCriteriaDAO::new($this->container);
+        $retrieveBySlug = PostRetrieveManyByCriteriaDAO::new($this);
         $retrieveBySlug->slug = $slug;
         $retrieveBySlug->limit = 1;
         $retrieveBySlug->allowEmptyResult = false;

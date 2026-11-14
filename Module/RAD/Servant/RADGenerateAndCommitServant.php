@@ -15,7 +15,7 @@ class RADGenerateAndCommitServant extends RADGenerateServant
         parent::run();
 
         foreach ($this->files as $file) {
-            $targetSave = RADFileSaveDAO::new($this->container);
+            $targetSave = RADFileSaveDAO::new($this);
             $targetSave->fileOrDir = $file;
             $targetSave->serve();
         }

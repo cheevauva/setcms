@@ -12,11 +12,11 @@ class UserResetTokenToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
     #[\Override]
     protected function run(): void
     {
-        $userResetToken = UserResetTokenEntity::as($this->entity);
+        $entity = UserResetTokenEntity::as($this->entity);
 
-        $this->row['user_id'] = $userResetToken->userId->uuid;
-        $this->row['date_expired'] = $userResetToken->dateExpired->format('Y-m-d H:i:s');
-        $this->row['token'] = $userResetToken->token;
+        $this->row['user_id'] = $entity->userId->uuid;
+        $this->row['date_expired'] = $entity->dateExpired->format('Y-m-d H:i:s');
+        $this->row['token'] = $entity->token;
 
         parent::run();
     }

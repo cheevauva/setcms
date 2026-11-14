@@ -1,12 +1,12 @@
 {% extends scShortPath(layout ?? 'layout_admin.twig') %}
 {% import scShortPath('macros/crud.twig') as crud %}
 
-{% block content_title %}{% if rad99.id %}Редактировать{% else %}Создать{% endif %}{% endblock %}
+{% block content_title %}{% if entity.id %}Редактировать{% else %}Создать{% endif %}{% endblock %}
 {% block content %}
     {{ 
         crud.editview({
-            action: url(rad99.id ? 'AdminRAD99Update' : 'AdminRAD99Create', {id: (rad99 ? rad99.id : UUID()) }),
-            redirect: url('AdminRAD99Read', {id: '${rad99.id.uuid}'}),
+            action: url(entity.id ? 'AdminRAD99Update' : 'AdminRAD99Create', {id: (entity ? entity.id : UUID()) }),
+            redirect: url('AdminRAD99Read', {id: '${entity.id.uuid}'}),
             actions: {
                 fields: [
                     {
@@ -23,10 +23,10 @@
                     fields: [
                         {
                             type: 'hidden',
-                            name: 'rad99.id',
-                            value: rad99.id|default(UUID())
+                            name: 'entity.id',
+                            value: entity.id|default(UUID())
                         },
-                        {name: 'rad99.field99', value: rad99.field99, type: 'input', label: 'field99'},
+                        {name: 'entity.field99', value: entity.field99, type: 'input', label: 'field99'},
                     ]
                 }, 
                 {
@@ -34,15 +34,15 @@
                     label: 'Служебные данные',
                     fields: [
                         {
-                            name: 'rad99.dateCreated',
-                            value: rad99.dateCreated.format('Y-m-d H:i:s'),
+                            name: 'entity.dateCreated',
+                            value: entity.dateCreated.format('Y-m-d H:i:s'),
                             type: 'input',
                             label: 'Дата создания',
                             disabled: true
                         },
                         {
-                            name: 'rad99.dateModified',
-                            value: rad99.dateCreated.format('Y-m-d H:i:s'),
+                            name: 'entity.dateModified',
+                            value: entity.dateCreated.format('Y-m-d H:i:s'),
                             type: 'input',
                             label: 'Дата изменения',
                             disabled: true

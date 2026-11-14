@@ -23,7 +23,7 @@ class TemplatePrivateEditController extends TemplatePrivateReadController
         parent::to($object);
 
         if ($object instanceof TemplatePrivateEditView) {
-            $object->template = $this->template;
+            $object->entity = $this->entity;
         }
     }
 }

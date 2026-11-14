@@ -17,7 +17,7 @@ class UserResetTokenSendToEmailServant extends \UUA\Servant
     #[\Override]
     protected function run(): void
     {
-        $retrieveUser = UserRetrieveManyByCriteriaDAO::new($this->container);
+        $retrieveUser = UserRetrieveManyByCriteriaDAO::new($this);
         $retrieveUser->email = $this->email;
         $retrieveUser->limit = 1;
         $retrieveUser->expectOne = true;
@@ -28,7 +28,7 @@ class UserResetTokenSendToEmailServant extends \UUA\Servant
             return;
         }
 
-        $sendToUser = UserResetTokenSendToUserServant::new($this->container);
+        $sendToUser = UserResetTokenSendToUserServant::new($this);
         $sendToUser->user = UserEntity::as($retrieveUser->entity);
         $sendToUser->serve();
 

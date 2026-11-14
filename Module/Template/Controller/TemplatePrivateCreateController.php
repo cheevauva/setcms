@@ -13,7 +13,7 @@ use Module\Template\Mapper\TemplateFromRequestMapper;
 class TemplatePrivateCreateController extends ControllerViaPSR7
 {
 
-    protected TemplateEntity $template;
+    protected TemplateEntity $entity;
 
     #[\Override]
     protected function domainUnits(): array
@@ -38,11 +38,11 @@ class TemplatePrivateCreateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof TemplateCreateDAO) {
-            $object->entity = $this->template;
+            $object->entity = $this->entity;
         }
 
         if ($object instanceof TemplatePrivateCreateView) {
-            $object->template = $this->template;
+            $object->entity = $this->entity;
         }
     }
 
@@ -52,7 +52,7 @@ class TemplatePrivateCreateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof TemplateFromRequestMapper) {
-            $this->template = $object->template;
+            $this->entity = $object->entity;
         }
     }
 }

@@ -1,27 +1,27 @@
 {% extends scShortPath(layout ?? 'layout_admin.twig') %}
 
-{% block title %}{{ options.title }} - {{ rad99.title }}{% endblock %}
+{% block title %}{{ options.title }} - {{ entity.title }}{% endblock %}
 
 {% block content_toolbar %}
     {% if can('AdminRAD99Index') %}
         <a href="{{ url('AdminRAD99Index') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
     {% endif %}
     {% if can('AdminRAD99Edit') %}
-        <a href="{{ url('AdminRAD99Edit', {id: rad99.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+        <a href="{{ url('AdminRAD99Edit', {id: entity.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
     {% endif %}
 {% endblock %}
 
 {% block content %}
-    {% if rad99 %}
-        <article class="blog-rad99">
-            <h2 class="blog-rad99-title">{{ rad99.title }}</h2>
-            <p class="blog-rad99-meta">
-                <a href="{{ url('AdminUserRead', {id : rad99.createdBy}) }}">{{ rad99.attr('createdBy').username }}</a> опубликовал в {{ rad99.dateCreated.format('H:i') }} {{ rad99.dateCreated.format('d.m.Y') }} /
-                <a href="{{ url('AdminUserRead', {id : rad99.modifiedBy }) }}">{{ rad99.attr('modifiedBy').username }}</a> изменил в {{ rad99.dateCreated.format('H:i') }} {{ rad99.dateCreated.format('d.m.Y') }} /
-                <a href="{{ url('AdminUserRead', {id : rad99.assignedBy }) }}">{{ rad99.attr('assignedBy').username }}</a> ответственный
+    {% if entity %}
+        <article class="blog-entity">
+            <h2 class="blog-entity-title">{{ entity.title }}</h2>
+            <p class="blog-entity-meta">
+                <a href="{{ url('AdminUserRead', {id : entity.createdBy}) }}">{{ entity.attr('createdBy').username }}</a> опубликовал в {{ entity.dateCreated.format('H:i') }} {{ entity.dateCreated.format('d.m.Y') }} /
+                <a href="{{ url('AdminUserRead', {id : entity.modifiedBy }) }}">{{ entity.attr('modifiedBy').username }}</a> изменил в {{ entity.dateCreated.format('H:i') }} {{ entity.dateCreated.format('d.m.Y') }} /
+                <a href="{{ url('AdminUserRead', {id : entity.assignedBy }) }}">{{ entity.attr('assignedBy').username }}</a> ответственный
             </p>
             <p>
-                {{ rad99.field01 }}
+                {{ entity.field01 }}
             </p>
         </article>
     {% endif %}

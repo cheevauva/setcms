@@ -15,12 +15,12 @@ class MenuFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
     protected function run(): void
     {
         $body = $this->validationBody();
-        $body->array('menu')->notEmpty()->validate();
+        $body->array('entity')->notEmpty()->validate();
 
         $this->entity = new MenuEntity();
-        $this->entity->id = $body->uuid('menu.id')->val();
-        $this->entity->label = $body->string('menu.label')->notEmpty()->val();
-        $this->entity->route = $body->string('menu.route')->notEmpty()->val();
-        $this->entity->params = $body->json('menu.params')->notEmpty()->asArray()->val();
+        $this->entity->id = $body->uuid('entity.id')->val();
+        $this->entity->label = $body->string('entity.label')->notEmpty()->val();
+        $this->entity->route = $body->string('entity.route')->notEmpty()->val();
+        $this->entity->params = $body->json('entity.params')->notEmpty()->asArray()->val();
     }
 }

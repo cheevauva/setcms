@@ -18,7 +18,7 @@ class UserLoginServant extends \UUA\Servant
     #[\Override]
     protected function run(): void
     {
-        $retriveUser = UserRetrieveManyByCriteriaDAO::new($this->container);
+        $retriveUser = UserRetrieveManyByCriteriaDAO::new($this);
         $retriveUser->limit = 1;
         $retriveUser->email = $this->email;
         $retriveUser->expectOne = true;
