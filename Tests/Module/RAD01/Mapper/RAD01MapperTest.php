@@ -7,8 +7,6 @@ namespace Tests\Module\RAD01\Mapper;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Module\RAD01\Mapper\RAD01ToRowMapper;
 use Module\RAD01\Mapper\RAD01FromRowMapper;
-use Module\RAD01\Entity\RAD01Entity;
-use Module\RAD01\Exception\RAD01MapperNotFoundKeyInRowException;
 
 class RAD01MapperTest extends \Tests\TestEasy
 {
@@ -28,13 +26,13 @@ class RAD01MapperTest extends \Tests\TestEasy
     #[DataProvider('missingRequiredKeysProvider')]
     public function testRAD01FromRowMapperItThrowExceptionWhenRequiredKeyMissing(string $missingKey): void
     {
-        $this->expectException(RAD01MapperNotFoundKeyInRowException::class);
+        $this->expectExceptionMessage(sprintf('Не найден ключ %s в массиве row', $missingKey));
 
         $row = $this->prepareRow();
 
         unset($row[$missingKey]);
 
-        self::assertEquals($this->prepareEntity(), RAD01FromRowMapper::call(self::$container, $row)->entity);
+        RAD01FromRowMapper::call(self::$container, $row)->entity;
     }
 
     /**

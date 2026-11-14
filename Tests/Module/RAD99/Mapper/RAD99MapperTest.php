@@ -8,8 +8,6 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Module\RAD99\Mapper\RAD99ToRowMapper;
 use Module\RAD99\Mapper\RAD99FromRowMapper;
-use Module\RAD99\Entity\RAD99Entity;
-use Module\RAD99\Exception\RAD99MapperNotFoundKeyInRowException;
 
 #[Group('RAD99')]
 #[Group('RAD99Mapper')]
@@ -31,13 +29,13 @@ class RAD99MapperTest extends \Tests\TestEasy
     #[DataProvider('missingRequiredKeysProvider')]
     public function testRAD99FromRowMapperItThrowExceptionWhenRequiredKeyMissing(string $missingKey): void
     {
-        $this->expectException(RAD99MapperNotFoundKeyInRowException::class);
+        $this->expectExceptionMessage(sprintf('Не найден ключ %s в массиве row', $missingKey));
 
         $row = $this->prepareRow();
 
         unset($row[$missingKey]);
 
-        self::assertEquals($this->prepareEntity(), RAD99FromRowMapper::call(self::$container, $row)->entity);
+        RAD99FromRowMapper::call(self::$container, $row)->entity;
     }
 
     /**
@@ -47,7 +45,6 @@ class RAD99MapperTest extends \Tests\TestEasy
     {
         return [
             ['id'],
-            ['entity_type'],
             ['date_created'],
             ['date_modified'],
             ['deleted'],

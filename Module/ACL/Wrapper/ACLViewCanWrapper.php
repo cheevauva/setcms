@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Module\ACL\Wrapper;
 
-use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\View\ViewHtml;
 use Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
 use Module\ACL\VO\ACLRoleVO;
@@ -25,7 +25,7 @@ class ACLViewCanWrapper extends \UUA\Wrapper
         $root->withAttr('can', fn() => $this->can(...));
     }
 
-    protected function can(RequestInterface $request, string $privilege): bool
+    protected function can(ServerRequestInterface $request, string $privilege): bool
     {
         return ACLCheckByRoleAndPrivilegeServant::call($this, ACLRoleVO::as($request->getAttribute('currentUserRole')), $privilege)->isAllow;
     }

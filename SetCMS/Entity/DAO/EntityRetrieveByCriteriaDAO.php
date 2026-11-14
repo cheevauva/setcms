@@ -66,11 +66,19 @@ abstract class EntityRetrieveByCriteriaDAO extends \UUA\DAO
     #[\Override]
     protected function run(): void
     {
-        $rows = $this->createQb()->fetchAllAssociative();
+        $rows = $this->rows();
 
         $this->checkRows($rows);
         $this->entities = array_map($this->rowToEntity(...), $rows);
         $this->entities ? $this->entity = $this->entityOrNull = $this->entities[0] : null;
+    }
+    
+    /**
+     * @return array<int,array<string, mixed>>
+     */
+    protected function rows(): array
+    {
+        return $this->createQb()->fetchAllAssociative();
     }
 
     /**

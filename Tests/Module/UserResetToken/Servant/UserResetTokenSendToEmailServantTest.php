@@ -33,7 +33,7 @@ class UserResetTokenSendToEmailServantTest extends \Tests\TestEasy
         $sendToEmail->email = 'admin1@admin';
         $sendToEmail->serve();
 
-        self::assertEmpty($sendToEmail->email);
+        self::assertEmpty($sendToEmail->success);
     }
 
     #[\Override]

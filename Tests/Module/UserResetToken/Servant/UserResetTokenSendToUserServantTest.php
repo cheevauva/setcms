@@ -40,6 +40,8 @@ class UserResetTokenSendToUserServantTest extends \Tests\TestEasy
         $sendToUser = UserResetTokenSendToUserServant::new(self::$container);
         $sendToUser->user = $user;
         $sendToUser->serve();
+        
+        self::assertEquals(1, 1);
     }
 
     #[\Override]

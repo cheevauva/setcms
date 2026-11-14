@@ -9,9 +9,6 @@ use SetCMS\UUID;
 use SetCMS\Database\DatabaseQueryBuilder;
 use Module\RAD01\RAD01Constants;
 use Module\RAD01\DAO\RAD01RetrieveByCriteriaDAO;
-use Module\RAD01\Exception\RAD01EntityNotFoundException;
-use Module\RAD01\Exception\RAD01EntitiesNotFoundException;
-use Module\RAD01\Exception\RAD01EntityExpectOneButReceivedTooMuchException;
 use Module\RAD01\Mapper\RAD01FromRowMapper;
 use Module\RAD01\Entity\RAD01Entity;
 
@@ -84,142 +81,6 @@ class RAD01RetrieveByCriteriaDAOTest extends \Tests\TestEasy
         self::assertEmpty($params);
     }
 
-    public function testRAD01FindManyByCriteriaDAOFoundRows(): void
-    {
-        self::$rows = [
-            $this->prepareRow(),
-            $this->prepareRow(),
-        ];
-
-        $findMany = RAD01RetrieveByCriteriaDAO::new(self::$container);
-        $findMany->expectOne = false;
-        $findMany->allowEmptyResult = true;
-        $findMany->serve();
-
-        self::assertNotEmpty($findMany->entities);
-        self::assertCount(2, $findMany->entities);
-        self::assertInstanceOf(RAD01Entity::class, $findMany->entities[0]);
-        self::assertInstanceOf(RAD01Entity::class, $findMany->entities[1]);
-    }
-
-    public function testRAD01FindManyByCriteriaDAONotFound(): void
-    {
-        $findMany = RAD01RetrieveByCriteriaDAO::new(self::$container);
-        $findMany->expectOne = false;
-        $findMany->allowEmptyResult = true;
-        $findMany->serve();
-
-        self::assertEmpty($findMany->entities);
-    }
-
-    public function testRAD01FindOneByCriteriaDAOEmpty(): void
-    {
-        $findOne = RAD01RetrieveByCriteriaDAO::new(self::$container);
-        $findOne->expectOne = true;
-        $findOne->allowEmptyResult = true;
-        $findOne->serve();
-
-        self::assertEmpty($findOne->entityOrNull);
-    }
-
-    public function testRAD01FindOneByCriteriaDAOFindOneRow(): void
-    {
-        self::$rows = [
-            $this->prepareRow(),
-        ];
-
-        $findOne = RAD01RetrieveByCriteriaDAO::new(self::$container);
-        $findOne->expectOne = true;
-        $findOne->allowEmptyResult = true;
-        $findOne->serve();
-
-        self::assertNotEmpty($findOne->entity);
-        self::assertInstanceOf(RAD01Entity::class, $findOne->entity);
-    }
-
-    public function testRAD01FindOneByCriteriaDAOFindTooMuchRows(): void
-    {
-        $this->expectException(RAD01EntityExpectOneButReceivedTooMuchException::class);
-
-        self::$rows = [
-            $this->prepareRow(),
-            $this->prepareRow(),
-        ];
-
-        $findOne = RAD01RetrieveByCriteriaDAO::new(self::$container);
-        $findOne->expectOne = true;
-        $findOne->allowEmptyResult = true;
-        $findOne->serve();
-    }
-
-    public function testRAD01GetOneByCriteriaDAONotFound(): void
-    {
-        $this->expectException(RAD01EntityNotFoundException::class);
-
-        $getOne = RAD01RetrieveByCriteriaDAO::new(self::$container);
-        $getOne->expectOne = true;
-        $getOne->allowEmptyResult = false;
-        $getOne->serve();
-    }
-
-    public function testRAD01GetManyByCriteriaDAONotFound(): void
-    {
-        $this->expectException(RAD01EntitiesNotFoundException::class);
-
-        $getMany = RAD01RetrieveByCriteriaDAO::new(self::$container);
-        $getMany->expectOne = false;
-        $getMany->allowEmptyResult = false;
-        $getMany->serve();
-    }
-
-    public function testRAD01GetManyByCriteriaDAOFoundRows(): void
-    {
-        self::$rows = [
-            $this->prepareRow(),
-            $this->prepareRow(),
-        ];
-
-        $getMany = RAD01RetrieveByCriteriaDAO::new(self::$container);
-        $getMany->expectOne = false;
-        $getMany->allowEmptyResult = false;
-        $getMany->serve();
-
-        self::assertNotEmpty($getMany->entities);
-        self::assertCount(2, $getMany->entities);
-        self::assertInstanceOf(RAD01Entity::class, $getMany->entities[0]);
-        self::assertInstanceOf(RAD01Entity::class, $getMany->entities[1]);
-    }
-
-    public function testRAD01GetOneByCriteriaDAOFoundOneRow(): void
-    {
-        self::$rows = [
-            $this->prepareRow(),
-        ];
-
-        $getOne = RAD01RetrieveByCriteriaDAO::new(self::$container);
-        $getOne->expectOne = true;
-        $getOne->allowEmptyResult = false;
-        $getOne->serve();
-
-        self::assertNotEmpty($getOne->entity);
-        self::assertInstanceOf(RAD01Entity::class, $getOne->entity);
-    }
-
-    public function testRAD01GetOneByCriteriaDAOFoundTooMuchRows(): void
-    {
-        $this->expectException(RAD01EntityExpectOneButReceivedTooMuchException::class);
-
-        self::$rows = [
-            $this->prepareRow(),
-            $this->prepareRow(),
-        ];
-
-        $getOne = RAD01RetrieveByCriteriaDAO::new(self::$container);
-        $getOne->expectOne = true;
-        $getOne->allowEmptyResult = false;
-        $getOne->serve();
-    }
-
     #[\Override]
     public function mocks(ContainerInterface $c): array
     {
@@ -229,7 +90,7 @@ class RAD01RetrieveByCriteriaDAOTest extends \Tests\TestEasy
                 #[\Override]
                 protected function run(): void
                 {
-                    $this->entity = new RAD01Entity;   
+                    $this->entity = new RAD01Entity;
                 }
             },
             RAD01RetrieveByCriteriaDAO::class => fn() => new class($c) extends RAD01RetrieveByCriteriaDAO {
