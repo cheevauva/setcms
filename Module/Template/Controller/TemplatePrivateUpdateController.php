@@ -49,7 +49,7 @@ class TemplatePrivateUpdateController extends ControllerViaPSR7
 
         if ($object instanceof TemplateUpdateDAO) {
             $entity = $object->entity = $this->entity;
-            $entity->entity = $this->newtemplate->entity;
+            $entity->template = $this->newtemplate->template;
             $entity->title = $this->newtemplate->title;
             $entity->slug = $this->newtemplate->slug;
         }

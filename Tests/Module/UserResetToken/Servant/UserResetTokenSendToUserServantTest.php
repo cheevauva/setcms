@@ -49,7 +49,7 @@ class UserResetTokenSendToUserServantTest extends \Tests\TestEasy
             UserResetTokenRetrieveManyByCriteriaDAO::class => fn() => new class($c) extends UserResetTokenRetrieveManyByCriteriaDAO {
 
                 #[\Override]
-                public function serve(): void
+                protected function run(): void
                 {
                     
                 }
@@ -57,7 +57,7 @@ class UserResetTokenSendToUserServantTest extends \Tests\TestEasy
             UserResetTokenSaveServant::class => fn() => new class($c) extends UserResetTokenSaveServant {
 
                 #[\Override]
-                public function serve(): void
+                protected function run(): void
                 {
                     
                 }
@@ -65,7 +65,7 @@ class UserResetTokenSendToUserServantTest extends \Tests\TestEasy
             TemplateRenderUserResetPasswordServant::class => fn() => new class($c) extends TemplateRenderUserResetPasswordServant {
 
                 #[\Override]
-                public function serve(): void
+                protected function run(): void
                 {
                     $this->templateRendered = new TemplateRenderedVO;
                     $this->templateRendered->content = 'content';
@@ -75,7 +75,7 @@ class UserResetTokenSendToUserServantTest extends \Tests\TestEasy
             EmailSendServant::class => fn() => new class($c) extends EmailSendServant {
 
                 #[\Override]
-                public function serve(): void
+                protected function run(): void
                 {
                     
                 }

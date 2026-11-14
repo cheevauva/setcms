@@ -11,6 +11,8 @@ use Psr\Http\Message\ResponseInterface;
 abstract class View extends \UUA\Unit implements \SetCMS\Contract\ContractObjectInteraction
 {
 
+    use \UUA\Traits\AttributesTrait;
+
     /**
      * @var SplObjectStorage<object, mixed>
      */

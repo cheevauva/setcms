@@ -43,15 +43,15 @@ class UserResetTokenSendToEmailServantTest extends \Tests\TestEasy
             UserRetrieveManyByCriteriaDAO::class => fn() => new class($c) extends UserRetrieveManyByCriteriaDAO {
 
                 #[\Override]
-                public function serve(): void
+                protected function run(): void
                 {
-                    $this->userOrNull = UserResetTokenSendToEmailServantTest::$user;
+                    $this->entityOrNull = UserResetTokenSendToEmailServantTest::$user;
                 }
             },
             UserResetTokenSendToUserServant::class => fn() => new class($c) extends UserResetTokenSendToUserServant {
 
                 #[\Override]
-                public function serve(): void
+                protected function run(): void
                 {
                     $this->userResetToken = new UserResetTokenEntity();
                 }

@@ -12,11 +12,11 @@ class MigraionToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
     #[\Override]
     protected function run(): void
     {
-        $migration = MigrationEntity::as($this->entity);
+        $entity = MigrationEntity::as($this->entity);
 
-        $this->row['version'] = $migration->version;
-        $this->row['executed_at'] = $migration->executedAt->format('Y-m-d H:i:s');
-        $this->row['execution_time'] = $migration->executionTime;
+        $this->row['version'] = $entity->version;
+        $this->row['executed_at'] = $entity->executedAt->format('Y-m-d H:i:s');
+        $this->row['execution_time'] = $entity->executionTime;
 
         parent::run();
     }

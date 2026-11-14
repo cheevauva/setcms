@@ -20,24 +20,18 @@ class RAD99CreateDAOTest extends \Tests\TestEasy
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         self::$qb = null;
     }
 
     public function testRAD99CreateDAO(): void
     {
-        $create = RAD99CreateDAO::new(self::$container);
-        $create->rad99 = $this->prepareEntity();
-        $create->serve();
+        RAD99CreateDAO::call(self::$container, $this->prepareEntity());
 
         self::assertNotEmpty(self::$qb);
 
-        if (empty(self::$qb)) {
-            return;
-        }
-
-        $sql = self::$qb->getSQL();
-        $params = self::$qb->getParameters();
+        $sql = self::$qb?->getSQL() ?? '';
+        $params = self::$qb?->getParameters();
 
         self::assertStringStartsWith('INSERT INTO ' . RAD99Constants::TABLE_NAME, $sql);
         self::assertStringContainsString('id, created_by, modified_by, assigned_by, entity_type, date_created, date_modified, deleted', $sql);
@@ -56,9 +50,11 @@ class RAD99CreateDAOTest extends \Tests\TestEasy
                 use \Tests\TestDatabaseConnectionTrait;
 
                 #[\Override]
-                public function serve(): void
+                protected function createQuery(): DatabaseQueryBuilder
                 {
-                    RAD99CreateDAOTest::$qb = $this->createQuery();
+                    RAD99CreateDAOTest::$qb = parent::createQuery();
+
+                    return $this->db()->createQueryBuilder()->select('1');
                 }
             },
         ];

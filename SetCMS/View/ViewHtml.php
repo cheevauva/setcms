@@ -6,8 +6,6 @@ namespace SetCMS\View;
 
 use SetCMS\Controller\ControllerViaPSR7;
 use SetCMS\UUID;
-use Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
-use Module\ACL\VO\ACLRoleVO;
 use SetCMS\Controller\Exception\ControllerEmptyResponseException;
 use Laminas\Diactoros\Uri;
 
@@ -19,7 +17,7 @@ abstract class ViewHtml extends View
     use \SetCMS\Traits\TraitsRouter;
     use \SetCMS\Traits\TraitsResponse;
     use \SetCMS\Traits\TraitsServerRequestFactory;
-    use \UUA\Traits\WrappingTrait;
+    use \SetCMS\Traits\TraitsWrappingWithParent;
 
     protected ?string $templateName = null;
 
@@ -216,7 +214,7 @@ abstract class ViewHtml extends View
 
     protected function can(string $route): bool
     {
-        return ACLCheckByRoleAndPrivilegeServant::call($this, ACLRoleVO::as($this->request->getAttribute('currentUserRole')), $route)->isAllow;
+        return ($this->attr('can') ?? throw new \Exception('атрибут can не задан'))($this->request, $route);
     }
 
     protected function rootPath(): string

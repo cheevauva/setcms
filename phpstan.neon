@@ -5,6 +5,7 @@ parameters:
     paths:
         - SetCMS
         - Module
+        - Tests
         - resources
     reportUnmatchedIgnoredErrors: false
 

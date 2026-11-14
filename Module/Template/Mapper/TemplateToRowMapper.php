@@ -15,7 +15,7 @@ class TemplateToRowMapper extends EntityToRowMapper
     {
         $entity = TemplateEntity::as($this->entity);
 
-        $this->row['entity'] = $entity->entity;
+        $this->row['template'] = $entity->template;
         $this->row['title'] = $entity->title;
         $this->row['slug'] = $entity->slug;
 

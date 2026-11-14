@@ -23,6 +23,11 @@ class TestEasy extends \PHPUnit\Framework\TestCase
      */
     public static array $events;
 
+    /**
+     * @var array<object>
+     */
+    public static array $wrappers;
+
     #[\Override]
     protected function setUp(): void
     {
@@ -30,8 +35,10 @@ class TestEasy extends \PHPUnit\Framework\TestCase
 
         self::$env = new ArrayObjectStrict([]);
         self::$events = [];
+        self::$wrappers = [];
         self::$container = $this->container(fn(ContainerInterface $c) => array_merge([
-            'env' => self::$env
+            'env' => self::$env,
+            'wrappers' => self::$wrappers,
         ], $this->mocks($c)));
     }
 

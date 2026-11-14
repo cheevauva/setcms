@@ -17,7 +17,7 @@ class TemplateFromRowMapper extends EntityFromRowMapper
     protected function run(): void
     {
         $entity = $this->entity = new TemplateEntity();
-        $entity->entity = $this->string('entity');
+        $entity->template = $this->string('template');
         $entity->title = $this->string('title');
         $entity->slug = $this->string('slug');
 

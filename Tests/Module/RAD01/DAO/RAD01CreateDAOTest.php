@@ -21,30 +21,22 @@ class RAD01CreateDAOTest extends \Tests\TestEasy
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         self::$qb = null;
     }
 
     public function testRAD01CreateDAO(): void
     {
-        $create = RAD01CreateDAO::new(self::$container);
-        $create->rad01 = $this->prepareEntity();
-        $create->serve();
+        RAD01CreateDAO::call(self::$container, $this->prepareEntity());
 
         self::assertNotEmpty(self::$qb);
 
-        if (empty(self::$qb)) {
-            return;
-        }
-
-        $sql = self::$qb->getSQL();
-        $params = self::$qb->getParameters();
+        $sql = self::$qb?->getSQL() ?? '';
+        $params = self::$qb?->getParameters();
 
         self::assertStringStartsWith('INSERT INTO ' . RAD01Constants::TABLE_NAME, $sql);
-        self::assertStringContainsString('id', $sql);
-        self::assertStringContainsString(':id', $sql);
-        self::assertStringContainsString(', field01', $sql);
-        self::assertStringContainsString(', :field01', $sql);
+        self::assertStringContainsString('field01, id', $sql);
+        self::assertStringContainsString(':field01, :id', $sql);
         self::assertEquals($this->prepareRow(), $params);
     }
 
@@ -57,9 +49,11 @@ class RAD01CreateDAOTest extends \Tests\TestEasy
                 use \Tests\TestDatabaseConnectionTrait;
 
                 #[\Override]
-                public function serve(): void
+                protected function createQuery(): DatabaseQueryBuilder
                 {
-                    RAD01CreateDAOTest::$qb = $this->createQuery();
+                    RAD01CreateDAOTest::$qb = parent::createQuery();
+
+                    return $this->db()->createQueryBuilder()->select('1');
                 }
             },
         ];

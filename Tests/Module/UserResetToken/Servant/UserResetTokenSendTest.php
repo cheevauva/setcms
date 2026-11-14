@@ -116,7 +116,7 @@ class UserResetTokenSendTest extends \Tests\TestEasy
             EmailSendServant::class => fn() => new class($c) extends EmailSendServant {
 
                 #[\Override]
-                public function serve(): void
+                protected function run(): void
                 {
                     UserResetTokenSendTest::$sendedEmail = $this->email;
                 }
@@ -124,7 +124,7 @@ class UserResetTokenSendTest extends \Tests\TestEasy
             TemplateRenderUserResetPasswordServant::class => fn() => new class($c) extends TemplateRenderUserResetPasswordServant {
 
                 #[\Override]
-                public function serve(): void
+                protected function run(): void
                 {
                     $this->templateRendered = new TemplateRenderedVO();
                     $this->templateRendered->title = $this->user->id->uuid;
@@ -134,32 +134,32 @@ class UserResetTokenSendTest extends \Tests\TestEasy
             UserResetTokenSaveServant::class => fn() => new class($c) extends UserResetTokenSaveServant {
 
                 #[\Override]
-                public function serve(): void
+                protected function run(): void
                 {
-                    UserResetTokenSendTest::$userResetTokenSaved = $this->userResetToken;
+                    UserResetTokenSendTest::$userResetTokenSaved = UserResetTokenEntity::as($this->entity);
                 }
             },
             UserResetTokenRetrieveManyByCriteriaDAO::class => fn() => new class($c) extends UserResetTokenRetrieveManyByCriteriaDAO {
 
                 #[\Override]
-                public function serve(): void
+                protected function run(): void
                 {
                     if ($this->userId->uuid === UserResetTokenSendTest::$userId) {
-                        $this->userResetToken = UserResetTokenSendTest::existsUserResetToken();
-                        $this->userResetTokens = [$this->userResetToken];
+                        $this->entity = UserResetTokenSendTest::existsUserResetToken();
+                        $this->entities = [$this->entity];
 
-                        UserResetTokenSendTest::$userResetTokenRetrived = $this->userResetToken;
+                        UserResetTokenSendTest::$userResetTokenRetrived = $this->entity;
                     }
                 }
             },
             UserRetrieveManyByCriteriaDAO::class => fn() => new class($c) extends UserRetrieveManyByCriteriaDAO {
 
                 #[\Override]
-                public function serve(): void
+                protected function run(): void
                 {
                     if ($this->email === 'admin@admin') {
-                        $this->user = UserResetTokenSendTest::newUser();
-                        $this->users = [$this->user];
+                        $this->entity = UserResetTokenSendTest::newUser();
+                        $this->entities = [$this->entity];
                     }
                 }
             },

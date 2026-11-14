@@ -23,11 +23,11 @@ abstract class TemplateRenderServant extends \UUA\Servant
     #[\Override]
     protected function run(): void
     {
-        $entity = $this->entity();
+        $entity = $this->template();
 
         $templateRendered = new TemplateRenderedVO();
         $templateRendered->title = $this->twig($entity->title, get_object_vars($this));
-        $templateRendered->content = $this->twig($entity->entity, get_object_vars($this));
+        $templateRendered->content = $this->twig($entity->template, get_object_vars($this));
 
         $this->templateRendered = $templateRendered;
     }
@@ -68,7 +68,7 @@ abstract class TemplateRenderServant extends \UUA\Servant
         return $twig->render('entity', $context);
     }
 
-    protected function entity(): TemplateEntity
+    protected function template(): TemplateEntity
     {
         $templateByAlias = TemplateRetrieveManyByCriteriaDAO::new($this);
         $templateByAlias->slug = $this->slug;

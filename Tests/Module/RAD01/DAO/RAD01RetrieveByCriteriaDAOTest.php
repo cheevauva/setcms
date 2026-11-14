@@ -12,6 +12,7 @@ use Module\RAD01\DAO\RAD01RetrieveByCriteriaDAO;
 use Module\RAD01\Exception\RAD01EntityNotFoundException;
 use Module\RAD01\Exception\RAD01EntitiesNotFoundException;
 use Module\RAD01\Exception\RAD01EntityExpectOneButReceivedTooMuchException;
+use Module\RAD01\Mapper\RAD01FromRowMapper;
 use Module\RAD01\Entity\RAD01Entity;
 
 class RAD01RetrieveByCriteriaDAOTest extends \Tests\TestEasy
@@ -95,10 +96,10 @@ class RAD01RetrieveByCriteriaDAOTest extends \Tests\TestEasy
         $findMany->allowEmptyResult = true;
         $findMany->serve();
 
-        self::assertNotEmpty($findMany->rad01s);
-        self::assertCount(2, $findMany->rad01s);
-        self::assertInstanceOf(RAD01Entity::class, $findMany->rad01s[0]);
-        self::assertInstanceOf(RAD01Entity::class, $findMany->rad01s[1]);
+        self::assertNotEmpty($findMany->entities);
+        self::assertCount(2, $findMany->entities);
+        self::assertInstanceOf(RAD01Entity::class, $findMany->entities[0]);
+        self::assertInstanceOf(RAD01Entity::class, $findMany->entities[1]);
     }
 
     public function testRAD01FindManyByCriteriaDAONotFound(): void
@@ -108,7 +109,7 @@ class RAD01RetrieveByCriteriaDAOTest extends \Tests\TestEasy
         $findMany->allowEmptyResult = true;
         $findMany->serve();
 
-        self::assertEmpty($findMany->rad01s);
+        self::assertEmpty($findMany->entities);
     }
 
     public function testRAD01FindOneByCriteriaDAOEmpty(): void
@@ -118,7 +119,7 @@ class RAD01RetrieveByCriteriaDAOTest extends \Tests\TestEasy
         $findOne->allowEmptyResult = true;
         $findOne->serve();
 
-        self::assertEmpty($findOne->rad01OrNull);
+        self::assertEmpty($findOne->entityOrNull);
     }
 
     public function testRAD01FindOneByCriteriaDAOFindOneRow(): void
@@ -132,8 +133,8 @@ class RAD01RetrieveByCriteriaDAOTest extends \Tests\TestEasy
         $findOne->allowEmptyResult = true;
         $findOne->serve();
 
-        self::assertNotEmpty($findOne->rad01);
-        self::assertInstanceOf(RAD01Entity::class, $findOne->rad01);
+        self::assertNotEmpty($findOne->entity);
+        self::assertInstanceOf(RAD01Entity::class, $findOne->entity);
     }
 
     public function testRAD01FindOneByCriteriaDAOFindTooMuchRows(): void
@@ -183,10 +184,10 @@ class RAD01RetrieveByCriteriaDAOTest extends \Tests\TestEasy
         $getMany->allowEmptyResult = false;
         $getMany->serve();
 
-        self::assertNotEmpty($getMany->rad01s);
-        self::assertCount(2, $getMany->rad01s);
-        self::assertInstanceOf(RAD01Entity::class, $getMany->rad01s[0]);
-        self::assertInstanceOf(RAD01Entity::class, $getMany->rad01s[1]);
+        self::assertNotEmpty($getMany->entities);
+        self::assertCount(2, $getMany->entities);
+        self::assertInstanceOf(RAD01Entity::class, $getMany->entities[0]);
+        self::assertInstanceOf(RAD01Entity::class, $getMany->entities[1]);
     }
 
     public function testRAD01GetOneByCriteriaDAOFoundOneRow(): void
@@ -200,8 +201,8 @@ class RAD01RetrieveByCriteriaDAOTest extends \Tests\TestEasy
         $getOne->allowEmptyResult = false;
         $getOne->serve();
 
-        self::assertNotEmpty($getOne->rad01);
-        self::assertInstanceOf(RAD01Entity::class, $getOne->rad01);
+        self::assertNotEmpty($getOne->entity);
+        self::assertInstanceOf(RAD01Entity::class, $getOne->entity);
     }
 
     public function testRAD01GetOneByCriteriaDAOFoundTooMuchRows(): void
@@ -223,17 +224,24 @@ class RAD01RetrieveByCriteriaDAOTest extends \Tests\TestEasy
     public function mocks(ContainerInterface $c): array
     {
         return [
+            RAD01FromRowMapper::class => fn() => new class($c) extends RAD01FromRowMapper {
+
+                #[\Override]
+                protected function run(): void
+                {
+                    $this->entity = new RAD01Entity;   
+                }
+            },
             RAD01RetrieveByCriteriaDAO::class => fn() => new class($c) extends RAD01RetrieveByCriteriaDAO {
 
                 use \Tests\TestDatabaseConnectionTrait;
 
                 #[\Override]
-                public function serve(): void
+                protected function createQb(): DatabaseQueryBuilder
                 {
-                    RAD01RetrieveByCriteriaDAOTest::$qb = $this->createQb();
+                    RAD01RetrieveByCriteriaDAOTest::$qb = parent::createQb();
 
-                    $this->checkRows(RAD01RetrieveByCriteriaDAOTest::$rows);
-                    $this->handleRows(RAD01RetrieveByCriteriaDAOTest::$rows);
+                    return $this->db()->createQueryBuilder()->select('1');
                 }
             },
         ];

@@ -21,24 +21,18 @@ class RAD01UpdateDAOTest extends \Tests\TestEasy
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         self::$qb = null;
     }
 
     public function testRAD01UpdateDAO(): void
     {
-        $create = RAD01UpdateDAO::new(self::$container);
-        $create->rad01 = $this->prepareEntity();
-        $create->serve();
+        RAD01UpdateDAO::call(self::$container, $this->prepareEntity());
 
         self::assertNotEmpty(self::$qb);
 
-        if (empty(self::$qb)) {
-            return;
-        }
-
-        $sql = self::$qb->getSQL();
-        $params = self::$qb->getParameters();
+        $sql = self::$qb?->getSQL() ?? '';
+        $params = self::$qb?->getParameters();
 
         self::assertStringStartsWith('UPDATE ' . RAD01Constants::TABLE_NAME, $sql);
         self::assertStringContainsString('id = :id', $sql);
@@ -55,9 +49,11 @@ class RAD01UpdateDAOTest extends \Tests\TestEasy
                 use \Tests\TestDatabaseConnectionTrait;
 
                 #[\Override]
-                public function serve(): void
+                protected function createQuery(): DatabaseQueryBuilder
                 {
-                    RAD01UpdateDAOTest::$qb = $this->createQuery();
+                    RAD01UpdateDAOTest::$qb = parent::createQuery();
+
+                    return $this->db()->createQueryBuilder()->select('1');
                 }
             },
         ];

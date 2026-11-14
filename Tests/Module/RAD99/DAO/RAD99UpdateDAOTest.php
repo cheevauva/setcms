@@ -26,9 +26,7 @@ class RAD99UpdateDAOTest extends \Tests\TestEasy
 
     public function testRAD99UpdateDAO(): void
     {
-        $create = RAD99UpdateDAO::new(self::$container);
-        $create->rad99 = $this->prepareEntity();
-        $create->serve();
+        RAD99UpdateDAO::call(self::$container, $this->prepareEntity());
 
         self::assertNotEmpty(self::$qb);
 

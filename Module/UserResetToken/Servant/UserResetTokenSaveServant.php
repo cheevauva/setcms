@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Module\UserResetToken\Servant;
 
+use Module\UserResetToken\Entity\UserResetTokenEntity;
 use Module\UserResetToken\DAO\UserResetTokenCreateDAO;
 use Module\UserResetToken\DAO\UserResetTokenUpdateDAO;
 

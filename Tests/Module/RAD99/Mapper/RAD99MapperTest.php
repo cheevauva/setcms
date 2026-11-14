@@ -20,20 +20,12 @@ class RAD99MapperTest extends \Tests\TestEasy
 
     public function testRAD99ToRowMapperSuccess(): void
     {
-        $entityToRow = RAD99ToRowMapper::new(self::$container);
-        $entityToRow->rad99 = $this->prepareEntity();
-        $entityToRow->serve();
-
-        self::assertEquals($this->prepareRow(), $entityToRow->row);
+        self::assertEquals($this->prepareRow(), RAD99ToRowMapper::call(self::$container, $this->prepareEntity())->row);
     }
 
     public function testRAD99FromRowMapperSuccess(): void
     {
-        $entityFromRow = RAD99FromRowMapper::new(self::$container);
-        $entityFromRow->row = $this->prepareRow();
-        $entityFromRow->serve();
-
-        self::assertEquals($this->prepareEntity(), $entityFromRow->rad99);
+        self::assertEquals($this->prepareEntity(), RAD99FromRowMapper::call(self::$container, $this->prepareRow())->entity);
     }
 
     #[DataProvider('missingRequiredKeysProvider')]
@@ -45,11 +37,7 @@ class RAD99MapperTest extends \Tests\TestEasy
 
         unset($row[$missingKey]);
 
-        $entityFromRow = RAD99FromRowMapper::new(self::$container);
-        $entityFromRow->row = $row;
-        $entityFromRow->serve();
-
-        self::assertEquals($this->prepareEntity(), $entityFromRow->rad99);
+        self::assertEquals($this->prepareEntity(), RAD99FromRowMapper::call(self::$container, $row)->entity);
     }
 
     /**
