@@ -14,7 +14,7 @@ use SetCMS\Request\Mapper\RequestToIdMapper;
 class EmailPrivateReadController extends ControllerViaPSR7
 {
 
-    protected EmailEntity $email;
+    protected EmailEntity $entity;
     protected UUID $id;
 
     #[\Override]
@@ -47,7 +47,7 @@ class EmailPrivateReadController extends ControllerViaPSR7
         }
 
         if ($object instanceof EmailPrivateReadView) {
-            $object->email = $this->email;
+            $object->email = $this->entity;
         }
     }
 
@@ -57,7 +57,7 @@ class EmailPrivateReadController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof EmailRetrieveManyByCriteriaDAO) {
-            $this->email = $object->email;
+            $this->entity = $object->entity;
         }
 
         if ($object instanceof RequestToIdMapper) {

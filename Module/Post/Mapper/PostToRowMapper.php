@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace Module\Post\Mapper;
 
+use Module\Post\Entity\PostEntity;
+
 class PostToRowMapper extends \Module\Basic\Mapper\BasicEntityToRowMapper
 {
-
-    use \Module\Post\Traits\PostCallTrait;
 
     #[\Override]
     protected function run(): void
     {
-        $this->id($this->post);
-        $this->basic($this->post);
-        $this->row['slug'] = $this->post->slug;
-        $this->row['title'] = $this->post->title;
-        $this->row['message'] = $this->post->message;
+        $entity = PostEntity::as($this->entity);
+
+        $this->row['slug'] = $entity->slug;
+        $this->row['title'] = $entity->title;
+        $this->row['message'] = $entity->message;
+
+        parent::run();
     }
 }

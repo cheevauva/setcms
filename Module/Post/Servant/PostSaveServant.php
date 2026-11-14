@@ -11,15 +11,15 @@ use Module\Post\DAO\PostUpdateDAO;
 class PostSaveServant extends \UUA\Servant
 {
 
-    use \Module\Post\Traits\PostCallTrait;
+    use \SetCMS\Entity\Traits\EntityCallTrait;
 
     #[\Override]
     protected function run(): void
     {
-        if (PostHasByIdDAO::call($this, $this->post->id)->isExists) {
-            PostUpdateDAO::call($this, $this->post);
+        if (PostHasByIdDAO::call($this, $this->entity->id)->isExists) {
+            PostUpdateDAO::call($this, $this->entity);
         } else {
-            PostCreateDAO::call($this, $this->post);
+            PostCreateDAO::call($this, $this->entity);
         }
     }
 }

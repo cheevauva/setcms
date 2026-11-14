@@ -10,5 +10,5 @@ use Module\RAD99\Entity\RAD99Entity;
 class RAD99PrivateUpdateView extends ViewJson
 {
 
-    public RAD99Entity $rad99;
+    public RAD99Entity $entity;
 }

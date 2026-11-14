@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace Module\Page\Mapper;
 
+use Module\Page\Entity\PageEntity;
+
 class PageToRowMapper extends \Module\Basic\Mapper\BasicEntityToRowMapper
 {
-
-    use \Module\Page\Traits\PageCallTrait;
 
     #[\Override]
     protected function run(): void
     {
-        $this->id($this->page);
-        $this->basic($this->page);
-        $this->row['slug'] = $this->page->slug;
-        $this->row['title'] = $this->page->title;
-        $this->row['content'] = $this->page->content;
+        $entity = PageEntity::as($this->entity);
+
+        $this->row['slug'] = $entity->slug;
+        $this->row['title'] = $entity->title;
+        $this->row['content'] = $entity->content;
+
+        parent::run();
     }
 }

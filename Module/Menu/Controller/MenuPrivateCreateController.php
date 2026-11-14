@@ -13,7 +13,7 @@ use Module\Menu\Mapper\MenuFromRequestMapper;
 class MenuPrivateCreateController extends ControllerViaPSR7
 {
 
-    protected MenuEntity $menu;
+    protected MenuEntity $entity;
 
     #[\Override]
     protected function domainUnits(): array
@@ -38,7 +38,7 @@ class MenuPrivateCreateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof MenuFromRequestMapper) {
-            $this->menu = $object->menu;
+            $this->entity = $object->entity;
         }
     }
 
@@ -48,11 +48,11 @@ class MenuPrivateCreateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof MenuCreateDAO) {
-            $object->menu = $this->menu;
+            $object->entity = $this->entity;
         }
 
         if ($object instanceof MenuPrivateCreateView) {
-            $object->menu = $this->menu;
+            $object->entity = $this->entity;
         }
     }
 }

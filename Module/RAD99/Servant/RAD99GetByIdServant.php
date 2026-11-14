@@ -4,26 +4,19 @@ declare(strict_types=1);
 
 namespace Module\RAD99\Servant;
 
+use SetCMS\Entity\Servant\EntityGetByIdServant;
 use Module\RAD99\DAO\RAD99RetrieveByCriteriaDAO;
 use Module\RAD99\Entity\RAD99Entity;
 
-class RAD99GetByIdServant extends \UUA\Servant
+/**
+ * @extends EntityGetByIdServant<RAD99Entity>
+ */
+class RAD99GetByIdServant extends EntityGetByIdServant
 {
 
-    use \SetCMS\Traits\TraitsCallWithUUID;
-
-    public protected(set) RAD99Entity $rad99;
-
     #[\Override]
-    protected function run(): void
+    protected function manyByCriteria(): RAD99RetrieveByCriteriaDAO
     {
-        $getOne = RAD99RetrieveByCriteriaDAO::new($this->container);
-        $getOne->expectOne = true;
-        $getOne->allowEmptyResult = false;
-        $getOne->id = $this->id;
-        $getOne->limit = 1;
-        $getOne->serve();
-
-        $this->rad99 = $getOne->rad99;
+        return RAD99RetrieveByCriteriaDAO::new($this);
     }
 }

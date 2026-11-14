@@ -13,7 +13,7 @@ use Module\RAD99\Mapper\RAD99FromRequestMapper;
 class RAD99PrivateCreateController extends ControllerViaPSR7
 {
 
-    private RAD99Entity $rad99;
+    protected RAD99Entity $entity;
 
     #[\Override]
     protected function domainUnits(): array
@@ -38,11 +38,11 @@ class RAD99PrivateCreateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof RAD99CreateDAO) {
-            $object->rad99 = $this->rad99;
+            $object->entity = $this->entity;
         }
 
         if ($object instanceof RAD99PrivateCreateView) {
-            $object->rad99 = $this->rad99;
+            $object->entity = $this->entity;
         }
     }
 
@@ -52,7 +52,7 @@ class RAD99PrivateCreateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof RAD99FromRequestMapper) {
-            $this->rad99 = $object->rad99;
+            $this->entity = $object->entity;
         }
     }
 }

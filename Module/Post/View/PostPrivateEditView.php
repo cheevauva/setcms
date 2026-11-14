@@ -9,5 +9,5 @@ use Module\Post\Entity\PostEntity;
 class PostPrivateEditView extends PostPrivateReadView
 {
 
-    public PostEntity $post;
+    public PostEntity $entity;
 }

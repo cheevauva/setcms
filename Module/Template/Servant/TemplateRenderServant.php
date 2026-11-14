@@ -77,6 +77,6 @@ abstract class TemplateRenderServant extends \UUA\Servant
         $templateByAlias->allowEmptyResult = false;
         $templateByAlias->serve();
 
-        return $templateByAlias->template;
+        return $templateByAlias->entity;
     }
 }

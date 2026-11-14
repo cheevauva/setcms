@@ -23,7 +23,7 @@ class RAD99PrivateEditController extends RAD99PrivateReadController
         parent::to($object);
 
         if ($object instanceof RAD99PrivateEditView) {
-            $object->rad99 = $this->rad99;
+            $object->rad99 = $this->entity;
         }
     }
 }

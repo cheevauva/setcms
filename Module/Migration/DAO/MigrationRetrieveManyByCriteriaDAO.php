@@ -5,43 +5,20 @@ declare(strict_types=1);
 namespace Module\Migration\DAO;
 
 use Module\Migration\Mapper\MigraionFromRowMapper;
-use Module\Migration\Exception\MigrationNotFoundException;
+use SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO;
 use Module\Migration\Entity\MigrationEntity;
 
-class MigrationRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
+/**
+ * @extends EntityRetrieveByCriteriaDAO<MigrationEntity>
+ */
+class MigrationRetrieveManyByCriteriaDAO extends EntityRetrieveByCriteriaDAO
 {
 
     use \Module\Migration\Traits\MigrationDbalDAOTrait;
 
-    /**
-     * @var array<MigrationEntity>
-     */
-    public array $migrations;
-    public MigrationEntity $migration;
-    public ?MigrationEntity $migrationOrNull = null;
-
     #[\Override]
-    protected function entitiesNotFoundException(): \Throwable
+    protected function rowToEntity(array $row): MigrationEntity
     {
-        return new MigrationNotFoundException();
-    }
-
-    #[\Override]
-    protected function entityExpectOneButReceivedTooMuchException(): \Throwable
-    {
-        return new MigrationNotFoundException();
-    }
-
-    #[\Override]
-    protected function entityNotFoundException(): \Throwable
-    {
-        return new MigrationNotFoundException();
-    }
-
-    #[\Override]
-    protected function handleRows(array $rows): void
-    {
-        $this->migrations = array_map(fn($row) => MigraionFromRowMapper::call($this, $row)->migration, $rows);
-        $this->migrations ? $this->migration = $this->migrationOrNull = $this->migrations[0] : null;
+        return MigraionFromRowMapper::call($this, $row)->entity;
     }
 }

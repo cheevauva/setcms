@@ -5,25 +5,22 @@ declare(strict_types=1);
 namespace Module\Migration\Mapper;
 
 use Module\Migration\Entity\MigrationEntity;
-use Module\Migration\Exception\MigrationMapperNotFoundKeyInRowException;
+use SetCMS\Entity\Mapper\EntityFromRowMapper;
 
-class MigraionFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
+/**
+ * @extends EntityFromRowMapper<MigrationEntity>
+ */
+class MigraionFromRowMapper extends EntityFromRowMapper
 {
-
-    public protected(set) MigrationEntity $migration;
 
     #[\Override]
     protected function run(): void
     {
-        $this->migration = new MigrationEntity();
-        $this->migration->version = $this->string('version');
-        $this->migration->executedAt = $this->dateTime('executed_at');
-        $this->migration->executionTime = $this->int('execution_time');
-    }
-
-    #[\Override]
-    protected function notFoundKeyInRowException(string $key): MigrationMapperNotFoundKeyInRowException
-    {
-        throw new MigrationMapperNotFoundKeyInRowException($key);
+        $migration = $this->entity = new MigrationEntity();
+        $migration->version = $this->string('version');
+        $migration->executedAt = $this->dateTime('executed_at');
+        $migration->executionTime = $this->int('execution_time');
+        
+        parent::run();
     }
 }

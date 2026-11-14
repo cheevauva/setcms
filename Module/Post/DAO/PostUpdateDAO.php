@@ -9,12 +9,11 @@ use Module\Post\Mapper\PostToRowMapper;
 class PostUpdateDAO extends \SetCMS\Entity\DAO\EntityUpdateDAO
 {
 
-    use \Module\Post\Traits\PostCallTrait;
     use \Module\Post\Traits\PostDbalDAOTrait;
 
     #[\Override]
     protected function row(): array
     {
-        return PostToRowMapper::call($this, $this->post)->row;
+        return PostToRowMapper::call($this, $this->entity)->row;
     }
 }

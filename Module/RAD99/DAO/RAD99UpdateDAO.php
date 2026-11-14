@@ -9,12 +9,11 @@ use Module\RAD99\Mapper\RAD99ToRowMapper;
 class RAD99UpdateDAO extends \SetCMS\Entity\DAO\EntityUpdateDAO
 {
 
-    use \Module\RAD99\Traits\RAD99CallTrait;
     use \Module\RAD99\Traits\RAD99DbalDAOTrait;
 
     #[\Override]
     protected function row(): array
     {
-        return RAD99ToRowMapper::call($this, $this->rad99)->row;
+        return RAD99ToRowMapper::call($this, $this->entity)->row;
     }
 }

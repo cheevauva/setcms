@@ -13,8 +13,8 @@ use Module\Menu\Mapper\MenuFromRequestMapper;
 class MenuPrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
 {
 
-    protected MenuEntity $menu;
-    protected MenuEntity $newMenu;
+    protected MenuEntity $entity;
+    protected MenuEntity $newEntity;
 
     #[\Override]
     protected function domainUnits(): array
@@ -40,11 +40,11 @@ class MenuPrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof MenuRetrieveManyByCriteriaDAO) {
-            $this->menu = $object->menu;
+            $this->entity = $object->entity;
         }
 
         if ($object instanceof MenuFromRequestMapper) {
-            $this->newMenu = $object->menu;
+            $this->newEntity = $object->entity;
         }
     }
 
@@ -54,21 +54,21 @@ class MenuPrivateUpdateController extends \SetCMS\Controller\ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof MenuRetrieveManyByCriteriaDAO) {
-            $object->id = $this->newMenu->id;
+            $object->id = $this->newEntity->id;
             $object->limit = 1;
             $object->expectOne = true;
             $object->allowEmptyResult = false;
         }
 
         if ($object instanceof MenuUpdateDAO) {
-            $object->menu = $this->menu;
-            $object->menu->label = $this->newMenu->label;
-            $object->menu->route = $this->newMenu->route;
-            $object->menu->params = $this->newMenu->params;
+            $object->entity = $this->entity;
+            $object->entity->label = $this->newEntity->label;
+            $object->entity->route = $this->newEntity->route;
+            $object->entity->params = $this->newEntity->params;
         }
 
         if ($object instanceof MenuPrivateUpdateView) {
-            $object->menu = $this->menu;
+            $object->entity = $this->entity;
         }
     }
 }

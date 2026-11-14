@@ -4,19 +4,22 @@ declare(strict_types=1);
 
 namespace Module\Captcha\Mapper;
 
+use Module\Captcha\Entity\CaptchaEntity;
+
 class CaptchaToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
 {
-
-    use \Module\Captcha\Traits\CaptchaCallTrait;
 
     #[\Override]
     protected function run(): void
     {
-        $this->id($this->captcha);
-        $this->row['text'] = $this->captcha->text;
-        $this->row['date_expiried'] = $this->captcha->dateExpiried->format('Y-m-d H:i:s');
-        $this->row['solve_attempts'] = $this->captcha->solveAttempts;
-        $this->row['is_used'] = (int) $this->captcha->isUsed;
-        $this->row['is_solved'] = (int) $this->captcha->isSolved;
+        $entity = CaptchaEntity::as($this->entity);
+
+        $this->row['text'] = $entity->text;
+        $this->row['date_expiried'] = $entity->dateExpiried->format('Y-m-d H:i:s');
+        $this->row['solve_attempts'] = $entity->solveAttempts;
+        $this->row['is_used'] = (int) $entity->isUsed;
+        $this->row['is_solved'] = (int) $entity->isSolved;
+
+        parent::run();
     }
 }

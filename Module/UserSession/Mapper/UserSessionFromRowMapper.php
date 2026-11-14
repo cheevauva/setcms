@@ -5,27 +5,24 @@ declare(strict_types=1);
 namespace Module\UserSession\Mapper;
 
 use Module\UserSession\UserSessionEntity;
-use Module\UserSession\Exception\UserSessionMapperNotFoundKeyInRowException;
+use SetCMS\Entity\Mapper\EntityFromRowMapper;
 
-class UserSessionFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
+/**
+ * @extends EntityFromRowMapper<UserSessionEntity>
+ */
+class UserSessionFromRowMapper extends EntityFromRowMapper
 {
-
-    public UserSessionEntity $userSession;
 
     #[\Override]
     protected function run(): void
     {
-        $this->userSession = new UserSessionEntity;
-        $this->userSession->id = $this->uuid('id');
-        $this->userSession->device = $this->string('device');
-        $this->userSession->userId = $this->uuid('user_id');
-        $this->userSession->dateExpiries = $this->dateTime('date_expiries');
-        $this->id($this->userSession);
+        $userSession = $this->entity = new UserSessionEntity;
+        $userSession->id = $this->uuid('id');
+        $userSession->device = $this->string('device');
+        $userSession->userId = $this->uuid('user_id');
+        $userSession->dateExpiries = $this->dateTime('date_expiries');
+
+        parent::run();
     }
 
-    #[\Override]
-    protected function notFoundKeyInRowException(string $key): UserSessionMapperNotFoundKeyInRowException
-    {
-        return new UserSessionMapperNotFoundKeyInRowException($key);
-    }
 }

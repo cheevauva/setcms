@@ -10,7 +10,7 @@ use Module\RAD99\Entity\RAD99Entity;
 class RAD99PrivateReadView extends ViewTwig
 {
 
-    public RAD99Entity $rad99;
+    public RAD99Entity $entity;
 
 
 }

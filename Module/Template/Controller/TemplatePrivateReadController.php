@@ -57,7 +57,7 @@ class TemplatePrivateReadController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof TemplateRetrieveManyByCriteriaDAO) {
-            $this->template = $object->template;
+            $this->template = $object->entity;
         }
         
         if ($object instanceof RequestToIdMapper) {

@@ -15,9 +15,9 @@ class PageDeleteServant extends \UUA\Servant
     #[\Override]
     protected function run(): void
     {
-        $page = PageGetByIdServant::call($this, $this->id)->page;
-        $page->markDeleted();
+        $entity = PageGetByIdServant::call($this, $this->id)->entity;
+        $entity->markDeleted();
 
-        PageUpdateDAO::call($this, $page);
+        PageUpdateDAO::call($this, $entity);
     }
 }

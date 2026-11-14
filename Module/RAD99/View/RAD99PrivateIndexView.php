@@ -13,5 +13,5 @@ class RAD99PrivateIndexView extends ViewTwig
     /**
      * @var RAD99Entity[]
      */
-    public array $rad99s;
+    public array $entities;
 }

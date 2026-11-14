@@ -15,7 +15,7 @@ class EmailPrivateIndexController extends ControllerViaPSR7
     /**
      * @var EmailEntity[]
      */
-    protected array $emails = [];
+    protected array $entities = [];
 
     #[\Override]
     protected function domainUnits(): array
@@ -39,7 +39,7 @@ class EmailPrivateIndexController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof EmailRetrieveManyByCriteriaDAO) {
-            $this->emails = $object->emails;
+            $this->entities = $object->entities;
         }
     }
 
@@ -49,7 +49,7 @@ class EmailPrivateIndexController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof EmailPrivateIndexView) {
-            $object->emails = $this->emails;
+            $object->emails = $this->entities;
         }
     }
 }

@@ -12,7 +12,7 @@ class RAD99GetByIdDAO extends \UUA\DAO
 
     use \SetCMS\Traits\TraitsCallWithUUID;
 
-    public protected(set) RAD99Entity $rad99;
+    public protected(set) RAD99Entity $entity;
 
     #[\Override]
     protected function run(): void
@@ -24,6 +24,6 @@ class RAD99GetByIdDAO extends \UUA\DAO
         $getOne->deleted = false;
         $getOne->serve();
 
-        $this->rad99 = $getOne->rad99;
+        $this->entity = $getOne->entity;
     }
 }

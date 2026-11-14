@@ -10,11 +10,10 @@ class CaptchaUpdateDAO extends \SetCMS\Entity\DAO\EntityUpdateDAO
 {
 
     use \Module\Captcha\Traits\CaptchaDbalDAOTrait;
-    use \Module\Captcha\Traits\CaptchaCallTrait;
 
     #[\Override]
     protected function row(): array
     {
-        return CaptchaToRowMapper::call($this, $this->captcha)->row;
+        return CaptchaToRowMapper::call($this, $this->entity)->row;
     }
 }

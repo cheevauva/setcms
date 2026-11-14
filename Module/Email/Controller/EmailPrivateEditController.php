@@ -23,7 +23,7 @@ class EmailPrivateEditController extends EmailPrivateReadController
         parent::to($object);
 
         if ($object instanceof EmailPrivateEditView) {
-            $object->email = $this->email;
+            $object->email = $this->entity;
         }
     }
 }

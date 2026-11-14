@@ -9,5 +9,5 @@ use Module\Menu\Entity\MenuEntity;
 class MenuPrivateCreateView extends \SetCMS\View\ViewJson
 {
 
-    public MenuEntity $menu;
+    public MenuEntity $entity;
 }

@@ -9,5 +9,5 @@ use Module\RAD01\Entity\RAD01Entity;
 class RAD01PrivateDeleteView extends \SetCMS\View\ViewJson
 {
 
-    public RAD01Entity $rad01;
+    public RAD01Entity $entity;
 }

@@ -10,15 +10,15 @@ use Module\UserResetToken\DAO\UserResetTokenUpdateDAO;
 class UserResetTokenSaveServant extends \UUA\Servant
 {
 
-    use \Module\UserResetToken\Traits\UserResetTokenCallTrait;
+    use \SetCMS\Entity\Traits\EntityCallTrait;
 
     #[\Override]
     protected function run(): void
     {
-        if (!empty($this->userResetToken->id)) {
-            UserResetTokenUpdateDAO::call($this, $this->userResetToken);
+        if (!empty($this->entity->id)) {
+            UserResetTokenUpdateDAO::call($this, $this->entity);
         } else {
-            UserResetTokenCreateDAO::call($this, $this->userResetToken);
+            UserResetTokenCreateDAO::call($this, $this->entity);
         }
     }
 }

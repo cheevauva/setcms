@@ -40,7 +40,7 @@ class UserPrivateUpdateController extends UserPrivateController
         parent::from($object);
 
         if ($object instanceof UserRetrieveManyByCriteriaDAO) {
-            $this->user = $object->user;
+            $this->user = UserEntity::as($object->entity);
             $this->user->role = $this->newUser->role;
         }
 
@@ -63,7 +63,7 @@ class UserPrivateUpdateController extends UserPrivateController
         }
 
         if ($object instanceof UserUpdateDAO) {
-            $object->user = $this->user;
+            $object->entity = $this->user;
         }
     }
 }

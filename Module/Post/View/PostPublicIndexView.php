@@ -11,7 +11,7 @@ class PostPublicIndexView extends ViewTwig
 {
 
     /**
-     * @var array<PostEntity>
+     * @var PostEntity[]
      */
-    public array $posts = [];
+    public array $entities = [];
 }

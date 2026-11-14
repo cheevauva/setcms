@@ -14,7 +14,7 @@ use SetCMS\Request\Mapper\RequestToIdMapper;
 class PagePrivateReadController extends ControllerViaPSR7
 {
 
-    protected PageEntity $page;
+    protected PageEntity $entity;
     protected UUID $id;
 
     #[\Override]
@@ -44,7 +44,7 @@ class PagePrivateReadController extends ControllerViaPSR7
         }
 
         if ($object instanceof PagePrivateReadView) {
-            $object->entity = $this->page;
+            $object->entity = $this->entity;
         }
     }
 
@@ -54,7 +54,7 @@ class PagePrivateReadController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PageGetByIdServant) {
-            $this->page = $object->page;
+            $this->entity = $object->entity;
         }
         
         if ($object instanceof RequestToIdMapper) {

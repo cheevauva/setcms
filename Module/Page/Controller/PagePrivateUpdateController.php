@@ -14,8 +14,8 @@ use Module\Page\Mapper\PageFromRequestMapper;
 class PagePrivateUpdateController extends ControllerViaPSR7
 {
 
-    public PageEntity $page;
-    public PageEntity $newPage;
+    public PageEntity $entity;
+    public PageEntity $newEntity;
 
     #[\Override]
     protected function domainUnits(): array
@@ -41,18 +41,18 @@ class PagePrivateUpdateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof PageGetByIdServant) {
-            $object->id = $this->newPage->id;
+            $object->id = $this->newEntity->id;
         }
 
         if ($object instanceof PageUpdateDAO) {
-            $object->page = $this->page;
-            $object->page->slug = $this->newPage->slug;
-            $object->page->title = $this->newPage->title;
-            $object->page->content = $this->newPage->content;
+            $object->entity = $this->entity;
+            $object->entity->slug = $this->newEntity->slug;
+            $object->entity->title = $this->newEntity->title;
+            $object->entity->content = $this->newEntity->content;
         }
 
         if ($object instanceof PagePrivateUpdateView) {
-            $object->entity = $this->page;
+            $object->entity = $this->entity;
         }
     }
 
@@ -62,11 +62,11 @@ class PagePrivateUpdateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PageGetByIdServant) {
-            $this->page = $object->page;
+            $this->entity = $object->entity;
         }
 
         if ($object instanceof PageFromRequestMapper) {
-            $this->newPage = $object->page;
+            $this->newEntity = $object->entity;
         }
     }
 }

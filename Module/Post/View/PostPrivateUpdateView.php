@@ -10,5 +10,5 @@ use Module\Post\Entity\PostEntity;
 class PostPrivateUpdateView extends ViewJson
 {
 
-    public PostEntity $post;
+    public PostEntity $entity;
 }

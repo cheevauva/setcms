@@ -13,7 +13,7 @@ use Module\Post\Mapper\PostFromRequestMapper;
 class PostPrivateCreateController extends ControllerViaPSR7
 {
 
-    protected PostEntity $post;
+    protected PostEntity $entity;
 
     #[\Override]
     protected function domainUnits(): array
@@ -38,11 +38,11 @@ class PostPrivateCreateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof PostCreateDAO) {
-            $object->post = $this->post;
+            $object->entity = $this->entity;
         }
 
         if ($object instanceof PostPrivateCreateView) {
-            $object->entity = $this->post;
+            $object->entity = $this->entity;
         }
     }
 
@@ -52,7 +52,7 @@ class PostPrivateCreateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PostFromRequestMapper) {
-            $this->post = $object->post;
+            $this->entity = $object->entity;
         }
     }
 }

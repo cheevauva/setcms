@@ -14,7 +14,7 @@ use SetCMS\Request\Mapper\RequestToIdMapper;
 class PostPrivateReadController extends ControllerViaPSR7
 {
 
-    protected PostEntity $post;
+    protected PostEntity $entity;
     protected UUID $id;
 
     #[\Override]
@@ -44,7 +44,7 @@ class PostPrivateReadController extends ControllerViaPSR7
         }
 
         if ($object instanceof PostPrivateReadView) {
-            $object->post = $this->post;
+            $object->entity = $this->entity;
         }
     }
 
@@ -54,7 +54,7 @@ class PostPrivateReadController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PostGetByIdDAO) {
-            $this->post = $object->post;
+            $this->entity = $object->entity;
         }
 
         if ($object instanceof RequestToIdMapper) {

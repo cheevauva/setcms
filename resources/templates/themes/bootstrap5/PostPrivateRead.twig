@@ -1,19 +1,19 @@
 {% extends scShortPath(layout ?? 'layout_admin.twig') %}
 
-{% block content_title %}{{ post.title }}{% endblock %}
+{% block content_title %}{{ entity.title }}{% endblock %}
 
 {% block content_toolbar %}
     <a href="{{ url('AdminPostIndex') }}" class="btn btn-sm btn-outline-secondary">Список</a> 
-    <a href="{{ url('AdminPostEdit', {id: post.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+    <a href="{{ url('AdminPostEdit', {id: entity.id}) }}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
 {% endblock %}
 
 {% block content %}
     <p>
-        {{ post.message|raw }}
+        {{ entity.message|raw }}
     </p>
 
     <p>
-    <setcms-field type="input" name="dateCreated" label="Дата создания" disabled="1" value="{{ post.dateCreated.format('Y-m-d H:i:s') }}"></setcms-field>
-    <setcms-field type="input" name="dateModified" label="Дата изменения" disabled="1" value="{{ post.dateCreated.format('Y-m-d H:i:s') }}"></setcms-field>
+    <setcms-field type="input" name="dateCreated" label="Дата создания" disabled="1" value="{{ entity.dateCreated.format('Y-m-d H:i:s') }}"></setcms-field>
+    <setcms-field type="input" name="dateModified" label="Дата изменения" disabled="1" value="{{ entity.dateCreated.format('Y-m-d H:i:s') }}"></setcms-field>
 </p>
 {% endblock %}

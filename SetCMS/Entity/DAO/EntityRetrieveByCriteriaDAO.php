@@ -7,7 +7,14 @@ namespace SetCMS\Entity\DAO;
 use SetCMS\UUID;
 use SetCMS\Database\DatabaseQueryBuilder;
 use SetCMS\Database\Database;
+use SetCMS\Entity\Entity;
+use SetCMS\Entity\Exception\EntitiesNotFoundException;
+use SetCMS\Entity\Exception\EntityExpectOneButReceivedTooMuchException;
+use SetCMS\Entity\Exception\EntityNotFoundException;
 
+/**
+ * @template T of Entity
+ */
 abstract class EntityRetrieveByCriteriaDAO extends \UUA\DAO
 {
 
@@ -26,11 +33,35 @@ abstract class EntityRetrieveByCriteriaDAO extends \UUA\DAO
      */
     protected array $criteria = [];
 
-    abstract protected function entitiesNotFoundException(): \Throwable;
+    /**
+     * @var T
+     */
+    public protected(set) Entity $entity;
 
-    abstract protected function entityExpectOneButReceivedTooMuchException(): \Throwable;
+    /**
+     * @var T|null
+     */
+    public protected(set) ?Entity $entityOrNull = null;
 
-    abstract protected function entityNotFoundException(): \Throwable;
+    /**
+     * @var T[]
+     */
+    public protected(set) array $entities;
+
+    protected function entitiesNotFoundException(): \Throwable
+    {
+        return new EntitiesNotFoundException;
+    }
+
+    protected function entityExpectOneButReceivedTooMuchException(): EntityExpectOneButReceivedTooMuchException
+    {
+        return new EntityExpectOneButReceivedTooMuchException;
+    }
+
+    protected function entityNotFoundException(): EntityNotFoundException
+    {
+        return new EntityNotFoundException;
+    }
 
     #[\Override]
     protected function run(): void
@@ -38,7 +69,8 @@ abstract class EntityRetrieveByCriteriaDAO extends \UUA\DAO
         $rows = $this->createQb()->fetchAllAssociative();
 
         $this->checkRows($rows);
-        $this->handleRows($rows);
+        $this->entities = array_map($this->rowToEntity(...), $rows);
+        $this->entities ? $this->entity = $this->entityOrNull = $this->entities[0] : null;
     }
 
     /**
@@ -49,33 +81,29 @@ abstract class EntityRetrieveByCriteriaDAO extends \UUA\DAO
     {
         if ($this->expectOne) {
             if (count($rows) > 1) {
-                throw $this->entityExpectOneButReceivedTooMuchException();
+                throw new EntityExpectOneButReceivedTooMuchException();
             }
             if (empty($rows) && !$this->allowEmptyResult) {
-                throw $this->entityNotFoundException();
+                throw new EntityNotFoundException();
             }
         } else {
             if (empty($rows) && !$this->allowEmptyResult) {
-                throw $this->entitiesNotFoundException();
+                throw new EntitiesNotFoundException;
             }
         }
     }
 
     /**
-     * @param array<int, array<string, mixed>> $rows
+     * @param array<string, mixed> $row
+     * @return T
      */
-    abstract protected function handleRows(array $rows): void;
+    abstract protected function rowToEntity(array $row): Entity;
 
     abstract protected function table(): string;
 
     abstract protected function db(): Database;
 
     protected function createQb(): DatabaseQueryBuilder
-    {
-        return $this->createQuery();
-    }
-
-    protected function createQuery(): DatabaseQueryBuilder
     {
         $qb = $this->db()->createQueryBuilder();
         $qb->select('t.*');

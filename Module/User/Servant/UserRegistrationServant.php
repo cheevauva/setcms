@@ -27,7 +27,7 @@ class UserRegistrationServant extends \UUA\Servant
         $userByEmail->email = $this->email;
         $userByEmail->serve();
 
-        if ($userByEmail->userOrNull) {
+        if ($userByEmail->entityOrNull) {
             throw new UserAlreadyExistsException();
         }
 
@@ -37,7 +37,7 @@ class UserRegistrationServant extends \UUA\Servant
         $user->password = password_hash($this->password, PASSWORD_DEFAULT);
         $user->role = $user->role::USER;
 
-        UserCreateDAO::call($this, $this->user);
+        UserCreateDAO::call($this, $user);
 
         $this->success = true;
     }

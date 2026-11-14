@@ -5,28 +5,24 @@ declare(strict_types=1);
 namespace Module\Captcha\Mapper;
 
 use Module\Captcha\Entity\CaptchaEntity;
-use Module\Captcha\Exception\CaptchaMapperNotFoundKeyInRowException;
+use SetCMS\Entity\Mapper\EntityFromRowMapper;
 
-class CaptchaFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
+/**
+ * @extends EntityFromRowMapper<CaptchaEntity>
+ */
+class CaptchaFromRowMapper extends EntityFromRowMapper
 {
-
-    public protected(set) CaptchaEntity $captcha;
 
     #[\Override]
     protected function run(): void
     {
-        $this->captcha = new CaptchaEntity();
-        $this->captcha->text = $this->string('text');
-        $this->captcha->dateExpiried = $this->dateTime('date_expiried');
-        $this->captcha->isSolved = $this->bool('is_solved');
-        $this->captcha->isUsed = $this->bool('is_used');
-        $this->captcha->solveAttempts = $this->int('solve_attempts');
-        $this->id($this->captcha);
-    }
+        $captcha = $this->entity = new CaptchaEntity();
+        $captcha->text = $this->string('text');
+        $captcha->dateExpiried = $this->dateTime('date_expiried');
+        $captcha->isSolved = $this->bool('is_solved');
+        $captcha->isUsed = $this->bool('is_used');
+        $captcha->solveAttempts = $this->int('solve_attempts');
 
-    #[\Override]
-    protected function notFoundKeyInRowException(string $key): CaptchaMapperNotFoundKeyInRowException
-    {
-        return new CaptchaMapperNotFoundKeyInRowException($key);
+        parent::run();
     }
 }

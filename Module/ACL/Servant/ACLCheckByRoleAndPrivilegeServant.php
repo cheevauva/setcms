@@ -28,7 +28,7 @@ class ACLCheckByRoleAndPrivilegeServant extends \UUA\Servant
 
         $this->isAllow = $acl->isAllowed((string) $this->role, 'routes', $this->privilege);
     }
-    
+
     public static function call(WithContainterInterface|ContainerInterface $container, ACLRoleVO $role, string $privilege): self
     {
         $self = self::new($container);

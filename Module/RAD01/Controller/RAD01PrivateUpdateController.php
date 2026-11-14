@@ -14,8 +14,8 @@ use Module\RAD01\Mapper\RAD01FromRequestMapper;
 class RAD01PrivateUpdateController extends ControllerViaPSR7
 {
 
-    protected RAD01Entity $rad01;
-    protected RAD01Entity $newRAD01;
+    protected RAD01Entity $entity;
+    protected RAD01Entity $newEntity;
 
     #[\Override]
     protected function domainUnits(): array
@@ -41,16 +41,16 @@ class RAD01PrivateUpdateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof RAD01GetByIdServant) {
-            $object->id = $this->newRAD01->id;
+            $object->id = $this->newEntity->id;
         }
 
         if ($object instanceof RAD01UpdateDAO) {
-            $object->rad01 = $this->rad01;
-            $object->rad01->field01 = $this->newRAD01->field01;
+            $object->entity = $this->entity;
+            $object->entity->field01 = $this->newEntity->field01;
         }
 
         if ($object instanceof RAD01PrivateUpdateView) {
-            $object->rad01 = $this->rad01;
+            $object->entity = $this->entity;
         }
     }
 
@@ -60,11 +60,11 @@ class RAD01PrivateUpdateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof RAD01GetByIdServant) {
-            $this->rad01 = $object->rad01;
+            $this->entity = $object->entity;
         }
 
         if ($object instanceof RAD01FromRequestMapper) {
-            $this->newRAD01 = $object->rad01;
+            $this->newEntity = $object->entity;
         }
     }
 }

@@ -5,25 +5,20 @@ declare(strict_types=1);
 namespace Module\RAD99\Mapper;
 
 use Module\RAD99\Entity\RAD99Entity;
-use Module\RAD99\Exception\RAD99MapperNotFoundKeyInRowException;
+use Module\Basic\Mapper\BasicEntityFromRowMapper;
 
-class RAD99FromRowMapper extends \Module\Basic\Mapper\BasicEntityFromRowMapper
+/**
+ * @extends BasicEntityFromRowMapper<RAD99Entity>
+ */
+class RAD99FromRowMapper extends BasicEntityFromRowMapper
 {
-
-    public RAD99Entity $rad99;
 
     #[\Override]
     protected function run(): void
     {
-        $this->rad99 = new RAD99Entity();
-        $this->rad99->field99 = $this->string('field99');
-        $this->id($this->rad99);
-        $this->basic($this->rad99);
-    }
+        $entity = $this->entity = new RAD99Entity();
+        $entity->field99 = $this->string('field99');
 
-    #[\Override]
-    protected function notFoundKeyInRowException(string $key): RAD99MapperNotFoundKeyInRowException
-    {
-        return new RAD99MapperNotFoundKeyInRowException($key);
+        parent::run();
     }
 }

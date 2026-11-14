@@ -6,29 +6,26 @@ namespace Module\Email\Mapper;
 
 use Module\Email\Entity\EmailEntity;
 use Module\Email\Enum\EmailStatusEnum;
-use Module\Email\Exception\EmailMapperNotFoundKeyInRowException;
+use SetCMS\Entity\Mapper\EntityFromRowMapper;
 
-class EmailFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
+/**
+ * @extends EntityFromRowMapper<EmailEntity>
+ */
+class EmailFromRowMapper extends EntityFromRowMapper
 {
-
-    public protected(set) EmailEntity $email;
 
     #[\Override]
     protected function run(): void
     {
-        $this->email = new EmailEntity();
-        $this->email->subject = $this->string('subject');
-        $this->email->from = $this->string('from_addr');
-        $this->email->to = $this->string('to_addr');
-        $this->email->body = $this->string('body');
-        $this->email->dateSent = $this->dateTimeOrNull('date_sent');
-        $this->email->status = EmailStatusEnum::from($this->string('status'));
-        $this->id($this->email);
+        $email = $this->entity = new EmailEntity();
+        $email->subject = $this->string('subject');
+        $email->from = $this->string('from_addr');
+        $email->to = $this->string('to_addr');
+        $email->body = $this->string('body');
+        $email->dateSent = $this->dateTimeOrNull('date_sent');
+        $email->status = EmailStatusEnum::from($this->string('status'));
+        
+        parent::run();
     }
 
-    #[\Override]
-    protected function notFoundKeyInRowException(string $key): EmailMapperNotFoundKeyInRowException
-    {
-        throw new EmailMapperNotFoundKeyInRowException($key);
-    }
 }

@@ -15,9 +15,9 @@ class PostDeleteServant extends \UUA\Servant
     #[\Override]
     protected function run(): void
     {
-        $post = PostGetByIdDAO::call($this, $this->id)->post;
-        $post->markDeleted();
+        $entity = PostGetByIdDAO::call($this, $this->id)->entity;
+        $entity->markDeleted();
 
-        PostUpdateDAO::call($this, $post);
+        PostUpdateDAO::call($this, $entity);
     }
 }

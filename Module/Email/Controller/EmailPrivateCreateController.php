@@ -13,7 +13,7 @@ use Module\Email\Mapper\EmailFromRequestMapper;
 class EmailPrivateCreateController extends ControllerViaPSR7
 {
 
-    protected EmailEntity $email;
+    protected EmailEntity $entity;
 
     #[\Override]
     protected function domainUnits(): array
@@ -38,11 +38,11 @@ class EmailPrivateCreateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof EmailCreateDAO) {
-            $object->email = $this->email;
+            $object->entity = $this->entity;
         }
 
         if ($object instanceof EmailPrivateCreateView) {
-            $object->email = $this->email;
+            $object->entity = $this->entity;
         }
     }
 
@@ -52,7 +52,7 @@ class EmailPrivateCreateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof EmailFromRequestMapper) {
-            $this->email = $object->email;
+            $this->entity = $object->entity;
         }
     }
 }

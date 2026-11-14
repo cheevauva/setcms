@@ -15,7 +15,7 @@ class RAD01PrivateIndexController extends ControllerViaPSR7
     /**
      * @var RAD01Entity[]
      */
-    protected array $rad01s = [];
+    protected array $entities = [];
 
     #[\Override]
     protected function domainUnits(): array
@@ -39,7 +39,7 @@ class RAD01PrivateIndexController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof RAD01RetrieveByCriteriaDAO) {
-            $this->rad01s = $object->rad01s;
+            $this->entities = $object->entities;
         }
     }
 
@@ -49,7 +49,7 @@ class RAD01PrivateIndexController extends ControllerViaPSR7
         parent::to($object);
         
         if ($object instanceof RAD01PrivateIndexView) {
-            $object->rad01s = $this->rad01s;
+            $object->entities = $this->entities;
         }
     }
 }

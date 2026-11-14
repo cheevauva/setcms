@@ -12,7 +12,7 @@ use Module\Captcha\View\CaptchaPublicGenerateView;
 class CaptchaPublicGenerateController extends ControllerViaPSR7
 {
 
-    protected CaptchaEntity $captcha;
+    protected CaptchaEntity $entity;
 
     #[\Override]
     protected function domainUnits(): array
@@ -36,11 +36,11 @@ class CaptchaPublicGenerateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof CaptchaCreateDAO) {
-            $object->captcha = new CaptchaEntity();
+            $object->entity = new CaptchaEntity();
         }
 
         if ($object instanceof CaptchaPublicGenerateView) {
-            $object->captcha = $this->captcha;
+            $object->captcha = $this->entity;
         }
     }
 
@@ -50,7 +50,7 @@ class CaptchaPublicGenerateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof CaptchaCreateDAO) {
-            $this->captcha = $object->captcha;
+            $this->entity = $object->entity;
         }
     }
 }

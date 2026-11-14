@@ -11,15 +11,15 @@ use Module\RAD01\DAO\RAD01UpdateDAO;
 class RAD01SaveServant extends \UUA\Servant
 {
 
-    use \Module\RAD01\Traits\RAD01CallTrait;
+    use \SetCMS\Entity\Traits\EntityCallTrait;
 
     #[\Override]
     protected function run(): void
     {
-        if (RAD01HasByIdDAO::call($this, $this->rad01->id)->isExists) {
-            RAD01UpdateDAO::call($this, $this->rad01);
+        if (RAD01HasByIdDAO::call($this, $this->entity->id)->isExists) {
+            RAD01UpdateDAO::call($this, $this->entity);
         } else {
-            RAD01CreateDAO::call($this, $this->rad01);
+            RAD01CreateDAO::call($this, $this->entity);
         }
     }
 }

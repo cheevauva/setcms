@@ -50,7 +50,7 @@ class MigrationUpServant extends Servant
             $retrieveExecuted->db = $db;
             $retrieveExecuted->serve();
 
-            $executedMigrations = $this->migrationsKeyValue($retrieveExecuted->migrations);
+            $executedMigrations = $this->migrationsKeyValue($retrieveExecuted->entities);
         }
 
         $this->executedOld = $executedMigrations;
@@ -93,7 +93,7 @@ class MigrationUpServant extends Servant
 
     /**
      * 
-     * @param array<MigrationEntity> $migrations
+     * @param MigrationEntity[] $migrations
      * @return  array<string, MigrationEntity>
      */
     protected function migrationsKeyValue(array $migrations): array

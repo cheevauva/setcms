@@ -25,7 +25,7 @@ class UserLoginServant extends \UUA\Servant
         $retriveUser->allowEmptyResult = false;
         $retriveUser->serve();
 
-        $this->user = $retriveUser->user;
+        $this->user = UserEntity::as($retriveUser->entity);
 
         if (!password_verify($this->password, $this->user->password)) {
             throw new UserIncorrectPasswordException;

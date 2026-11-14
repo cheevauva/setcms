@@ -11,13 +11,10 @@ class PostCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
 {
 
     use \Module\Post\Traits\PostDbalDAOTrait;
-    use \Module\Post\Traits\PostCallTrait;
-
-    public PostEntity $post;
 
     #[\Override]
     protected function row(): array
     {
-        return PostToRowMapper::call($this, $this->post)->row;
+        return PostToRowMapper::call($this, $this->entity)->row;
     }
 }

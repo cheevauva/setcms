@@ -35,31 +35,26 @@ class UserResetTokenSendToUserServant extends \UUA\Servant
     #[\Override]
     protected function run(): void
     {
-        $userResetToken = null;
+        $userResetToken = $this->userResetToken = new UserResetTokenEntity();
 
         if ($this->isRefreshExistsToken) {
-            $getByUserId = UserResetTokenRetrieveManyByCriteriaDAO::new($this->container);
+            $getByUserId = UserResetTokenRetrieveManyByCriteriaDAO::new($this);
             $getByUserId->userId = $this->user->id;
             $getByUserId->expectOne = true;
             $getByUserId->allowEmptyResult = true;
             $getByUserId->limit = 1;
             $getByUserId->serve();
 
-            $userResetToken = $getByUserId->userResetTokenOrNull;
+            $userResetToken = UserResetTokenEntity::as($getByUserId->entityOrNull ?? new UserResetTokenEntity());
         }
 
-        $userResetToken ??= new UserResetTokenEntity();
         $userResetToken->userId = $this->user->id;
         $userResetToken->dateExpired = new \DateTimeImmutable(sprintf('+%s seconds', $this->tokenExpiredSeconds));
         $userResetToken->token = (new UUID)->uuid;
 
-        $this->userResetToken = $userResetToken;
+        UserResetTokenSaveServant::call($this, $userResetToken);
 
-        $saveUserResetToken = UserResetTokenSaveServant::new($this->container);
-        $saveUserResetToken->userResetToken = $userResetToken;
-        $saveUserResetToken->serve();
-
-        $template = TemplateRenderUserResetPasswordServant::new($this->container);
+        $template = TemplateRenderUserResetPasswordServant::new($this);
         $template->userResetToken = $userResetToken;
         $template->user = $this->user;
         $template->serve();
@@ -70,7 +65,7 @@ class UserResetTokenSendToUserServant extends \UUA\Servant
         $email->to = $this->user->email;
         $email->from = $this->addressFromSending;
 
-        $sendEmail = EmailSendServant::new($this->container);
+        $sendEmail = EmailSendServant::new($this);
         $sendEmail->email = $email;
         $sendEmail->immediate = false;
         $sendEmail->serve();

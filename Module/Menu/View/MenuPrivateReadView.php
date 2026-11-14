@@ -8,5 +8,5 @@ use Module\Menu\Entity\MenuEntity;
 
 class MenuPrivateReadView extends \SetCMS\View\ViewTwig
 {
-    public MenuEntity $menu;
+    public MenuEntity $entity;
 }

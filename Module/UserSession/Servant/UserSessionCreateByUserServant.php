@@ -18,16 +18,12 @@ class UserSessionCreateByUserServant extends \UUA\Servant
     #[\Override]
     protected function run(): void
     {
-        $session = new UserSessionEntity;
+        $session = $this->session = new UserSessionEntity;
         $session->userId = $this->user->id;
         $session->device = $this->device;
         $session->dateExpiries = new \DateTimeImmutable('+1 year');
         $session->dateCreated = new \DateTimeImmutable();
 
-        $create = UserSessionCreateDAO::new($this->container);
-        $create->userSession = $session;
-        $create->serve();
-
-        $this->session = $session;
+        UserSessionCreateDAO::call($this, $session);
     }
 }

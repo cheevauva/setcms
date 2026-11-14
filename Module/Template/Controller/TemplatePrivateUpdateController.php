@@ -48,10 +48,10 @@ class TemplatePrivateUpdateController extends ControllerViaPSR7
         }
 
         if ($object instanceof TemplateUpdateDAO) {
-            $object->template = $this->template;
-            $object->template->template = $this->newtemplate->template;
-            $object->template->title = $this->newtemplate->title;
-            $object->template->slug = $this->newtemplate->slug;
+            $template = $object->entity = $this->template;
+            $template->template = $this->newtemplate->template;
+            $template->title = $this->newtemplate->title;
+            $template->slug = $this->newtemplate->slug;
         }
 
         if ($object instanceof TemplatePrivateUpdateView) {
@@ -65,7 +65,7 @@ class TemplatePrivateUpdateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof TemplateRetrieveManyByCriteriaDAO) {
-            $this->template = $object->template;
+            $this->template = $object->entity;
         }
 
         if ($object instanceof TemplateFromRequestMapper) {

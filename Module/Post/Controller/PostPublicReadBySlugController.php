@@ -14,7 +14,7 @@ class PostPublicReadBySlugController extends ControllerViaPSR7
 {
 
     protected string $slug;
-    protected PostEntity $post;
+    protected PostEntity $entity;
 
     #[\Override]
     protected function domainUnits(): array
@@ -46,7 +46,7 @@ class PostPublicReadBySlugController extends ControllerViaPSR7
         }
 
         if ($object instanceof PostPublicReadBySlugView) {
-            $object->post = $this->post;
+            $object->entity = $this->entity;
         }
     }
 
@@ -56,7 +56,7 @@ class PostPublicReadBySlugController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PostRetrieveManyByCriteriaDAO) {
-            $this->post = $object->post;
+            $this->entity = $object->entity;
         }
 
         if ($object instanceof PostSlugFromRequestMapper) {

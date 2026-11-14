@@ -4,26 +4,21 @@ declare(strict_types=1);
 
 namespace Module\Post\DAO;
 
+use SetCMS\Entity\Servant\EntityGetByIdServant;
 use Module\Post\Entity\PostEntity;
 use Module\Post\DAO\PostRetrieveManyByCriteriaDAO;
 
-class PostGetByIdDAO extends \UUA\DAO
+/**
+ * @extends EntityGetByIdServant<PostEntity>
+ */
+class PostGetByIdDAO extends EntityGetByIdServant
 {
 
     use \SetCMS\Traits\TraitsCallWithUUID;
 
-    public PostEntity $post;
-
     #[\Override]
-    protected function run(): void
+    protected function manyByCriteria(): PostRetrieveManyByCriteriaDAO
     {
-        $getById = PostRetrieveManyByCriteriaDAO::new($this->container);
-        $getById->expectOne = true;
-        $getById->allowEmptyResult = false;
-        $getById->id = $this->id;
-        $getById->deleted = false;
-        $getById->serve();
-
-        $this->post = $getById->post;
+        return PostRetrieveManyByCriteriaDAO::new($this);
     }
 }

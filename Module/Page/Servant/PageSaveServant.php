@@ -11,15 +11,15 @@ use Module\Page\DAO\PageUpdateDAO;
 class PageSaveServant extends \UUA\Servant
 {
 
-    use \Module\Page\Traits\PageCallTrait;
+    use \SetCMS\Entity\Traits\EntityCallTrait;
 
     #[\Override]
     protected function run(): void
     {
-        if (PageHasByIdDAO::call($this, $this->page->id)->isExists) {
-            PageUpdateDAO::call($this, $this->page);
+        if (PageHasByIdDAO::call($this, $this->entity->id)->isExists) {
+            PageUpdateDAO::call($this, $this->entity);
         } else {
-            PageCreateDAO::call($this, $this->page);
+            PageCreateDAO::call($this, $this->entity);
         }
     }
 }

@@ -15,7 +15,7 @@ use SetCMS\Request\Mapper\RequestToIdMapper;
 class RAD01PrivateDeleteController extends ControllerViaPSR7
 {
 
-    public RAD01Entity $rad01;
+    public RAD01Entity $entity;
     public UUID $id;
 
     #[\Override]
@@ -46,11 +46,11 @@ class RAD01PrivateDeleteController extends ControllerViaPSR7
         }
 
         if ($object instanceof RAD01PrivateDeleteView) {
-            $object->rad01 = $this->rad01;
+            $object->entity = $this->entity;
         }
 
         if ($object instanceof RAD01DeleteByIdDAO) {
-            $object->id = $this->rad01->id;
+            $object->id = $this->entity->id;
         }
     }
 
@@ -60,7 +60,7 @@ class RAD01PrivateDeleteController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof RAD01GetByIdServant) {
-            $this->rad01 = $object->rad01;
+            $this->entity = $object->entity;
         }
         
         if ($object instanceof RequestToIdMapper) {

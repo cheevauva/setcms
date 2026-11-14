@@ -38,7 +38,7 @@ class TemplatePrivateCreateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof TemplateCreateDAO) {
-            $object->template = $this->template;
+            $object->entity = $this->template;
         }
 
         if ($object instanceof TemplatePrivateCreateView) {

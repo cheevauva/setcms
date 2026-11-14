@@ -6,24 +6,17 @@ namespace Module\Page\Servant;
 
 use Module\Page\Entity\PageEntity;
 use Module\Page\DAO\PageRetrieveByCriteriaDAO;
+use Module\Basic\Servant\BasicEntityGetByIdServant;
 
-class PageGetByIdServant extends \UUA\Servant
+/**
+ * @extends BasicEntityGetByIdServant<PageEntity>
+ */
+class PageGetByIdServant extends BasicEntityGetByIdServant
 {
 
-    use \SetCMS\Traits\TraitsCallWithUUID;
-
-    public protected(set) PageEntity $page;
-
     #[\Override]
-    protected function run(): void
+    protected function manyByCriteria(): PageRetrieveByCriteriaDAO
     {
-        $getOne = PageRetrieveByCriteriaDAO::new($this->container);
-        $getOne->expectOne = true;
-        $getOne->allowEmptyResult = false;
-        $getOne->id = $this->id;
-        $getOne->limit = 1;
-        $getOne->serve();
-
-        $this->page = $getOne->page;
+        return PageRetrieveByCriteriaDAO::new($this);
     }
 }

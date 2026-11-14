@@ -11,15 +11,15 @@ use Module\User\DAO\UserUpdateDAO;
 class UserSaveServant extends \UUA\Servant
 {
 
-    use \Module\User\Traits\UserCallTrait;
+    use \SetCMS\Entity\Traits\EntityCallTrait;
 
     #[\Override]
     protected function run(): void
     {
-        if (UserHasByIdDAO::call($this, $this->user->id)->isExists) {
-            UserCreateDAO::call($this, $this->user);
+        if (UserHasByIdDAO::call($this, $this->entity->id)->isExists) {
+            UserCreateDAO::call($this, $this->entity);
         } else {
-            UserUpdateDAO::call($this, $this->user);
+            UserUpdateDAO::call($this, $this->entity);
         }
     }
 }

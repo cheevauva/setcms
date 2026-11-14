@@ -23,6 +23,6 @@ class PageGetBySlugDAO extends \UUA\DAO
         $getBySlug->limit = 1;
         $getBySlug->serve();
 
-        $this->page = $getBySlug->page;
+        $this->page = $getBySlug->entity;
     }
 }

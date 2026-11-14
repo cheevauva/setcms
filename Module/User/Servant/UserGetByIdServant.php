@@ -6,24 +6,17 @@ namespace Module\User\Servant;
 
 use Module\User\Entity\UserEntity;
 use Module\User\DAO\UserRetrieveManyByCriteriaDAO;
+use SetCMS\Entity\Servant\EntityGetByIdServant;
 
-class UserGetByIdServant extends \UUA\Servant
+/**
+ * @extends EntityGetByIdServant<UserEntity>
+ */
+class UserGetByIdServant extends EntityGetByIdServant
 {
 
-    use \SetCMS\Traits\TraitsCallWithUUID;
-
-    public UserEntity $user;
-
     #[\Override]
-    protected function run(): void
+    protected function manyByCriteria(): UserRetrieveManyByCriteriaDAO
     {
-        $userById = UserRetrieveManyByCriteriaDAO::new($this->container);
-        $userById->allowEmptyResult = false;
-        $userById->expectOne = true;
-        $userById->id = $this->id;
-        $userById->limit = 1;
-        $userById->serve();
-
-        $this->user = $userById->user;
+        return UserRetrieveManyByCriteriaDAO::new($this);
     }
 }

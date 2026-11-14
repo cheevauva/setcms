@@ -9,8 +9,13 @@ use Module\Basic\Entity\BasicEntity;
 abstract class BasicEntityToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
 {
 
-    protected function basic(BasicEntity $entity): void
+    #[\Override]
+    protected function run(): void
     {
+        parent::run();
+
+        $entity = BasicEntity::as($this->entity);
+
         $this->row['created_by'] = $entity->createdBy->uuid;
         $this->row['modified_by'] = $entity->modifiedBy->uuid;
         $this->row['assigned_by'] = $entity->assignedBy->uuid;

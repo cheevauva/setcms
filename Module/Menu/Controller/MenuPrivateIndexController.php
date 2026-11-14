@@ -15,7 +15,7 @@ class MenuPrivateIndexController extends ControllerViaPSR7
     /**
      * @var MenuEntity[]
      */
-    protected array $menus = [];
+    protected array $entities = [];
 
     #[\Override]
     protected function domainUnits(): array
@@ -39,7 +39,7 @@ class MenuPrivateIndexController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof MenuRetrieveManyByCriteriaDAO) {
-            $this->menus = $object->menus;
+            $this->entities = $object->entities;
         }
     }
 
@@ -49,7 +49,7 @@ class MenuPrivateIndexController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof MenuPrivateIndexView) {
-            $object->menus = $this->menus;
+            $object->entities = $this->entities;
         }
     }
 }

@@ -5,27 +5,22 @@ declare(strict_types=1);
 namespace Module\Post\Mapper;
 
 use Module\Post\Entity\PostEntity;
-use Module\Post\Exception\PostMapperNotFoundKeyInRowException;
+use Module\Basic\Mapper\BasicEntityFromRowMapper;
 
-class PostFromRowMapper extends \Module\Basic\Mapper\BasicEntityFromRowMapper
+/**
+ * @extends BasicEntityFromRowMapper<PostEntity>
+ */
+class PostFromRowMapper extends BasicEntityFromRowMapper
 {
-
-    public protected(set) PostEntity $post;
 
     #[\Override]
     protected function run(): void
     {
-        $this->post = new PostEntity;
-        $this->post->slug = $this->string('slug');
-        $this->post->title = $this->string('title');
-        $this->post->message = $this->string('message');
-        $this->id($this->post);
-        $this->basic($this->post);
-    }
+        $entity = $this->entity = new PostEntity;
+        $entity->slug = $this->string('slug');
+        $entity->title = $this->string('title');
+        $entity->message = $this->string('message');
 
-    #[\Override]
-    protected function notFoundKeyInRowException(string $key): PostMapperNotFoundKeyInRowException
-    {
-        return new PostMapperNotFoundKeyInRowException($key);
+        parent::run();
     }
 }

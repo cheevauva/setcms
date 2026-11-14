@@ -9,12 +9,12 @@ use Module\User\Mapper\UserToRowMapper;
 class UserCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
 {
 
-    use \Module\User\Traits\UserCallTrait;
+    
     use \Module\User\Traits\UserDbalTrait;
 
     #[\Override]
     protected function row(): array
     {
-        return UserToRowMapper::call($this, $this->user)->row;
+        return UserToRowMapper::call($this, $this->entity)->row;
     }
 }

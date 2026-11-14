@@ -10,6 +10,10 @@ class Compiler
     use \UUA\Traits\BuildTrait;
     use \UUA\Traits\ContainerTrait;
 
+    /**
+     * @param string $name
+     * @return array<mixed, mixed>
+     */
     public function getAsArray(string $name): array
     {
         $rootPath = $this->container->get('rootPath');

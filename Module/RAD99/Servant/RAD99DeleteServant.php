@@ -15,9 +15,9 @@ class RAD99DeleteServant extends \UUA\Servant
     #[\Override]
     protected function run(): void
     {
-        $rad99 = RAD99GetByIdDAO::call($this, $this->id)->rad99;
-        $rad99->markDeleted();
+        $entity = RAD99GetByIdDAO::call($this, $this->id)->entity;
+        $entity->markDeleted();
 
-        RAD99UpdateDAO::call($this, $rad99);
+        RAD99UpdateDAO::call($this, $entity);
     }
 }

@@ -39,7 +39,7 @@ class PagePrivateIndexController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PageRetrieveByCriteriaDAO) {
-            $this->entities = $object->pages;
+            $this->entities = $object->entities;
         }
     }
 

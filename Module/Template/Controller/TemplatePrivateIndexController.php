@@ -39,7 +39,7 @@ class TemplatePrivateIndexController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof TemplateRetrieveManyByCriteriaDAO) {
-            $this->templates = $object->templates;
+            $this->templates = $object->entities;
         }
     }
 

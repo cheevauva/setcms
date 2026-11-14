@@ -10,11 +10,11 @@ class TemplateCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
 {
 
     use \Module\Template\Traits\TemplateDbalDAOTrait;
-    use \Module\Template\Traits\TemplateCallTrait;
+    
 
     #[\Override]
     protected function row(): array
     {
-        return TemplateToRowMapper::call($this, $this->template)->row;
+        return TemplateToRowMapper::call($this, $this->entity)->row;
     }
 }

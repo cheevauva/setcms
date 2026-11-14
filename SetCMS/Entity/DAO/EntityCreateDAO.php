@@ -6,9 +6,13 @@ namespace SetCMS\Entity\DAO;
 
 use SetCMS\Database\DatabaseQueryBuilder;
 use SetCMS\Database\Database;
+use SetCMS\Entity\Traits\EntityCallTrait;
+use SetCMS\Entity\Entity;
 
 abstract class EntityCreateDAO extends \UUA\DAO
 {
+
+    use EntityCallTrait;
 
     #[\Override]
     protected function run(): void

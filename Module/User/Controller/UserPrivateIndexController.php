@@ -48,7 +48,7 @@ class UserPrivateIndexController extends UserPrivateController
         parent::from($object);
 
         if ($object instanceof UserRetrieveManyByCriteriaDAO) {
-            $this->users = $object->users;
+            $this->users = $object->entities;
         }
     }
 }

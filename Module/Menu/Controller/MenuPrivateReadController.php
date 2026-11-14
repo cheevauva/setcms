@@ -13,7 +13,7 @@ use SetCMS\Request\Mapper\RequestToIdMapper;
 class MenuPrivateReadController extends \SetCMS\Controller\ControllerViaPSR7
 {
 
-    protected MenuEntity $menu;
+    protected MenuEntity $entity;
     protected UUID $id;
 
     #[\Override]
@@ -46,7 +46,7 @@ class MenuPrivateReadController extends \SetCMS\Controller\ControllerViaPSR7
         }
 
         if ($object instanceof MenuPrivateReadView) {
-            $object->menu = $this->menu;
+            $object->entity = $this->entity;
         }
     }
 
@@ -56,7 +56,7 @@ class MenuPrivateReadController extends \SetCMS\Controller\ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof MenuRetrieveManyByCriteriaDAO) {
-            $this->menu = $object->menu;
+            $this->entity = $object->entity;
         }
 
         if ($object instanceof RequestToIdMapper) {

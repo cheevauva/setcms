@@ -7,14 +7,26 @@ namespace SetCMS\Entity\Mapper;
 use SetCMS\Entity\Entity;
 use SetCMS\Entity\Exception\EntityMapperNotFoundKeyInRowException;
 
+/**
+ * @template T of Entity
+ */
 abstract class EntityFromRowMapper extends \SetCMS\Mapper\MapperFromRow
 {
 
-    protected function id(Entity $entity): void
+    /**
+     * @var T
+     */
+    public protected(set) Entity $entity;
+
+    #[\Override]
+    protected function run(): void
     {
-        $entity->id = $this->uuid('id');
+        $this->entity->id = $this->uuid('id');
     }
 
     #[\Override]
-    abstract protected function notFoundKeyInRowException(string $key): EntityMapperNotFoundKeyInRowException;
+    protected function notFoundKeyInRowException(string $key): EntityMapperNotFoundKeyInRowException
+    {
+        return new EntityMapperNotFoundKeyInRowException($key);
+    }
 }

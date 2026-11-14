@@ -20,7 +20,7 @@ class CaptchaResolveServant extends \UUA\Servant
     #[\Override]
     protected function run(): void
     {
-        $this->captcha = CaptchaByIdServant::call($this, $this->id)->captcha;
+        $this->captcha = CaptchaByIdServant::call($this, $this->id)->entity;
         $this->captcha->solve($this->solvedText);
 
         CaptchaUpdateDAO::call($this, $this->captcha);

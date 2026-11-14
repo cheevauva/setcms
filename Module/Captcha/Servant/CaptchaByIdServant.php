@@ -5,25 +5,18 @@ declare(strict_types=1);
 namespace Module\Captcha\Servant;
 
 use Module\Captcha\DAO\CaptchaRetrieveManyByCriteriaDAO;
+use SetCMS\Entity\Servant\EntityGetByIdServant;
 use Module\Captcha\Entity\CaptchaEntity;
 
-class CaptchaByIdServant extends \UUA\Servant
+/**
+ * @extends EntityGetByIdServant<CaptchaEntity>
+ */
+class CaptchaByIdServant extends EntityGetByIdServant
 {
 
-    use \SetCMS\Traits\TraitsCallWithUUID;
-    
-    public CaptchaEntity $captcha;
-
     #[\Override]
-    protected function run(): void
+    protected function manyByCriteria(): CaptchaRetrieveManyByCriteriaDAO
     {
-        $captchaById = CaptchaRetrieveManyByCriteriaDAO::new($this->container);
-        $captchaById->id = $this->id;
-        $captchaById->expectOne = true;
-        $captchaById->allowEmptyResult = false;
-        $captchaById->limit = 1;
-        $captchaById->serve();
-        
-        $this->captcha = $captchaById->captcha;
+        return CaptchaRetrieveManyByCriteriaDAO::new($this);
     }
 }

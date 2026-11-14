@@ -11,15 +11,15 @@ use Module\Email\DAO\EmailCreateDAO;
 class EmailSaveServant extends \UUA\Servant
 {
 
-    use \Module\Email\Traits\EmailCallTrait;
+    use \SetCMS\Entity\Traits\EntityCallTrait;
 
     #[\Override]
     protected function run(): void
     {
-        if (EmailHasByIdDAO::call($this, $this->email->id)->isExists) {
-            EmailUpdateDAO::call($this, $this->email);
+        if (EmailHasByIdDAO::call($this, $this->entity->id)->isExists) {
+            EmailUpdateDAO::call($this, $this->entity);
         } else {
-            EmailCreateDAO::call($this, $this->email);
+            EmailCreateDAO::call($this, $this->entity);
         }
     }
 }

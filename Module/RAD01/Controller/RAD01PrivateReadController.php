@@ -14,7 +14,7 @@ use SetCMS\Request\Mapper\RequestToIdMapper;
 class RAD01PrivateReadController extends ControllerViaPSR7
 {
 
-    protected RAD01Entity $rad01;
+    protected RAD01Entity $entity;
     protected UUID $id;
 
     #[\Override]
@@ -44,7 +44,7 @@ class RAD01PrivateReadController extends ControllerViaPSR7
         }
 
         if ($object instanceof RAD01PrivateReadView) {
-            $object->rad01 = $this->rad01;
+            $object->entity = $this->entity;
         }
     }
 
@@ -54,7 +54,7 @@ class RAD01PrivateReadController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof RAD01GetByIdServant) {
-            $this->rad01 = $object->rad01;
+            $this->entity = $object->entity;
         }
 
         if ($object instanceof RequestToIdMapper) {

@@ -10,5 +10,5 @@ use Module\Post\Entity\PostEntity;
 class PostPublicReadBySlugView extends ViewTwig
 {
 
-    public PostEntity $post;
+    public PostEntity $entity;
 }

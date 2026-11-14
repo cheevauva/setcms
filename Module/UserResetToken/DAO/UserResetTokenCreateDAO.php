@@ -9,12 +9,11 @@ use Module\UserResetToken\Mapper\UserResetTokenToRowMapper;
 class UserResetTokenCreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
 {
 
-    use \Module\UserResetToken\Traits\UserResetTokenCallTrait;
     use \Module\UserResetToken\Traits\UserResetTokenDbalDAOTrait;
 
     #[\Override]
     protected function row(): array
     {
-        return UserResetTokenToRowMapper::call($this, $this->userResetToken)->row;
+        return UserResetTokenToRowMapper::call($this, $this->entity)->row;
     }
 }

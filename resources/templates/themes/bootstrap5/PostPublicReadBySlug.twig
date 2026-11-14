@@ -1,14 +1,14 @@
 {% extends scShortPath(layout ?? 'layout.twig') %}
 
-{% block title %}{{ options.title }} - {{ post.title }}{% endblock %}
+{% block title %}{{ options.title }} - {{ entity.title }}{% endblock %}
 
 {% block content %}
-    {% if post %}
-        <article class="blog-post">
-            <h2 class="blog-post-title">{{ post.title }}</h2>
-            <p class="blog-post-meta"><a href="#">{{ post.attr('createdBy').username }}</a> опубликовал в {{ post.dateCreated.format('H:i') }} {{ post.dateCreated.format('d.m.Y') }}</p>
+    {% if entity %}
+        <article class="blog-entity">
+            <h2 class="blog-entity-title">{{ entity.title }}</h2>
+            <p class="blog-entity-meta"><a href="#">{{ entity.attr('createdBy').username }}</a> опубликовал в {{ entity.dateCreated.format('H:i') }} {{ entity.dateCreated.format('d.m.Y') }}</p>
             <p>
-                {{ post.message|raw }}
+                {{ entity.message|raw }}
             </p>
         </article>
     {% endif %}

@@ -14,8 +14,8 @@ use Module\Email\Mapper\EmailFromRequestMapper;
 class EmailPrivateUpdateController extends ControllerViaPSR7
 {
 
-    protected EmailEntity $email;
-    protected EmailEntity $newemail;
+    protected EmailEntity $entity;
+    protected EmailEntity $newEntity;
 
     #[\Override]
     protected function domainUnits(): array
@@ -41,19 +41,19 @@ class EmailPrivateUpdateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof EmailRetrieveManyByCriteriaDAO) {
-            $object->id = $this->newemail->id;
+            $object->id = $this->newEntity->id;
             $object->expectOne = true;
             $object->allowEmptyResult = false;
             $object->limit = 1;
         }
 
         if ($object instanceof EmailUpdateDAO) {
-            $object->email = $this->email;
-            $object->email->subject = $this->newemail->subject;
+            $object->entity = $this->entity;
+            $object->entity->subject = $this->newEntity->subject;
         }
 
         if ($object instanceof EmailPrivateUpdateView) {
-            $object->email = $this->email;
+            $object->email = $this->entity;
         }
     }
 
@@ -63,11 +63,11 @@ class EmailPrivateUpdateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof EmailRetrieveManyByCriteriaDAO) {
-            $this->email = $object->email;
+            $this->entity = $object->entity;
         }
 
         if ($object instanceof EmailFromRequestMapper) {
-            $this->newemail = $object->email;
+            $this->newEntity = $object->entity;
         }
     }
 }

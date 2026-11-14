@@ -5,27 +5,23 @@ declare(strict_types=1);
 namespace Module\Menu\Mapper;
 
 use Module\Menu\Entity\MenuEntity;
-use Module\Menu\Exception\MenuMapperNotFoundKeyInRowException;
+use SetCMS\Entity\Mapper\EntityFromRowMapper;
 
-class MenuFromRowMapper extends \SetCMS\Entity\Mapper\EntityFromRowMapper
+/**
+ * @extends EntityFromRowMapper<MenuEntity>
+ */
+class MenuFromRowMapper extends EntityFromRowMapper
 {
-
-    public protected(set) MenuEntity $menu;
 
     #[\Override]
     protected function run(): void
     {
-        $this->menu = new MenuEntity();
-        $this->menu->id = $this->uuid('id');
-        $this->menu->label = $this->string('label');
-        $this->menu->route = $this->string('route');
-        $this->menu->params = $this->json('params');
-        $this->id($this->menu);
-    }
+        $this->entity = new MenuEntity();
+        $this->entity->id = $this->uuid('id');
+        $this->entity->label = $this->string('label');
+        $this->entity->route = $this->string('route');
+        $this->entity->params = $this->json('params');
 
-    #[\Override]
-    protected function notFoundKeyInRowException(string $key): MenuMapperNotFoundKeyInRowException
-    {
-        return new MenuMapperNotFoundKeyInRowException($key);
+        parent::run();
     }
 }

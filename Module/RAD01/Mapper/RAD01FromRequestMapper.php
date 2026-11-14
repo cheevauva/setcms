@@ -9,16 +9,16 @@ use Module\RAD01\Entity\RAD01Entity;
 class RAD01FromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
-    public protected(set) RAD01Entity $rad01;
+    public protected(set) RAD01Entity $entity;
 
     #[\Override]
     protected function run(): void
     {
         $body = $this->validationBody();
-        $body->array('rad01')->notEmpty()->validate();
+        $body->array('entity')->notEmpty()->validate();
 
-        $this->rad01 = new RAD01Entity();
-        $this->rad01->id = $body->uuid('rad01.id')->val();
-        $this->rad01->field01 = $body->string('rad01.field01')->notEmpty()->val();
+        $this->entity = new RAD01Entity();
+        $this->entity->id = $body->uuid('entity.id')->val();
+        $this->entity->field01 = $body->string('entity.field01')->notEmpty()->val();
     }
 }

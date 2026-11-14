@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace Module\RAD99\Mapper;
 
+use Module\RAD99\Entity\RAD99Entity;
+
 class RAD99ToRowMapper extends \Module\Basic\Mapper\BasicEntityToRowMapper
 {
-
-    use \Module\RAD99\Traits\RAD99CallTrait;
 
     #[\Override]
     protected function run(): void
     {
-        $this->id($this->rad99);
-        $this->basic($this->rad99);
-        $this->row['field99'] = $this->rad99->field99;
+        parent::run();
+        
+        $entity = RAD99Entity::as($this->entity);
+
+        $this->row['field99'] = $entity->field99;
     }
 }

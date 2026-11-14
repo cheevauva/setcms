@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace Module\Migration\Mapper;
 
+use Module\Migration\Entity\MigrationEntity;
+
 class MigraionToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
 {
-
-    use \Module\Migration\Traits\MigrationCallTrait;
 
     #[\Override]
     protected function run(): void
     {
-        $this->row['version'] = $this->migration->version;
-        $this->row['executed_at'] = $this->migration->executedAt->format('Y-m-d H:i:s');
-        $this->row['execution_time'] = $this->migration->executionTime;
+        $migration = MigrationEntity::as($this->entity);
+
+        $this->row['version'] = $migration->version;
+        $this->row['executed_at'] = $migration->executedAt->format('Y-m-d H:i:s');
+        $this->row['execution_time'] = $migration->executionTime;
+
+        parent::run();
     }
 }

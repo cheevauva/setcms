@@ -14,8 +14,8 @@ use Module\Post\Mapper\PostFromRequestMapper;
 class PostPrivateUpdateController extends ControllerViaPSR7
 {
 
-    protected PostEntity $post;
-    protected PostEntity $newPost;
+    protected PostEntity $entity;
+    protected PostEntity $newEntity;
 
     #[\Override]
     protected function domainUnits(): array
@@ -41,18 +41,18 @@ class PostPrivateUpdateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof PostGetByIdDAO) {
-            $object->id = $this->newPost->id;
+            $object->id = $this->newEntity->id;
         }
 
         if ($object instanceof PostUpdateDAO) {
-            $object->post = $this->post;
-            $object->post->slug = $this->newPost->slug;
-            $object->post->title = $this->newPost->title;
-            $object->post->message = $this->newPost->message;
+            $object->entity = $this->entity;
+            $object->entity->slug = $this->newEntity->slug;
+            $object->entity->title = $this->newEntity->title;
+            $object->entity->message = $this->newEntity->message;
         }
 
         if ($object instanceof PostPrivateUpdateView) {
-            $object->post = $this->post;
+            $object->entity = $this->entity;
         }
     }
 
@@ -62,11 +62,11 @@ class PostPrivateUpdateController extends ControllerViaPSR7
         parent::from($object);
         
         if ($object instanceof PostFromRequestMapper) {
-            $this->newPost = $object->post;
+            $this->newEntity = $object->entity;
         }
         
         if ($object instanceof PostGetByIdDAO) {
-            $this->post = $object->post;
+            $this->entity = $object->entity;
         }
     }
 }

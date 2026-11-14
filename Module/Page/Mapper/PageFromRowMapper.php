@@ -5,27 +5,22 @@ declare(strict_types=1);
 namespace Module\Page\Mapper;
 
 use Module\Page\Entity\PageEntity;
-use Module\Page\Exception\PageMapperNotFoundKeyInRowException;
+use Module\Basic\Mapper\BasicEntityFromRowMapper;
 
-class PageFromRowMapper extends \Module\Basic\Mapper\BasicEntityFromRowMapper 
+/**
+ * @extends BasicEntityFromRowMapper<PageEntity>
+ */
+class PageFromRowMapper extends BasicEntityFromRowMapper
 {
-
-    public protected(set) PageEntity $page;
 
     #[\Override]
     protected function run(): void
     {
-        $this->page = new PageEntity();
-        $this->page->slug = $this->string('slug');
-        $this->page->title = $this->string('title');
-        $this->page->content = $this->string('content');
-        $this->id($this->page);
-        $this->basic($this->page);
-    }
+        $page = $this->entity = new PageEntity();
+        $page->slug = $this->string('slug');
+        $page->title = $this->string('title');
+        $page->content = $this->string('content');
 
-    #[\Override]
-    protected function notFoundKeyInRowException(string $key): PageMapperNotFoundKeyInRowException
-    {
-        return new PageMapperNotFoundKeyInRowException($key);
+        parent::run();
     }
 }

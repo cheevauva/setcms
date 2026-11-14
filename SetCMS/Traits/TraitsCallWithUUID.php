@@ -13,9 +13,9 @@ trait TraitsCallWithUUID
 
     public UUID $id;
 
-    public static function call(WithContainterInterface|ContainerInterface $container, UUID $id): self
+    public static function call(WithContainterInterface|ContainerInterface $container, UUID $id): static
     {
-        $self = self::new($container);
+        $self = static::new($container);
         $self->id = $id;
         $self->serve();
 

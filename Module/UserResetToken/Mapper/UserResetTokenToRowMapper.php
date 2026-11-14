@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace Module\UserResetToken\Mapper;
 
+use Module\UserResetToken\Entity\UserResetTokenEntity;
+
 class UserResetTokenToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
 {
-
-    use \Module\UserResetToken\Traits\UserResetTokenCallTrait;
 
     #[\Override]
     protected function run(): void
     {
-        $this->id($this->userResetToken);
-        $this->row['user_id'] = $this->userResetToken->userId->uuid;
-        $this->row['date_expired'] = $this->userResetToken->dateExpired->format('Y-m-d H:i:s');
-        $this->row['token'] = $this->userResetToken->token;
+        $userResetToken = UserResetTokenEntity::as($this->entity);
+
+        $this->row['user_id'] = $userResetToken->userId->uuid;
+        $this->row['date_expired'] = $userResetToken->dateExpired->format('Y-m-d H:i:s');
+        $this->row['token'] = $userResetToken->token;
+
+        parent::run();
     }
 }

@@ -5,53 +5,24 @@ declare(strict_types=1);
 namespace Module\Menu\DAO;
 
 use Module\Menu\Entity\MenuEntity;
-use Module\Menu\Exception\MenuNotFoundException;
-use Module\Menu\Exception\MenusNotFoundException;
-use Module\Menu\Exception\MenuExpectOneButReceivedTooMuchException;
 use Module\Menu\Mapper\MenuFromRowMapper;
 use SetCMS\Database\DatabaseQueryBuilder;
+use SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO;
 
-class MenuRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
+/**
+ * @extends EntityRetrieveByCriteriaDAO<MenuEntity>
+ */
+class MenuRetrieveManyByCriteriaDAO extends EntityRetrieveByCriteriaDAO
 {
 
     use \Module\Menu\Traits\MenuDbalDAOTrait;
-    
-    /**
-     * @var array<MenuEntity>
-     */
-    public array $menus;
-    public MenuEntity $menu;
-    public ?MenuEntity $menuOrNull = null;
+
     public string $slug;
 
     #[\Override]
-    protected function handleRows(array $rows): void
-    {
-        $this->menus = array_map(fn($row) => MenuFromRowMapper::call($this, $row)->menu, $rows);
-        $this->menus ? $this->menu = $this->menuOrNull = $this->menus[0] : null;
-    }
-
-    #[\Override]
-    protected function entitiesNotFoundException(): \Throwable
-    {
-        return new MenusNotFoundException();
-    }
-
-    #[\Override]
-    protected function entityExpectOneButReceivedTooMuchException(): \Throwable
-    {
-        return new MenuExpectOneButReceivedTooMuchException();
-    }
-
-    #[\Override]
-    protected function entityNotFoundException(): \Throwable
-    {
-        return new MenuNotFoundException();
-    }
-
     protected function createQb(): DatabaseQueryBuilder
     {
-        $qb = $this->createQuery();
+        $qb = parent::createQb();
 
         if (isset($this->slug)) {
             $qb->andWhere('slug = :slug');
@@ -59,5 +30,11 @@ class MenuRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByC
         }
 
         return $qb;
+    }
+
+    #[\Override]
+    protected function rowToEntity(array $row): MenuEntity
+    {
+        return MenuFromRowMapper::call($this, $row)->entity;
     }
 }

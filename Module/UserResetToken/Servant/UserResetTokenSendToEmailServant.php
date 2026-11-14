@@ -6,6 +6,7 @@ namespace Module\UserResetToken\Servant;
 
 use Module\UserResetToken\Servant\UserResetTokenSendToUserServant;
 use Module\User\DAO\UserRetrieveManyByCriteriaDAO;
+use Module\User\Entity\UserEntity;
 
 class UserResetTokenSendToEmailServant extends \UUA\Servant
 {
@@ -23,12 +24,12 @@ class UserResetTokenSendToEmailServant extends \UUA\Servant
         $retrieveUser->allowEmptyResult = true;
         $retrieveUser->serve();
 
-        if (empty($retrieveUser->userOrNull)) {
+        if (empty($retrieveUser->entityOrNull)) {
             return;
         }
 
         $sendToUser = UserResetTokenSendToUserServant::new($this->container);
-        $sendToUser->user = $retrieveUser->user;
+        $sendToUser->user = UserEntity::as($retrieveUser->entity);
         $sendToUser->serve();
 
         $this->success = true;

@@ -10,11 +10,10 @@ class EmailUpdateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
 {
 
     use \Module\Email\Traits\EmailDbalDAOTrait;
-    use \Module\Email\Traits\EmailCallTrait;
 
     #[\Override]
     protected function row(): array
     {
-        return EmailToRowMapper::call($this, $this->email)->row;
+        return EmailToRowMapper::call($this, $this->entity)->row;
     }
 }

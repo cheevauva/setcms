@@ -13,7 +13,7 @@ use Module\Page\Mapper\PageFromRequestMapper;
 class PagePrivateCreateController extends ControllerViaPSR7
 {
 
-    private PageEntity $page;
+    private PageEntity $entity;
 
     #[\Override]
     protected function domainUnits(): array
@@ -38,11 +38,11 @@ class PagePrivateCreateController extends ControllerViaPSR7
         parent::to($object);
 
         if ($object instanceof PageCreateDAO) {
-            $object->page = $this->page;
+            $object->entity = $this->entity;
         }
 
         if ($object instanceof PagePrivateCreateView) {
-            $object->entity = $this->page;
+            $object->entity = $this->entity;
         }
     }
 
@@ -52,7 +52,7 @@ class PagePrivateCreateController extends ControllerViaPSR7
         parent::from($object);
 
         if ($object instanceof PageFromRequestMapper) {
-            $this->page = $object->page;
+            $this->entity = $object->entity;
         }
     }
 }

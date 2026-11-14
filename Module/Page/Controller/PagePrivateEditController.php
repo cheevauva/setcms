@@ -23,7 +23,7 @@ class PagePrivateEditController extends PagePrivateReadController
         parent::to($object);
 
         if ($object instanceof PagePrivateEditView) {
-            $object->entity = $this->page;
+            $object->entity = $this->entity;
         }
     }
 }

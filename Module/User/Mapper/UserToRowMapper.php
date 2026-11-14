@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace Module\User\Mapper;
 
+use Module\User\Entity\UserEntity;
+
 class UserToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
 {
-
-    use \Module\User\Traits\UserCallTrait;
 
     #[\Override]
     protected function run(): void
     {
-        $this->id($this->user);
-        $this->row['username'] = $this->user->username;
-        $this->row['password'] = $this->user->password;
-        $this->row['user_role'] = $this->user->role->value;
-        $this->row['email'] = $this->user->email;
+        $user = UserEntity::as($this->entity);
+
+        $this->row['username'] = $user->username;
+        $this->row['password'] = $user->password;
+        $this->row['user_role'] = $user->role->value;
+        $this->row['email'] = $user->email;
+
+        parent::run();
     }
 }

@@ -4,27 +4,24 @@ declare(strict_types=1);
 
 namespace Module\Template\DAO;
 
-use Module\Template\Entity\TemplateEntity;
-use Module\Template\Exception\TemplateNotFoundException;
-use Module\Template\Mapper\TemplateFromRowMapper;
 use SetCMS\Database\DatabaseQueryBuilder;
+use SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO;
+use Module\Template\Entity\TemplateEntity;
+use Module\Template\Mapper\TemplateFromRowMapper;
 
-class TemplateRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
+/**
+ * @extends EntityRetrieveByCriteriaDAO<TemplateEntity>
+ */
+class TemplateRetrieveManyByCriteriaDAO extends EntityRetrieveByCriteriaDAO
 {
 
     use \Module\Template\Traits\TemplateDbalDAOTrait;
 
-    /**
-     * @var array<TemplateEntity>
-     */
-    public protected(set) array $templates;
-    public protected(set) TemplateEntity $template;
-    public protected(set) ?TemplateEntity $templateOrNull = null;
     public string $slug;
 
     protected function createQb(): DatabaseQueryBuilder
     {
-        $qb = $this->createQuery();
+        $qb = parent::createQb();
 
         if (isset($this->slug)) {
             $qb->andWhere('slug = :slug');
@@ -35,27 +32,8 @@ class TemplateRetrieveManyByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetriev
     }
 
     #[\Override]
-    protected function entitiesNotFoundException(): \Throwable
+    protected function rowToEntity(array $row): TemplateEntity
     {
-        return new TemplateNotFoundException();
-    }
-
-    #[\Override]
-    protected function entityExpectOneButReceivedTooMuchException(): \Throwable
-    {
-        return new TemplateNotFoundException();
-    }
-
-    #[\Override]
-    protected function entityNotFoundException(): \Throwable
-    {
-        return new TemplateNotFoundException();
-    }
-
-    #[\Override]
-    protected function handleRows(array $rows): void
-    {
-        $this->templates = array_map(fn($row) => TemplateFromRowMapper::call($this, $row)->template, $rows);
-        $this->templates ? $this->template = $this->templateOrNull = $this->templates[0] : null;
+        return TemplateFromRowMapper::call($this, $row)->entity;
     }
 }

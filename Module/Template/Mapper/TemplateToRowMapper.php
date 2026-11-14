@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace Module\Template\Mapper;
 
-class TemplateToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
-{
+use SetCMS\Entity\Mapper\EntityToRowMapper;
+use Module\Template\Entity\TemplateEntity;
 
-    use \Module\Template\Traits\TemplateCallTrait;
+class TemplateToRowMapper extends EntityToRowMapper
+{
 
     #[\Override]
     protected function run(): void
     {
-        $this->id($this->template);
-        $this->row['template'] = $this->template->template;
-        $this->row['title'] = $this->template->title;
-        $this->row['slug'] = $this->template->slug;
+        $template = TemplateEntity::as($this->entity);
+
+        $this->row['template'] = $template->template;
+        $this->row['title'] = $template->title;
+        $this->row['slug'] = $template->slug;
+
+        parent::run();
     }
 }

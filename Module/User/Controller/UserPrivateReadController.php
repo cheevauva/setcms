@@ -39,7 +39,7 @@ class UserPrivateReadController extends UserPrivateController
         parent::from($object);
 
         if ($object instanceof UserGetByIdServant) {
-            $this->user = $object->user;
+            $this->user = $object->entity;
         }
 
         if ($object instanceof RequestToIdMapper) {

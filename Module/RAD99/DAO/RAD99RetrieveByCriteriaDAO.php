@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Module\RAD99\DAO;
 
 use SetCMS\Database\DatabaseQueryBuilder;
-use Module\RAD99\Exception\RAD99EntitiesNotFoundException;
-use Module\RAD99\Exception\RAD99EntityExpectOneButReceivedTooMuchException;
-use Module\RAD99\Exception\RAD99EntityNotFoundException;
-use Module\RAD99\Entity\RAD99Entity;
+use Module\Basic\DAO\BasicEntityRetrieveByCriteriaDAO;
 use Module\RAD99\Mapper\RAD99FromRowMapper;
+use Module\RAD99\Entity\RAD99Entity;
 
-class RAD99RetrieveByCriteriaDAO extends \Module\Basic\DAO\BasicEntityRetrieveByCriteriaDAO
+/**
+ * @extends BasicEntityRetrieveByCriteriaDAO<RAD99Entity>
+ */
+class RAD99RetrieveByCriteriaDAO extends BasicEntityRetrieveByCriteriaDAO
 {
 
     use \Module\RAD99\Traits\RAD99DbalDAOTrait;
@@ -21,52 +22,15 @@ class RAD99RetrieveByCriteriaDAO extends \Module\Basic\DAO\BasicEntityRetrieveBy
     // field-repeat-end
     // field-repeat-start
     public bool $sortField99UcASC;
+
     // field-repeat-end
 
-    /**
-     * @var array<RAD99Entity>
-     */
-    public protected(set) array $rad99s = [];
-    public protected(set) RAD99Entity $rad99;
-    public protected(set) ?RAD99Entity $rad99OrNull = null;
 
     #[\Override]
-    protected function handleRows(array $rows): void
-    {
-        $this->rad99s = array_map(fn($row) => RAD99FromRowMapper::call($this, $row)->rad99, $rows);
-        $this->rad99s ? $this->rad99 = $this->rad99OrNull = $this->rad99s[0] : null;
-    }
-
-    #[\Override]
-    protected function entitiesNotFoundException(): \Throwable
-    {
-        return new RAD99EntitiesNotFoundException;
-    }
-
-    #[\Override]
-    protected function entityExpectOneButReceivedTooMuchException(): \Throwable
-    {
-        return new RAD99EntityExpectOneButReceivedTooMuchException;
-    }
-
-    #[\Override]
-    protected function entityNotFoundException(): \Throwable
-    {
-        return new RAD99EntityNotFoundException;
-    }
-
     protected function createQb(): DatabaseQueryBuilder
     {
-        $qb = $this->createQuery();
+        $qb = parent::createQb();
 
-        $this->basicQb($qb);
-        $this->addCriteriaByFields($qb);
-
-        return $qb;
-    }
-
-    protected function addCriteriaByFields(DatabaseQueryBuilder $qb): void
-    {
         // field-repeat-start
         if (isset($this->field99)) {
             $qb->andWhere('field99 = :field99');
@@ -79,5 +43,13 @@ class RAD99RetrieveByCriteriaDAO extends \Module\Basic\DAO\BasicEntityRetrieveBy
             $qb->addOrderBy('field99', $this->sortField99UcASC ? 'ASC' : 'DESC');
         }
         // field-repeat-end
+
+        return $qb;
+    }
+
+    #[\Override]
+    protected function rowToEntity(array $row): RAD99Entity
+    {
+        return RAD99FromRowMapper::call($this, $row)->entity;
     }
 }

@@ -9,7 +9,7 @@ use Module\Menu\Entity\MenuEntity;
 class MenuFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
-    public protected(set) MenuEntity $menu;
+    public protected(set) MenuEntity $entity;
 
     #[\Override]
     protected function run(): void
@@ -17,10 +17,10 @@ class MenuFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
         $body = $this->validationBody();
         $body->array('menu')->notEmpty()->validate();
 
-        $this->menu = new MenuEntity();
-        $this->menu->id = $body->uuid('menu.id')->val();
-        $this->menu->label = $body->string('menu.label')->notEmpty()->val();
-        $this->menu->route = $body->string('menu.route')->notEmpty()->val();
-        $this->menu->params = $body->json('menu.params')->notEmpty()->asArray()->val();
+        $this->entity = new MenuEntity();
+        $this->entity->id = $body->uuid('menu.id')->val();
+        $this->entity->label = $body->string('menu.label')->notEmpty()->val();
+        $this->entity->route = $body->string('menu.route')->notEmpty()->val();
+        $this->entity->params = $body->json('menu.params')->notEmpty()->asArray()->val();
     }
 }

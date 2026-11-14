@@ -10,5 +10,5 @@ use Module\RAD01\Entity\RAD01Entity;
 class RAD01PrivateReadView extends ViewTwig
 {
 
-    public RAD01Entity $rad01;
+    public RAD01Entity $entity;
 }

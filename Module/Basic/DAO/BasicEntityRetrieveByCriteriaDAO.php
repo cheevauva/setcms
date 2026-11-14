@@ -6,10 +6,14 @@ namespace Module\Basic\DAO;
 
 use SetCMS\UUID;
 use SetCMS\Database\DatabaseQueryBuilder;
+use SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO;
 use Module\Basic\Entity\BasicEntity;
-use SetCMS\Collection;
 
-abstract class BasicEntityRetrieveByCriteriaDAO extends \SetCMS\Entity\DAO\EntityRetrieveByCriteriaDAO
+/**
+ * @template T of BasicEntity
+ * @extends EntityRetrieveByCriteriaDAO<T>
+ */
+abstract class BasicEntityRetrieveByCriteriaDAO extends EntityRetrieveByCriteriaDAO
 {
 
     use \SetCMS\Traits\TraitsWrappingWithParent;
@@ -28,8 +32,11 @@ abstract class BasicEntityRetrieveByCriteriaDAO extends \SetCMS\Entity\DAO\Entit
     public bool $sortDateCreatedASC;
     public bool $sortDateModifiedASC;
 
-    protected function basicQb(DatabaseQueryBuilder $qb): void
+    #[\Override]
+    protected function createQb(): DatabaseQueryBuilder
     {
+        $qb = parent::createQb();
+
         if (isset($this->createdBy)) {
             $qb->andWhere('created_by = :createdBy');
             $qb->setParameter('createdBy', $this->createdBy->uuid);
@@ -93,5 +100,7 @@ abstract class BasicEntityRetrieveByCriteriaDAO extends \SetCMS\Entity\DAO\Entit
         if (isset($this->sortDateModifiedASC)) {
             $qb->addOrderBy('date_modified', $this->sortDateModifiedASC ? 'ASC' : 'DESC');
         }
+
+        return $qb;
     }
 }

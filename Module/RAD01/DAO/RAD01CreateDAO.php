@@ -9,12 +9,11 @@ use Module\RAD01\Mapper\RAD01ToRowMapper;
 class RAD01CreateDAO extends \SetCMS\Entity\DAO\EntityCreateDAO
 {
 
-    use \Module\RAD01\Traits\RAD01CallTrait;
     use \Module\RAD01\Traits\RAD01DbalDAOTrait;
 
     #[\Override]
     protected function row(): array
     {
-        return RAD01ToRowMapper::call($this, $this->rad01)->row;
+        return RAD01ToRowMapper::call($this, $this->entity)->row;
     }
 }

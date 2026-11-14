@@ -12,5 +12,5 @@ class MenuPrivateIndexView extends \SetCMS\View\ViewTwig
     /**
      * @var MenuEntity[]
      */
-    public array $menus;
+    public array $entities;
 }

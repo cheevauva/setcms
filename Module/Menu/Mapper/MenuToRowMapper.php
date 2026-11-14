@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace Module\Menu\Mapper;
 
+use Module\Menu\Entity\MenuEntity;
+
 class MenuToRowMapper extends \SetCMS\Entity\Mapper\EntityToRowMapper
 {
-
-    use \Module\Menu\Traits\MenuCallTrait;
 
     #[\Override]
     protected function run(): void
     {
-        $this->id($this->menu);
-        $this->row['label'] = $this->menu->label;
-        $this->row['route'] = $this->menu->route;
-        $this->row['params'] = $this->json($this->menu->params);
+        $menu = MenuEntity::as($this->entity);
+
+        $this->row['label'] = $menu->label;
+        $this->row['route'] = $menu->route;
+        $this->row['params'] = $this->json($menu->params);
+
+        parent::run();
     }
 }

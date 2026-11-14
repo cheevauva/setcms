@@ -31,7 +31,7 @@ class PostMenuActionsByRequestServant extends \Module\Menu\MenuAction\Servant\Me
         $editAction->label = 'Редактировать пост';
         $editAction->route = 'AdminPostEdit';
         $editAction->params = [
-            'id' => $retrieveBySlug->post->id->uuid,
+            'id' => $retrieveBySlug->entity->id->uuid,
         ];
     }
 

@@ -9,18 +9,18 @@ use Module\Post\Entity\PostEntity;
 class PostFromRequestMapper extends \SetCMS\Request\Mapper\RequestMapper
 {
 
-    public protected(set) PostEntity $post;
+    public protected(set) PostEntity $entity;
 
     #[\Override]
     protected function run(): void
     {
         $body = $this->validationBody();
-        $body->array('post')->notEmpty()->validate();
+        $body->array('entity')->notEmpty()->validate();
 
-        $this->post = new PostEntity();
-        $this->post->id = $body->uuid('post.id')->val();
-        $this->post->slug = $body->string('post.slug')->notEmpty()->val();
-        $this->post->title = $body->string('post.title')->notEmpty()->val();
-        $this->post->message = $body->string('post.message')->notEmpty()->val();
+        $this->entity = new PostEntity();
+        $this->entity->id = $body->uuid('entity.id')->val();
+        $this->entity->slug = $body->string('entity.slug')->notEmpty()->val();
+        $this->entity->title = $body->string('entity.title')->notEmpty()->val();
+        $this->entity->message = $body->string('entity.message')->notEmpty()->val();
     }
 }

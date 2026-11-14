@@ -22,7 +22,7 @@ class MigrationUpdateServant extends \UUA\Servant
     {
         $start = microtime(true);
 
-        $run = MigrationRunDAO::new($this->container);
+        $run = MigrationRunDAO::new($this);
         $run->db = $this->db;
         $run->sql = strtr($this->candidate->sql, [
             'ADMIN_USER_UUID' => ADMIN_USER_UUID,
@@ -34,8 +34,8 @@ class MigrationUpdateServant extends \UUA\Servant
         $migration->executedAt = new \DateTimeImmutable;
         $migration->executionTime = intval(microtime(true) - $start);
 
-        $save = MigrationCreateDAO::new($this->container);
-        $save->migration = $migration;
+        $save = MigrationCreateDAO::new($this);
+        $save->entity = $migration;
         $save->db = $this->db;
         $save->serve();
         

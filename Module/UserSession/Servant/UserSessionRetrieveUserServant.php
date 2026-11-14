@@ -20,19 +20,21 @@ class UserSessionRetrieveUserServant extends \UUA\Servant
     #[\Override]
     protected function run(): void
     {
-        $userSessionById = UserSessionRetrieveManyByCriteriaDAO::new($this->container);
+        $userSessionById = UserSessionRetrieveManyByCriteriaDAO::new($this);
         $userSessionById->allowEmptyResult = true;
         $userSessionById->expectOne = true;
         $userSessionById->id = $this->sessionId;
         $userSessionById->limit = 1;
         $userSessionById->serve();
 
-        if (empty($userSessionById->userSession)) {
+        if (empty($userSessionById->entity)) {
             return;
         }
+        
+        $userSession = UserSessionEntity::as($userSessionById->entity);
 
-        $userById = UserRetrieveManyByCriteriaDAO::new($this->container);
-        $userById->id = $userSessionById->userSession->userId;
+        $userById = UserRetrieveManyByCriteriaDAO::new($this);
+        $userById->id = $userSession->userId;
         $userById->allowEmptyResult = true;
         $userById->expectOne = true;
         $userById->limit = 1;
@@ -43,6 +45,6 @@ class UserSessionRetrieveUserServant extends \UUA\Servant
         }
 
         $this->user = $userById->user;
-        $this->userSession = $userSessionById->userSession;
+        $this->userSession = $userSession;
     }
 }

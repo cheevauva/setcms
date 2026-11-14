@@ -22,11 +22,11 @@ class UserLazyLoadForBasicEntityWrapper extends \UUA\Wrapper
     {
         $unit = BasicEntityRetrieveByCriteriaDAO::as($this->rootUnit);
 
-//        foreach ($unit->entities as $entity) {
-//            $entity = BasicEntity::as($entity);
-//            $entity->withAttr('assignedBy', fn() => UserGetByIdServant::call($this, $entity->assignedBy)->user);
-//            $entity->withAttr('createdBy', fn() => UserGetByIdServant::call($this, $entity->createdBy)->user);
-//            $entity->withAttr('modifiedBy', fn() => UserGetByIdServant::call($this, $entity->modifiedBy)->user);
-//        }
+        foreach ($unit->entities as $entity) {
+            $entity = BasicEntity::as($entity);
+            $entity->withAttr('assignedBy', fn() => UserGetByIdServant::call($this, $entity->assignedBy)->entity);
+            $entity->withAttr('createdBy', fn() => UserGetByIdServant::call($this, $entity->createdBy)->entity);
+            $entity->withAttr('modifiedBy', fn() => UserGetByIdServant::call($this, $entity->modifiedBy)->entity);
+        }
     }
 }

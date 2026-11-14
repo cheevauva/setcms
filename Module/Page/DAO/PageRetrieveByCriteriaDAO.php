@@ -7,35 +7,22 @@ namespace Module\Page\DAO;
 use SetCMS\Database\DatabaseQueryBuilder;
 use Module\Page\Mapper\PageFromRowMapper;
 use Module\Page\Entity\PageEntity;
-use Module\Page\Exception\PageNotFoundException;
-use Module\Page\Exception\PagesNotFoundException;
-use Module\Page\Exception\PageExpectOneButReceivedTooMuchException;
+use Module\Basic\DAO\BasicEntityRetrieveByCriteriaDAO;
 
-class PageRetrieveByCriteriaDAO extends \Module\Basic\DAO\BasicEntityRetrieveByCriteriaDAO
+/**
+ * @extends BasicEntityRetrieveByCriteriaDAO<PageEntity>
+ */
+class PageRetrieveByCriteriaDAO extends BasicEntityRetrieveByCriteriaDAO
 {
 
     use \Module\Page\Traits\PageDbalDAOTrait;
 
-    /**
-     * @var array<PageEntity>
-     */
-    public protected(set) array $pages = [];
-    public protected(set) PageEntity $page;
-    public protected(set) ?PageEntity $pageOrNull = null;
     public string $slug;
 
     #[\Override]
-    protected function handleRows(array $rows): void
-    {
-        $this->pages = array_map(fn($row) => PageFromRowMapper::call($this, $row)->page, $rows);
-        $this->pages ? $this->page = $this->pageOrNull = $this->pages[0] : null;
-    }
-
     protected function createQb(): DatabaseQueryBuilder
     {
-        $qb = $this->createQuery();
-
-        $this->basicQb($qb);
+        $qb = parent::createQb();
 
         if (isset($this->slug)) {
             $qb->andWhere('slug = :slug');
@@ -46,20 +33,8 @@ class PageRetrieveByCriteriaDAO extends \Module\Basic\DAO\BasicEntityRetrieveByC
     }
 
     #[\Override]
-    protected function entitiesNotFoundException(): \Throwable
+    protected function rowToEntity(array $row): PageEntity
     {
-        return new PagesNotFoundException;
-    }
-
-    #[\Override]
-    protected function entityExpectOneButReceivedTooMuchException(): \Throwable
-    {
-        return new PageExpectOneButReceivedTooMuchException;
-    }
-
-    #[\Override]
-    protected function entityNotFoundException(): \Throwable
-    {
-        return new PageNotFoundException;
+        return PageFromRowMapper::call($this, $row)->entity;
     }
 }
