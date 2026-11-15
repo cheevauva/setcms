@@ -39,7 +39,7 @@ class Any
     public function validate(): void
     {
         if ($this->notEmpty && empty($this->value)) {
-            $this->throw(new ValidationNotEmptyException());
+            $this->throw(new ValidationNotEmptyException(sprintf('Поле %s должно быть заполнено', $this->path)));
         }
     }
 

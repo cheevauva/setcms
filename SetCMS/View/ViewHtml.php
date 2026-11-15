@@ -95,15 +95,20 @@ abstract class ViewHtml extends View
     {
         $params ??= [];
 
-        $routerMatch = $this->router()->match($path, 'GET');
+        $route = $this->router()->match($path, 'GET');
 
-        $controller = ControllerViaPSR7::as(($routerMatch->target)::new($this->container));
-        $controller->name = $routerMatch->name;
-        $controller->params = $routerMatch->params;
-        $controller->request = $this->request->withQueryParams($params)->withMethod('GET')->withUri(new Uri($path))->withHeader('Root-Context-Path', $this->request->getUri()->getPath())->withHeader('Root-Context-Query', $this->request->getUri()->getQuery());
+        $request = $this->request->withAttribute('route', $route);
+        $request = $request->withQueryParams($params);
+        $request = $request->withMethod('GET');
+        $request = $request->withUri(new Uri($path));
+        $request = $request->withHeader('Root-Context-Path', $this->request->getUri()->getPath());
+        $request = $request->withHeader('Root-Context-Query', $this->request->getUri()->getQuery());
+
+        $controller = ControllerViaPSR7::as(($route->target)::new($this->container));
+        $controller->request = $request;
         $controller->serve();
 
-        $body = ($controller->response ?? throw new ControllerEmptyResponseException($routerMatch->target))->getBody();
+        $body = ($controller->response ?? throw new ControllerEmptyResponseException($route->target))->getBody();
         $body->rewind();
 
         return $body->getContents();

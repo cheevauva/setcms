@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace SetCMS\Request\Mapper;
 
-use Psr\Http\Message\ServerRequestInterface;
 use SplObjectStorage;
+use Psr\Http\Message\ServerRequestInterface;
 use SetCMS\Validation\Validation;
+use SetCMS\Router\RouterRouteDTO;
 
 abstract class RequestMapper extends \UUA\Mapper
 {
@@ -17,11 +18,6 @@ abstract class RequestMapper extends \UUA\Mapper
      * @var SplObjectStorage<\Throwable|object, mixed>
      */
     public SplObjectStorage $messages;
-
-    /**
-     * @var array<string, mixed>
-     */
-    public array $params;
     public ServerRequestInterface $request;
 
     protected function validationBody(): Validation
@@ -37,7 +33,7 @@ abstract class RequestMapper extends \UUA\Mapper
 
     protected function validationParams(): Validation
     {
-        return $this->validation($this->params);
+        return $this->validation(RouterRouteDTO::fromRequest($this->request)->params);
     }
 
     protected function validationQuery(): Validation

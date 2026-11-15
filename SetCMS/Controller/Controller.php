@@ -16,12 +16,6 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
     use \UUA\Traits\EventDispatcherTrait;
     use \UUA\Traits\EnvTrait;
 
-    public string $name;
-
-    /**
-     * @var array<string, mixed>
-     */
-    public array $params = [];
     public protected(set) bool $hasACLCheck = true;
 
     /**
@@ -33,7 +27,6 @@ abstract class Controller extends Unit implements ContainerConstructInterface, C
      * @var SplObjectStorage<\Throwable, mixed>
      */
     protected SplObjectStorage $exceptions;
-
 
     #[\Override]
     public function from(object $object): void

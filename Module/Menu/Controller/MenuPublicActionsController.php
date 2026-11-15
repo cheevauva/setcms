@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Module\Menu\Controller;
 
-use SetCMS\Controller\ControllerViaPSR7;
+use SetCMS\Controller\ControllerBlockViaPSR7;
 use Module\Menu\View\MenuPublicActionsView;
 
-class MenuPublicActionsController extends ControllerViaPSR7
+class MenuPublicActionsController extends ControllerBlockViaPSR7
 {
 
     #[\Override]

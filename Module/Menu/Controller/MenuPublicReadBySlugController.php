@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Module\Menu\Controller;
 
+use SetCMS\Controller\ControllerBlockViaPSR7;
 use Module\Menu\DAO\MenuRetrieveManyByCriteriaDAO;
 use Module\Menu\Mapper\MenuSlugFromRequestMapper;
 
-class MenuPublicReadBySlugController extends \SetCMS\Controller\ControllerViaPSR7
+class MenuPublicReadBySlugController extends ControllerBlockViaPSR7
 {
 
     protected string $slug;

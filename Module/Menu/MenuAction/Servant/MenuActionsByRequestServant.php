@@ -8,7 +8,8 @@ use Module\Menu\MenuAction\Entity\MenuActionEntity;
 use Module\ACL\VO\ACLRoleVO;
 use Module\ACL\Servant\ACLCheckByRoleAndPrivilegeServant;
 use SetCMS\Router\Exception\RouterNotFoundException;
-use SetCMS\Router\RouterMatchDTO;
+use SetCMS\Router\RouterRouteDTO;
+use SetCMS\DTO\RootContextDTO;
 
 abstract class MenuActionsByRequestServant extends \UUA\Servant
 {
@@ -19,10 +20,9 @@ abstract class MenuActionsByRequestServant extends \UUA\Servant
      * @var MenuActionEntity[]
      */
     public protected(set) array $actions;
-    public string $path;
-    public string $queryParams;
+    public RootContextDTO $rootContext;
     public ACLRoleVO $role;
-    protected RouterMatchDTO $route;
+    protected RouterRouteDTO $route;
 
     protected function hasAccess(string $route): bool
     {
@@ -35,9 +35,9 @@ abstract class MenuActionsByRequestServant extends \UUA\Servant
         $this->actions = [];
 
         try {
-            $this->route = $this->router()->match($this->path, 'GET');
+            $this->route = $this->router()->match($this->rootContext->path, 'GET');
         } catch (RouterNotFoundException $ex) {
-            $this->route = new RouterMatchDTO;
+            $this->route = new RouterRouteDTO;
             $this->route->name = '';
             $this->route->target = '';
             $this->route->params = [];

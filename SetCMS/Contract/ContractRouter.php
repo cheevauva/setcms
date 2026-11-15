@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace SetCMS\Contract;
 
-use SetCMS\Router\RouterMatchDTO;
+use SetCMS\Router\RouterRouteDTO;
 
 interface ContractRouter
 {
 
-    public function match(?string $requestUrl = null, ?string $requestMethod = null): RouterMatchDTO;
+    public function match(?string $requestUrl = null, ?string $requestMethod = null): RouterRouteDTO;
 
     /**
      * @param string $routeName

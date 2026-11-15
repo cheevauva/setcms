@@ -31,10 +31,11 @@ class MiddlewareExceptionHandler implements MiddlewareInterface, \UUA\ContainerC
 
             return $handler->handle($request);
         } catch (\Throwable $ex) {
+
             $exceptionHandlers ??= [];
             $exceptionHandlers[$ex::class] ??= ViewInternalServerError::class;
 
-            if (!($exceptionHandlers[$ex::class] instanceof ViewExceptionHandler)) {
+            if (!is_a($exceptionHandlers[$ex::class], ViewExceptionHandler::class, true)) {
                 $exceptionHandlers[$ex::class] = ViewInternalServerError::class;
             }
 

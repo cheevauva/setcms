@@ -5,28 +5,24 @@ declare(strict_types=1);
 namespace Module\Menu\Controller;
 
 use SetCMS\Compiler;
+use SetCMS\Controller\ControllerBlockViaPSR7;
 use Module\Menu\MenuAction\Entity\MenuActionEntity;
 use Module\Menu\MenuAction\Servant\MenuActionsByRequestServant;
 use Module\Menu\View\MenuPublicActionsViaContextView;
-use Module\Menu\Mapper\MenuReadByContextFromRequestMapper;
 use Module\ACL\VO\ACLRoleVO;
 
-class MenuPublicReadByContextController extends \SetCMS\Controller\ControllerViaPSR7
+class MenuPublicReadByContextController extends ControllerBlockViaPSR7
 {
 
     /**
      * @var MenuActionEntity[]
      */
     protected array $items = [];
-    protected string $queryParams;
-    protected string $path;
-    protected ACLRoleVO $role;
 
     #[\Override]
     protected function domainUnits(): array
     {
         return [
-            MenuReadByContextFromRequestMapper::class,
             ...Compiler::singleton($this->container)->getAsArray('menuActions')
         ];
     }
@@ -47,12 +43,6 @@ class MenuPublicReadByContextController extends \SetCMS\Controller\ControllerVia
         if ($object instanceof MenuActionsByRequestServant) {
             array_push($this->items, ...$object->actions);
         }
-
-        if ($object instanceof MenuReadByContextFromRequestMapper) {
-            $this->queryParams = $object->queryParams;
-            $this->path = $object->path;
-            $this->role = $object->role;
-        }
     }
 
     #[\Override]
@@ -61,9 +51,8 @@ class MenuPublicReadByContextController extends \SetCMS\Controller\ControllerVia
         parent::to($object);
 
         if ($object instanceof MenuActionsByRequestServant) {
-            $object->queryParams = $this->queryParams;
-            $object->path = $this->path;
-            $object->role = $this->role;
+            $object->role = ACLRoleVO::fromRequest($this->request);
+            $object->rootContext = $this->rootContext;
         }
 
         if ($object instanceof MenuPublicActionsViaContextView) {

@@ -6,7 +6,7 @@ use Psr\Container\ContainerInterface;
 use AltoRouter;
 use SetCMS\UUID;
 use SetCMS\Contract\ContractRouter;
-use SetCMS\Router\RouterMatchDTO;
+use SetCMS\Router\RouterRouteDTO;
 use SetCMS\Router\Exception\RouterNotFoundException;
 
 class Router implements ContractRouter, \UUA\ContainerConstructInterface
@@ -52,7 +52,7 @@ class Router implements ContractRouter, \UUA\ContainerConstructInterface
     }
 
     #[\Override]
-    public function match(?string $requestUrl = null, ?string $requestMethod = null): RouterMatchDTO
+    public function match(?string $requestUrl = null, ?string $requestMethod = null): RouterRouteDTO
     {
         $result = $this->altoRouter->match($requestUrl, $requestMethod);
 
@@ -60,7 +60,7 @@ class Router implements ContractRouter, \UUA\ContainerConstructInterface
             throw new RouterNotFoundException(sprintf('Маршрут: %s %s не найден', $requestMethod, $requestUrl));
         }
 
-        $routerMatch = new RouterMatchDTO;
+        $routerMatch = new RouterRouteDTO;
         $routerMatch->params = $result['params'] ?? [];
         $routerMatch->target = strval($result['target'] ?? throw new \RuntimeException('target is undefined'));
         $routerMatch->name = strval($result['name'] ?? throw new \RuntimeException('name is undefined'));

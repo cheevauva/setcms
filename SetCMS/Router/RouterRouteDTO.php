@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace SetCMS\Router;
 
-class RouterMatchDTO extends \UUA\DTO
+use Psr\Http\Message\ServerRequestInterface;
+
+class RouterRouteDTO extends \UUA\DTO
 {
 
     /**
@@ -23,4 +25,9 @@ class RouterMatchDTO extends \UUA\DTO
      * @var string
      */
     public string $target;
+    
+    public static function fromRequest(ServerRequestInterface $request, string $name = 'route'): static 
+    {
+        return static::as($request->getAttribute($name));
+    }
 }

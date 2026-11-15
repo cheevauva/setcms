@@ -22,14 +22,12 @@ class MiddlewareFrontController implements MiddlewareInterface, \UUA\ContainerCo
     #[\Override]
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $routerMatch = $this->router()->match($request->getUri()->getPath(), $request->getMethod());
+        $route = $this->router()->match($request->getUri()->getPath(), $request->getMethod());
 
-        $controller = ControllerViaPSR7::as(($routerMatch->target)::new($this->container));
-        $controller->name = $routerMatch->name;
-        $controller->params = $routerMatch->params;
-        $controller->request = $request;
+        $controller = ControllerViaPSR7::as(($route->target)::new($this->container));
+        $controller->request = $request->withAttribute('route', $route);
         $controller->serve();
 
-        return $controller->response ?? throw new ControllerEmptyResponseException($routerMatch->target);
+        return $controller->response ?? throw new ControllerEmptyResponseException($route->target);
     }
 }

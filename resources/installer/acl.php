@@ -12,7 +12,6 @@ $installer = [
         ],
         'files' => [
             'Module/ACL/Exception/ACLNotAllowException.php',
-            'Module/ACL/Servant/ACLControllerServant.php',
             'Module/ACL/Servant/ACLCheckByRoleAndPrivilegeServant.php',
             'Module/ACL/ACL.php',
             'Module/ACL/VO/ACLRoleVO.php',

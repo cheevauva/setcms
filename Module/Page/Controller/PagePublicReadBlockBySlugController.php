@@ -8,8 +8,9 @@ use Module\Page\Entity\PageEntity;
 use Module\Page\DAO\PageGetBySlugDAO;
 use Module\Page\View\PagePublicReadBlockView;
 use Module\Page\Mapper\PageSlugFromRequest;
+use SetCMS\Controller\ControllerBlockViaPSR7;
 
-class PagePublicReadBlockBySlugController extends \SetCMS\Controller\ControllerViaPSR7
+class PagePublicReadBlockBySlugController extends ControllerBlockViaPSR7
 {
 
     protected string $slug;

@@ -42,7 +42,6 @@ abstract class ControllerViaPSR7 extends Controller
 
         if ($object instanceof RequestMapper) {
             $object->request = $this->request;
-            $object->params = $this->params;
             $object->messages = $this->messages;
         }
 
@@ -70,9 +69,10 @@ abstract class ControllerViaPSR7 extends Controller
     #[\Override]
     protected function overrideViewUnits(array $viewUnits): array
     {
-        array_unshift($viewUnits, $this->errorHandlerView());
-
-        return $viewUnits;
+        return [
+            $this->errorHandlerView(),
+            ...$viewUnits,
+        ];
     }
 
     /**
